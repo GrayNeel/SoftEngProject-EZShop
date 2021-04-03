@@ -4,11 +4,12 @@ Authors: Group 38
 
 Date: 03/04/2021
 
-Version: 01
+Version: 02
 
 | Version | Changes | 
 | ----------------- |:-----------|
 | 01 | Added Stakeholders  |
+| 02 | Added Stories and Personas  |
 
 # Contents
 
@@ -19,6 +20,10 @@ Version: 01
 	+ [Interfaces](#interfaces) 
 	
 - [Stories and personas](#stories-and-personas)
+	+ [Alice](#alice)
+	+ [Caroline](#caroline)
+	+ [Stefano](#stefano)
+	+ [Claudia](#claudia)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
 	+ [Functional Requirements](#functional-requirements)
 	+ [Non functional requirements](#non-functional-requirements)
@@ -45,14 +50,14 @@ EZShop is a software application to:
 
 | Stakeholder name | Description |
 |-----------------|:-----------:|
-| Cashier | Uses the software to sell products |
-| Customer | Is indirectly involved through the cashier to buy products | 
-| Supervisor | Is in charge of cashiers and solves shopping related problems  | 
-|  Supplier | Supplies all goods and products for the shop |
-| Stacker | Its job is to put goods on the shelves in the shop and to ask for refill of missing products |
-| Inventory manager | Manages the inventory: amount of pieces, price and (if present) sales. |
-| Customers manager | Manages customers' informations and fidelity cards |
-| Software manager | Maintaner of the software product. It is in charge of solving problems related to the software |
+|Cashier| Uses the software to sell products |
+|Customer| Is indirectly involved through the cashier to buy products | 
+|Supervisor| Is in charge of cashiers and solves shopping related problems  | 
+|Supplier| Supplies all goods and products for the shop |
+|Stacker| Its job is to put goods on the shelves in the shop and to ask for refill of missing products |
+|Inventory manager| Manages the inventory: amount of pieces, price and (if present) sales. |
+|Customers manager| Manages customers' informations and fidelity cards |
+|Software manager| Maintaner of the software product. It is in charge of solving problems related to the software |
 
 
 # Context Diagram and interfaces
@@ -83,6 +88,30 @@ c -- (EZShop)
 |   Actor x..     |  |  |
 
 # Stories and personas
+
+## Alice
+Alice is a 53 years old housewife with a very numerous family. She always takes care of the food shopping for the whole family and really enjoys being rewarded with prizes the more shopping she does. Alice is very impatient and although she buys a lot of goods, she cannot bare waiting for too long at the cashier.
+Alice usually goes to the food shop twice a week and gets really mad when she does not find the goods she is looking for on the shelves, sometimes when she does not manage to find a product she usually buys, she just gets out the shop and goes somewhere else.
+Furthermore Alice loves low priced products and she is more willing to buy discounted products no matter what the expiration date is.
+
+## Caroline
+Caroline is a 31 years old woman, she works at the shop as a cashier and she's always in direct contact with customers. For this reason, she is in charge of accounting the cash desk. Caroline is married and has two childs so she doesn't want to stay much longer at the shop after the closing time: she wants to quickly account the cash desk and get back to her childs.
+In a typically working day, Caroline has to sell many products to people and she expect to have a fast calculation of the total amount of money spent from the customers. She has to ask customers for fidelity card and she also manages cashes and credit cards.
+Caroline noticed that sometimes customers ask her to remove or change a product from the receipt, since they changed idea. For this reason, Caroline is interrupted and she needs to call her supervisor, which is in charge of removing sold items.
+
+## Stefano
+Stefano is 35 years old man with professional knowledge about business, administration and operation management. He is a very organised person and is currently focused on his job because one day he would like to have a shop of his own and be the general administrator, so he takes advantage of every opportunity to learn something new.
+During the working day, he wakes up at 7 am and goes directly to work after breakfast. Since he is such a responsible man, he likes to arrive earlier than the rest. After some time, he starts doing his job which consists in several actions, such as checking all the products that are going to arrive during the day, checking if the quantities of certain products are in a good level, creating new orders to the suppliers, updating the sales of the day before, and other activities related to product refilling and updating prices if needed. 
+Stefano has high hopes about the new software that is going to be applied to the food shop, since he believes that technology is mandatory to have an optimised system of inventory and sales, and then obtain better results in terms of economic growth and organisation. 
+
+## Claudia
+Mrs. Claudia 32, mother of two children
+
+It’s Friday morning, Claudia go to work by car. 
+Once at work she makes a tour on the cash to grab items left there that have to be replaced in their original place, and she checks for shelves where products are not in the correct place. After that she checks the shelves to scan the bar code of the products that need to be refilled. Sometimes she has to stop her routine because some customer ask for informations where to find a certain product. 
+ After that, she will go to the warehouse and take the missing products to fill the shelves.
+ Finally she will contact the inventory manager that will give her informations about what products need sales, so she take the new labels and apply them in the right place. According to the informations, she will also add the sticker to the near deadline products to signal the 30% of discount
+
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
 
 \<Persona is-an-instance-of actor>
