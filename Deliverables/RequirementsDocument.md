@@ -105,19 +105,11 @@ During the working day, he wakes up at 7 am and goes directly to work after brea
 Stefano has high hopes about the new software that is going to be applied to the food shop, since he believes that technology is mandatory to have an optimized system of inventory and sales, and then obtain better results in terms of economic growth and organization. 
 
 ## Claudia
-Mrs. Claudia 32, mother of two children
-
-It’s Friday morning, Claudia go to work by car. 
+Mrs. Claudia it's a 32 years old mother of two children.
+It’s Friday morning, Claudia goes to work by car. 
 Once at work she makes a tour on the cash to grab items left there that have to be replaced in their original place, and she checks for shelves where products are not in the correct place. After that she checks the shelves to scan the bar code of the products that need to be refilled. Sometimes she has to stop her routine because some customer ask for information where to find a certain product. 
  After that, she will go to the warehouse and take the missing products to fill the shelves.
  Finally she will contact the inventory manager that will give her information about what products need sales, so she take the new labels and apply them in the right place. According to the information, she will also add the sticker to the near deadline products to signal the 30% of discount
-
-\<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
-
-\<Persona is-an-instance-of actor>
-
-\<stories will be formalized later as scenarios in use cases>
-
 
 # Functional and non functional requirements
 
