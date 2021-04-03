@@ -4,13 +4,14 @@ Authors: Group 38
 
 Date: 03/04/2021
 
-Version: 03
+Version: 04
 
 | Version | Changes | 
 | ----------------- |:-----------|
 | 01 | Added Stakeholders  |
 | 02 | Added Stories and Personas  |
 | 03 | Added Context diagram and interfaces  |
+| 04 | Added FR and NFR  |
 
 # Contents
 
@@ -59,6 +60,7 @@ EZShop is a software application to:
 |Inventory manager| Manages the inventory: amount of pieces, price and (if present) sales. |
 |Customers manager| Manages customers' information and fidelity cards |
 |Software manager| Maintaner of the software product. It is in charge of solving problems related to the software |
+|Accounting manager|Handler of the accounting system of the shop|
 |Credit Card System|Allows payments by credit cards from customers|
 |Inventory/Catalogue System|DB that manages all the products of the shop|
 |Fidelity Card System|DB that contains informations about loyal customers and manages points|
@@ -75,6 +77,7 @@ actor Product as p
 actor Supervisor as s
 actor "Inventory manager" as im
 actor "Customers manager" as cm
+actor "Accounting manager" as am
 actor "Credit Card System" as cs
 actor "Inventory/Catalogue System" as is
 actor "Fidelity Card System" as fs
@@ -84,6 +87,7 @@ p -- (EZShop)
 s -- (EZShop)
 im -- (EZShop)
 cm -- (EZShop)
+am -- (EZShop)
 (EZShop) -- cs
 (EZShop) -- is
 (EZShop) -- fs
@@ -100,6 +104,7 @@ cm -- (EZShop)
 |Supervisor|GUI|screen, keyboard|
 |Inventory Manager|GUI|screen, keyboard|
 |Customers Manager|GUI|screen, keyboard|
+|Accounting Manager|GUI|screen, keyboard|
 |Credit Card System|Web services|internet connection|
 |Inventory/Catalogue System|Database|local server|
 |Fidelity Card System|Database|local server|
@@ -132,26 +137,43 @@ Once at work she makes a tour on the cash to grab items left there that have to 
 
 ## Functional Requirements
 
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
-
-\<they match to high level use cases>
-
 | ID        | Description  |
 | ------------- |:-------------:| 
-|  FR1     |  |
-|  FR2     |   |
-| FRx..  | | 
+|  FR1     |Handle sale transaction|
+|  FR1.1     |Start sale transaction|
+|  FR1.2     |Check fidelity card|
+|  FR1.2.1   |Update points|
+|  FR1.3     |End sale transaction|
+|F2|Authorize and authenticate|
+| FR2.1  | Log in |
+| FR2.2  | Log out |
+| FR2.3  | Define account |
+| FR3  | Cancel payment of a product from receipt |
+| FR4  | Read the bar code |
+| FR5  | Manage inventory |
+|FR5.1| Update amount of pieces of a product|
+|FR6|Manage catalogue|
+|FR6.1|Insert a new product|
+|FR6.2|Remove a product|
+|FR6.3|Update price/discount of a product|
+| FR7  |Manage customer informations|
+|FR7.1|Add a new customer (release a new fidelity card)|
+|FR7.2|Remove a customer|
+| FR8  | Manage accounting |
+|FR8.1|Show accounting informations|
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
-
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     |   |  | |
-|  NFR2     | |  | |
-|  NFR3     | | | |
-| NFRx .. | | | | 
+|  NFR1     |Usability|A very simple and intuitive GUI|all FR|
+|  NFR2     |Correctness|Total price of transaction must match the sum of products' prices|FR1,FR6|
+|  NFR3     |Efficiency|The transaction must be responsive and fast to compute|FR1|
+| NFR4 |Reliability|Software crashes have to be <0.01% of interactions|All FR|
+| NFR5 |Maintainability|Add a new cash register requires less than 2 hours|All FR|
+| NFR6 |Security|Data accessed only from authorized users|FR5,FR6,FR7,FR8|
+| NFR7 |Usability|Easy detection of missing products for reorders|FR5|
+|NFR8|Dependability|Accounting informations always availaable, consistent and secured|FR8|
 
 
 # Use case diagram and use cases
