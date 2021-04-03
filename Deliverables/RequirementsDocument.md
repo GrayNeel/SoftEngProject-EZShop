@@ -58,6 +58,9 @@ EZShop is a software application to:
 |Inventory manager| Manages the inventory: amount of pieces, price and (if present) sales. |
 |Customers manager| Manages customers' information and fidelity cards |
 |Software manager| Maintaner of the software product. It is in charge of solving problems related to the software |
+|Credit Card System|Allows payments by credit cards from customers|
+|Inventory/Catalogue System|DB that manages all the products of the shop|
+|Fidelity Card System|DB that contains informations about loyal customers and manages points|
 
 
 # Context Diagram and interfaces
@@ -68,24 +71,37 @@ EZShop is a software application to:
 left to right direction
 actor Cashier as c
 actor Product as p
+actor Supervisor as s
+actor "Inventory manager" as im
+actor "Customers manager" as cm
+actor "Credit Card System" as cs
+actor "Inventory/Catalogue System" as is
+actor "Fidelity Card System" as fs
 
 c -- (EZShop)
-(EZShop) -- p
+p -- (EZShop)
+s -- (EZShop)
+im -- (EZShop)
+cm -- (EZShop)
+(EZShop) -- cs
+(EZShop) -- is
+(EZShop) -- fs
+
 @enduml
 ```
 
-\<Define here Context diagram using UML use case diagram>
-
-\<actors are a subset of stakeholders>
-
 ## Interfaces
-\<describe here each interface in the context diagram>
-
-\<GUIs will be described graphically in a separate document>
 
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| -----:|
-|   Actor x..     |  |  |
+|Cashier|GUI|screen, keyboard|
+|Product|Bar code|laser beam|
+|Supervisor|GUI|screen, keyboard|
+|Inventory Manager|GUI|screen, keyboard|
+|Customers Manager|GUI|screen, keyboard|
+|Credit Card System|Web services|internet connection|
+|Inventory/Catalogue System|Database|local server|
+|Fidelity Card System|Database|local server|
 
 # Stories and personas
 
