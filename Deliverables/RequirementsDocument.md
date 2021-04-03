@@ -1,10 +1,14 @@
 # Requirements Document 
 
-Authors:
+Authors: Group 38
 
-Date:
+Date: 03/04/2021
 
-Version:
+Version: 01
+
+| Version | Changes | 
+| ----------------- |:-----------|
+| 01 | Added Stakeholders  |
 
 # Contents
 
@@ -39,13 +43,32 @@ EZShop is a software application to:
 # Stakeholders
 
 
-| Stakeholder name  | Description | 
-| ----------------- |:-----------:|
-|   Stakeholder x..     |             | 
+| Stakeholder name | Description |
+|-----------------|:-----------:|
+| Cashier | Uses the software to sell products |
+| Customer | Is indirectly involved through the cashier to buy products | 
+| Supervisor | Is in charge of cashiers and solves shopping related problems  | 
+|  Supplier | Supplies all goods and products for the shop |
+| Stacker | Its job is to put goods on the shelves in the shop and to ask for refill of missing products |
+| Inventory manager | Manages the inventory: amount of pieces, price and (if present) sales. |
+| Customers manager | Manages customers' informations and fidelity cards |
+| Software manager | Maintaner of the software product. It is in charge of solving problems related to the software |
+
 
 # Context Diagram and interfaces
 
 ## Context Diagram
+```plantuml
+@startuml
+left to right direction
+actor Cashier as c
+actor Product as p
+
+c -- (EZShop)
+(EZShop) -- p
+@enduml
+```
+
 \<Define here Context diagram using UML use case diagram>
 
 \<actors are a subset of stakeholders>
