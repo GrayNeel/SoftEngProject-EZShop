@@ -4,7 +4,7 @@ Authors: Group 38
 
 Date: 03/04/2021
 
-Version: 04
+Version: 05
 
 | Version | Changes | 
 | ----------------- |:-----------|
@@ -12,6 +12,7 @@ Version: 04
 | 02 | Added Stories and Personas  |
 | 03 | Added Context diagram and interfaces  |
 | 04 | Added FR and NFR  |
+| 05 | Added Use case diagram  |
 
 # Contents
 
@@ -119,7 +120,7 @@ Furthermore Alice loves low priced products and she is more willing to buy disco
 ## Caroline
 Caroline is a 31 years old woman, she works at the shop as a cashier and she's always in direct contact with customers. For this reason, she is in charge of accounting the cash desk. Caroline is married and has two children so she doesn't want to stay much longer at the shop after the closing time: she wants to quickly account the cash desk and get back to her children.
 In a typically working day, Caroline has to sell many products to people and she expect to have a fast calculation of the total amount of money spent from the customers. She has to ask customers for fidelity card and she also manages cashes and credit cards.
-Caroline noticed that sometimes customers ask her to remove or change a product from the receipt, since they changed idea. For this reason, Caroline is interrupted and she needs to call her supervisor, which is in charge of removing sold items.
+Caroline noticed that sometimes customers ask her to remove or change a product from the transaction, since they changed idea. For this reason, Caroline is interrupted and she needs to call her supervisor, which is in charge of removing sold items.
 
 ## Stefano
 Stefano is 35 years old man with professional knowledge about business, administration and operation management. He is a very organized person and is currently focused on his job because one day he would like to have a shop of his own and be the general administrator, so he takes advantage of every opportunity to learn something new.
@@ -148,7 +149,7 @@ Once at work she makes a tour on the cash to grab items left there that have to 
 | FR2.1  | Log in |
 | FR2.2  | Log out |
 | FR2.3  | Define account |
-| FR3  | Cancel payment of a product from receipt |
+| FR3  | Cancel product from transaction |
 | FR4  | Read the bar code |
 | FR5  | Manage inventory |
 |FR5.1| Update amount of pieces of a product|
@@ -178,9 +179,72 @@ Once at work she makes a tour on the cash to grab items left there that have to 
 
 # Use case diagram and use cases
 
-
 ## Use case diagram
+```plantuml
+@startuml
+
+actor Cashier as c
+actor Product as p
+actor Supervisor as s
+actor "Inventory manager" as im
+actor "Customers manager" as cm
+actor "Accounting manager" as am
+actor "Credit Card System" as cs
+actor "Inventory/Catalogue System" as is
+actor "Fidelity Card System" as fs
+
+(Handle sale transaction) as (hst)
+(Authorize and authenticate) as (aa)
+(Cancel product from transaction) as (cppr)
+(Read the bar code) as (rbc)
+(Manage inventory) as (mi)
+(Manage catalogue) as (mc)
+(Manage customer informations) as (mci)
+(Manage accounting) as (ma)
+(Check fidelity card) as (cfc)
+
+(EzShop) as (ez)
+
+(ez) .down.> (hst) : <<include>>
+(ez) .down.> (aa) : <<include>>
+(ez) .down.> (cppr) : <<include>>
+(ez) .down.> (rbc) : <<include>>
+(ez) .up.> (mi) : <<include>>
+(ez) .up.> (mc) : <<include>>
+(ez) .up.> (mci) : <<include>>
+(ez) .up.> (ma) : <<include>>
+(hst) .down.> (cfc) : <<include>>
+
+c -up-> (hst)
+c -up-> (rbc) 
+am -up-> (ma)
+im --> (mi)
+im --> (mc)
+s --> (cppr)
+cm --> (mci)
+p <-- (rbc)
+p <-- (mc)
+p <-- (mi)
+cs <-up- (hst)
+is <-- (mi)
+is <-- (mc)
+is <-- (rbc) 
+
+fs <-- (mci) 
+fs <-- (cfc)
+
+@enduml
+```
+
+
+
+
+
+
+
+
 \<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
+
 
 
 \<next describe here each use case in the UCD>
