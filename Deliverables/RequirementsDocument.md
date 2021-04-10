@@ -417,11 +417,11 @@ fc <-up- (hci)
 | Scenario 6.1 | |
 | ------------- |:-------------:| 
 |  Precondition     | Inventory Manager successfully logged in the system, <br> Product avaiable in the Inventory |
-|  Post condition     | Inventory Manager manage product amount of pieces, Product avaiable in the Inventory |
+|  Post condition     | Inventory Manager manage product amount of pieces, <br> Product avaiable in the Inventory |
 | Step#        | Description  |
 |  1     | Manager reads the bar code on the product | 
-|  2     | System update amount of pieces of a product |
-|  3     | Manager refill the product on the relative shelve |
+|  2     | System updates amount of pieces of a product |
+|  3     | Manager refills the product on the relative shelve |
 
 ##### Scenario 6.2 
 
@@ -430,9 +430,9 @@ fc <-up- (hci)
 |  Precondition     | Inventory Manager successfully logged in the system, <br> Product not avaiable in the Inventory|
 |  Post condition     | Inventory Manager manage product amount of pieces, <br> Product avaiable in the Inventory |
 | Step#        | Description  |
-|  1     | Manager insert a new product in the inventory |
-|  2     | System update amount of pieces of a product |
-|  3     | Manager refill the product on the relative shelve |
+|  1     | Manager inserts a new product in the inventory |
+|  2     | System updates amount of pieces of a product |
+|  3     | Manager refills the product on the relative shelve |
 
 ##### Scenario 6.3 
 
@@ -442,7 +442,7 @@ fc <-up- (hci)
 |  Post condition     | Inventory Manager manage product amount of pieces, <br> Product not avaiable in the Inventory |
 | Step#        | Description  |
 |  1     | Manager reads the bar code on the product | 
-|  2     | Manager remove a new product from the inventory |
+|  2     | Manager removes a new product from the inventory |
 
 
 # Glossary
