@@ -422,7 +422,7 @@ fc <-up- (hci)
 | Step#        | Description  |
 |  1     | Manager reads the bar code of the product | 
 |  2     | Manager updates amount of pieces of the product |
-|  3     | Manager refills the product on the relative shelve |
+|  3     | Manager refills the product on the relative shelf |
 
 ##### Scenario 6.2 
 
@@ -434,7 +434,7 @@ fc <-up- (hci)
 |  1     | Manager inserts a new product in the catalogue |
 |  2     | Manager updates amount of pieces of the product |
 |  3     | Product is inserted also in the inventory |
-|  3     | Manager put the product on the relative shelve |
+|  4     | Manager put the product on the relative shelf |
 
 ##### Scenario 6.3 
 
