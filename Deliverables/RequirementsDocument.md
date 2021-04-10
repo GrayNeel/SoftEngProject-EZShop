@@ -255,24 +255,26 @@ fc <-up- (hci)
 |  Post condition     | User has access to data |
 | Step#        | Description  |
 |  1           | User uses correct credentials to access to the system |  
-|  2           | System gives access |
+|  2           | System gives access to user |
 
 
 ##### Scenario 1.2
 | Scenario 1.2 | |
 | ------------- |:-------------:| 
 |  Precondition     | User has not access to data |
-|  Post condition     | User has not access to data |
+|  Post condition     | User has access to data |
 | Step#        | Description  |
 |  1           | User enters wrong credentials | 
-|  2           | System does not give access | 
+|  2           | System does not give access and asks again for credentials |
+| 3            | User types correct credentials |
+| 4 		   | System gives access to user 
 
 
 ### Use case 2 'Handle customer informations', UC2
 | Actors Involved        | Customers manager, Fidelity Card, Customer |
 | ------------- |:-------------:| 
-|  Precondition     | Customer has no fidelity card |  
-|  Post condition     | Customer has fidelity card and customer's informations are stored |
+|  Precondition     | Customer has no fidelity card <br> System has no informations about customer <br> Customers manager successfully logged in the system|  
+|  Post condition     | Customer receives fidelity card <br> Customer's informations are stored |
 |  Nominal Scenario     | Customers Manager receives customer's informations and stores them connected to a specific fidelity card |
 |  Variants     | // |
 
@@ -280,8 +282,8 @@ fc <-up- (hci)
 
 | Scenario 2.1 | |
 | ------------- |:-------------:| 
-|  Precondition     | Customer has no fidelity card and Manager has no informations about customer |
-|  Post condition     | Customer has fidelity card and manager stored informations about customer |
+|  Precondition     | Customer has no fidelity card <br> System has no informations about customer <br> Customers manager successfully logged in the system |
+|  Post condition     | Customer receives fidelity card <br> Customer's informations are stored |
 | Step#        | Description  |
 |  1     | Customer asks for a fidelity card |  
 |  2     | Customer gives to the manager his personal information |
