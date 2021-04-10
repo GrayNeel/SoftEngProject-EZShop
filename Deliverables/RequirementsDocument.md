@@ -242,10 +242,10 @@ fc <-up- (hci)
 
 | Actors Involved        | Inventory manager, Cashier, Customers manager, Accounting manager |
 | ------------- |:-------------:| 
-|  Precondition     | User has not access to data |  
-|  Post condition     | User has access to data|
+|  Precondition     | User has not access to the system |  
+|  Post condition     | User has access to the system |
 |  Nominal Scenario     | User log in the system |
-|  Variants     | New user |
+|  Variants     | Wrong credentials |
 
 ##### Scenario 1.1 
 
@@ -254,17 +254,18 @@ fc <-up- (hci)
 |  Precondition     | User has not access to data |
 |  Post condition     | User has access to data |
 | Step#        | Description  |
-|  1  Log in    | User has to use its credentials to access to the system |  
+|  1           | User uses correct credentials to access to the system |  
+|  2           | System gives access |
 
 
 ##### Scenario 1.2
 | Scenario 1.2 | |
 | ------------- |:-------------:| 
 |  Precondition     | User has not access to data |
-|  Post condition     | User has access to data |
+|  Post condition     | User has not access to data |
 | Step#        | Description  |
-|  1  Define account    | User has to register himself to the system | 
-|  2  Log in    | User has to use its credentials to access to the system | 
+|  1           | User enters wrong credentials | 
+|  2           | System does not give access | 
 
 
 ### Use case 2 'Handle customer informations', UC2
