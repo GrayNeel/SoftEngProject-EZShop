@@ -145,12 +145,11 @@ Stefano has high hopes about the new software that is going to be applied to the
 |   FR5.3.2 | Remove product from receipt |
 |  FR5.4  | Check fidelity card |
 |   FR5.4.1 | Update loyalty points |
-|  FR5.5  | Handle Payment |
-|   FR5.5.1 | Payment by cash |
-|   FR5.5.2 | Payment by credit card |
-|   FR5.5.2.1 | Never keep track of credit card number |
-|  FR5.6  | Update daily income |
-|  FR5.7  | End sale transaction |
+|  FR5.5  | Handle Payment by cash |
+|  FR5.6 |  Handle Payment by credit card |
+|   FR5.6.1 | Never keep track of credit card number |
+|  FR5.7  | Update daily income |
+|  FR5.8  | End sale transaction |
 | FR6     | Manage accounting |
 |  FR6.1  | Show incomes |
 |  FR6.2  | Add an expence |
@@ -167,7 +166,7 @@ Stefano has high hopes about the new software that is going to be applied to the
 | NFR6 |Security|Data accessed only from authorized users|FR2,FR3,FR5,FR6|
 | NFR7 |Usability|Easy detection of missing products for reorders|FR3|
 |NFR8|Dependability|Accounting informations always available, consistent and secured|FR6|
-|NFR9|Security|Never keep track of credit card number |FR5.5.2|
+|NFR9|Security|Never keep track of credit card number |FR5.6.1|
 
 
 # Use case diagram and use cases
@@ -193,49 +192,51 @@ actor "Fidelity Card" as fc
 (Handle sale transaction) as (hst)
 (Manage accounting) as (ma)
 
-/'(Cancel product from transaction) as (cppr)
-(Manage catalogue) as (mc)
-(Check fidelity card) as (cfc)'/
+(Update amount of pieces of a product) as (uapp)
+(Handle Payment by credit card) as (hpcc)
+(Check fidelity card ) as (cfc)
 
-/'
-(ez) .down.> (hst) : <<include>>
+note " All human actors have to authenticate\n to access to the system  " as n1
+
+n1 --> aa
+
+
 (ez) .down.> (aa) : <<include>>
-(ez) .down.> (cppr) : <<include>>
-(ez) .down.> (rbc) : <<include>>
-(ez) .up.> (mi) : <<include>>
-(ez) .up.> (mc) : <<include>>
 (ez) .up.> (hci) : <<include>>
+(ez) .up.> (mic) : <<include>>
+(ez) .down.> (rbc) : <<include>>
+(ez) .down.> (hst) : <<include>>
 (ez) .up.> (ma) : <<include>>
-(hst) .down.> (cfc) : <<include>>
-'/
 
-/'
+(mic) ..> (uapp) : <<include>>
+(hst) ..> (hpcc) : <<include>>
+(hst) ..> (cfc) : <<include>>
+
 c -up-> (hst)
 c -up-> (rbc) 
-am -up-> (ma)
-im --> (mi)
-im --> (mc)
-s --> (cppr)
-cm --> (mci)
-p <-- (rbc)
-p <-- (mc)
-p <-- (mi)
-cs <-up- (hst)
-is <-- (mi)
-is <-- (mc)
-is <-- (rbc) 
+c -up-> (uapp) 
 
-fs <-- (mci) 
-fs <-- (cfc)
-'/
+am --> (ma)
+im --> (mic)
+im --> (rbc)
+
+cm --> (hci)
+
+p <-- (rbc)
+p <-- (mic)
+cs -up-> (hpcc)
+fc <-- (cfc)
+fc <-- (rbc)
+fc <-- (hci)
 
 @enduml
 ```
 
-### Use case 1, UC1
-| Actors Involved        |  |
+### Use case 'Authorize and authenticate' UC1
+
+| Actors Involved        | Inventory manager, Cashier, Customers manager, Accounting manager |
 | ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |  
+|  Precondition     | User can not access to data|  
 |  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
 |  Nominal Scenario     | \<Textual description of actions executed by the UC> |
 |  Variants     | \<other executions, ex in case of errors> |
@@ -262,6 +263,32 @@ fs <-- (cfc)
 ##### Scenario 1.2
 
 ##### Scenario 1.x
+### Use case 1, UC1
+| Actors Involved        |  |
+| ------------- |:-------------:| 
+|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |  
+|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
+|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
+|  Variants     | \<other executions, ex in case of errors> |
+
+##### Scenario 1.1 
+
+\<describe here scenarios instances of UC1>
+
+\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
+
+\<a scenario is a more formal description of a story>
+
+\<only relevant scenarios should be described>
+
+| Scenario 1.1 | |
+| ------------- |:-------------:| 
+|  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
+|  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
+| Step#        | Description  |
+|  1     |  |  
+|  2     |  |
+|  ...     |  |
 
 ### Use case 2, UC2
 ..
