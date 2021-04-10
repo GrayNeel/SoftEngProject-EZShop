@@ -310,14 +310,6 @@ fc <-- (hci)
 
 ##### Scenario 4.1 
 
-\<describe here scenarios instances of UC1>
-
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-
-\<a scenario is a more formal description of a story>
-
-\<only relevant scenarios should be described>
-
 | Scenario 4.1 | |
 | ------------- |:-------------:| 
 |  Precondition     | User must be authenticated, Product must exist in the inventory |
@@ -337,35 +329,6 @@ fc <-- (hci)
 |  1     | Cashier asks for a fidelity card | 
 |  2     | Cashier reads the bar code of the fidelity card  
 
-
-### Use case 5, UC5
-| Actors Involved        |  |
-| ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |  
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
-|  Variants     | \<other executions, ex in case of errors> |
-
-##### Scenario 1.1 
-
-\<describe here scenarios instances of UC1>
-
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-
-\<a scenario is a more formal description of a story>
-
-\<only relevant scenarios should be described>
-
-| Scenario 1.1 | |
-| ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
-| Step#        | Description  |
-|  1     |  |  
-|  2     |  |
-|  ...     |  |
-
-##### Scenario 4.2
 
 ### Use case 5 'Handle sale transaction', UC5
 | Actors Involved        | Cashier, Customer |
