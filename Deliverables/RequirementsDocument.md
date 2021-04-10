@@ -389,6 +389,44 @@ fc <-- (hci)
 |  5     | Customer gives the cash |
 |  6     | Cashier ends the payment and receipt is generated |
 
+### Use case 6 '', UC6
+| Actors Involved        | Accounting Manager |
+| ------------- |:-------------:| 
+|  Precondition     | Accounting Manager successfully logged in the system |  
+|  Post condition     | Manager receives total incomes/expences, <br> Manager can add an expence |
+|  Nominal Scenario     | Manager can look at total incomes and expences and eventually add a new expence |
+|  Variants     | // |
+
+##### Scenario 6.1 
+
+| Scenario 6.1 | |
+| ------------- |:-------------:| 
+|  Precondition     | Accounting Manager successfully logged in the system |
+|  Post condition     | A new expence registered |
+| Step#        | Description  |
+|  1     | Manager get the amount of the expence |  
+|  2     | Manager add it to the system |
+|  3     | New value for total expences is generated |
+
+### Use case 7 '', UC7
+| Actors Involved        | Accounting Manager |
+| ------------- |:-------------:| 
+|  Precondition     | Accounting Manager successfully logged in the system |  
+|  Post condition     | Manager receives total incomes/expences, <br> Manager can add an expence |
+|  Nominal Scenario     | Manager can look at total incomes and expences and eventually add a new expence |
+|  Variants     | // |
+
+##### Scenario 7.1 
+
+| Scenario 7.1 | |
+| ------------- |:-------------:| 
+|  Precondition     | Accounting Manager successfully logged in the system |
+|  Post condition     | A new expence registered |
+| Step#        | Description  |
+|  1     | Manager get the amount of the expence |  
+|  2     | Manager add it to the system |
+|  3     | New value for total expences is generated |
+
 # Glossary
 
 \<use UML class diagram to define important terms, or concepts in the domain of the system, and their relationships> 
