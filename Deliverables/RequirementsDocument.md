@@ -4,7 +4,7 @@ Authors: Group 38
 
 Date: 03/04/2021
 
-Version: 07
+Version: 08
 
 | Version | Changes | 
 | ----------------- |:-----------|
@@ -15,6 +15,7 @@ Version: 07
 | 05 | Added Use case diagram  |
 | 06 | Minor changes to content |
 | 07 | Added Use Cases and Scenarios |
+| 08 | Added System Design, Glossary and Deployment Diagram |
 
 # Contents
 
@@ -34,8 +35,7 @@ Version: 07
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
 	+ [Use case diagram](#use-case-diagram)
 	+ [Use cases and relevant scenarios](#use-cases)
-- [Glossary](#glossary)
-- [System design](#system-design)
+- [System design and Glossary](#system-design-and-glossary)
 - [Deployment diagram](#deployment-diagram)
 
 # Essential description
@@ -448,18 +448,41 @@ fc <-up- (hci)
 |  3     | System removes it also from the inventory |
 
 
-# Glossary
-
-\<use UML class diagram to define important terms, or concepts in the domain of the system, and their relationships> 
-
-\<concepts are used consistently all over the document, ex in use cases, requirements etc>
-
-# System Design
+# System Design and Glossary
 ```plantuml
 @startuml
 class PC
-class "Credit Card System"
-class "Software"
+class "Credit Card Reader" as ccr
+class "Bar Code Reader" as bcr
+class "EZShop" as ez
+class "Software" as s
+class "Receipt Printer" as rp
+
+ez o-- PC
+ez o-- ccr
+ez o-- bcr
+ez o-- rp
+s -up- PC
+
+/' Glossary '/
+class "Receipt" as r
+class "Loyalty Points" as lp
+class "Bar code" as bc
+
+r "*" -up- rp : printed by >
+bc "*" -up- bcr : readed by >
+
+note "It is the ticket\ncreated from the\ntransaction that \ncontains total\namount" as N1
+note "It identifies each\nproduct and \nfidelity card" as N2
+
+N1 -up- r
+N2 -up- bc
+
+note "Points used for \nfidelity cards, \ngained for each \ntransaction made \nby customers" as N3
+
+/'Check if lp go with EZShop'/
+N3 -- lp
+
 @enduml
 ```
 
