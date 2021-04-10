@@ -430,11 +430,26 @@ fc <-up- (hci)
 \<concepts are used consistently all over the document, ex in use cases, requirements etc>
 
 # System Design
-\<describe here system design>
-
-\<must be consistent with Context diagram>
+```plantuml
+@startuml
+class PC
+class "Credit Card System"
+class "Software"
+@enduml
+```
 
 # Deployment Diagram 
+```plantuml
+@startuml
+node PC
+node EZShopServer as es
+file "EZShop backend" as b
+file "EZShop application" as a
 
-\<describe here deployment diagram >
+b .down.> es : <<deploy>>
+es -right-"*" PC : internet link 
+a --> PC : <<deploy>>
+
+@enduml
+```
 
