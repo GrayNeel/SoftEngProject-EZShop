@@ -294,7 +294,7 @@ fc <-up- (hci)
 | Actors Involved        | Accounting Manager |
 | ------------- |:-------------:| 
 |  Precondition     | Accounting Manager successfully logged in the system |  
-|  Post condition     | Manager receives total incomes/expences, <br> Manager can add an expence |
+|  Post condition     | Manager receives total incomes/expences <br> A new expence is registered|
 |  Nominal Scenario     | Manager can look at total incomes and expences and eventually add a new expence |
 |  Variants     | // |
 
@@ -303,11 +303,12 @@ fc <-up- (hci)
 | Scenario 3.1 | |
 | ------------- |:-------------:| 
 |  Precondition     | Accounting Manager successfully logged in the system |
-|  Post condition     | A new expence registered |
+|  Post condition     | Manager receives total incomes/expences <br> A new expence is registered |
 | Step#        | Description  |
-|  1     | Manager get the amount of the expence |  
+|  1     | Manager has an amount of expence to add |  
 |  2     | Manager add it to the system |
 |  3     | New value for total expences is generated |
+|  4     | Total incomes and expences are shown |
 
 ### Use case 'Read the bar code', UC4
 | Actors Involved        | Cashier, Inventory Manager, Fidelity Card, Product |
