@@ -236,31 +236,30 @@ fc <-- (hci)
 
 | Actors Involved        | Inventory manager, Cashier, Customers manager, Accounting manager |
 | ------------- |:-------------:| 
-|  Precondition     | User can not access to data|  
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
-|  Variants     | \<other executions, ex in case of errors> |
+|  Precondition     | User has not access to data |  
+|  Post condition     | User has access to data|
+|  Nominal Scenario     | User log in the system |
+|  Variants     | New user |
 
 ##### Scenario 1.1 
 
-\<describe here scenarios instances of UC1>
-
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-
-\<a scenario is a more formal description of a story>
-
-\<only relevant scenarios should be described>
-
 | Scenario 1.1 | |
 | ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
+|  Precondition     | User has not access to data |
+|  Post condition     | User has access to data |
 | Step#        | Description  |
-|  1     |  |  
-|  2     |  |
-|  ...     |  |
+|  1  Log in    | User has to use its credentials to access to the system |  
+
 
 ##### Scenario 1.2
+| Scenario 1.2 | |
+| ------------- |:-------------:| 
+|  Precondition     | User has not access to data |
+|  Post condition     | User has access to data |
+| Step#        | Description  |
+|  1  Define account    | User has to register himself to the system | 
+|  2  Log in    | User has to use its credentials to access to the system | 
+
 
 ### Use case 'Handle customer informations', UC2
 | Actors Involved        | Customers manager, Fidelity Card, Customer |
