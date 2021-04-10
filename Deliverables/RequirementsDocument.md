@@ -407,42 +407,44 @@ fc <-up- (hci)
 ### Use case 6 'Manage inventory and catalogue', UC6
 | Actors Involved        | Product, Inventory Manager |
 | ------------- |:-------------:| 
-|  Precondition     | Inventory Manager successfully logged in the system, <br> product has its bar code  |  
-|  Post condition     | Inventory Manager manage product amount of pieces, <br> Inventory Manager can add or remove a product from catalogue or inventory |
-|  Nominal Scenario     | Manager can look at total amount of pieces and eventually add or remove some products |
-|  Variants     | // |
+|  Precondition     | Inventory Manager successfully logged in the system <br> Product has its bar code  |  
+|  Post condition     | Inventory and catalogue are updated |
+|  Nominal Scenario     | Manager can modify and update the product in the inventory/catalogue |
+|  Variants     | A new product is added <br> A product is removed <br> A product is updated |
 
 ##### Scenario 6.1 
 
 | Scenario 6.1 | |
 | ------------- |:-------------:| 
-|  Precondition     | Inventory Manager successfully logged in the system, <br> Product avaiable in the Inventory |
-|  Post condition     | Inventory Manager manage product amount of pieces, <br> Product avaiable in the Inventory |
+|  Precondition     | Inventory Manager successfully logged in the system <br> Product has its bar code <br> Product already available in the inventory |
+|  Post condition     | Amount of pieces of the product updated <br> Inventory and catalogue are updated|
 | Step#        | Description  |
-|  1     | Manager reads the bar code on the product | 
-|  2     | System updates amount of pieces of a product |
+|  1     | Manager reads the bar code of the product | 
+|  2     | Manager updates amount of pieces of the product |
 |  3     | Manager refills the product on the relative shelve |
 
 ##### Scenario 6.2 
 
 | Scenario 6.2 | |
 | ------------- |:-------------:| 
-|  Precondition     | Inventory Manager successfully logged in the system, <br> Product not avaiable in the Inventory|
-|  Post condition     | Inventory Manager manage product amount of pieces, <br> Product avaiable in the Inventory |
+|  Precondition     | Inventory Manager successfully logged in the system <br> Product not avaiable in the inventory <br> Product not available in the catalogue <br> Product has its bar code|
+|  Post condition     | Inventory and catalogue are updated <br> New product is available |
 | Step#        | Description  |
-|  1     | Manager inserts a new product in the inventory |
-|  2     | System updates amount of pieces of a product |
-|  3     | Manager refills the product on the relative shelve |
+|  1     | Manager inserts a new product in the catalogue |
+|  2     | Manager updates amount of pieces of the product |
+|  3     | Product is inserted also in the inventory |
+|  3     | Manager put the product on the relative shelve |
 
 ##### Scenario 6.3 
 
 | Scenario 6.3 | |
 | ------------- |:-------------:| 
-|  Precondition     | Inventory Manager successfully logged in the system, <br> Product avaiable in the Inventory|
-|  Post condition     | Inventory Manager manage product amount of pieces, <br> Product not avaiable in the Inventory |
+|  Precondition     | Inventory Manager successfully logged in the system, <br> Product avaiable in the inventory and in the catalogue <br> Product has its bar code|
+|  Post condition     | Inventory and catalogue are updated<br>Product is no more available|
 | Step#        | Description  |
 |  1     | Manager reads the bar code on the product | 
-|  2     | Manager removes a new product from the inventory |
+|  2     | Manager removes the product from the catalogue |
+|  3     | System removes it also from the inventory |
 
 
 # Glossary
