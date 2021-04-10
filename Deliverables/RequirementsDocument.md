@@ -401,23 +401,45 @@ fc <-up- (hci)
 |  10     | Cashier ends the payment and receipt is generated |
 
 ### Use case 6 'Manage inventory and catalogue', UC6
-| Actors Involved        | Accounting Manager |
+| Actors Involved        | Product, Inventory Manager |
 | ------------- |:-------------:| 
-|  Precondition     | Accounting Manager successfully logged in the system |  
-|  Post condition     | Manager receives total incomes/expences, <br> Manager can add an expence |
-|  Nominal Scenario     | Manager can look at total incomes and expences and eventually add a new expence |
+|  Precondition     | Inventory Manager successfully logged in the system, <br> product has its bar code  |  
+|  Post condition     | Inventory Manager manage product amount of pieces, <br> Inventory Manager can add or remove a product from catalogue or inventory |
+|  Nominal Scenario     | Manager can look at total amount of pieces and eventually add or remove some products |
 |  Variants     | // |
 
 ##### Scenario 6.1 
 
 | Scenario 6.1 | |
 | ------------- |:-------------:| 
-|  Precondition     | Accounting Manager successfully logged in the system |
-|  Post condition     | A new expence registered |
+|  Precondition     | Inventory Manager successfully logged in the system, <br> Product avaiable in the Inventory |
+|  Post condition     | Inventory Manager manage product amount of pieces, Product avaiable in the Inventory |
 | Step#        | Description  |
-|  1     | Manager get the amount of the expence |  
-|  2     | Manager add it to the system |
-|  3     | New value for total expences is generated |
+|  1     | Manager reads the bar code on the product | 
+|  2     | System update amount of pieces of a product |
+|  3     | Manager refill the product on the relative shelve |
+
+##### Scenario 6.2 
+
+| Scenario 6.2 | |
+| ------------- |:-------------:| 
+|  Precondition     | Inventory Manager successfully logged in the system, <br> Product not avaiable in the Inventory|
+|  Post condition     | Inventory Manager manage product amount of pieces, <br> Product avaiable in the Inventory |
+| Step#        | Description  |
+|  1     | Manager insert a new product in the inventory |
+|  2     | System update amount of pieces of a product |
+|  3     | Manager refill the product on the relative shelve |
+
+##### Scenario 6.3 
+
+| Scenario 6.3 | |
+| ------------- |:-------------:| 
+|  Precondition     | Inventory Manager successfully logged in the system, <br> Product avaiable in the Inventory|
+|  Post condition     | Inventory Manager manage product amount of pieces, <br> Product not avaiable in the Inventory |
+| Step#        | Description  |
+|  1     | Manager reads the bar code on the product | 
+|  2     | Manager remove a new product from the inventory |
+
 
 # Glossary
 
