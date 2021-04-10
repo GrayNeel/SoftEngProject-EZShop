@@ -329,34 +329,64 @@ fc <-- (hci)
 
 ##### Scenario 4.2
 
-### Use case 5, UC5
-| Actors Involved        |  |
+### Use case 5 'Handle sale transaction', UC5
+| Actors Involved        | Cashier, Customer |
 | ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |  
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
-|  Variants     | \<other executions, ex in case of errors> |
+|  Precondition     | Customer has products to pay |  
+|  Post condition     | Customer paid for products <br> Customer receives a receipt |
+|  Nominal Scenario     | Handle payments for products by reading bar code, generate total amount and receipt |
+|  Variants     | Customer has fidelity card <br> Customer pay using credit card <br> Customer wants to remove a product |
 
 ##### Scenario 5.1 
 
-\<describe here scenarios instances of UC1>
+| Scenario 5.1 | |
+| ------------- |:-------------:| 
+|  Precondition     | Customer has products to pay <br> Customer has no fidelity card <br> Customer has cash |
+|  Post condition     | Customer paid for products <br> Customer receives a receipt |
+| Step#        | Description  |
+|  1     | A new transaction starts |
+|  2     | Cashier read the bar code from product |  
+|  3     | Total amount for receipt is updated |
+|  ...     | Iterate for each product |
+|  4     | Cashier asks for money |
+|  5     | Customer gives the cash |
+|  6     | Cashier ends the payment and receipt is generated |
 
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-
-\<a scenario is a more formal description of a story>
-
-\<only relevant scenarios should be described>
+##### Scenario 5.2
 
 | Scenario 5.1 | |
 | ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
+|  Precondition     | Customer has products to pay <br> Customer has fidelity card <br> Customer has credit card |
+|  Post condition     | Customer paid for products <br> Customer receives a receipt <br> Loyalty points updated |
 | Step#        | Description  |
-|  1     |  |  
-|  2     |  |
-|  ...     |  |
+|  1     | A new transaction starts |
+|  2     | Customer gives fidelity card |
+|  3     | Cashier read the bar code from fidelity card |
+|  2     | Cashier read the bar code from product |  
+|  3     | Total amount for receipt is updated |
+|  ...     | Iterate for each product |
+|  4     | Cashier asks for money |
+|  5     | Customer gives the credit card |
+|  6     | Cashier will contact credit card system for payment | 
+|  7     | Total loyalty points are updated |
+|  8     | Cashier ends the payment and receipt is generated |
 
-##### Scenario 5.2
+##### Scenario 5.5
+
+| Scenario 5.5 | |
+| ------------- |:-------------:| 
+|  Precondition     | Customer has products to pay <br> Customer changes idea on an already readed product |
+|  Post condition     | The unwanted product is removed from receipt |
+| Step#        | Description  |
+|  1     | A new transaction starts |
+|  2     | Cashier read the bar code from product |  
+|  3     | Total amount for receipt is updated |
+|  ...     | Iterate for each product |
+|  4     | Customer wants to remove a product |
+|  5     | Cashier removes the product from receipt |
+|  4     | Cashier asks for money |
+|  5     | Customer gives the cash |
+|  6     | Cashier ends the payment and receipt is generated |
 
 # Glossary
 
