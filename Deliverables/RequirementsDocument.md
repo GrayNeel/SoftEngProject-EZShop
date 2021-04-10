@@ -255,24 +255,26 @@ fc <-up- (hci)
 |  Post condition     | User has access to data |
 | Step#        | Description  |
 |  1           | User uses correct credentials to access to the system |  
-|  2           | System gives access |
+|  2           | System gives access to user |
 
 
 ##### Scenario 1.2
 | Scenario 1.2 | |
 | ------------- |:-------------:| 
 |  Precondition     | User has not access to data |
-|  Post condition     | User has not access to data |
+|  Post condition     | User has access to data |
 | Step#        | Description  |
 |  1           | User enters wrong credentials | 
-|  2           | System does not give access | 
+|  2           | System does not give access and asks again for credentials |
+| 3            | User types correct credentials |
+| 4 		   | System gives access to user 
 
 
 ### Use case 2 'Handle customer informations', UC2
 | Actors Involved        | Customers manager, Fidelity Card, Customer |
 | ------------- |:-------------:| 
-|  Precondition     | Customer has no fidelity card |  
-|  Post condition     | Customer has fidelity card and customer's informations are stored |
+|  Precondition     | Customer has no fidelity card <br> System has no informations about customer <br> Customers manager successfully logged in the system|  
+|  Post condition     | Customer receives fidelity card <br> Customer's informations are stored |
 |  Nominal Scenario     | Customers Manager receives customer's informations and stores them connected to a specific fidelity card |
 |  Variants     | // |
 
@@ -280,8 +282,8 @@ fc <-up- (hci)
 
 | Scenario 2.1 | |
 | ------------- |:-------------:| 
-|  Precondition     | Customer has no fidelity card and Manager has no informations about customer |
-|  Post condition     | Customer has fidelity card and manager stored informations about customer |
+|  Precondition     | Customer has no fidelity card <br> System has no informations about customer <br> Customers manager successfully logged in the system |
+|  Post condition     | Customer receives fidelity card <br> Customer's informations are stored |
 | Step#        | Description  |
 |  1     | Customer asks for a fidelity card |  
 |  2     | Customer gives to the manager his personal information |
@@ -292,7 +294,7 @@ fc <-up- (hci)
 | Actors Involved        | Accounting Manager |
 | ------------- |:-------------:| 
 |  Precondition     | Accounting Manager successfully logged in the system |  
-|  Post condition     | Manager receives total incomes/expences, <br> Manager can add an expence |
+|  Post condition     | Manager receives total incomes/expences <br> A new expence is registered|
 |  Nominal Scenario     | Manager can look at total incomes and expences and eventually add a new expence |
 |  Variants     | // |
 
@@ -301,25 +303,26 @@ fc <-up- (hci)
 | Scenario 3.1 | |
 | ------------- |:-------------:| 
 |  Precondition     | Accounting Manager successfully logged in the system |
-|  Post condition     | A new expence registered |
+|  Post condition     | Manager receives total incomes/expences <br> A new expence is registered |
 | Step#        | Description  |
-|  1     | Manager get the amount of the expence |  
+|  1     | Manager has an amount of expence to add |  
 |  2     | Manager add it to the system |
 |  3     | New value for total expences is generated |
+|  4     | Total incomes and expences are shown |
 
 ### Use case 'Read the bar code', UC4
 | Actors Involved        | Cashier, Inventory Manager, Fidelity Card, Product |
 | ------------- |:-------------:| 
-|  Precondition     | User must be authenticated, Product must exist in the inventory|  
+|  Precondition     | User must be authenticated <br> Product/Fidelity Card must exist in the inventory|  
 |  Post condition     | Product/fidelity card successfully scanned |
-|  Nominal Scenario     | The user scan the Product/fidelity to update relative informations  |
+|  Nominal Scenario     | The user scan the Product/fidelity card to update relative informations  |
 |  Variants     | \ |
 
 ##### Scenario 4.1 
 
 | Scenario 4.1 | |
 | ------------- |:-------------:| 
-|  Precondition     | User must be authenticated, Product must exist in the inventory |
+|  Precondition     | User must be authenticated<br>Product must exist in the inventory |
 |  Post condition     | Product informations successfully updated |
 | Step#        | Description  |
 |  1     | Inventory Manager reads the bar code of the product |  
@@ -330,11 +333,11 @@ fc <-up- (hci)
 
 | Scenario 4.2 | |
 | ------------- |:-------------:| 
-|  Precondition     | User must be authenticated, Product must exist in the inventory |
-|  Post condition     | Customer Informations informations successfully obtained |
+|  Precondition     | User must be authenticated <br>Fidelity Card must exist in the system |
+|  Post condition     | Fidelity Card successfully scanned |
 | Step#        | Description  |
 |  1     | Cashier asks for a fidelity card | 
-|  2     | Cashier reads the bar code of the fidelity card  
+|  2     | Cashier reads the bar code of the fidelity card |
 
 
 ### Use case 5 'Handle sale transaction', UC5
@@ -378,8 +381,9 @@ fc <-up- (hci)
 |  7     | Cashier asks for money |
 |  8     | Customer gives the credit card |
 |  9     | Cashier will contact credit card system for payment | 
-|  10     | Total loyalty points are updated |
-|  11     | Cashier ends the payment and receipt is generated |
+|  10    | Successful answers is provided from credit card system |
+|  11     | Total loyalty points are updated |
+|  12     | Cashier ends the payment and receipt is generated |
 
 ##### Scenario 5.5
 
