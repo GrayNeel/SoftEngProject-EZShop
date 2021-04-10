@@ -465,7 +465,13 @@ ez o-- rp
 s -up- PC
 
 /' Glossary '/
-class "Receipt" as r
+class "Receipt" as r {
+	+Shop Name
+	+Total amount
+	+Amount per product
+	+VAT Tax
+	+Date
+}
 class "Loyalty Points" as lp
 class "Bar code" as bc
 
