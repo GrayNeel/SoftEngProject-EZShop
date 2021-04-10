@@ -262,8 +262,48 @@ fc <-- (hci)
 
 ##### Scenario 1.2
 
-##### Scenario 1.x
-### Use case 1, UC1
+### Use case 'Handle customer informations', UC2
+| Actors Involved        | Customers manager, Fidelity Card, Customer |
+| ------------- |:-------------:| 
+|  Precondition     | Customer has no fidelity card |  
+|  Post condition     | Customer has fidelity card and customer's informations are stored |
+|  Nominal Scenario     | Customers Manager receives customer's informations and stores them connected to a specific fidelity card |
+|  Variants     | // |
+
+##### Scenario 2.1 
+
+| Scenario 2.1 | |
+| ------------- |:-------------:| 
+|  Precondition     | Customer has no fidelity card and Manager has no informations about customer |
+|  Post condition     | Customer has fidelity card and manager stored informations about customer |
+| Step#        | Description  |
+|  1     | Customer asks for a fidelity card |  
+|  2     | Customer gives to the manager his personal information |
+|  3     | Customers Manager stores the information |
+|  4     | Customers Manager gives to the customer the associated fidelity card |
+
+### Use case 3, UC3
+| Actors Involved        | Accounting Manager |
+| ------------- |:-------------:| 
+|  Precondition     | Accounting Manager successfully logged in the system |  
+|  Post condition     | Manager receives total incomes/expences, <br> Manager can add an expence |
+|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
+|  Variants     | \<other executions, ex in case of errors> |
+
+##### Scenario 3.1 
+
+| Scenario 3.1 | |
+| ------------- |:-------------:| 
+|  Precondition     | Accounting Manager successfully logged in the system |
+|  Post condition     | A new expence registered |
+| Step#        | Description  |
+|  1     | Manager  |  
+|  2     |  |
+|  ...     |  |
+
+##### Scenario 3.2
+
+### Use case 4, UC4
 | Actors Involved        |  |
 | ------------- |:-------------:| 
 |  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |  
@@ -271,7 +311,7 @@ fc <-- (hci)
 |  Nominal Scenario     | \<Textual description of actions executed by the UC> |
 |  Variants     | \<other executions, ex in case of errors> |
 
-##### Scenario 1.1 
+##### Scenario 4.1 
 
 \<describe here scenarios instances of UC1>
 
@@ -281,7 +321,7 @@ fc <-- (hci)
 
 \<only relevant scenarios should be described>
 
-| Scenario 1.1 | |
+| Scenario 4.1 | |
 | ------------- |:-------------:| 
 |  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
 |  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
@@ -290,11 +330,7 @@ fc <-- (hci)
 |  2     |  |
 |  ...     |  |
 
-### Use case 2, UC2
-..
-
-### Use case x, UCx
-..
+##### Scenario 4.2
 
 
 
