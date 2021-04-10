@@ -237,6 +237,7 @@ fc <-up- (hci)
 
 @enduml
 ```
+## Use cases
 
 ### Use case 1 'Authorize and authenticate', UC1
 
