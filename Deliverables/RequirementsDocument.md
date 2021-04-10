@@ -192,42 +192,48 @@ actor "Fidelity Card" as fc
 (Handle sale transaction) as (hst)
 (Manage accounting) as (ma)
 
-(Update amount of pieces of a product) as (uapp)
+/'(Update amount of pieces of a product) as (uapp)
 (Handle Payment by credit card) as (hpcc)
-(Check fidelity card ) as (cfc)
+(Check fidelity card ) as (cfc)'/
 
 note " All human actors have to authenticate\n to access to the system  " as n1
 
 n1 --> aa
 
 
-(ez) .down.> (aa) : <<include>>
-(ez) .up.> (hci) : <<include>>
-(ez) .up.> (mic) : <<include>>
-(ez) .down.> (rbc) : <<include>>
-(ez) .down.> (hst) : <<include>>
-(ez) .up.> (ma) : <<include>>
+(ez) ..> (aa) : <<include>>
+(ez) ..> (hci) : <<include>>
+(ez) ..> (mic) : <<include>>
+(ez) ..> (rbc) : <<include>>
+(ez) ..> (hst) : <<include>>
+(ez) ..> (ma) : <<include>>
 
-(mic) ..> (uapp) : <<include>>
+/'(mic) ..> (uapp) : <<include>>
 (hst) ..> (hpcc) : <<include>>
-(hst) ..> (cfc) : <<include>>
+(hst) ..> (cfc) : <<include>>'/
 
 c -up-> (hst)
 c -up-> (rbc) 
-c -up-> (uapp) 
+/'c --> (uapp)'/ 
 
-am --> (ma)
-im --> (mic)
-im --> (rbc)
+cm -up-> (hci)
+am -up-> (ma)
+im -up-> (mic)
+im -up-> (rbc)
 
-cm --> (hci)
 
-p <-- (rbc)
-p <-- (mic)
-cs -up-> (hpcc)
-fc <-- (cfc)
-fc <-- (rbc)
-fc <-- (hci)
+
+p <-up- (rbc)
+p <-up- (mic)
+
+cs -up-> (hst)
+/'cs -up-> (hpcc)'/
+
+fc <-up- (hst)
+/'fc <-- (cfc)'/
+
+fc <-up- (rbc)
+fc <-up- (hci)
 
 @enduml
 ```
@@ -348,10 +354,11 @@ fc <-- (hci)
 |  1     | A new transaction starts |
 |  2     | Cashier read the bar code from product |  
 |  3     | Total amount for receipt is updated |
+|  4     | Amount of pieces in the inventory updated |
 |  ...     | Iterate for each product |
-|  4     | Cashier asks for money |
-|  5     | Customer gives the cash |
-|  6     | Cashier ends the payment and receipt is generated |
+|  5     | Cashier asks for money |
+|  6     | Customer gives the cash |
+|  7     | Cashier ends the payment and receipt is generated |
 
 ##### Scenario 5.2
 
@@ -363,14 +370,15 @@ fc <-- (hci)
 |  1     | A new transaction starts |
 |  2     | Customer gives fidelity card |
 |  3     | Cashier read the bar code from fidelity card |
-|  2     | Cashier read the bar code from product |  
-|  3     | Total amount for receipt is updated |
+|  4     | Cashier read the bar code from product |  
+|  5     | Total amount for receipt is updated |
+|  6     | Amount of pieces in the inventory updated |
 |  ...     | Iterate for each product |
-|  4     | Cashier asks for money |
-|  5     | Customer gives the credit card |
-|  6     | Cashier will contact credit card system for payment | 
-|  7     | Total loyalty points are updated |
-|  8     | Cashier ends the payment and receipt is generated |
+|  7     | Cashier asks for money |
+|  8     | Customer gives the credit card |
+|  9     | Cashier will contact credit card system for payment | 
+|  10     | Total loyalty points are updated |
+|  11     | Cashier ends the payment and receipt is generated |
 
 ##### Scenario 5.5
 
@@ -382,14 +390,16 @@ fc <-- (hci)
 |  1     | A new transaction starts |
 |  2     | Cashier read the bar code from product |  
 |  3     | Total amount for receipt is updated |
+|  4     | Amount of pieces in the inventory updated |
 |  ...     | Iterate for each product |
-|  4     | Customer wants to remove a product |
-|  5     | Cashier removes the product from receipt |
-|  4     | Cashier asks for money |
-|  5     | Customer gives the cash |
-|  6     | Cashier ends the payment and receipt is generated |
+|  5     | Customer wants to remove a product |
+|  6     | Cashier removes the product from receipt |
+|  7     | Amount of pieces in the inventory updated |
+|  8     | Cashier asks for money |
+|  9     | Customer gives the cash |
+|  10     | Cashier ends the payment and receipt is generated |
 
-### Use case 6 '', UC6
+### Use case 6 'Manage inventory and catalogue', UC6
 | Actors Involved        | Accounting Manager |
 | ------------- |:-------------:| 
 |  Precondition     | Accounting Manager successfully logged in the system |  
@@ -400,25 +410,6 @@ fc <-- (hci)
 ##### Scenario 6.1 
 
 | Scenario 6.1 | |
-| ------------- |:-------------:| 
-|  Precondition     | Accounting Manager successfully logged in the system |
-|  Post condition     | A new expence registered |
-| Step#        | Description  |
-|  1     | Manager get the amount of the expence |  
-|  2     | Manager add it to the system |
-|  3     | New value for total expences is generated |
-
-### Use case 7 '', UC7
-| Actors Involved        | Accounting Manager |
-| ------------- |:-------------:| 
-|  Precondition     | Accounting Manager successfully logged in the system |  
-|  Post condition     | Manager receives total incomes/expences, <br> Manager can add an expence |
-|  Nominal Scenario     | Manager can look at total incomes and expences and eventually add a new expence |
-|  Variants     | // |
-
-##### Scenario 7.1 
-
-| Scenario 7.1 | |
 | ------------- |:-------------:| 
 |  Precondition     | Accounting Manager successfully logged in the system |
 |  Post condition     | A new expence registered |
