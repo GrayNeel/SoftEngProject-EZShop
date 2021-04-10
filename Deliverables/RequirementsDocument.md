@@ -232,7 +232,7 @@ fc <-- (hci)
 @enduml
 ```
 
-### Use case 'Authorize and authenticate' UC1
+### Use case 1 'Authorize and authenticate', UC1
 
 | Actors Involved        | Inventory manager, Cashier, Customers manager, Accounting manager |
 | ------------- |:-------------:| 
@@ -261,7 +261,7 @@ fc <-- (hci)
 |  2  Log in    | User has to use its credentials to access to the system | 
 
 
-### Use case 'Handle customer informations', UC2
+### Use case 2 'Handle customer informations', UC2
 | Actors Involved        | Customers manager, Fidelity Card, Customer |
 | ------------- |:-------------:| 
 |  Precondition     | Customer has no fidelity card |  
@@ -281,13 +281,13 @@ fc <-- (hci)
 |  3     | Customers Manager stores the information |
 |  4     | Customers Manager gives to the customer the associated fidelity card |
 
-### Use case 3, UC3
+### Use case 3 'Manage accounting', UC3
 | Actors Involved        | Accounting Manager |
 | ------------- |:-------------:| 
 |  Precondition     | Accounting Manager successfully logged in the system |  
 |  Post condition     | Manager receives total incomes/expences, <br> Manager can add an expence |
-|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
-|  Variants     | \<other executions, ex in case of errors> |
+|  Nominal Scenario     | Manager can look at total incomes and expences and eventually add a new expence |
+|  Variants     | // |
 
 ##### Scenario 3.1 
 
@@ -296,11 +296,9 @@ fc <-- (hci)
 |  Precondition     | Accounting Manager successfully logged in the system |
 |  Post condition     | A new expence registered |
 | Step#        | Description  |
-|  1     | Manager  |  
-|  2     |  |
-|  ...     |  |
-
-##### Scenario 3.2
+|  1     | Manager get the amount of the expence |  
+|  2     | Manager add it to the system |
+|  3     | New value for total expences is generated |
 
 ### Use case 'Read the bar code', UC4
 | Actors Involved        | Cashier, Inventory Manager, Fidelity Card, Product |
@@ -366,6 +364,37 @@ fc <-- (hci)
 |  1     |  |  
 |  2     |  |
 |  ...     |  |
+
+##### Scenario 4.2
+
+### Use case 5, UC5
+| Actors Involved        |  |
+| ------------- |:-------------:| 
+|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |  
+|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
+|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
+|  Variants     | \<other executions, ex in case of errors> |
+
+##### Scenario 5.1 
+
+\<describe here scenarios instances of UC1>
+
+\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
+
+\<a scenario is a more formal description of a story>
+
+\<only relevant scenarios should be described>
+
+| Scenario 5.1 | |
+| ------------- |:-------------:| 
+|  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
+|  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
+| Step#        | Description  |
+|  1     |  |  
+|  2     |  |
+|  ...     |  |
+
+##### Scenario 5.2
 
 # Glossary
 
