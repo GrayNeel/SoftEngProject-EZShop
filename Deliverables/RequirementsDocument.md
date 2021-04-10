@@ -313,16 +313,16 @@ fc <-up- (hci)
 ### Use case 'Read the bar code', UC4
 | Actors Involved        | Cashier, Inventory Manager, Fidelity Card, Product |
 | ------------- |:-------------:| 
-|  Precondition     | User must be authenticated, Product must exist in the inventory|  
+|  Precondition     | User must be authenticated <br> Product/Fidelity Card must exist in the inventory|  
 |  Post condition     | Product/fidelity card successfully scanned |
-|  Nominal Scenario     | The user scan the Product/fidelity to update relative informations  |
+|  Nominal Scenario     | The user scan the Product/fidelity card to update relative informations  |
 |  Variants     | \ |
 
 ##### Scenario 4.1 
 
 | Scenario 4.1 | |
 | ------------- |:-------------:| 
-|  Precondition     | User must be authenticated, Product must exist in the inventory |
+|  Precondition     | User must be authenticated<br>Product must exist in the inventory |
 |  Post condition     | Product informations successfully updated |
 | Step#        | Description  |
 |  1     | Inventory Manager reads the bar code of the product |  
@@ -333,11 +333,11 @@ fc <-up- (hci)
 
 | Scenario 4.2 | |
 | ------------- |:-------------:| 
-|  Precondition     | User must be authenticated, Product must exist in the inventory |
-|  Post condition     | Customer Informations informations successfully obtained |
+|  Precondition     | User must be authenticated <br>Fidelity Card must exist in the system |
+|  Post condition     | Fidelity Card successfully scanned |
 | Step#        | Description  |
 |  1     | Cashier asks for a fidelity card | 
-|  2     | Cashier reads the bar code of the fidelity card  
+|  2     | Cashier reads the bar code of the fidelity card |
 
 
 ### Use case 5 'Handle sale transaction', UC5
