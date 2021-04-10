@@ -4,7 +4,7 @@ Authors: Group 38
 
 Date: 03/04/2021
 
-Version: 06
+Version: 07
 
 | Version | Changes | 
 | ----------------- |:-----------|
@@ -14,6 +14,7 @@ Version: 06
 | 04 | Added FR and NFR  |
 | 05 | Added Use case diagram  |
 | 06 | Minor changes to content |
+| 07 | Added Use Cases and Scenarios |
 
 # Contents
 
