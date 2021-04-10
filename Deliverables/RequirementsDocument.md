@@ -381,8 +381,9 @@ fc <-up- (hci)
 |  7     | Cashier asks for money |
 |  8     | Customer gives the credit card |
 |  9     | Cashier will contact credit card system for payment | 
-|  10     | Total loyalty points are updated |
-|  11     | Cashier ends the payment and receipt is generated |
+|  10    | Successful answers is provided from credit card system |
+|  11     | Total loyalty points are updated |
+|  12     | Cashier ends the payment and receipt is generated |
 
 ##### Scenario 5.5
 
