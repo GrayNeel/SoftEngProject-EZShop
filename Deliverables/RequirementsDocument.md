@@ -367,7 +367,7 @@ fc <-up- (hci)
 
 ##### Scenario 5.2
 
-| Scenario 5.1 | |
+| Scenario 5.2 | |
 | ------------- |:-------------:| 
 |  Precondition     | Customer has products to pay <br> Customer has fidelity card <br> Customer has credit card |
 |  Post condition     | Customer paid for products <br> Customer receives a receipt <br> Loyalty points updated |
@@ -386,9 +386,9 @@ fc <-up- (hci)
 |  11     | Total loyalty points are updated |
 |  12     | Cashier ends the payment and receipt is generated |
 
-##### Scenario 5.5
+##### Scenario 5.3
 
-| Scenario 5.5 | |
+| Scenario 5.3 | |
 | ------------- |:-------------:| 
 |  Precondition     | Customer has products to pay <br> Customer changes idea on an already readed product |
 |  Post condition     | The unwanted product is removed from receipt |
