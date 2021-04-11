@@ -195,7 +195,7 @@ actor "Fidelity Card" as fc
 (Handle Payment by credit card) as (hpcc)
 (Check fidelity card ) as (cfc)'/
 
-note " All human actors have to authenticate\n to access to the system  " as n1
+note " All human actors have to authenticate\n to access to the system. They are not\n directly connected due to issue with the\n readability of the diagram. " as n1
 
 n1 --> aa
 
