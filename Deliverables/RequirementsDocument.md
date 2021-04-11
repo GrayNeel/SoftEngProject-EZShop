@@ -59,7 +59,7 @@ EZShop is a software application to:
 |Inventory manager| Manages the inventory: amount of pieces, price and (if present) sales. |
 |Customers manager| Manages customers' information and fidelity cards |
 |Accounting manager|Handler of the accounting system of the shop|
-|Software manager| Maintaner of the software product. It is in charge of solving problems related to the software |
+|Software manager| Maintainer of the software product. It is in charge of solving problems related to the software |
 |Credit Card System|Allows payments by credit cards from customers using API|
 |Fidelity Card|Card used by customers to gain loyalty points|
 |Product|Product on sale in the EZShop
@@ -116,7 +116,7 @@ Caroline noticed that sometimes customers ask her to remove or change a product 
 
 ## Stefano
 Stefano is 35 years old man with professional knowledge about business, administration and operation management. He is a very organized person and is currently focused on his job because he is the owner of EZShop and he is in charge of Accounting Manager, Customers Manager and Inventory Manager.
-During the working day, he wakes up at 7 am and goes directly to work after breakfast. Since he is such a responsible man, he likes to arrive earlier than the rest. After some time, he starts doing his job which consists in several actions, such as checking all the products in the inventory, manages customers' informations and does accounting for incomes and expences happening during the day. 
+During the working day, he wakes up at 7 am and goes directly to work after breakfast. Since he is such a responsible man, he likes to arrive earlier than the rest. After some time, he starts doing his job which consists in several actions, such as checking all the products in the inventory, manages customers' information and does accounting for incomes and expenses happening during the day. 
 Stefano has high hopes about the new software that is going to be applied to the food shop, since he believes that technology is mandatory to have an optimized system of inventory and sales, and then obtain better results in terms of economic growth and organization. 
 
 # Functional and non functional requirements
@@ -129,7 +129,7 @@ Stefano has high hopes about the new software that is going to be applied to the
 |  FR1.1  | Log in |
 |  FR1.2  | Log out |
 |  FR1.3  | Define account |
-| FR2     | Handle Customer Informations |
+| FR2     | Handle Customer Information |
 |  FR2.1  | Add a new customer (release a new fidelity card) |
 |  FR2.2  | Remove a customer |
 | FR3     | Manage Inventory and Catalogue |
@@ -151,7 +151,7 @@ Stefano has high hopes about the new software that is going to be applied to the
 |  FR5.8  | End sale transaction |
 | FR6     | Manage accounting |
 |  FR6.1  | Show incomes |
-|  FR6.2  | Add an expence |
+|  FR6.2  | Add an expense |
 
 ## Non Functional Requirements
 
@@ -164,7 +164,7 @@ Stefano has high hopes about the new software that is going to be applied to the
 | NFR5 |Maintainability|Adding a new cashier requires less than 2 hours|All FR|
 | NFR6 |Security|Data accessed only from authorized users|FR2,FR3,FR5,FR6|
 | NFR7 |Usability|Easy detection of missing products for reorders|FR3|
-|NFR8|Dependability|Accounting informations always available, consistent and secured|FR6|
+|NFR8|Dependability|Accounting information always available, consistent and secured|FR6|
 |NFR9|Security|Never keep track of credit card number |FR5.6.1|
 
 
@@ -185,7 +185,7 @@ actor "Fidelity Card" as fc
 (EzShop) as (ez)
 
 (Authorize and authenticate) as (aa)
-(Handle customer informations) as (hci)
+(Handle customer information) as (hci)
 (Manage inventory and catalogue) as (mic)
 (Read the bar code) as (rbc)
 (Handle sale transaction) as (hst)
@@ -260,20 +260,20 @@ fc <-up- (hci)
 | 4 		   | System gives access to user 
 
 
-### Use case 2 'Handle customer informations', UC2
+### Use case 2 'Handle customer information', UC2
 | Actors Involved        | Customers manager, Fidelity Card, Customer |
 | ------------- |:-------------:| 
-|  Precondition     | Customer has no fidelity card <br> System has no informations about customer <br> Customers manager successfully logged in the system|  
-|  Post condition     | Customer receives fidelity card <br> Customer's informations are stored |
-|  Nominal Scenario     | Customers Manager receives customer's informations and stores them connected to a specific fidelity card |
+|  Precondition     | Customer has no fidelity card <br> System has no information about customer <br> Customers manager successfully logged in the system|  
+|  Post condition     | Customer receives fidelity card <br> Customer's information are stored |
+|  Nominal Scenario     | Customers Manager receives customer's information and stores them connected to a specific fidelity card |
 |  Variants     | // |
 
 ##### Scenario 2.1 
 
 | Scenario 2.1 | |
 | ------------- |:-------------:| 
-|  Precondition     | Customer has no fidelity card <br> System has no informations about customer <br> Customers manager successfully logged in the system |
-|  Post condition     | Customer receives fidelity card <br> Customer's informations are stored |
+|  Precondition     | Customer has no fidelity card <br> System has no information about customer <br> Customers manager successfully logged in the system |
+|  Post condition     | Customer receives fidelity card <br> Customer's information are stored |
 | Step#        | Description  |
 |  1     | Customer asks for a fidelity card |  
 |  2     | Customer gives to the manager his personal information |
@@ -284,8 +284,8 @@ fc <-up- (hci)
 | Actors Involved        | Accounting Manager |
 | ------------- |:-------------:| 
 |  Precondition     | Accounting Manager successfully logged in the system |  
-|  Post condition     | Manager receives total incomes/expences <br> A new expence is registered|
-|  Nominal Scenario     | Manager can look at total incomes and expences and eventually add a new expence |
+|  Post condition     | Manager receives total incomes/expenses <br> A new expense is registered|
+|  Nominal Scenario     | Manager can look at total incomes and expenses and eventually add a new expense |
 |  Variants     | // |
 
 ##### Scenario 3.1 
@@ -293,19 +293,19 @@ fc <-up- (hci)
 | Scenario 3.1 | |
 | ------------- |:-------------:| 
 |  Precondition     | Accounting Manager successfully logged in the system |
-|  Post condition     | Manager receives total incomes/expences <br> A new expence is registered |
+|  Post condition     | Manager receives total incomes/expenses <br> A new expence is registered |
 | Step#        | Description  |
-|  1     | Manager has an amount of expence to add |  
+|  1     | Manager has an amount of expense to add |  
 |  2     | Manager add it to the system |
-|  3     | New value for total expences is generated |
-|  4     | Total incomes and expences are shown |
+|  3     | New value for total expenses is generated |
+|  4     | Total incomes and expenses are shown |
 
 ### Use case 4 'Read the bar code', UC4
 | Actors Involved        | Cashier, Inventory Manager, Fidelity Card, Product |
 | ------------- |:-------------:| 
 |  Precondition     | User must be authenticated <br> Product/Fidelity Card must exist in the inventory|  
 |  Post condition     | Product/fidelity card successfully scanned |
-|  Nominal Scenario     | The user scan the Product/fidelity card to update relative informations  |
+|  Nominal Scenario     | The user scan the Product/fidelity card to update relative information  |
 |  Variants     | // |
 
 ##### Scenario 4.1 
@@ -313,7 +313,7 @@ fc <-up- (hci)
 | Scenario 4.1 | |
 | ------------- |:-------------:| 
 |  Precondition     | User must be authenticated<br>Product must exist in the inventory |
-|  Post condition     | Product informations successfully updated |
+|  Post condition     | Product information successfully updated |
 | Step#        | Description  |
 |  1     | Inventory Manager reads the bar code of the product |  
 |  2     | Update amount of pieces of the product in the inventory |
@@ -429,7 +429,7 @@ fc <-up- (hci)
 
 | Scenario 6.3 | |
 | ------------- |:-------------:| 
-|  Precondition     | Inventory Manager successfully logged in the system, <br> Product avaiable in the inventory and in the catalogue <br> Product has its bar code|
+|  Precondition     | Inventory Manager successfully logged in the system, <br> Product available in the inventory and in the catalogue <br> Product has its bar code|
 |  Post condition     | Inventory and catalogue are updated<br>Product is no more available|
 | Step#        | Description  |
 |  1     | Manager reads the bar code on the product | 
@@ -465,7 +465,7 @@ class "Loyalty Points" as lp
 class "Bar code" as bc
 
 r "*" -up- rp : printed by >
-bc "*" -up- bcr : readed by >
+bc "*" -up- bcr : read by >
 
 note "It is the ticket\ncreated from the\ntransaction that \ncontains total\namount" as N1
 note "It identifies each\nproduct and \nfidelity card" as N2
