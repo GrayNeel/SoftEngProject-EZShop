@@ -260,7 +260,7 @@ fc <-up- (hci)
 | 4 		   | System gives access to user 
 
 
-### Use case 2 'Handle customer informations', UC2
+### Use case 2 'Handle customer information', UC2
 | Actors Involved        | Customers manager, Fidelity Card, Customer |
 | ------------- |:-------------:| 
 |  Precondition     | Customer has no fidelity card <br> System has no information about customer <br> Customers manager successfully logged in the system|  
@@ -305,7 +305,7 @@ fc <-up- (hci)
 | ------------- |:-------------:| 
 |  Precondition     | User must be authenticated <br> Product/Fidelity Card must exist in the inventory|  
 |  Post condition     | Product/fidelity card successfully scanned |
-|  Nominal Scenario     | The user scan the Product/fidelity card to update relative informations  |
+|  Nominal Scenario     | The user scan the Product/fidelity card to update relative information  |
 |  Variants     | \ |
 
 ##### Scenario 4.1 
