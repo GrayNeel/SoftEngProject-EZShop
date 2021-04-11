@@ -300,13 +300,13 @@ fc <-up- (hci)
 |  3     | New value for total expences is generated |
 |  4     | Total incomes and expences are shown |
 
-### Use case 'Read the bar code', UC4
+### Use case 4 'Read the bar code', UC4
 | Actors Involved        | Cashier, Inventory Manager, Fidelity Card, Product |
 | ------------- |:-------------:| 
 |  Precondition     | User must be authenticated <br> Product/Fidelity Card must exist in the inventory|  
 |  Post condition     | Product/fidelity card successfully scanned |
 |  Nominal Scenario     | The user scan the Product/fidelity card to update relative informations  |
-|  Variants     | \ |
+|  Variants     | // |
 
 ##### Scenario 4.1 
 
