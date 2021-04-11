@@ -457,6 +457,7 @@ s -up- PC
 class "Receipt" as r {
 	+Shop Name
 	+Total amount
+	+Products' name
 	+Amount per product
 	+VAT Tax
 	+Date
