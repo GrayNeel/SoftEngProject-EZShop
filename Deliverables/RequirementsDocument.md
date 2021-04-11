@@ -191,10 +191,6 @@ actor "Fidelity Card" as fc
 (Handle sale transaction) as (hst)
 (Manage accounting) as (ma)
 
-/'(Update amount of pieces of a product) as (uapp)
-(Handle Payment by credit card) as (hpcc)
-(Check fidelity card ) as (cfc)'/
-
 note " All human actors have to authenticate\n to access to the system. They are not\n directly connected due to issue with the\n readability of the diagram. " as n1
 
 n1 --> aa
@@ -207,13 +203,9 @@ n1 --> aa
 (ez) ..> (hst) : <<include>>
 (ez) ..> (ma) : <<include>>
 
-/'(mic) ..> (uapp) : <<include>>
-(hst) ..> (hpcc) : <<include>>
-(hst) ..> (cfc) : <<include>>'/
 
 c -up-> (hst)
 c -up-> (rbc) 
-/'c --> (uapp)'/ 
 
 cm -up-> (hci)
 am -up-> (ma)
@@ -226,10 +218,8 @@ p <-up- (rbc)
 p <-up- (mic)
 
 cs -up-> (hst)
-/'cs -up-> (hpcc)'/
 
 fc <-up- (hst)
-/'fc <-- (cfc)'/
 
 fc <-up- (rbc)
 fc <-up- (hci)
