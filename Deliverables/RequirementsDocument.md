@@ -132,7 +132,6 @@ Stefano has high hopes about the new software that is going to be applied to the
 | FR2     | Handle Customer Informations |
 |  FR2.1  | Add a new customer (release a new fidelity card) |
 |  FR2.2  | Remove a customer |
-|  FR2.3  | Update customers' loyalty points |
 | FR3     | Manage Inventory and Catalogue |
 |  FR3.1  | Insert a new product |
 |  FR3.2  | Remove product |
@@ -484,7 +483,7 @@ note "It identifies each\nproduct and \nfidelity card" as N2
 N1 -up- r
 N2 -up- bc
 
-note "Points used for \nfidelity cards, \ngained for each \ntransaction made \nby customers" as N3
+note "Points used for \nfidelity cards, \ngained for each \ntransaction made \nby customers. \nIt's up to the\ncashier to add \n(on transaction) \nor remove \n(on gift request) \nloyalty points" as N3
 
 /'Check if lp go with EZShop'/
 N3 -- lp
