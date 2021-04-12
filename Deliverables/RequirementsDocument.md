@@ -446,11 +446,13 @@ class "Bar Code Reader" as bcr
 class "EZShop" as ez
 class "Software" as s
 class "Receipt Printer" as rp
+class "Fidelity card" as fc
 
 ez o-- PC
 ez o-- ccr
 ez o-- bcr
 ez o-- rp
+ez o-- fc
 s -up- PC
 
 /' Glossary '/
@@ -473,11 +475,12 @@ note "It identifies each\nproduct and \nfidelity card" as N2
 
 N1 -up- r
 N2 -up- bc
+fc o-- lp
 
 note "Points used for \nfidelity cards, \ngained for each \ntransaction made \nby customers. \nIt's up to the\ncashier to add \n(on transaction) \nor remove \n(on gift request) \nloyalty points" as N3
 
 /'Check if lp go with EZShop'/
-N3 -- lp
+N3 -up- lp
 
 @enduml
 ```
