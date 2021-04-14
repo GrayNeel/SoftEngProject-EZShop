@@ -483,7 +483,7 @@ class "Product" as p {
 	+Quantity
 }
 
-class "Purchase" as pu {
+class "Transaction" as pu {
 	+Date
 }
 
@@ -512,7 +512,7 @@ class "Receipt" as r {
 	+VAT Tax
 }
 
-class "Customers Data" as cd {
+class "Customers Database" as cd {
 }
 
 class "Order" as o {
@@ -563,12 +563,12 @@ im --|> u
 cm --|> u
 am --|> u
 
-c -- "*" r
+c -- "*" pu
 ca -- "*" pd
 
 i --"*" p
 pd -- p
-p -- pu
+p "*" -- pu
 pu --|> r
 cu -- "*" pu
 cd -- "*" cu
