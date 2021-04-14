@@ -411,7 +411,7 @@ fc <-up- (hci)
 |  Precondition     | Inventory Manager successfully logged in the system <br> Product has its bar code <br> Product already available in the inventory |
 |  Post condition     | Amount of pieces of the product updated <br> Inventory and catalogue are updated|
 | Step#        | Description  |
-|  1     | Manager reads the bar code of the product | 
+|  1     | Manager search the product by product ID | 
 |  2     | Manager updates amount of pieces of the product |
 |  3     | Manager refills the product on the relative shelf |
 
