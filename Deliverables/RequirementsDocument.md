@@ -528,7 +528,7 @@ class "Credit Card" as cc {
 
 }
 
-cc -down- N1
+cc -up- N1
 
 class "Accounting Database" as ad {
 }
