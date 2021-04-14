@@ -547,7 +547,6 @@ class Cash {
 
 }
 
-ez --"*" fc
 ez --"*" u
 ez -- ca
 ez -- i
