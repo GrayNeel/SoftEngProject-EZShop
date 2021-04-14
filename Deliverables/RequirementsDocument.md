@@ -130,7 +130,7 @@ Stefano has high hopes about the new software that is going to be applied to the
 | FR1     | Authorize and authenticate |
 |  FR1.1  | Log in |
 |  FR1.2  | Log out |
-|  FR1.3  | Define account |
+|  FR1.3  | Manage account |
 | FR2     | Handle Customer Information |
 |  FR2.1  | Add a new customer (release a new fidelity card) |
 |  FR2.2  | Remove a customer |
