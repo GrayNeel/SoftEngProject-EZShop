@@ -4,7 +4,7 @@ Authors: Group 38
 
 Date: 03/04/2021
 
-Version: 08
+Version: 09
 
 | Version | Changes | 
 | ----------------- |:-----------|
@@ -16,6 +16,7 @@ Version: 08
 | 06 | Minor changes to content |
 | 07 | Added Use Cases and Scenarios |
 | 08 | Added System Design, Glossary and Deployment Diagram |
+| 09 | Glossary rebuilt |
 
 # Contents
 
@@ -35,7 +36,8 @@ Version: 08
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
 	+ [Use case diagram](#use-case-diagram)
 	+ [Use cases and relevant scenarios](#use-cases)
-- [System design and Glossary](#system-design-and-glossary)
+- [System design](#system-design)
+- [Glossary](#glossary)
 - [Deployment diagram](#deployment-diagram)
 
 # Essential description
@@ -436,8 +438,161 @@ fc <-up- (hci)
 |  2     | Manager removes the product from the catalogue |
 |  3     | System removes it also from the inventory |
 
+# Glossary
+```plantuml
+@startuml
+skinparam classAttributeIconSize 0
 
-# System Design and Glossary
+class "EZShop" as ez
+
+class "Fidelity card" as fc {
+	+ID
+	+Loyalty points
+}
+
+class "User" as u {
+
+}
+
+class "Cashier" as c {
+	+Username
+	+Password
+}
+
+class "Inventory Manager" as im {
+	+Username
+	+Password
+}
+
+class "Customers Manager" as cm {
+	+Username
+	+Password
+}
+
+class "Accounting Manager" as am {
+	+Username
+	+Password
+}
+
+class "Inventory" as i {
+
+}
+
+class "Product" as p {
+	+ID
+	+Quantity
+}
+
+class "Purchase" as pu {
+	+Date
+}
+
+class "Customer" as cu {
+	+ Name
+	+ Surname
+	+ Address
+}
+
+class "Catalogue" as ca {
+
+}
+
+class "ProductDescriptor" as pd {
+	+Name
+	+ID
+	+Price
+	+VAT Tax
+}
+
+class "Receipt" as r {
+	+Shop Name
+	+Total amount
+	+Products' name
+	+Amount per product
+	+VAT Tax
+}
+
+class "Customers Data" as cd {
+}
+
+class "Order" as o {
+
+}
+
+class "Bar code Reader" as bcr {
+
+}
+
+note "This opens the\nCredit Card System\nthat will interface\ntrough API" as N1
+class "Credit Card" as cc {
+
+}
+
+cc -down- N1
+
+class "Accounting Database" as ad {
+}
+
+class "IncomeDescriptor" as id {
+	+Price
+	+Date
+}
+
+class "ExpenceDescriptor" as ed {
+	+Price
+	+Date
+}
+
+class Cash {
+
+}
+
+ez --"*" fc
+ez --"*" u
+ez -- ca
+ez -- i
+ez -- cd
+ez -- ad
+
+o "*" -- im : issued by >
+o -- "1..*" pd
+o "1..*" -down- Supplier
+
+c "*" --|> u
+im --|> u
+cm --|> u
+am --|> u
+
+c -- "*" r
+ca -- "*" pd
+
+i --"*" p
+pd -- p
+p -- pu
+pu --|> r
+cu -- "*" pu
+cd -- "*" cu
+fc "0..1" --  cu
+
+bcr -- "*" fc
+bcr -- "*" p
+
+cc "0..1" -- r
+cc "0..*" -- cu
+
+Cash "0..1" -- r
+Cash "0..*" -- cu
+
+ad -- "*" r
+id "*" -- ad
+ed "*" -- ad
+id -- r
+
+r -- "0..1" fc : updates >
+@enduml
+```
+
+# System Design
 ```plantuml
 @startuml
 class PC
@@ -446,41 +601,12 @@ class "Bar Code Reader" as bcr
 class "EZShop" as ez
 class "Software" as s
 class "Receipt Printer" as rp
-class "Fidelity card" as fc
 
 ez o-- PC
 ez o-- ccr
 ez o-- bcr
 ez o-- rp
-ez o-- fc
 s -up- PC
-
-/' Glossary '/
-class "Receipt" as r {
-	+Shop Name
-	+Total amount
-	+Products' name
-	+Amount per product
-	+VAT Tax
-	+Date
-}
-class "Loyalty Points" as lp
-class "Bar code" as bc
-
-r "*" -up- rp : printed by >
-bc "*" -up- bcr : read by >
-
-note "It is the ticket\ncreated from the\ntransaction that \ncontains total\namount" as N1
-note "It identifies each\nproduct and \nfidelity card" as N2
-
-N1 -up- r
-N2 -up- bc
-fc o-- lp
-
-note "Points used for \nfidelity cards, \ngained for each \ntransaction made \nby customers. \nIt's up to the\ncashier to add \n(on transaction) \nor remove \n(on gift request) \nloyalty points" as N3
-
-/'Check if lp go with EZShop'/
-N3 -up- lp
 
 @enduml
 ```
