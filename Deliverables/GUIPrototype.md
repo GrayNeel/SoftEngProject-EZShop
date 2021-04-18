@@ -24,6 +24,7 @@ The manager is able to select the functionalities that he/she wants to use. The 
 Clicking on the 'Customers' icon, a new window pops up. The user is able to manage Customers or add new Customers.
 ![](GUI_images/CustManager_1.png)
 ![](GUI_images/CustManager_2.png)
+
 Wheter the user inserts wrong information an error message is displayed.
 ![](GUI_images/CustManager_3.png)
 ![](GUI_images/CustManager_4.png)
@@ -76,9 +77,12 @@ The customer can only select those in white color, and proceeds to select the te
 
 ## Use Case 6: Manage Inventory and Catalogue
 
-When the manager selects the inventory funcionalities, they can acces to 3 functionalities. In this case, the inventory manager wants to manage the catalogue.
+When the manager selects the inventory funcionalities, they can access to 3 functionalities. In this case, the inventory manager wants to manage the catalogue.
 ![](GUI_images/InvManager_1.png)
 ![](GUI_images/InvManager_15.png)
+
+They can select the category of the product and look for products fastly.
+
 ![](GUI_images/InvManager_16.png)
 ![](GUI_images/InvManager_17.png)
 ![](GUI_images/InvManager_18.png)
