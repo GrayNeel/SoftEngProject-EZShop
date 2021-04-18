@@ -51,7 +51,70 @@ In order to add a new expense, an 'Expense Type' has to be provided. The Expense
 ![](GUI_images/AcctManager_5.png)
 
 ## Use Case 5: Handle Sale Transaction
+When the Cashier logs in, they can select between making a new buy or give the option to the fidelity customers to check if they can purchas prizes with the loyalty points. In this case, the cashier selects making a New Buy.
+![](GUI_images/Cashier_1.png)
+![](GUI_images/Cashier_2.png)
+![](GUI_images/Cashier_10.png)
+![](GUI_images/Cashier_4.png)
+The customer tells the cashier that she doesn't want anymore the red wine and asks if the cashier can cancel it.
+![](GUI_images/Cashier_5.png)
+![](GUI_images/Cashier_6.png)
+![](GUI_images/Cashier_7.png)
+![](GUI_images/Cashier_8.png)
+![](GUI_images/Cashier_9.png)
+
+After the shopping has finished, the customer asks the cashier if she can check the fidelity points and ask for a prize.
+
+![](GUI_images/Cashier_1.png)
+![](GUI_images/Cashier_3.png)
+
+The customer can only select those in white color, and proceeds to select the tea mug set.
+![](GUI_images/Cashier_11.png)
+![](GUI_images/Cashier_12.png)
+![](GUI_images/Cashier_13.png)
 
 
 ## Use Case 6: Manage Inventory and Catalogue
+
+When the manager selects the inventory funcionalities, they can acces to 3 functionalities. In this case, the inventory manager wants to manage the catalogue.
+![](GUI_images/InvManager_1.png)
+![](GUI_images/InvManager_15.png)
+![](GUI_images/InvManager_16.png)
+![](GUI_images/InvManager_17.png)
+![](GUI_images/InvManager_18.png)
+![](GUI_images/InvManager_10.png)
+
+If the inventory manager makes an error in the format of text inputs or leaves an input blank, an error occurs.
+![](GUI_images/InvManager_11.png)
+![](GUI_images/InvManager_12.png)
+
+The inventory manager can also change any information related to products, and updated in case of an offer or errors.
+![](GUI_images/InvManager_13.png)
+![](GUI_images/InvManager_14.png)
+
+The inventory manager can also manage the inventory of the shop, so he can updates the total ammount of products avaible in store. They can select directly to scan a product or see a list of all the products.
+![](GUI_images/InvManager_2.png)
+They can select if the product is already in catalogue or is a new product. In this case, is a product already in catalogue.
+![](GUI_images/InvManager_3.png)
+![](GUI_images/InvManager_4.png)
+![](GUI_images/InvManager_5.png)
+
+When the inventory manager selects the list of all products, they can updated it directly from that screen.
+
+![](GUI_images/InvManager_7.png)
+![](GUI_images/InvManager_8.png)
+
+The updated quantity shows within the list.
+
+![](GUI_images/InvManager_9.png)
+
+When the inventory manager slects to issue a new order, they can see a list of all the suppliers that the store has arrangements with. They can search the supplier name.
+
+![](GUI_images/InvManager_19.png)
+![](GUI_images/InvManager_20.png)
+
+When they select a supplier, they can see all the products that are connected to them and make an order directly to the supplier.
+
+![](GUI_images/InvManager_21.png)
+![](GUI_images/InvManager_22.png)
 
