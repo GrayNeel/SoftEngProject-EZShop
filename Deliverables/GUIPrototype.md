@@ -6,5 +6,22 @@ Date:
 
 Version:
 
-\<Report here the GUI that you propose. You are free to organize it as you prefer. A suggested presentation matches the Use cases and scenarios defined in the Requirement document. The GUI can be shown as a sequence of graphical files (jpg, png)  >
+
+## Use Case 1: Login
+
+
+
+## Use Case 2: Handle Customer Information
+
+
+## Use Case 3: Manage Accounting
+
+
+## Use Case 4: Read Bar Code
+
+
+## Use Case 5: Handle Sale Transaction
+
+
+## Use Case 6: Manage Inventory and Catalogue
 
