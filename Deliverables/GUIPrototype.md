@@ -93,12 +93,12 @@ If the inventory manager makes an error in the format of text inputs or leaves a
 ![](GUI_images/InvManager_12.png)
 
 The inventory manager can also change any information related to products, and updated in case of an offer or errors.
-![](GUI_images/InvManager_1.png)
 ![](GUI_images/InvManager_16.png)
 ![](GUI_images/InvManager_13.png)
 ![](GUI_images/InvManager_14.png)
 
 The inventory manager can also manage the inventory of the shop, so he can updates the total ammount of products avaible in store. They can select directly to scan a product or see a list of all the products.
+![](GUI_images/InvManager_1.png)
 ![](GUI_images/InvManager_2.png)
 They can select if the product is already in catalogue or is a new product. In this case, is a product already in catalogue.
 ![](GUI_images/InvManager_3.png)
