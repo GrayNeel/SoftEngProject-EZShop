@@ -106,7 +106,7 @@ They can select if the product is already in catalogue or is a new product. In t
 ![](GUI_images/InvManager_5.png)
 
 When the inventory manager selects the list of all products, they can updated it directly from that screen.
-![](GUI_images/InvManager_15.png)
+![](GUI_images/InvManager_2.png)
 ![](GUI_images/InvManager_7.png)
 ![](GUI_images/InvManager_8.png)
 
