@@ -164,7 +164,7 @@ ch -> (EZShop)
 |  NFR2     | Performance | All functions should complete in < 0.5 sec  | All FR |
 |  NFR3     |                     Privacy                     | The data of a customer should not be disclosed outside the application | All FR |
 |  NFR4     | Domain | The barcode number related to a product type should be a string of digits of either 12, 13 or 14 numbers validated following this algorithm  https://www.gs1.org/services/how-calculate-check-digit-manually | All FR |
-|  NFR5     | Domain | The credit cards numbers should be validated through the Luhn algorithm. | FR7 |
+|  NFR5     | Domain +| The credit cards numbers should be validated through the Luhn algorithm. | FR7 |
 |  NFR6     | Domain | The customer's card should be a string of 10 digits. | FR5 |
 
 

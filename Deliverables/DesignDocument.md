@@ -3,9 +3,9 @@
 
 Authors: 
 
-Date:
+Date: 24/04/2021
 
-Version:
+Version: 01
 
 
 # Contents
@@ -21,19 +21,200 @@ The design must satisfy the Official Requirements document, notably functional a
 
 # High level design 
 
-<discuss architectural styles used, if any>
-<report package diagram>
+_Architecture_:
+* EZShop is a **stand-alone** application.
 
+_Architectural patterns_:
+* MVC (because there is a GUI)
+* layered - 3 tiered
 
+```plantuml
+@startuml
 
+package "EzShop" as ez {}
+package "EzShop Data" as mt {}
+package "EzShop Application Logic" as at {}
+package "EzShop GUI" as GUI {}
 
+mt -down-|> ez
+at -down-|> ez
+GUI -down-|> ez
 
+@enduml
+```
 
 # Low level design
 
-<for each package, report class diagram>
+```plantuml
+@startuml
+
+left to right direction
+
+class EzShop {
+    +ProductTypeList
+    +UsersList
+    +CustomersList
+    +TicketsList
+
+    +login(string,string)
+    +logout()
+    +addProductType()
+    +getProductTypeByBarCode(integer)
+    +createUser(string, string, string)
+    +createCustomer(string)
+    +updateCustomerData(integer, string, string)
+    +deleteUser(integer)
+    +getUser(integer)
+    +createOrder(string,int,double)
+    +searchOrder(integer)
+    +payOrderFor(string,int,double)
+    +recordOrderArrival(integer)
+    +createCard()
+    +attachCardToCustomer(string, integer)
+    +detachCardFromCustomer(integer)
+    +startSaleTransaction()
+    +closeSaleTransaction(integer)
+    +deleteSaleTicket(integer)
+    +getTicketByNumber(integer)
+    +startReturnTransaction(integer)
+    +endReturnTransaction(integer, boolean)
+    +deleteReturnTransaction(integer)
+    +returnProduct(integer, integer, integer)
+    +getTransactions(string, string)
+}
+
+EzShop -- ProductType
+EzShop -- Order
+EzShop -- Customer
+
+class Shop
+class AccountBook 
+
+AccountBook - Shop
+
+class FinancialTransaction {
+ +description
+ +amount
+ +date
+}
+
+AccountBook -- "*" FinancialTransaction
+
+class Credit 
+class Debit
+
+Credit --|> FinancialTransaction
+Debit --|> FinancialTransaction
+
+class Order
+class Sale
+class Return
+
+Order --|> Debit
+Sale --|> Credit
+Return --|> Debit
 
 
+class ProductType{
+    +barCode
+    +description
+    +sellPrice
+    +quantity
+    +discountRate
+    +notes
+
+    +addPosition()
+    +updatePosition()
+    +updatePrice()
+    +updateQuantity()
+}
+
+Shop - "*" ProductType
+
+EzShop - "*" SaleTransaction
+
+class SaleTransaction {
+    +ID 
+    +date
+    +time
+    +cost
+    +paymentType
+    +discount rate
+    +ProductsMap
+
+    +addProductToSale(integer,string,int)
+    +deleteProductFromSale(integer,string,int)
+    +applyDiscountRateToProduct(integer,string,double)
+    +applyDiscountRateToSale(integer,double)
+    +computePointsForSale(integer)
+    +modifyPointsOnCard(string,int)
+    +printTicket()
+    +getBalance()
+}
+SaleTransaction - "*" ProductType
+
+class Quantity {
+    +quantity
+}
+(SaleTransaction, ProductType)  .. Quantity
+
+class LoyaltyCard {
+    +ID
+    +points
+}
+
+class Customer {
+    +name
+    +surname
+    +LoyaltyCardID
+}
+
+LoyaltyCard "0..1" - Customer
+
+SaleTransaction "*" -- "0..1" LoyaltyCard
+
+class Position {
+    +aisleID
+    +rackID
+    +levelID
+}
+
+ProductType - "0..1" Position
+
+class Order {
+  +ID
+  +supplier
+  +pricePerUnit
+  +quantity
+  +status
+
+  +updateStatus()
+}
+
+Order "*" - ProductType
+
+class ReturnTransaction {
+  +quantity
+  +returnedValue
+}
+
+ReturnTransaction "*" - SaleTransaction
+ReturnTransaction "*" - ProductType
+
+class User {
+    +ID
+    +username
+    +password
+    +accessRights
+
+    +getAccessRight()
+    +updateUserRight(integer,string)    
+}
+
+EzShop -- "1..*" User
+
+@enduml
+```
 
 
 
