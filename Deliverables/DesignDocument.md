@@ -229,8 +229,8 @@ ReturnTransaction "*" - ProductType
 Shop -> Customer : 1. defineCustomer()
 activate Customer
 Customer -> Customer : 2.setName()
-Customer -> Customer : 2.setSurname()
-Customer -> Shop
+Customer -> Customer : 3.setSurname()
+Customer -> Shop : 4. returnCustomer()
 deactivate Customer
 @enduml
 ```
