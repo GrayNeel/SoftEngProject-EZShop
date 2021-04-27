@@ -5,7 +5,12 @@ Authors: Group 38
 
 Date: 24/04/2021
 
-Version: 01
+Version: 02
+
+| Version | Changes | 
+| ----------------- |:-----------|
+| 01 | Added High Level Design and Low Level Design  |
+| 02 | Added Verification Traceability Matrix and Verification sequence diagrams |
 
 
 # Contents
