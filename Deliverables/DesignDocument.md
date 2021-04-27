@@ -185,7 +185,8 @@ class ReturnTransaction {
   +quantity
   +returnedValue
   +SaleTransactionID
-  +ProductBarCode
+  +ProductType
+  +paymentType
 
   +addReturnedProduct(string,int)
   +computeReturnedValue()
@@ -222,3 +223,49 @@ ReturnTransaction "*" - ProductType
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
+### Scenario 6.1
+```plantuml
+@startuml
+Shop -> Customer : 1. defineCustomer()
+activate Customer
+Customer -> Customer : 2.setName()
+Customer -> Customer : 2.setSurname()
+Customer -> Shop
+deactivate Customer
+@enduml
+```
+
+### Scenario 6.1
+```plantuml
+@startuml
+Shop -> SaleTransaction: 1: startSaleTransaction()
+activate SaleTransaction
+SaleTransaction -> ProductType: 2: getProductType()
+ProductType -> ProductType: 3: updateQuantity()
+SaleTransaction <- ProductType: 4: addProduct()
+SaleTransaction <- SaleTransaction : 5: closeSaleTransaction()
+deactivate SaleTransaction
+SaleTransaction <- SaleTransaction : 6: setPaymentType()
+SaleTransaction -> Shop : 7: verifyPaymentSuccess()
+Shop -> CreditCardSystem : 8: payment()
+Shop <- CreditCardSystem : 9: paymentSuccess()
+@enduml
+```
+
+### Scenario 8.1
+```plantuml
+@startuml
+Shop -> ReturnTransaction : 1: startReturnTransaction()
+activate ReturnTransaction
+ReturnTransaction -> ReturnTransaction : 2: setSaleTransactionID()
+ReturnTransaction -> ProductType : 3: getProductType()
+ReturnTransaction -> ReturnTransaction : 4. setProductType()
+ReturnTransaction -> ReturnTransaction : 5. setQuantity()
+ReturnTransaction -> ProductType : 6. updateQuantity()
+ReturnTransaction -> ReturnTransaction : 7. closeReturnTransaction()
+deactivate ReturnTransaction
+ReturnTransaction -> ReturnTransaction : 8. setPaymentType()
+Shop -> CreditCardSystem : 8: returnPayment()
+Shop <- CreditCardSystem : 9: returnPaymentSuccess()
+@enduml
+```
