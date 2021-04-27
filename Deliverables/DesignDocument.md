@@ -226,7 +226,6 @@ ReturnTransaction "*" - ProductType
 
 
 # Verification sequence diagrams 
-\<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
 ### Scenario 6.1
 ```plantuml
