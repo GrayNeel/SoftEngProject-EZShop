@@ -49,8 +49,7 @@ GUI -down-|> ez
 @startuml
 
 left to right direction
-
-class EzShop {
+class Shop {
     +ProductTypeList
     +UsersList
     +CustomersList
@@ -82,12 +81,6 @@ class EzShop {
     +returnProduct(integer, integer, integer)
     +getTransactions(string, string)
 }
-
-EzShop -- ProductType
-EzShop -- Order
-EzShop -- Customer
-
-class Shop
 class AccountBook 
 
 AccountBook - Shop
