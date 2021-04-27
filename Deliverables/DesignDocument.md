@@ -124,8 +124,6 @@ class ProductType{
 
 Shop - "*" ProductType
 
-EzShop - "*" SaleTransaction
-
 class SaleTransaction {
     +ID 
     +date
@@ -204,7 +202,7 @@ class User {
     +updateUserRight(integer,string)    
 }
 
-EzShop -- "1..*" User
+Shop -- "1..*" User
 
 @enduml
 ```
