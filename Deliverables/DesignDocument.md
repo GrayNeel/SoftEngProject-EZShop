@@ -1,7 +1,7 @@
 # Design Document 
 
 
-Authors: 
+Authors: Group 38
 
 Date: 24/04/2021
 
@@ -51,67 +51,61 @@ GUI -down-|> ez
 left to right direction
 class Shop {
     +ProductTypeList
-    +UsersList
     +CustomersList
     +TicketsList
+    +OrdersList
+    +SaleTransactionList
+    +FinancialTransactionList
 
-    +login(string,string)
-    +logout()
-    +addProductType()
-    +getProductTypeByBarCode(integer)
+    +createProductType(string, string, double,string)
+    +updateProduct(integer,string,string,double,string)
+    +deleteProductType(integer)
+    +getProductTypeByBarCode(string)
     +createUser(string, string, string)
-    +createCustomer(string)
-    +updateCustomerData(integer, string, string)
     +deleteUser(integer)
-    +getUser(integer)
-    +createOrder(string,int,double)
-    +searchOrder(integer)
+    +updateUserRights(integer,string)
+    +issueOrder(string,int,double)
     +payOrderFor(string,int,double)
+    +payOrder(integer)
     +recordOrderArrival(integer)
+    +defineCustomer(string)
+    +modifyCustomer(integer, string, string)
+    +deleteCustomer(integer, string, string)
     +createCard()
-    +attachCardToCustomer(string, integer)
+    +attachCardToCustomer(string,integer)
     +detachCardFromCustomer(integer)
+    +modifyPointsOnCard(string,integer)
+    +login(string,string,string)
+    +logout()
     +startSaleTransaction()
     +closeSaleTransaction(integer)
-    +deleteSaleTicket(integer)
-    +getTicketByNumber(integer)
     +startReturnTransaction(integer)
+    +returnProduct(integer, integer, integer)
     +endReturnTransaction(integer, boolean)
     +deleteReturnTransaction(integer)
-    +returnProduct(integer, integer, integer)
-    +getTransactions(string, string)
+    +deleteSaleTicket(integer)
+    +getCreditsAndDebits(LocalDate, Localdate)
 }
-class AccountBook 
 
-AccountBook - Shop
+note "Persistent data that\nhave to be implemented\nprobabily as a DB" as N1
+
+N1 .. Shop
 
 class FinancialTransaction {
  +description
  +amount
  +date
+
+ +updateAmount()
 }
 
-AccountBook -- "*" FinancialTransaction
-
-class Credit 
-class Debit
-
-Credit --|> FinancialTransaction
-Debit --|> FinancialTransaction
-
-class Order
-class Sale
-class Return
-
-Order --|> Debit
-Sale --|> Credit
-Return --|> Debit
+Order --|> FinancialTransaction
 
 
 class ProductType{
     +barCode
     +description
-    +sellPrice
+    +price
     +quantity
     +discountRate
     +notes
@@ -120,6 +114,7 @@ class ProductType{
     +updatePosition()
     +updatePrice()
     +updateQuantity()
+    +updateDiscountRate(string,double)
 }
 
 Shop - "*" ProductType
@@ -130,24 +125,19 @@ class SaleTransaction {
     +time
     +cost
     +paymentType
-    +discount rate
+    +discountRate
     +ProductsMap
 
-    +addProductToSale(integer,string,int)
-    +deleteProductFromSale(integer,string,int)
-    +applyDiscountRateToProduct(integer,string,double)
-    +applyDiscountRateToSale(integer,double)
-    +computePointsForSale(integer)
+    +addProduct(string,int)
+    +deleteProduct(string,int)
+    +addDiscountRate(double)
+    +computePointsForSale()
     +modifyPointsOnCard(string,int)
+    +updateCost()
+    +verifyPaymentSuccess()
     +printTicket()
-    +getBalance()
 }
 SaleTransaction - "*" ProductType
-
-class Quantity {
-    +quantity
-}
-(SaleTransaction, ProductType)  .. Quantity
 
 class LoyaltyCard {
     +ID
@@ -158,6 +148,11 @@ class Customer {
     +name
     +surname
     +LoyaltyCardID
+
+    +addLoyaltyCard()
+    +removeLoyaltyCard()
+    +updateName()
+    +updateSurname()
 }
 
 LoyaltyCard "0..1" - Customer
@@ -165,9 +160,11 @@ LoyaltyCard "0..1" - Customer
 SaleTransaction "*" -- "0..1" LoyaltyCard
 
 class Position {
+    +positionID
     +aisleID
     +rackID
     +levelID
+    +isFree
 }
 
 ProductType - "0..1" Position
@@ -187,22 +184,15 @@ Order "*" - ProductType
 class ReturnTransaction {
   +quantity
   +returnedValue
+  +SaleTransactionID
+  +ProductBarCode
+
+  +addReturnedProduct(string,int)
+  +computeReturnedValue()
 }
 
 ReturnTransaction "*" - SaleTransaction
 ReturnTransaction "*" - ProductType
-
-class User {
-    +ID
-    +username
-    +password
-    +accessRights
-
-    +getAccessRight()
-    +updateUserRight(integer,string)    
-}
-
-Shop -- "1..*" User
 
 @enduml
 ```
@@ -215,13 +205,15 @@ Shop -- "1..*" User
 
 # Verification traceability matrix
 
-\<for each functional requirement from the requirement document, list which classes concur to implement it>
-
-
-
-
-
-
+|     | Shop | SaleTransaction | ProductType | Position | LoyaltyCard | Customer | Order | ReturnTransaction | FinancialTransaction |
+| --- | :----: | :---------------: | :-----------: | :--------: | :-----------: | :--------: | :-----: | :-----------------: | :--------------------: |
+| FR1 |X| | | | | | | | |
+| FR2 |X| |X| | | | | | |
+| FR3 |X| |X|X| | |X| |X|
+| FR4 |X| | | |X|X| | | |
+| FR5 |X|X|X| | | | |X|X|
+| FR6 |X|X| | | | | | | |
+| FR7 |X| | | | | | | |X|
 
 
 
