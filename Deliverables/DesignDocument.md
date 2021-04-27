@@ -249,6 +249,7 @@ SaleTransaction <- SaleTransaction : 6: setPaymentType()
 SaleTransaction -> Shop : 7: verifyPaymentSuccess()
 Shop -> CreditCardSystem : 8: payment()
 Shop <- CreditCardSystem : 9: paymentSuccess()
+SaleTransaction -> Printer : 10. printTicket()
 @enduml
 ```
 
@@ -265,7 +266,7 @@ ReturnTransaction -> ProductType : 6. updateQuantity()
 ReturnTransaction -> ReturnTransaction : 7. closeReturnTransaction()
 deactivate ReturnTransaction
 ReturnTransaction -> ReturnTransaction : 8. setPaymentType()
-Shop -> CreditCardSystem : 8: returnPayment()
-Shop <- CreditCardSystem : 9: returnPaymentSuccess()
+Shop -> CreditCardSystem : 9: returnPayment()
+Shop <- CreditCardSystem : 10: returnPaymentSuccess()
 @enduml
 ```
