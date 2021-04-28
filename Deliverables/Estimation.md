@@ -30,4 +30,13 @@ Version: 01
 | System testing | 100 |
 ###
 
-Insert here Gantt chart with above activities
+# Gantt Chart
+Assuming a work time of 8 hours per day and five days a week.
+
+![](Estimation_images/Gantt_EzShop.png)
+
+**Labels:**
+- _MC_: Marco Capusso
+- _MS_: Marco Smorti
+- _FB_: Francesco Bonini
+- _PV_: Pablo Vejar
