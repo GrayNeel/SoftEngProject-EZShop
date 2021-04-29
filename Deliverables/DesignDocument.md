@@ -5,13 +5,13 @@ Authors: Group 38
 
 Date: 24/04/2021
 
-Version: 02
+Version: 03
 
 | Version | Changes | 
 | ----------------- |:-----------|
 | 01 | Added High Level Design and Low Level Design  |
 | 02 | Added Verification Traceability Matrix and Verification sequence diagrams |
-
+| 03 | Modified Low Level Design due to Requirements update |
 
 # Contents
 
@@ -53,14 +53,21 @@ GUI -down-|> ez
 ```plantuml
 @startuml
 
-left to right direction
 class Shop {
-    +ProductTypeList
-    +CustomersList
-    +TicketsList
-    +OrdersList
-    +SaleTransactionList
-    +FinancialTransactionList
+    +productTypeMap
+    +customersMap
+    +saleTransactionsMap
+    +ordersMap
+    +accountBook
+}
+
+note "Persistent data" as N1
+
+N1 .down. Shop
+ShopInterface -down- Shop : <<implements>>
+
+class ShopInterface {
+
 
     +createProductType(string, string, double,string)
     +updateProduct(integer,string,string,double,string)
@@ -92,11 +99,7 @@ class Shop {
     +getCreditsAndDebits(LocalDate, Localdate)
 }
 
-note "Persistent data that\nhave to be implemented\nprobabily as a DB" as N1
-
-N1 .. Shop
-
-class FinancialTransaction {
+class BalanceOperation {
  +description
  +amount
  +date
@@ -104,7 +107,7 @@ class FinancialTransaction {
  +updateAmount()
 }
 
-Order --|> FinancialTransaction
+Order --|> BalanceOperation
 
 
 class ProductType{
@@ -114,6 +117,7 @@ class ProductType{
     +quantity
     +discountRate
     +notes
+    +position
 
     +addPosition()
     +updatePosition()
@@ -122,7 +126,12 @@ class ProductType{
     +updateDiscountRate(string,double)
 }
 
-Shop - "*" ProductType
+note "Persistent data" as N2
+N2 -down- ProductType
+Shop -- "*" ProductType
+Shop -- "*" Order
+Shop -- "*" SaleTransaction
+Shop -- "*" Customer
 
 class SaleTransaction {
     +ID 
@@ -131,7 +140,8 @@ class SaleTransaction {
     +cost
     +paymentType
     +discountRate
-    +ProductsMap
+    +productTypeMap
+    +LoyaltyCard
 
     +addProduct(string,int)
     +deleteProduct(string,int)
@@ -140,9 +150,8 @@ class SaleTransaction {
     +modifyPointsOnCard(string,int)
     +updateCost()
     +verifyPaymentSuccess()
-    +printTicket()
 }
-SaleTransaction - "*" ProductType
+SaleTransaction -- "*" ProductType
 
 class LoyaltyCard {
     +ID
@@ -160,7 +169,7 @@ class Customer {
     +updateSurname()
 }
 
-LoyaltyCard "0..1" - Customer
+LoyaltyCard "0..1" -- Customer
 
 SaleTransaction "*" -- "0..1" LoyaltyCard
 
@@ -172,7 +181,7 @@ class Position {
     +isFree
 }
 
-ProductType - "0..1" Position
+ProductType -- "0..1" Position
 
 class Order {
   +ID
@@ -180,16 +189,17 @@ class Order {
   +pricePerUnit
   +quantity
   +status
+  +productType
 
   +updateStatus()
 }
 
-Order "*" - ProductType
+Order "*" -- ProductType
 
 class ReturnTransaction {
   +quantity
   +returnedValue
-  +SaleTransactionID
+  +SaleTransaction
   +ProductType
   +paymentType
 
@@ -197,8 +207,15 @@ class ReturnTransaction {
   +computeReturnedValue()
 }
 
-ReturnTransaction "*" - SaleTransaction
-ReturnTransaction "*" - ProductType
+ReturnTransaction "*" -- SaleTransaction
+ReturnTransaction "*" -- ProductType
+
+class AccountBook {
+    +balanceOperationsMap
+}
+
+AccountBook -- Shop
+AccountBook -- "*" BalanceOperation
 
 @enduml
 ```
@@ -211,7 +228,7 @@ ReturnTransaction "*" - ProductType
 
 # Verification traceability matrix
 
-|     | Shop | SaleTransaction | ProductType | Position | LoyaltyCard | Customer | Order | ReturnTransaction | FinancialTransaction |
+|     | Shop | SaleTransaction | ProductType | Position | LoyaltyCard | Customer | Order | ReturnTransaction | BalanceOperation |
 | --- | :----: | :---------------: | :-----------: | :--------: | :-----------: | :--------: | :-----: | :-----------------: | :--------------------: |
 | FR1 |X| | | | | | | | |
 | FR2 |X| |X| | | | | | |
@@ -227,7 +244,7 @@ ReturnTransaction "*" - ProductType
 
 # Verification sequence diagrams 
 
-### Scenario 6.1
+### Scenario 4.1
 ```plantuml
 @startuml
 Shop -> Customer : 1. defineCustomer()
