@@ -72,6 +72,7 @@ public class EZShopDB {
 	        } catch (SQLException e) {
 	            System.err.println(e.getMessage());
 	        }
+	    boolean x = deleteUser(9);
 	}
 	
 	/**
@@ -94,5 +95,18 @@ public class EZShopDB {
         }
         
         return exists;
+	}
+
+	public boolean deleteUser(Integer id) {
+		String sql = "DELETE FROM users WHERE id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setInt(1, id);
+        	pstmt.executeUpdate();            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage()); //non serve checkare se esiste. Se non esiste non viene cancellato nulla
+            return false;
+        }		
+		
+		return true;
 	}
 }

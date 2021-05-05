@@ -11,6 +11,8 @@ import java.util.List;
 public class EZShop implements EZShopInterface {
 	EZShopDB db = new EZShopDB();
 	
+	
+	
     @Override
     public void reset() {
 
@@ -36,7 +38,7 @@ public class EZShop implements EZShopInterface {
     	
     	
     	//Get the last used ID
-    	lastid = db.getLastId();
+    	lastid = db.getLastId(); //prendiamo l'ultimo ID o il primo libero? Per rimpiazzare quelli cancellati
     	
     	//Create User Object with newID
     	UserClass user = new UserClass(lastid+1, username, password, role);
@@ -49,8 +51,25 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public boolean deleteUser(Integer id) throws InvalidUserIdException, UnauthorizedException {
-        return false;
-    }
+    	////////////////////// TO DO ///////////////////////////////
+    	/* @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation*/
+    	
+    	//Check that username is not empty and it does not exist
+    	if(id == null || id <= 0) {
+    		throw new InvalidUserIdException("Invalid id");
+    	}
+    	
+    
+    	
+    	boolean del = db.deleteUser(id);
+    	
+    	if(del == true)
+    		System.out.println("User with id: " + id + "deleted");
+    	else
+    		System.out.println("User with id: " + id + "NOT deleted");
+        return del;
+    }    
+    
 
     @Override
     public List<User> getAllUsers() throws UnauthorizedException {
