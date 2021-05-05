@@ -144,9 +144,9 @@ public class EZShopDB {
 		String sql = "UPDATE users SET role=? WHERE id=?";
 		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-        	pstmt.setInt(1, id);
-        	pstmt.setString(2, role);
-            pstmt.executeQuery();
+        	pstmt.setString(1, role);
+        	pstmt.setInt(2, id);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             return false;
@@ -185,6 +185,7 @@ public class EZShopDB {
 	            
 	            pstmt.executeUpdate();
 	        } catch (SQLException e) {
+	        	System.err.println(e.getMessage());
 	            return false;
 	        }
 	    
@@ -192,12 +193,11 @@ public class EZShopDB {
 	}
 	
 	public boolean logoutUser() {
-		String sql = "DELETE FROM loggedusers WHERE 1";
+		String sql = "DELETE FROM loggedusers";
 
-		try (Statement stmt  = connection.createStatement();
-		     ResultSet rs = stmt.executeQuery(sql)){
-	            
-	        } catch (SQLException e) {
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+			pstmt.executeUpdate();
+	    } catch (SQLException e) {
 	            return false;
 	        }
 	    
@@ -205,7 +205,7 @@ public class EZShopDB {
 	}
 	
 	public User getLoggedUser() {
-		String sql = "SELECT id,username,password,role FROM users LIMIT 1";
+		String sql = "SELECT id,username,password,role FROM loggedusers";
 		User user = null;
         
 		try (Statement stmt  = connection.createStatement();

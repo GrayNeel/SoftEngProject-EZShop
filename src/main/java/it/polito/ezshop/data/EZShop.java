@@ -4,6 +4,7 @@ import it.polito.ezshop.classes.*;
 import it.polito.ezshop.exceptions.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,7 +32,7 @@ public class EZShop implements EZShopInterface {
     	}
     	
     	//Check that role is one of the admitted values
-    	if(role.length()==0 || role==null || (role!="Cashier" && role!="ShopManager" && role!="Administrator"))
+    	if(role.length()==0 || role==null || (!role.equals("Cashier") && !role.equals("ShopManager") && !role.equals("Administrator")))
     		throw new InvalidRoleException("Invalid role");
     	
     	
@@ -56,9 +57,11 @@ public class EZShop implements EZShopInterface {
     public List<User> getAllUsers() throws UnauthorizedException {
     	User user = db.getLoggedUser();
     	
-    	if(user==null || user.getRole()!="Administrator") {
+    	if(user==null || !user.getRole().equals("Administrator")) {
     		throw new UnauthorizedException();
+    		
     	}
+    	
     	
         return db.getAllUsers();
     }
@@ -71,7 +74,7 @@ public class EZShop implements EZShopInterface {
     	
     	User user = db.getLoggedUser();
     	
-    	if(user==null || user.getRole()!="Administrator") {
+    	if(user==null || !user.getRole().equals("Administrator")) {
     		throw new UnauthorizedException();
     	}
     	
@@ -84,12 +87,12 @@ public class EZShop implements EZShopInterface {
     		throw new InvalidUserIdException();
     	}
     	
-    	if(role.length()==0 || role==null || (role!="Cashier" && role!="ShopManager" && role!="Administrator"))
+    	if(role.length()==0 || role==null || (!role.equals("Cashier") && !role.equals("ShopManager") && !role.equals("Administrator")))
     		throw new InvalidRoleException();
     	
     	User user = db.getLoggedUser();
     	
-    	if(user==null || user.getRole()!="Administrator") {
+    	if(user==null || !user.getRole().equals("Administrator")) {
     		throw new UnauthorizedException();
     	}
     	
@@ -140,7 +143,9 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public List<ProductType> getAllProductTypes() throws UnauthorizedException {
-        return null;
+    	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
+    	List<ProductType> prodlist = new ArrayList<>();
+        return prodlist;
     }
 
     @Override
@@ -150,7 +155,9 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public List<ProductType> getProductTypesByDescription(String description) throws UnauthorizedException {
-        return null;
+    	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
+    	List<ProductType> prodlist = new ArrayList<>();
+        return prodlist;
     }
 
     @Override
@@ -185,7 +192,9 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public List<Order> getAllOrders() throws UnauthorizedException {
-        return null;
+    	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
+    	List<Order> ordlist = new ArrayList<>();
+        return ordlist;
     }
 
     @Override
@@ -210,7 +219,9 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public List<Customer> getAllCustomers() throws UnauthorizedException {
-        return null;
+    	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
+    	List<Customer> customerlist = new ArrayList<>();
+        return customerlist;
     }
 
     @Override
@@ -320,7 +331,9 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public List<BalanceOperation> getCreditsAndDebits(LocalDate from, LocalDate to) throws UnauthorizedException {
-        return null;
+    	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
+    	List<BalanceOperation> bolist = new ArrayList<>();
+        return bolist;
     }
 
     @Override
