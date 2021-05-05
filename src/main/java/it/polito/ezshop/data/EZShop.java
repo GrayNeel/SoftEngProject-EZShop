@@ -128,7 +128,34 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public Integer createProductType(String description, String productCode, double pricePerUnit, String note) throws InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
-        return null;
+    	User user = db.getLoggedUser();
+    	Integer barcode = null;
+    	
+    	//Verifying that the string is a number
+    	try {
+    		barcode = Integer.parseInt(productCode);
+    	}catch(NumberFormatException e) {
+    		throw new InvalidProductCodeException();
+    	}
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	}
+    	
+    	if(description.length()==0 || description == null) {
+    		throw new InvalidProductDescriptionException();
+    	}
+    	
+    	if(productCode == null || productCode.length() == 0) {
+    		throw new InvalidProductCodeException();
+    	}
+    	
+    	//TODO: check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
+    	//and price per unit
+    	
+    	
+    	
+    	return null;
     }
 
     @Override
