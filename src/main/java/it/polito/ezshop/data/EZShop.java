@@ -1,5 +1,6 @@
 package it.polito.ezshop.data;
 
+import it.polito.ezshop.classes.*;
 import it.polito.ezshop.exceptions.*;
 
 import java.time.LocalDate;
@@ -8,8 +9,8 @@ import java.util.List;
 
 
 public class EZShop implements EZShopInterface {
-
-
+	EZShopDB db = new EZShopDB();
+	
     @Override
     public void reset() {
 
@@ -17,7 +18,33 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public Integer createUser(String username, String password, String role) throws InvalidUsernameException, InvalidPasswordException, InvalidRoleException {
-        return null;
+    	int lastid;
+    	
+    	//Check that username is not empty and it does not exist
+    	if(username.length() == 0 || db.checkExistingUser(username)) {
+    		throw new InvalidUsernameException("Invalid username");
+    	}
+    	
+    	//Check that password is not empty
+    	if(password.length() == 0) {
+    		throw new InvalidPasswordException("Invalid password");
+    	}
+    	
+    	//Check that role is one of the admitted values
+    	if(role!="Cashier" && role!="ShopManager" && role!="Administrator")
+    		throw new InvalidRoleException("Invalid role");
+    	
+    	
+    	//Get the last used ID
+    	lastid = db.getLastId();
+    	
+    	//Create User Object with newID
+    	UserClass user = new UserClass(lastid+1, username, password, role);
+    	
+    	//Add user to the DB
+    	db.addUser(user);
+    	
+        return lastid+1;
     }
 
     @Override

@@ -3,53 +3,55 @@ package it.polito.ezshop.classes;
 import it.polito.ezshop.data.User;
 
 public class UserClass implements User {
-
+	private Integer id;
+	private String username;
+	private String password;
+	private String role;
+	
+	public UserClass (Integer id, String username, String password, String role) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+	}
+	
 	@Override
 	public Integer getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	@Override
 	public void setId(Integer id) {
-		// TODO Auto-generated method stub
-		
+		this.id = id;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return username;
 	}
 
 	@Override
 	public void setUsername(String username) {
-		// TODO Auto-generated method stub
-		
+		this.username = username;
 	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return password;
 	}
 
 	@Override
 	public void setPassword(String password) {
-		// TODO Auto-generated method stub
-		
+		this.password = password;
 	}
 
 	@Override
 	public String getRole() {
-		// TODO Auto-generated method stub
-		return null;
+		return role;
 	}
 
 	@Override
 	public void setRole(String role) {
-		// TODO Auto-generated method stub
-		
+		this.role = role;
 	}
-
 }
