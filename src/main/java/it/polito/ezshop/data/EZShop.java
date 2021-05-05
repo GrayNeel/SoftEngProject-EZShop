@@ -31,7 +31,7 @@ public class EZShop implements EZShopInterface {
     	}
     	
     	//Check that role is one of the admitted values
-    	if(role!="Cashier" && role!="ShopManager" && role!="Administrator")
+    	if(role.length()==0 || role==null || (role!="Cashier" && role!="ShopManager" && role!="Administrator"))
     		throw new InvalidRoleException("Invalid role");
     	
     	
@@ -54,27 +54,73 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public List<User> getAllUsers() throws UnauthorizedException {
-        return null;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || user.getRole()!="Administrator") {
+    		throw new UnauthorizedException();
+    	}
+    	
+        return db.getAllUsers();
     }
 
     @Override
     public User getUser(Integer id) throws InvalidUserIdException, UnauthorizedException {
-        return null;
+    	if(id<=0 || id==null) {
+    		throw new InvalidUserIdException();
+    	}
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || user.getRole()!="Administrator") {
+    		throw new UnauthorizedException();
+    	}
+    	
+        return db.getUserById(id);
     }
 
     @Override
     public boolean updateUserRights(Integer id, String role) throws InvalidUserIdException, InvalidRoleException, UnauthorizedException {
-        return false;
+    	if(id<=0 || id==null) {
+    		throw new InvalidUserIdException();
+    	}
+    	
+    	if(role.length()==0 || role==null || (role!="Cashier" && role!="ShopManager" && role!="Administrator"))
+    		throw new InvalidRoleException();
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || user.getRole()!="Administrator") {
+    		throw new UnauthorizedException();
+    	}
+    	
+    	if(db.updateUserRole(id,role))
+    		return true;
+    	else
+    		return false;
     }
 
     @Override
     public User login(String username, String password) throws InvalidUsernameException, InvalidPasswordException {
-        return null;
+    	if(username.length()==0 || username==null) {
+    		throw new InvalidUsernameException();
+    	}
+    	
+    	if(password.length()==0 || password==null) {
+    		throw new InvalidPasswordException();
+    	}
+    	
+    	User user = db.getUserByCredentials(username,password);
+        
+    	//If user is null or DB problems
+    	if(user == null || !db.loginUser(user))
+    		return null;
+    	
+    	return user;
     }
 
     @Override
     public boolean logout() {
-        return false;
+        return db.logoutUser();
     }
 
     @Override
