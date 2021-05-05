@@ -5,9 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.sqlite.SQLiteConnection;
 import org.sqlite.SQLiteUpdateListener;
+
+import it.polito.ezshop.data.User;
 
 public class EZShopDB {
 	private SQLiteConnection connection = null;
@@ -71,8 +75,7 @@ public class EZShopDB {
 	            pstmt.executeUpdate();
 	        } catch (SQLException e) {
 	            System.err.println(e.getMessage());
-	        }
-	    boolean x = deleteUser(9);
+	        }	  
 	}
 	
 	/**
@@ -97,6 +100,7 @@ public class EZShopDB {
         return exists;
 	}
 
+
 	public boolean deleteUser(Integer id) {
 		String sql = "DELETE FROM users WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -109,4 +113,126 @@ public class EZShopDB {
 		
 		return true;
 	}
+
+	
+	public List<User> getAllUsers() {
+		String sql = "SELECT id,username,password,role FROM users";
+		List<User> userlist = new ArrayList<>();
+		
+		try (Statement stmt  = connection.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)){
+	            
+			 while (rs.next()) {
+				 Integer id = rs.getInt("id");
+				 String name = rs.getString("username");
+				 String password = rs.getString("password");
+				 String role = rs.getString("role");
+				 
+				 User user = new UserClass(id,name,password,role);
+				 userlist.add(user);
+	         }
+	    } catch (SQLException e) {
+	    	System.err.println(e.getMessage());
+	    }
+		
+		return userlist;
+	}
+	
+	public User getUserById(Integer id) {
+		String sql = "SELECT id,username,password,role FROM users WHERE id=?";
+		User user = null;
+        
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            
+            user = new UserClass(rs.getInt("id"),rs.getString("username"),rs.getString("password"),rs.getString("role"));
+            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        
+        return user;
+	}
+	
+	public boolean updateUserRole(Integer id, String role) {
+		String sql = "UPDATE users SET role=? WHERE id=?";
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setString(1, role);
+        	pstmt.setInt(2, id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+		
+		return true;
+	}
+	
+	public User getUserByCredentials(String username, String password) {
+		String sql = "SELECT id,username,password,role FROM users WHERE username=? AND password=?";
+		User user = null;
+        
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setString(1,username);
+        	pstmt.setString(2, password);
+        	
+            ResultSet rs = pstmt.executeQuery();
+            
+            user = new UserClass(rs.getInt("id"),rs.getString("username"),rs.getString("password"),rs.getString("role"));
+            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        
+        return user;
+	}
+	
+	public boolean loginUser(User user) {
+		String sql = "INSERT INTO loggedusers(id,username,password,role) VALUES(?,?,?,?)";
+
+	    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+	            pstmt.setInt(1, user.getId());
+	            pstmt.setString(2, user.getUsername());
+	            pstmt.setString(3, user.getPassword());
+	            pstmt.setString(4, user.getRole());
+	            
+	            pstmt.executeUpdate();
+	        } catch (SQLException e) {
+	        	System.err.println(e.getMessage());
+	            return false;
+	        }
+	    
+	    return true;
+	}
+	
+	public boolean logoutUser() {
+		String sql = "DELETE FROM loggedusers";
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+			pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	            return false;
+	        }
+	    
+	    return true;
+	}
+	
+	public User getLoggedUser() {
+		String sql = "SELECT id,username,password,role FROM loggedusers";
+		User user = null;
+        
+		try (Statement stmt  = connection.createStatement();
+			 ResultSet rs = stmt.executeQuery(sql)){
+            
+             user = new UserClass(rs.getInt("id"),rs.getString("username"),rs.getString("password"),rs.getString("role"));
+            
+        } catch (SQLException e) {
+            return null;
+        }
+        
+        return user;
+	}
+
 }
