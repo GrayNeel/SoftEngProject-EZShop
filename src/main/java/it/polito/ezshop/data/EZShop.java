@@ -6,6 +6,8 @@ import it.polito.ezshop.exceptions.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 
@@ -39,7 +41,7 @@ public class EZShop implements EZShopInterface {
     	
     	
     	//Get the last used ID
-    	lastid = db.getLastId(); //prendiamo l'ultimo ID o il primo libero? Per rimpiazzare quelli cancellati
+    	lastid = db.getLastId("users"); 
     	
     	//Create User Object with newID
     	UserClass user = new UserClass(lastid+1, username, password, role);
@@ -52,14 +54,16 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public boolean deleteUser(Integer id) throws InvalidUserIdException, UnauthorizedException {
-    	////////////////////// TO DO ///////////////////////////////
-    	/* @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation*/
     	
-    	//Check that username is not empty and it does not exist
     	if(id == null || id <= 0) {
     		throw new InvalidUserIdException("Invalid id");
     	}
     	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || !user.getRole().equals("Administrator")) {
+    		throw new UnauthorizedException();
+    	}    	
     
     	
     	boolean del = db.deleteUser(id);
@@ -148,99 +152,335 @@ public class EZShop implements EZShopInterface {
     @Override
     public Integer createProductType(String description, String productCode, double pricePerUnit, String note) throws InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
     	User user = db.getLoggedUser();
-    	Integer barcode = null;
+    	Integer barCode = null;
     	
     	//Verifying that the string is a number
     	try {
-    		barcode = Integer.parseInt(productCode);
+    		barCode = Integer.parseInt(productCode);
     	}catch(NumberFormatException e) {
-    		throw new InvalidProductCodeException();
+    		throw new InvalidProductCodeException();    		
     	}
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();    	
+    	}
+    	
+    	if(description.length()==0 || description == null) {
+    		throw new InvalidProductDescriptionException();    		
+    	}
+    	
+    	if(productCode == null || productCode.length() == 0 || db.checkExistingProductType(productCode)) {
+    		throw new InvalidProductCodeException();    		
+    	}
+    	//TODO: check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
+    	if(pricePerUnit <= 0) {
+    		throw new InvalidPricePerUnitException();    		
+    	} 
+    	
+    	//Get the last used ID
+    	int lastid = db.getLastId("productTypes");
+    	
+    	//Create productType Object with newID
+    	//(Integer id, Integer quantity, String location, String note, String productDescription, String barCode, Double pricePerUnit)
+    	ProductTypeClass productType = new ProductTypeClass(lastid+1, 0, "location", note, description, productCode, pricePerUnit);
+    	
+    	//Add productType to the DB
+    	db.addProductType(productType);
+    	
+        return lastid+1;  
+    }
+
+    @Override
+    public boolean updateProduct(Integer id, String newDescription, String newCode, double newPrice, String newNote) throws InvalidProductIdException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
+    	/*   
+         * @throws InvalidProductCodeException if the product code is null or empty, if it is not a number or if it is not a valid barcode  
+         */   	
+    	
+    	
+    	if(id<=0 || id==null) {
+    		throw new InvalidProductIdException();
+    	}  
+    	
+    	if(newDescription==null || newDescription.length() == 0) {
+    		throw new InvalidProductDescriptionException();
+    	}
+    	
+    	if(newCode == null || newCode.length() == 0  || db.checkExistingProductType(newCode)) {
+    		throw new InvalidProductCodeException();    		
+    	} 	  
+    	//TODO: check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
+    	
+    	if(newPrice <= 0) {
+    		throw new InvalidPricePerUnitException();    		
+    	} 	
+    	
+    	
+    	User user = db.getLoggedUser();
     	
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
     		throw new UnauthorizedException();
     	}
     	
-    	if(description.length()==0 || description == null) {
-    		throw new InvalidProductDescriptionException();
-    	}
-    	
-    	if(productCode == null || productCode.length() == 0) {
-    		throw new InvalidProductCodeException();
-    	}
-    	
-    	//TODO: check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
-    	//and price per unit
-    	
-    	
-    	
-    	return null;
-    }
-
-    @Override
-    public boolean updateProduct(Integer id, String newDescription, String newCode, double newPrice, String newNote) throws InvalidProductIdException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
-        return false;
+    	if(db.updateProductType(id, newDescription, newCode, newPrice, newNote))
+    		return true;
+    	else
+    		return false;
     }
 
     @Override
     public boolean deleteProductType(Integer id) throws InvalidProductIdException, UnauthorizedException {
-        return false;
+    	
+    	if(id == null || id <= 0) {
+    		throw new InvalidProductIdException("Invalid Product id");
+    	}
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	}    	
+    
+    	
+    	boolean del = db.deleteProductType(id);
+    	
+    	if(del == true)
+    		System.out.println("Product with id: " + id + "deleted");
+    	else
+    		System.out.println("Product with id: " + id + "NOT deleted");
+        return del;
     }
 
     @Override
-    public List<ProductType> getAllProductTypes() throws UnauthorizedException {
-    	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
-    	List<ProductType> prodlist = new ArrayList<>();
-        return prodlist;
+    public List<ProductType> getAllProductTypes() throws UnauthorizedException {    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || !user.getRole().equals("Administrator") != !user.getRole().equals("ShopManager") != !user.getRole().equals("Cashier"))
+    		throw new UnauthorizedException(); 
+    	
+    	return db.getAllProductTypes();
     }
 
     @Override
     public ProductType getProductTypeByBarCode(String barCode) throws InvalidProductCodeException, UnauthorizedException {
-        return null;
+    	 /**
+         * This method returns a product type with given barcode. It can be invoked only after a user with role "Administrator"
+         * or "ShopManager" is logged in.
+         *
+         * @param barCode the unique barCode of a product
+         *
+         * @return the product type with given barCode if present, null otherwise
+         *
+         * @throws InvalidProductCodeException if barCode is not a valid bar code, if is it empty or if it is null
+       
+         */
+    	
+    	if(barCode == null || barCode.length() == 0  || !db.checkExistingProductType(barCode)) { //il checkExist ci vuole davvero?
+    		throw new InvalidProductCodeException();    		
+    	} 	  
+    	//TODO: check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	}        	
+    	
+    	 return db.getProductTypeByBarCode(barCode);
     }
 
     @Override
-    public List<ProductType> getProductTypesByDescription(String description) throws UnauthorizedException {
-    	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
-    	List<ProductType> prodlist = new ArrayList<>();
-        return prodlist;
+    public List<ProductType> getProductTypesByDescription(String description) throws UnauthorizedException {  	
+    	
+    	if(description == null) 
+    		description = "";    	
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	} 
+    	    	
+        return db.getProductTypesByDescription(description);
     }
 
     @Override
     public boolean updateQuantity(Integer productId, int toBeAdded) throws InvalidProductIdException, UnauthorizedException {
-        return false;
+    	
+    	if(productId == null || productId <= 0) {
+    		throw new InvalidProductIdException("Invalid Product id");
+    	}
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	} 
+    	
+    	if(db.updateQuantity(productId, toBeAdded))
+    		return true;
+    	else
+    		return false;  	      
     }
 
     @Override
     public boolean updatePosition(Integer productId, String newPos) throws InvalidProductIdException, InvalidLocationException, UnauthorizedException {
-        return false;
+    	
+    	if(productId == null || productId <= 0) {
+    		throw new InvalidProductIdException("Invalid Product id");
+    	}    	
+    	
+    	Pattern p = Pattern.compile("\\d+-\\d+-\\d+");
+    	Matcher m = p.matcher(newPos);    	
+    	 if (!m.matches()) {
+    		 throw new InvalidLocationException("Invalid Location format");
+    	 }   	
+    	    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	} 
+    	return db.updateLocation(productId, newPos);
     }
 
     @Override
     public Integer issueOrder(String productCode, int quantity, double pricePerUnit) throws InvalidProductCodeException, InvalidQuantityException, InvalidPricePerUnitException, UnauthorizedException {
-        return null;
+    	
+    	if(productCode == null || productCode.length() == 0) { //TO DO -> not valid barcode
+    		throw new InvalidProductCodeException("Invalid Product code");
+    	}
+    	
+    	if(db.getProductTypeByBarCode(productCode) == null)
+    		return -1;
+    	
+    	if(quantity <= 0)
+    		throw new InvalidQuantityException("Quantity can not be less than 0");
+    	
+    	if(pricePerUnit <= 0)
+    		throw new InvalidPricePerUnitException("Price per unit can not be less than 0");
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	} 
+    	
+    	//Get the last used ID
+    	Integer lastid = db.getLastId("orders"); 
+    	
+    	//Create Order Object with newOrderID
+    	OrderClass order = new OrderClass(0, productCode, pricePerUnit, quantity, "ISSUED", lastid+1); //balanceID??**********************************
+    	
+    	//Add Order to the DB    	
+    	if(!db.issueOrder(order))
+    		return -1;
+    	
+        return lastid+1;
     }
 
     @Override
     public Integer payOrderFor(String productCode, int quantity, double pricePerUnit) throws InvalidProductCodeException, InvalidQuantityException, InvalidPricePerUnitException, UnauthorizedException {
-        return null;
+    	/**
+        
+         * This method affects the balance of the system.
+         * It can be invoked only after a user with role "Administrator" or "ShopManager" is logged in.
+                 *
+         * @return  the id of the order (> 0)
+         *          -1 if the product does not exists, if the balance is not enough to satisfy the order, if there are some ////TO DOO!! The balance
+         *          problems with the db
+         *      
+         */
+    	if(productCode == null || productCode.length() == 0) { //TO DO -> not valid barcode
+    		throw new InvalidProductCodeException("Invalid Product code");
+    	}
+    	
+    	if(db.getProductTypeByBarCode(productCode) == null) 
+    		return -1;
+    	
+    	if(quantity <= 0)
+    		throw new InvalidQuantityException("Quantity can not be less than 0");
+    	
+    	if(pricePerUnit <= 0)
+    		throw new InvalidPricePerUnitException("Price per unit can not be less than 0");
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	} 
+    	
+    	//Get the last used ID
+    	Integer lastid = db.getLastId("orders"); 
+    	
+    	//Create Order Object with newID
+    	OrderClass order = new OrderClass(lastid+1, productCode, pricePerUnit, quantity, "PAYED", lastid+1); //balanceID??**********************************
+    	
+    	//Add Order to the DB    	
+    	if(!db.issueAndPayOrder(order))
+    		return -1;
+    	
+        return lastid+1;
     }
 
     @Override
     public boolean payOrder(Integer orderId) throws InvalidOrderIdException, UnauthorizedException {
-        return false;
+    	/**
+         
+         * This method affects the balance of the system.
+                
+         */
+    	if(orderId == null || orderId <= 0)
+    		throw new InvalidOrderIdException("Order ID can not be less than 0");
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	}     	
+    	
+    	return db.payOrder(orderId);
     }
 
     @Override
     public boolean recordOrderArrival(Integer orderId) throws InvalidOrderIdException, UnauthorizedException, InvalidLocationException {
-        return false;
+    	    	
+    	if(orderId == null || orderId <= 0)
+    		throw new InvalidOrderIdException("Order ID can not be less than 0");
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	} 
+    	
+    	Order order = null;
+    	List<Order> orderList = getAllOrders();
+    	for(Order o : orderList)    	
+    		if(o.getOrderId() == orderId)
+    			order = o;
+    	
+    	ProductType prod = null;
+    	List<ProductType> productList = getAllProductTypes();
+    	
+    	for(ProductType p : productList)    	
+    		if(p.getBarCode()== order.getProductCode())
+    			prod = p;
+    	
+    	if(prod.getLocation().length() == 0)
+    		throw new InvalidLocationException("Product type of the ordered product has not an assigned location");
+    		    	
+    	return db.recordOrderArrival(orderId, prod.getBarCode(), prod.getQuantity() + order.getQuantity());
     }
 
     @Override
     public List<Order> getAllOrders() throws UnauthorizedException {
-    	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
-    	List<Order> ordlist = new ArrayList<>();
-        return ordlist;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+    		throw new UnauthorizedException();
+    	} 
+    	
+    	return db.getAllOrders();
     }
 
     @Override

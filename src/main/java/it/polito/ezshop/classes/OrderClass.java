@@ -3,77 +3,79 @@ package it.polito.ezshop.classes;
 import it.polito.ezshop.data.Order;
 
 public class OrderClass implements Order {
-
+	private Integer balanceId;
+	private String productCode;
+	private Double pricePerUnit;
+	private Integer quantity;
+	private String status;
+	private Integer orderId;
+	
+	public OrderClass (Integer balanceId, String productCode, Double pricePerUnit, Integer quantity, String status, Integer orderId) {
+		this.balanceId = balanceId;
+		this.productCode = productCode;
+		this.pricePerUnit = pricePerUnit;
+		this.quantity = quantity;
+		this.status = status;
+		this.orderId = orderId;			
+	}
+	
 	@Override
-	public Integer getBalanceId() {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer getBalanceId() {		
+		return balanceId;
 	}
 
 	@Override
 	public void setBalanceId(Integer balanceId) {
-		// TODO Auto-generated method stub
-		
+		this.balanceId= balanceId;
 	}
 
 	@Override
-	public String getProductCode() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getProductCode() {		
+		return productCode;
 	}
 
 	@Override
 	public void setProductCode(String productCode) {
-		// TODO Auto-generated method stub
-		
+		this.productCode = productCode;		
 	}
 
 	@Override
-	public double getPricePerUnit() {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getPricePerUnit() {		
+		return pricePerUnit;
 	}
 
 	@Override
 	public void setPricePerUnit(double pricePerUnit) {
-		// TODO Auto-generated method stub
-		
+		this.pricePerUnit = pricePerUnit;		
 	}
 
 	@Override
-	public int getQuantity() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getQuantity() {		
+		return quantity;
 	}
 
 	@Override
-	public void setQuantity(int quantity) {
-		// TODO Auto-generated method stub
-		
+	public void setQuantity(int quantity) {		
+		this.quantity = quantity;
 	}
 
 	@Override
-	public String getStatus() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getStatus() {	
+		return status;
 	}
 
 	@Override
 	public void setStatus(String status) {
-		// TODO Auto-generated method stub
-		
+		this.status = status;		
 	}
 
 	@Override
-	public Integer getOrderId() {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer getOrderId() {		
+		return orderId;
 	}
 
 	@Override
 	public void setOrderId(Integer orderId) {
-		// TODO Auto-generated method stub
-		
+		this.orderId = orderId;		
 	}
-
 }
