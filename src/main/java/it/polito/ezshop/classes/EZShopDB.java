@@ -643,20 +643,36 @@ public class EZShopDB {
 		return true;
 	}
 
-	/*public Integer defineCustomer(String customerName) {
-		String sql = "INSERT INTO customers(id,username,password,role) VALUES(?,?,?,?)";
+	
+	public boolean defineCustomer(CustomerClass customer) {
+		String sql = "INSERT INTO customers(id,customerName,customerCard,points) VALUES(?,?,?,?)";
 
 	    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-	            pstmt.setInt(1, user.getId());
-	            pstmt.setString(2, user.getUsername());
-	            pstmt.setString(3, user.getPassword());
-	            pstmt.setString(4, user.getRole());
+	            pstmt.setInt(1, customer.getId());
+	            pstmt.setString(2, customer.getCustomerName());
+	            pstmt.setString(3, customer.getCustomerCard());
+	            pstmt.setInt(4, customer.getPoints());
 	            
 	            pstmt.executeUpdate();
 	        } catch (SQLException e) {
 	            System.err.println(e.getMessage());
-	        }
-	}*/
+	        }	
+	    return true;
+	}
+	
+	public boolean deleteCustomer(Integer id) {
+		String sql = "DELETE FROM customers WHERE id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setInt(1, id);
+        	pstmt.executeUpdate();            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage()); //non serve checkare se esiste. Se non esiste non viene cancellato nulla
+            return false;
+        }		
+		
+		return true;
+	}
+	
 	
 	
 	
