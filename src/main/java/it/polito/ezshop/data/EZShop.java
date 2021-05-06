@@ -485,7 +485,32 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public Integer defineCustomer(String customerName) throws InvalidCustomerNameException, UnauthorizedException {
-        return null;
+		return null;
+    	 /**
+         * This method saves a new customer into the system. The customer's name should be unique.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param customerName the name of the customer to be registered
+         *
+         * @return the id (>0) of the new customer if successful, -1 otherwise
+         *
+         * @throws InvalidCustomerNameException if the customer name is empty or null
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	
+    	/*User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	if(customerName.length() == 0)
+    		throw new InvalidCustomerNameException();
+    	
+    	Customer customer = null;
+    	
+    	
+    	
+        return db.defineCustomer(customerName);*/
     }
 
     @Override

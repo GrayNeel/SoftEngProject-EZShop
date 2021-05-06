@@ -642,6 +642,21 @@ public class EZShopDB {
 		
 		return true;
 	}
+
+	/*public Integer defineCustomer(String customerName) {
+		String sql = "INSERT INTO customers(id,username,password,role) VALUES(?,?,?,?)";
+
+	    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+	            pstmt.setInt(1, user.getId());
+	            pstmt.setString(2, user.getUsername());
+	            pstmt.setString(3, user.getPassword());
+	            pstmt.setString(4, user.getRole());
+	            
+	            pstmt.executeUpdate();
+	        } catch (SQLException e) {
+	            System.err.println(e.getMessage());
+	        }
+	}*/
 	
 	
 	
