@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.sqlite.SQLiteConnection;
 import org.sqlite.SQLiteUpdateListener;
+import org.sqlite.util.StringUtils;
 
 import it.polito.ezshop.data.Order;
 import it.polito.ezshop.data.ProductType;
@@ -672,6 +673,49 @@ public class EZShopDB {
 		
 		return true;
 	}
+	
+	public boolean updateCustomer(Integer id, String newCustomerName, String newCustomerCard) {
+		if(newCustomerCard==null) {
+			String sql = "UPDATE customers SET customerName=? WHERE id=?";
+			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+	        	pstmt.setString(1, newCustomerName);
+	        	pstmt.setInt(2, id);
+	            pstmt.executeUpdate();
+	        } catch (SQLException e) {
+	            System.err.println(e.getMessage());
+	            return false;
+	        }
+		}
+		else if(newCustomerCard=="") {
+			String sql = "UPDATE customers SET customerName=?, customerCard='' WHERE id=?";
+			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+	        	pstmt.setString(1, newCustomerName);
+	        	pstmt.setInt(2, id);
+	            pstmt.executeUpdate();
+	        } catch (SQLException e) {
+	            System.err.println(e.getMessage());
+	            return false;
+	        }
+		}
+		else {
+			String sql = "UPDATE customers SET customerName=?, customerCard=? WHERE id=?";
+			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+	        	pstmt.setString(1, newCustomerName);
+	        	pstmt.setString(2, newCustomerCard);
+	        	pstmt.setInt(3, id);
+	            pstmt.executeUpdate();
+	        } catch (SQLException e) {
+	            System.err.println(e.getMessage());
+	            return false;
+	        }
+		}
+		
+		
+		
+		return true;
+	}
+	
+	///////////////// Pablo write methods after this point
 	
 	
 	

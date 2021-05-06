@@ -531,6 +531,23 @@ public class EZShop implements EZShopInterface {
          * @throws InvalidCustomerCardException if the customer card is empty, null or if it is not in a valid format (string with 10 digits)
          * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
          */
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	
+    	if(newCustomerName==null || newCustomerName=="") {
+    		throw new InvalidCustomerNameException();
+    	}
+    	
+    	if(newCustomerCard.length()!=10) {
+    		throw new InvalidCustomerCardException();
+    	}
+    	
+    	boolean flag = db.updateCustomer(id, newCustomerName, newCustomerCard);
+    	
+    	return flag;
     }
 
     @Override
@@ -551,19 +568,53 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public Customer getCustomer(Integer id) throws InvalidCustomerIdException, UnauthorizedException {
-        return null;
+    	/**
+         * This method returns a customer with given id.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param id the id of the customer
+         *
+         * @return the customer with given id
+         *          null if that user does not exists
+         *
+         * @throws InvalidCustomerIdException if the id is null, less than or equal to 0.
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
     }
 
     @Override
     public List<Customer> getAllCustomers() throws UnauthorizedException {
     	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
+    	/**
+         * This method returns a list containing all registered users.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @return the list of all the customers registered
+         *
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
     	List<Customer> customerlist = new ArrayList<>();
         return customerlist;
     }
 
     @Override
     public String createCard() throws UnauthorizedException {
-        return null;
+    	/**
+         * This method returns a string containing the code of a new assignable card.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @return the code of a new available card. An empty string if the db is unreachable
+         *
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	Integer lastid = db.getLastId("cards");
+    	String cardId = lastid.toString();
+    	String filler = "";
+    	for(Integer i=0; i<(10-cardId.length()); i++) {
+    		filler += "0";
+    	}
+    	cardId = filler + cardId;
+    	return cardId;
     }
 
     @Override
@@ -611,6 +662,8 @@ public class EZShop implements EZShopInterface {
         return false;
     }
 
+    //////////////////////////////////////////////////////////////////// Marco ^ , Pablo v
+    
     @Override
     public boolean deleteSaleTransaction(Integer saleNumber) throws InvalidTransactionIdException, UnauthorizedException {
         return false;
