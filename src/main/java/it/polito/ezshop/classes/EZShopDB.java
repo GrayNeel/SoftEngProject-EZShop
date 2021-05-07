@@ -736,7 +736,7 @@ public class EZShopDB {
 		String sql = "SELECT transactionId,date,time,price,paymentType,state FROM saleTransactions "
 				+ "WHERE state == 'CLOSED' AND transactionId=?";
 		SaleTransaction saletransaction = null;
-		List<TicketEntry> ticketList = null;
+		List<TicketEntry> ticketList = null; // Change after implementing ticketentries
         
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
         	pstmt.setInt(1, transactionId);
@@ -753,6 +753,27 @@ public class EZShopDB {
         return saletransaction;
 	}
 	
+	public Integer startReturnTransaction(ReturnTransactionClass returnTransaction) {
+		String sql = "INSERT INTO returnTransactions(id, transactionId, quantity, returnedValue ) VALUES(?,?,?,?)";
+		SaleTransaction transaction = getSaleTransactionById(returnTransaction.getTransactionId());
+		Integer idReturn = -1;
+		if (transaction!=null) {
+			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+	            pstmt.setInt(1, returnTransaction.getId());
+	            pstmt.setInt(2, returnTransaction.getTransactionId());
+	            pstmt.setInt(3, returnTransaction.getQuantity());
+	            pstmt.setDouble(4, returnTransaction.getReturnedValue());
+	            
+	            pstmt.executeUpdate();
+	        } catch (SQLException e) {
+	            System.err.println(e.getMessage());
+	        }
+			idReturn = returnTransaction.getId();
+			return idReturn;
+		}
+		
+	    return idReturn;
+	}
 	
 	
 	
