@@ -754,7 +754,7 @@ public class EZShopDB {
 	}
 	
 	public Integer startReturnTransaction(ReturnTransactionClass returnTransaction) {
-		String sql = "INSERT INTO returnTransactions(id, transactionId, quantity, returnedValue ) VALUES(?,?,?,?)";
+		String sql = "INSERT INTO returnTransactions(id, transactionId, quantity, returnedValue, state) VALUES(?,?,?,?,?)";
 		SaleTransaction transaction = getSaleTransactionById(returnTransaction.getTransactionId());
 		Integer idReturn = -1;
 		if (transaction!=null) {
@@ -763,6 +763,7 @@ public class EZShopDB {
 	            pstmt.setInt(2, returnTransaction.getTransactionId());
 	            pstmt.setInt(3, returnTransaction.getQuantity());
 	            pstmt.setDouble(4, returnTransaction.getReturnedValue());
+	            pstmt.setString(5, returnTransaction.getState());
 	            
 	            pstmt.executeUpdate();
 	        } catch (SQLException e) {
@@ -774,6 +775,20 @@ public class EZShopDB {
 		
 	    return idReturn;
 	}
+	
+	public boolean deleteReturnTransaction(Integer returnId) {
+		String sql = "DELETE FROM returnTransactions WHERE state != 'CLOSED' AND id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setInt(1, returnId);
+        	pstmt.executeUpdate();            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }		
+		
+		return true;
+	}
+
 	
 	
 	

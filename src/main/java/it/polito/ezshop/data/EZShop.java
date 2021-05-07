@@ -710,7 +710,7 @@ public class EZShop implements EZShopInterface {
     		throw new InvalidTransactionIdException();
     	
     	int lastid = db.getLastId("returnTransactions");
-    	ReturnTransactionClass returnTransaction = new ReturnTransactionClass(lastid+1, saleNumber, 0, 0);
+    	ReturnTransactionClass returnTransaction = new ReturnTransactionClass(lastid+1, saleNumber, 0, 0, "");
     	Integer result = db.startReturnTransaction(returnTransaction);
 
     	return result;
@@ -728,7 +728,21 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public boolean deleteReturnTransaction(Integer returnId) throws InvalidTransactionIdException, UnauthorizedException {
-        return false;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	
+    	if(returnId==null || returnId<=0) {
+    		throw new InvalidTransactionIdException();
+    	}
+    	
+    	boolean flag = db.deleteReturnTransaction(returnId);
+    	if(flag) { //update quantity and price on sale transaction
+    		
+    	}
+    	return flag;
     }
 
     @Override
