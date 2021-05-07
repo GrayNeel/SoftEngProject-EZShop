@@ -14,6 +14,8 @@ import org.sqlite.util.StringUtils;
 
 import it.polito.ezshop.data.Order;
 import it.polito.ezshop.data.ProductType;
+import it.polito.ezshop.data.SaleTransaction;
+import it.polito.ezshop.data.TicketEntry;
 import it.polito.ezshop.data.User;
 
 public class EZShopDB {
@@ -716,6 +718,40 @@ public class EZShopDB {
 	}
 	
 	///////////////// Pablo write methods after this point
+
+	public boolean deleteSaleTransaction(Integer transactionId) {
+		String sql = "DELETE FROM saleTransactions WHERE state != 'PAYED' AND transactionId=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setInt(1, transactionId);
+        	pstmt.executeUpdate();            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }		
+		
+		return true;
+	}
+	
+	public SaleTransaction getSaleTransactionById(Integer transactionId) {
+		String sql = "SELECT transactionId,date,time,price,paymentType,state FROM saleTransactions "
+				+ "WHERE state == 'CLOSED' AND transactionId=?";
+		SaleTransaction saletransaction = null;
+		List<TicketEntry> ticketList = null;
+        
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setInt(1, transactionId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            saletransaction = new SaleTransactionClass(rs.getInt("transactionId"), rs.getString("date"),
+            		rs.getString("time"), rs.getDouble("price"), rs.getString("paymentType"), rs.getDouble("discountRate"), 
+            		ticketList, rs.getString("state"));
+            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        
+        return saletransaction;
+	}
 	
 	
 	

@@ -580,6 +580,7 @@ public class EZShop implements EZShopInterface {
          * @throws InvalidCustomerIdException if the id is null, less than or equal to 0.
          * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
          */
+    	return null;
     }
 
     @Override
@@ -665,13 +666,36 @@ public class EZShop implements EZShopInterface {
     //////////////////////////////////////////////////////////////////// Marco ^ , Pablo v
     
     @Override
+    // chiedere se si può cambiare il nome dil parameter
     public boolean deleteSaleTransaction(Integer saleNumber) throws InvalidTransactionIdException, UnauthorizedException {
-        return false;
+		User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	
+    	if(saleNumber==null || saleNumber<=0) {
+    		throw new InvalidTransactionIdException();
+    	}
+    	
+    	boolean flag = db.deleteSaleTransaction(saleNumber);
+    	return flag;
     }
 
     @Override
     public SaleTransaction getSaleTransaction(Integer transactionId) throws InvalidTransactionIdException, UnauthorizedException {
-        return null;
+    	
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || !user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier")) {
+    		throw new UnauthorizedException();
+    	}
+
+    	if(transactionId<=0 || transactionId==null) {
+    		throw new InvalidTransactionIdException();
+    	}
+    	
+        return db.getSaleTransactionById(transactionId);
     }
 
     @Override
