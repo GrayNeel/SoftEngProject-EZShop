@@ -121,7 +121,7 @@ public class EZShopDB {
 
 	
 	public List<User> getAllUsers() {
-		String sql = "SELECT id,username,password,role FROM users";
+		String sql = "SELECT id,username,password,role FROM users";		
 		List<User> userlist = new ArrayList<>();
 		
 		try (Statement stmt  = connection.createStatement();
@@ -137,7 +137,7 @@ public class EZShopDB {
 				 userlist.add(user);
 	         }
 	    } catch (SQLException e) {
-	    	System.err.println(e.getMessage());
+	    	System.err.println(e.getMessage());	    	
 	    }
 		
 		return userlist;
@@ -581,15 +581,7 @@ public class EZShopDB {
 	}
 
 	public boolean recordOrderArrival(Integer orderId, String barCode, Integer newQty) {
-		 /** This method records the arrival of an order with given <orderId>. This method changes the quantity of available product.
-         * The product type affected must have a location registered. The order should be either in the PAYED state (in this
-         * case the state will change to the COMPLETED one and the quantity of product type will be updated) or in the
-         * COMPLETED one (in this case this method will have no effect at all).
-            *     
-         *
-         * @return  true if the operation was successful
-         *          false if the order does not exist or if it was not in an ORDERED/COMPLETED state*/
-		
+		 		
 		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE orderId=?";
 	       
         //CHECK IF Order ALREADY EXISTS
@@ -603,22 +595,22 @@ public class EZShopDB {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
-        
+                    
       //CHECK Order status
         sql = "SELECT status FROM orders WHERE orderId=?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
         	pstmt.setInt(1, orderId);
-            ResultSet rs = pstmt.executeQuery();
-            
-            if(rs.getString("status")!= "PAYED")
+            ResultSet rs = pstmt.executeQuery();            
+            if(!rs.getString("status").equals("PAYED"))
             	return false;   
-            if(rs.getString("status")!= "COMPLETED")
+            if(rs.getString("status").equals("COMPLETED"))
             	return true; 
             
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
         
+      
       //UPDATE status into COMPLETED		
         sql = "UPDATE orders SET status=? WHERE orderId=?";		
 		
@@ -630,7 +622,7 @@ public class EZShopDB {
             System.err.println(e.getMessage());
             return false;
         }
-		
+	
 		//UPDATE quantity into productType
 		sql = "UPDATE productTypes SET quantity=? WHERE barCode=?";		
 		
@@ -641,8 +633,7 @@ public class EZShopDB {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             return false;
-        }
-		
+        }	
 		return true;
 	}
 
