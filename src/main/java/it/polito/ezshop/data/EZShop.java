@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 public class EZShop implements EZShopInterface {
 	EZShopDB db = new EZShopDB();
+	User loggedUser = null;
 	
 	
 	
@@ -137,16 +138,25 @@ public class EZShop implements EZShopInterface {
     	
     	User user = db.getUserByCredentials(username,password);
         
-    	//If user is null or DB problems
-    	if(user == null || !db.loginUser(user))
+    	//If user is null
+    	if(user == null) // || !db.loginUser(user)
     		return null;
+    	
+    	//Login user
+    	loggedUser = user;
     	
     	return user;
     }
 
     @Override
     public boolean logout() {
-        return db.logoutUser();
+    	if(loggedUser != null) {
+    		loggedUser = null;
+    		return true;
+    	} else
+    		return false;
+        
+    	//return db.logoutUser();
     }
 
     @Override

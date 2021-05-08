@@ -194,35 +194,39 @@ public class EZShopDB {
         return user;
 	}
 	
-	public boolean loginUser(User user) {
-		String sql = "INSERT INTO loggedusers(id,username,password,role) VALUES(?,?,?,?)";
-
-	    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-	            pstmt.setInt(1, user.getId());
-	            pstmt.setString(2, user.getUsername());
-	            pstmt.setString(3, user.getPassword());
-	            pstmt.setString(4, user.getRole());
-	            
-	            pstmt.executeUpdate();
-	        } catch (SQLException e) {
-	        	System.err.println(e.getMessage());
-	            return false;
-	        }
-	    
-	    return true;
-	}
-	
-	public boolean logoutUser() {
-		String sql = "DELETE FROM loggedusers";
-
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)){
-			pstmt.executeUpdate();
-	    } catch (SQLException e) {
-	            return false;
-	        }
-	    
-	    return true;
-	}
+/**
+ * Deprecated DB functions that managed loggedUser. It is better to use a variable in 
+ * java to avoid problems when user exit program without logging out
+ */
+//	public boolean loginUser(User user) {
+//		String sql = "INSERT INTO loggedusers(id,username,password,role) VALUES(?,?,?,?)";
+//
+//	    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+//	            pstmt.setInt(1, user.getId());
+//	            pstmt.setString(2, user.getUsername());
+//	            pstmt.setString(3, user.getPassword());
+//	            pstmt.setString(4, user.getRole());
+//	            
+//	            pstmt.executeUpdate();
+//	        } catch (SQLException e) {
+//	        	System.err.println(e.getMessage());
+//	            return false;
+//	        }
+//	    
+//	    return true;
+//	}
+//	
+//	public boolean logoutUser() {
+//		String sql = "DELETE FROM loggedusers";
+//
+//		try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+//			pstmt.executeUpdate();
+//	    } catch (SQLException e) {
+//	            return false;
+//	        }
+//	    
+//	    return true;
+//	}
 	
 	public User getLoggedUser() {
 		String sql = "SELECT id,username,password,role FROM loggedusers";
