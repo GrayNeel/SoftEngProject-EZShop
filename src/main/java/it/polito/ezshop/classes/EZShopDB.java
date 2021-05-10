@@ -869,12 +869,59 @@ public class EZShopDB {
 
 		return returntransaction;
 	}
-
+	public double getPricePerUnit(String productCode) {
+		String sql = "SELECT pricePerUnit FROM productTypes WHERE barCode=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, productCode);
+			ResultSet rs = pstmt.executeQuery();
+			return rs.getDouble("pricePerUnit");
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return -1;
+		}
+	}
+	
 	public boolean returnProduct(int returnId, int transactionId, String productCode, int amount) {
-		String sql = "SELECT * FROM saleTransactions as 'ST', productEntries as 'PE', WHERE ST.transactionId=PE.transactionId"
-				+ " AND ST.transactionId=?";
-
-		return false;
+		String amountDB = "SELECT PE.amount FROM returnTransactions as RT JOIN productEntries as PE ON RT.transactionId = PE.transactionId"
+				+ " WHERE RT.id=? AND PE.productCode=?";
+		// The amount of units of product to be returned should not exceed the amount originally sold
+		try (PreparedStatement pstmt = connection.prepareStatement(amountDB)) {
+			pstmt.setInt(1, returnId);
+			pstmt.setString(2, productCode);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.getInt("amount")<amount) {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		//If amount to return is smaller or equal than sale transaction amount, continue
+		int newId = getLastId("productReturns");
+		
+		String addProductReturn = "INSERT INTO productReturns(id,returnId,productCode,quantity,returnValue) VALUES(?,?,?,?,?)";
+		
+		// get price per unit
+		double pricePerUnit = getPricePerUnit(productCode);
+		if(pricePerUnit==-1)
+			return false;
+		
+		double returnValue = pricePerUnit*amount;
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(addProductReturn)) {
+			pstmt.setInt(1, newId);
+			pstmt.setInt(2, returnId);
+			pstmt.setString(3, productCode);
+			pstmt.setInt(4, amount);
+			pstmt.setDouble(5, returnValue);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		// UPDATE state of returnTransaction
+		
+		return true;
 	}
 
 }
