@@ -867,10 +867,50 @@ public class EZShop implements EZShopInterface {
 
     	return result;
     }
-
+    /**
+     * This method adds a product to the return transaction
+     * The amount of units of product to be returned should not exceed the amount originally sold.
+     * This method DOES NOT update the product quantity
+     * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+     *
+     * @param returnId the id of the return transaction
+     * @param productCode the bar code of the product to be returned
+     * @param amount the amount of product to be returned
+     *
+     * @return  true if the operation is successful
+     *          false   if the the product to be returned does not exists,
+     *                  if it was not in the transaction,
+     *                  if the amount is higher than the one in the sale transaction,
+     *                  if the transaction does not exist
+     *
+     * @throws InvalidTransactionIdException if the return id is less ther or equal to 0 or if it is null
+     * @throws InvalidProductCodeException if the product code is empty, null or invalid
+     * @throws InvalidQuantityException if the quantity is less than or equal to 0
+     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+     */
     @Override
     public boolean returnProduct(Integer returnId, String productCode, int amount) throws InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, UnauthorizedException {
-        return false;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	   	
+    	if(returnId==null || returnId<=0)
+    		throw new InvalidTransactionIdException();
+    	
+    	if(amount<=0)
+    		throw new InvalidQuantityException();
+    	
+    	if(productCode=="" || productCode==null)
+    		throw new InvalidProductCodeException();
+    	
+    	ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
+    	if(returnTransaction==null)
+    		return false;
+    	
+    	//Integer result = db.startReturnTransaction(returnTransaction);
+    	return true;
     }
 
     @Override

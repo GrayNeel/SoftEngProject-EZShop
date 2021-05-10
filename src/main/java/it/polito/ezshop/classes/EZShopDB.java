@@ -757,7 +757,7 @@ public class EZShopDB {
 	            pstmt.setInt(1, returnTransaction.getId());
 	            pstmt.setInt(2, returnTransaction.getTransactionId());
 	            pstmt.setInt(3, returnTransaction.getQuantity());
-	            pstmt.setDouble(4, returnTransaction.getReturnedValue());
+	            pstmt.setDouble(4, returnTransaction.getReturnValue());
 	            pstmt.setString(5, returnTransaction.getState());
 	            
 	            pstmt.executeUpdate();
@@ -783,6 +783,33 @@ public class EZShopDB {
 		
 		return true;
 	}
+	
+	public ReturnTransactionClass getReturnTransactionById(Integer returnId) {
+		String sql = "SELECT * FROM returnTransactions WHERE id=?";
+		ReturnTransactionClass returntransaction = null;
+        
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setInt(1, returnId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            returntransaction = new ReturnTransactionClass(rs.getInt("id"), rs.getInt("transactionId"), rs.getInt("quantity"),
+            		rs.getDouble("returnValue"), rs.getString("state"));
+            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        
+        return returntransaction;
+	} 
+	
+	public boolean returnProduct(int returnId, int transactionId, String productCode, int amount) {
+		String sql = "SELECT * FROM saleTransactions as 'ST', productEntries as 'PE', WHERE ST.transactionId=PE.transactionId"
+				+ " AND ST.transactionId=?";
+
+		
+		return false;
+	}
+	
 
 	
 	

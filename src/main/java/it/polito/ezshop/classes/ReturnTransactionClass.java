@@ -11,13 +11,13 @@ public class ReturnTransactionClass {
 	private Integer transactionId;
 	private String state;
 	private List<ProductType> productTypeList = new ArrayList<>();
-	private double returnedValue;
+	private Double returnValue;
 	
-	public ReturnTransactionClass (Integer id, Integer transactionId, Integer quantity, double returnedValue, String state) {
+	public ReturnTransactionClass (Integer id, Integer transactionId, Integer quantity, double returnValue, String state) {
 		this.id = id;
 		this.transactionId = transactionId;
 		this.quantity = quantity;
-		this.returnedValue = returnedValue;
+		this.returnValue = returnValue;
 		this.state = state;
 	}
 
@@ -53,12 +53,12 @@ public class ReturnTransactionClass {
 		this.transactionId = transactionId;
 	}
 
-	public double getReturnedValue() {
-		return returnedValue;
+	public double getReturnValue() {
+		return returnValue;
 	}
 
-	public void setReturnedValue(double returnedValue) {
-		this.returnedValue = returnedValue;
+	public void setReturnValue(double returnValue) {
+		this.returnValue = returnValue;
 	}
 	
 	public List<ProductType> getProductTypeList() {

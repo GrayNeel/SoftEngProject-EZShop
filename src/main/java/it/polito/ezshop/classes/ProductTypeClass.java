@@ -91,4 +91,13 @@ public class ProductTypeClass implements ProductType {
 	public void setId(Integer id) {
 		this.id = id;		
 	}
+	
+	public boolean validateBarCode(String barCode) {
+		int keyFormat = barCode.length();
+		int finalSum = 0;
+		for (int i = 0; i < keyFormat; i++) {
+			
+		}
+		return false;
+	}
 }
