@@ -777,19 +777,7 @@ public class EZShopDB {
             flag = false;
         }
 		flag = true;
-		
-		/*boolean flagcard;
-		sql = "UPDATE cards SET assigned=1 WHERE id=?";
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-        	pstmt.setString(1, customerCard);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            flagcard = false;
-        }
-		flagcard = true;*/
-		
-		
+
 		return flag;
 	}
 	

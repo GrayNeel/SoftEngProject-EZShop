@@ -769,21 +769,7 @@ public class EZShop implements EZShopInterface {
     	}
     	
     	boolean flag = db.attachCardToCustomer(customerCard, customerId);
-    	/**
-         * This method assigns a card with given card code to a customer with given identifier. A card with given card code
-         * can be assigned to one customer only.
-         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-         *
-         * @param customerCard the number of the card to be attached to a customer
-         * @param customerId the id of the customer the card should be assigned to
-         *
-         * @return true if the operation was successful
-         *          false if the card is already assigned to another user, if there is no customer with given id, if the db is unreachable
-         *
-         * @throws InvalidCustomerIdException if the id is null, less than or equal to 0.
-         * @throws InvalidCustomerCardException if the card is null, empty or in an invalid format
-         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-         */
+
     	return flag;
     }
 
