@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
 public class EZShop implements EZShopInterface {
 	EZShopDB db = new EZShopDB();
 	User loggedUser = null;
+<<<<<<< HEAD
 	
 	
 	
@@ -1125,4 +1124,3 @@ public class EZShop implements EZShopInterface {
     public double computeBalance() throws UnauthorizedException {
         return 0;
     }
-}
