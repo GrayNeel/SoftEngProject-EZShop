@@ -779,6 +779,39 @@ public class EZShopDB {
 
 		return flag;
 	}
+	
+	public boolean updateCardPoints(String customerCard, Integer points) {
+		boolean flag;
+		if(points>0) {
+			String sql = "UPDATE cards SET points=points+? WHERE id=?";
+			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+				pstmt.setInt(1, points);
+				pstmt.setString(2, customerCard);
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.err.println(e.getMessage());
+				flag = false;
+			}
+			flag = true;
+		}
+		else {
+			String sql = "UPDATE cards SET points=points+? WHERE id=? and points >= ?";
+			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+				pstmt.setInt(1, points);
+				pstmt.setString(2, customerCard);
+				pstmt.setInt(3, -points);
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.err.println(e.getMessage());
+				flag = false;
+			}
+			flag = true;
+		}
+		
+		
+
+		return flag;
+	}
 
 	///////////////// Pablo write methods after this point
 

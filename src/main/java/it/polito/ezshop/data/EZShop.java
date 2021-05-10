@@ -3,6 +3,7 @@ package it.polito.ezshop.data;
 import it.polito.ezshop.classes.*;
 import it.polito.ezshop.exceptions.*;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -785,23 +786,8 @@ public class EZShop implements EZShopInterface {
     		throw new InvalidCustomerCardException();
     	}
     	
+    	boolean flag = db.updateCardPoints(customerCard, pointsToBeAdded);
     	
-    	/**
-         * This method updates the points on a card adding to the number of points available on the card the value assumed by
-         * <pointsToBeAdded>. The points on a card should always be greater than or equal to 0.
-         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-         *
-         * @param customerCard the card the points should be added to
-         * @param pointsToBeAdded the points to be added or subtracted ( this could assume a negative value)
-         *
-         * @return true if the operation is successful
-         *          false   if there is no card with given code,
-         *                  if pointsToBeAdded is negative and there were not enough points on that card before this operation,
-         *                  if we cannot reach the db.
-         *
-         * @throws InvalidCustomerCardException if the card is null, empty or in an invalid format
-         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-         */
     	return false;
     }
 
@@ -812,18 +798,11 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
     	}
-    	// -------------------- FR6 ------------------- //
-        // ------------------- ADMIN ------------------ //
-        // --------------- SHOP MANAGER --------------- //
-        // ------------------ CASHIER ----------------- //
+    	Integer lastid = db.getLastId("saleTransactions");
+    	List<TicketEntry> ticketlist = new ArrayList<>();
+    	Date date = new Date();
+    	SaleTransactionClass saleTransaction = new SaleTransactionClass(lastid+1, date, date, 0, "", 0, ticketlist,"");
 
-
-        /**
-         * This method starts a new sale transaction and returns its unique identifier.
-         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-         *
-         * @return the id of the transaction (greater than or equal to 0)
-         */
         return null;
     }
 
