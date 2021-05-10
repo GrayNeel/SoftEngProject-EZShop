@@ -54,7 +54,7 @@ public class EZShopDB {
 	 * @return integer
 	 */
 	public Integer getLastId(String table) {
-		String sql = "SELECT COUNT(*) AS tot FROM " + table;
+		String sql = "SELECT MAX(id) AS tot FROM " + table;
 		Integer id = -1;
 
 		try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {

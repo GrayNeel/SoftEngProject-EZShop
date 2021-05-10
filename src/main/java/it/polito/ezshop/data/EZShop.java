@@ -799,8 +799,9 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
     	}
-		Integer lastId = db.getLastId("saleTransactions")
-		SaleTransactionClass transaction = new SaleTransactionClass()
+		Integer lastId = db.getLastId("saleTransactions");
+		lastId = lastId + tickets.size() + 1;
+		SaleTransactionClass transaction = new SaleTransactionClass();
     	tickets.put()
 
     	Date date = new Date();
