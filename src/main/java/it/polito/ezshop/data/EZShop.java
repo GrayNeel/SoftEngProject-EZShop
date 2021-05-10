@@ -13,7 +13,9 @@ import java.util.regex.Pattern;
 public class EZShop implements EZShopInterface {
 	EZShopDB db = new EZShopDB();
 	User loggedUser = null;
-<<<<<<< HEAD
+	// List<TicketEntry> ticket = ArrayList<>();
+	// SaleTransactionClass transaction = null;
+	Map<TicketEntry,List<SaleTransactionClass>> tickets = new HashMap<>();
 	
 	
 	
@@ -797,12 +799,14 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
     	}
-    	Integer lastid = db.getLastId("saleTransactions");
-    	List<TicketEntry> ticketlist = new ArrayList<>();
-    	Date date = new Date();
-    	SaleTransactionClass saleTransaction = new SaleTransactionClass(lastid+1, date, date, 0, "", 0, ticketlist,"");
+		Integer lastId = db.getLastId("saleTransactions")
+		SaleTransactionClass transaction = new SaleTransactionClass()
+    	tickets.put()
 
-        return null;
+    	Date date = new Date();
+    	SaleTransactionClass saleTransaction = new SaleTransactionClass(lastid+1, date.toString(), date.toString(), 0, "", 0, tickets,"OPEN");
+		Integer returnId = db.startSaleTransaction(saleTransaction);
+        return returnId;
     }
 
     @Override
@@ -812,6 +816,8 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
     	}
+
+
     	/**
          * This method adds a product to a sale transaction decreasing the temporary amount of product available on the
          * shelves for other customers.
