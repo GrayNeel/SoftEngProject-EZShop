@@ -807,8 +807,31 @@ public class EZShopDB {
 			}
 			flag = true;
 		}
+		
+		
 
 		return flag;
+	}
+
+	public Integer startSaleTransaction(SaleTransactionClass saleTransaction) {
+		String sql = "INSERT INTO saleTransactions(transactionId, price, discountRate, date, time, paymentType, state) VALUES(?,?,?,?,?,?,?)";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, saleTransaction.getTicketNumber());
+			pstmt.setDouble(2, saleTransaction.getPrice());
+			pstmt.setDouble(3, saleTransaction.getDiscountRate());
+			pstmt.setString(4, saleTransaction.getDate());
+			pstmt.setString(5, saleTransaction.getTime());
+			pstmt.setString(6, saleTransaction.getPaymentType());
+			pstmt.setString(7, saleTransaction.getState());
+
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return -1;
+		}
+
+
+		return saleTransaction.getTicketNumber();
 	}
 
 	///////////////// Pablo write methods after this point
