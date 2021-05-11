@@ -922,6 +922,32 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
     	}
+		
+		if(transactionId<0 || transactionId==null){
+			throw new InvalidTransactionIdException();
+		}
+
+		
+		if(productCode==null || productCode==""){
+			throw new InvalidProductCodeException();
+		}
+
+		if(amount <= 0){
+			throw new InvalidQuantityException();
+		}
+
+		ProductTypeClass product = getProductTypeByBarCode(productCode);
+
+		if(product==null){
+			return false;
+		}
+
+		SaleTransactionClass transaction = tickets.get(transactionId);
+		if(transaction==null){
+			return false;
+		}
+
+
     	/**
          * This method applies a discount rate to all units of a product type with given type in a sale transaction. The
          * discount rate should be greater than or equal to 0 and less than 1.
