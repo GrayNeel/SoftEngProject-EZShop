@@ -255,7 +255,7 @@ public class EZShopDB {
 	 * 
 	 * @param productType the ProductTypeClass containing parameters to add
 	 */
-	public void addProductType(ProductTypeClass productType) {
+	public void addProductType(ProductType productType) {
 		String sql = "INSERT INTO productTypes(id, quantity, location, note, productDescription, barCode, pricePerUnit) VALUES(?,?,?,?,?,?,?)";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1012,60 +1012,67 @@ public class EZShopDB {
 
     public double getPricePerUnit(String productCode) {
         String sql = "SELECT pricePerUnit FROM productTypes WHERE barCode=?";
+        double result = 0;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, productCode);
             ResultSet rs = pstmt.executeQuery();
-            return rs.getDouble("pricePerUnit");
+            result= rs.getDouble("pricePerUnit");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            return -1;
         }
+        return result;
     }
-
-    public boolean returnProduct(int returnId, int transactionId, String productCode, int amount) {
-        String amountDB = "SELECT PE.amount FROM returnTransactions AS RT JOIN productEntries AS PE ON RT.transactionId = PE.transactionId"
-                + " WHERE RT.id=? AND PE.productCode=?";
-        // The amount of units of product to be returned should not exceed the amount
-        // originally sold
-        try (PreparedStatement pstmt = connection.prepareStatement(amountDB)) {
-            pstmt.setInt(1, returnId);
-            pstmt.setString(2, productCode);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.getInt("amount") < amount) {
-                return false;
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-        // If amount to return is smaller or equal than sale transaction amount,
-        // continue
+    
+    public boolean returnProduct(int returnId, int transactionId, String productCode, int amount, double returnValue) {
         int newId = getLastId("productReturns");
 
-        String addProductReturn = "INSERT INTO productReturns(id,returnId,productCode,quantity,returnValue) VALUES(?,?,?,?,?)";
-
-        // get price per unit
-        double pricePerUnit = getPricePerUnit(productCode);
-        if (pricePerUnit == -1)
-            return false;
-
-        double returnValue = pricePerUnit * amount;
-        System.out.println(returnValue);
-
-        try (PreparedStatement pstmt = connection.prepareStatement(addProductReturn)) {
+        String sql = "INSERT INTO productReturns(id,returnId,productCode,quantity,returnValue) VALUES(?,?,?,?,?)";
+        boolean success = false;
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, newId);
             pstmt.setInt(2, returnId);
             pstmt.setString(3, productCode);
             pstmt.setInt(4, amount);
             pstmt.setDouble(5, returnValue);
             pstmt.executeUpdate();
+            success = true;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            return false;
         }
         // UPDATE state of returnTransaction
 
-        return true;
+        return success;
+    }
+    
+    public Integer getAmountonEntry(Integer transactionId, String productCode) {
+    	String sql = "SELECT amount FROM productEntries WHERE transactionId=? AND productCode=?";
+        Integer result = -1;
+    	try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, transactionId);
+            pstmt.setString(2, productCode);
+            ResultSet rs = pstmt.executeQuery();
+            result = rs.getInt("amount");
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    	return result;
+    }
+    
+    public boolean checkProductInSaleTransaction(Integer transactionId, String productCode) {
+    	String sql = "SELECT COUNT(*) as tot FROM productEntries WHERE transactionId=? AND productCode=?";
+    	boolean exists = false;
+    	try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, transactionId);
+            pstmt.setString(2, productCode);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.getInt("tot")==1)
+            	exists = true;
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    	return exists;
     }
 
 }
