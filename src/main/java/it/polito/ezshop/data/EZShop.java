@@ -70,17 +70,9 @@ public class EZShop implements EZShopInterface {
     	
     	if(user==null || !user.getRole().equals("Administrator")) {
     		throw new UnauthorizedException();
-    	}    	
-    
-    	
-    	boolean del = db.deleteUser(id);
+    	}    	    
    
-    	// IT IS NOT NEEDED
-//    	if(del == true)
-//    		System.out.println("User with id: " + id + " deleted");
-//    	else
-//    		System.out.println("User with id: " + id + " NOT deleted");
-        return del;
+        return db.deleteUser(id);
     }    
     
 
@@ -93,7 +85,6 @@ public class EZShop implements EZShopInterface {
     		
     	}
     	    	
-        
         return db.getAllUsers();
     }
 
@@ -146,7 +137,7 @@ public class EZShop implements EZShopInterface {
     	User user = db.getUserByCredentials(username,password);
         
     	//If user is null
-    	if(user == null) // || !db.loginUser(user)
+    	if(user == null)
     		return null;
     	
     	//Login user
@@ -162,21 +153,11 @@ public class EZShop implements EZShopInterface {
     		return true;
     	} else
     		return false;
-        
-    	//return db.logoutUser();
     }
 
     @Override
     public Integer createProductType(String description, String productCode, double pricePerUnit, String note) throws InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
     	User user = this.loggedUser;
-//    	Integer barCodeLength = productCode.length();
-    	
-//    	//Verifying that the string is a number
-//    	try {
-//    		Double.parseDouble(productCode);
-//    	}catch(NumberFormatException e) {
-//    		throw new InvalidProductCodeException();    		
-//    	}
     	
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
     		throw new UnauthorizedException();    	
@@ -189,41 +170,7 @@ public class EZShop implements EZShopInterface {
     	if(productCode == null || productCode.length() == 0 || db.checkExistingProductType(productCode) || !ProductTypeClass.validateProductCode(productCode)) {
     		throw new InvalidProductCodeException();    		
     	}
-//    	//check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
-//    	
-//    	//Only GTIN-8, GTIN-12, GTIN-13, GTIN-14, GSIN and SSCC are allowed 
-//    	if(barCodeLength != 8 && barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14 && barCodeLength != 17 && barCodeLength != 18) {
-//    		throw new InvalidProductCodeException();
-//    	}
-//    	
-//    	
-//    	//Check digit to be verified (last number of the barcode)
-//    	Integer checkDigitToBeVerified = Character.getNumericValue(productCode.charAt(barCodeLength-1));
-//    	
-//    	//Calculation of the "Check digit"
-//    	Integer accumulator = 0;
-//    	for(Integer i=0; i<barCodeLength-1;i++) {
-//    		int n = Character.getNumericValue(productCode.charAt(i));
-//    		
-//    		if((i%2) == 0) {
-//    			//multiply by 1
-//    			accumulator+=n;
-//    		}else {
-//    			//multiply by 3
-//    			accumulator+=n*3;
-//    		}
-//    	}
-//    	
-//    	Integer checkDigitCalculated = 0;
-//    	while(accumulator%10 != 0) {
-//    		accumulator++;
-//    		checkDigitCalculated++;
-//    	}
-//    	
-//    	//If the calculated check digit does not correspond to the one to be verified, it is invalid
-//    	if(checkDigitCalculated != checkDigitToBeVerified)
-//    		throw new InvalidProductCodeException();
-//    	
+
     	if(pricePerUnit <= 0) {
     		throw new InvalidPricePerUnitException();    		
     	} 
@@ -247,7 +194,6 @@ public class EZShop implements EZShopInterface {
          * @throws InvalidProductCodeException if the product code is null or empty, if it is not a number or if it is not a valid barcode  
          */   	
     	
-    	//Integer barCodeLength = newCode.length();
     	
     	if(id<=0 || id==null) {
     		throw new InvalidProductIdException();
@@ -260,40 +206,6 @@ public class EZShop implements EZShopInterface {
     	if(newCode == null || newCode.length() == 0  || db.checkExistingProductType(newCode) || !ProductTypeClass.validateProductCode(newCode)) {
     		throw new InvalidProductCodeException();    		
     	} 	  
-//    	//check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
-//    	
-//    	//Only GTIN-8, GTIN-12, GTIN-13, GTIN-14, GSIN and SSCC are allowed 
-//    	if(barCodeLength != 8 && barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14 && barCodeLength != 17 && barCodeLength != 18) {
-//    		throw new InvalidProductCodeException();
-//    	}
-//    	
-//    	
-//    	//Check digit to be verified (last number of the barcode)
-//    	Integer checkDigitToBeVerified = Character.getNumericValue(newCode.charAt(barCodeLength-1));
-//    	
-//    	//Calculation of the "Check digit"
-//    	Integer accumulator = 0;
-//    	for(Integer i=0; i<barCodeLength-1;i++) {
-//    		int n = Character.getNumericValue(newCode.charAt(i));
-//    		
-//    		if((i%2) == 0) {
-//    			//multiply by 1
-//    			accumulator+=n;
-//    		}else {
-//    			//multiply by 3
-//    			accumulator+=n*3;
-//    		}
-//    	}
-//    	
-//    	Integer checkDigitCalculated = 0;
-//    	while(accumulator%10 != 0) {
-//    		accumulator++;
-//    		checkDigitCalculated++;
-//    	}
-//    	
-//    	//If the calculated check digit does not correspond to the one to be verified, it is invalid
-//    	if(checkDigitCalculated != checkDigitToBeVerified)
-//    		throw new InvalidProductCodeException();
 
     	if(newPrice <= 0) {
     		throw new InvalidPricePerUnitException();    		
@@ -325,14 +237,7 @@ public class EZShop implements EZShopInterface {
     		throw new UnauthorizedException();
     	}    	
     
-    	
-    	boolean del = db.deleteProductType(id);
-    	
-//    	if(del == true)
-//    		System.out.println("Product with id: " + id + "deleted");
-//    	else
-//    		System.out.println("Product with id: " + id + "NOT deleted");
-        return del;
+        return db.deleteProductType(id);
     }
 
     @Override
@@ -347,46 +252,11 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public ProductType getProductTypeByBarCode(String barCode) throws InvalidProductCodeException, UnauthorizedException {
-    	    	
-    	//Integer barCodeLength = barCode.length();
+
     	
     	if(barCode == null || barCode.length() == 0  || !db.checkExistingProductType(barCode) || !ProductTypeClass.validateProductCode(barCode)) {
     		throw new InvalidProductCodeException();    		
     	} 	  
-//    	//check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
-//    	
-//    	//Only GTIN-8, GTIN-12, GTIN-13, GTIN-14, GSIN and SSCC are allowed 
-//    	if(barCodeLength != 8 && barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14 && barCodeLength != 17 && barCodeLength != 18) {
-//    		throw new InvalidProductCodeException();
-//    	}
-//    	
-//    	
-//    	//Check digit to be verified (last number of the barcode)
-//    	Integer checkDigitToBeVerified = Character.getNumericValue(barCode.charAt(barCodeLength-1));
-//    	
-//    	//Calculation of the "Check digit"
-//    	Integer accumulator = 0;
-//    	for(Integer i=0; i<barCodeLength-1;i++) {
-//    		int n = Character.getNumericValue(barCode.charAt(i));
-//    		
-//    		if((i%2) == 0) {
-//    			//multiply by 1
-//    			accumulator+=n;
-//    		}else {
-//    			//multiply by 3
-//    			accumulator+=n*3;
-//    		}
-//    	}
-//    	
-//    	Integer checkDigitCalculated = 0;
-//    	while(accumulator%10 != 0) {
-//    		accumulator++;
-//    		checkDigitCalculated++;
-//    	}
-//    	
-//    	//If the calculated check digit does not correspond to the one to be verified, it is invalid
-//    	if(checkDigitCalculated != checkDigitToBeVerified)
-//    		throw new InvalidProductCodeException();
     	
     	User user = this.loggedUser;
     	
