@@ -804,12 +804,13 @@ public class EZShop implements EZShopInterface {
     		throw new UnauthorizedException();
     	}
 		Integer lastId = db.getLastId("saleTransactions");
-		lastId = lastId + tickets.size() + 1;
+		lastId = lastId + 1;
 		Date date = new Date();
 		String[] datesplit = date.toString().split(" ");
 		List<TicketEntry> entries = new ArrayList<>();
-		SaleTransactionClass transaction = new SaleTransactionClass(lastId,datesplit[0],datesplit[1],0,0,"",entries,"OPEN");
-    	tickets.put(lastId,transaction);
+		SaleTransaction transaction = new SaleTransactionClass(lastId,datesplit[0],datesplit[1],0.0,"",0.0,entries,"OPEN");
+		//db.createTransaction(transaction);
+    	tickets.put(lastId,entries);
 		// Integer returnId = db.startSaleTransaction(saleTransaction);
         return lastId;
     }
@@ -845,25 +846,26 @@ public class EZShop implements EZShopInterface {
 			return false;
 		}
 
-		SaleTransactionClass transaction = tickets.get(transactionId);
-		if(transaction==null){
+		List<TicketEntry> entries = tickets.get(transactionId);
+		if(entries==null){
 			return false;
 		}
 
-		List<TicketEntry> entries = transaction.getEntries();
-		boolean flag = false;
-		for(TicketEntry prod : entries){
-			if(prod.getBarCode()==productCode){
-				flag = true;
-				prod.setAmount(prod.getAmount()+amount);
-			}
-		}
-		if(flag==false){
-			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),0.0);
-			entries.add(entry);
-		}
-		transaction.setEntries(entries);
-		tickets.put(transactionId,transaction);
+		
+//		List<TicketEntry> entries = transaction.getEntries();
+//		boolean flag = false;
+//		for(TicketEntry prod : entries){
+//			if(prod.getBarCode()==productCode){
+//				flag = true;
+//				prod.setAmount(prod.getAmount()+amount);
+//			}
+//		}
+//		if(flag==false){
+//			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),0.0);
+//			entries.add(entry);
+//		}
+//		transaction.setEntries(entries);
+//		tickets.put(transactionId,transaction);
     	return true;
     }
 
@@ -894,24 +896,24 @@ public class EZShop implements EZShopInterface {
 			return false;
 		}
 
-		SaleTransactionClass transaction = tickets.get(transactionId);
-		if(transaction==null){
-			return false;
-		}
+//		SaleTransactionClass transaction = tickets.get(transactionId);
+//		if(transaction==null){
+//			return false;
+//		}
 
-		List<TicketEntry> entries = transaction.getEntries();
-		Integer totQuantity = 0;
-		for(TicketEntry entry : entries){
-			if(entry.getBarCode()==productCode){
-				if(entry.getAmount()<amount){
-					return false;
-				}
-				else{
-					entry.setAmount(entry.getAmount()-amount);
-				}
-			}
-		}
-		transaction.setEntries(entries);
+//		List<TicketEntry> entries = transaction.getEntries();
+//		Integer totQuantity = 0;
+//		for(TicketEntry entry : entries){
+//			if(entry.getBarCode()==productCode){
+//				if(entry.getAmount()<amount){
+//					return false;
+//				}
+//				else{
+//					entry.setAmount(entry.getAmount()-amount);
+//				}
+//			}
+//		}
+//		transaction.setEntries(entries);
 		return true;
     }
 
@@ -942,10 +944,10 @@ public class EZShop implements EZShopInterface {
 			return false;
 		}
 
-		SaleTransactionClass transaction = tickets.get(transactionId);
-		if(transaction==null){
-			return false;
-		}
+//		SaleTransactionClass transaction = tickets.get(transactionId);
+//		if(transaction==null){
+//			return false;
+//		}
 
 
     	/**
