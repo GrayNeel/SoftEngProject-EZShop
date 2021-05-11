@@ -952,8 +952,8 @@ public class EZShop implements EZShopInterface {
         if (transactionId <= 0 || transactionId == null) {
             throw new InvalidTransactionIdException();
         }
-
-        return db.getSaleTransactionById(transactionId);
+        List<TicketEntry> products = db.getProductEntriesByTransactionId(transactionId);
+        return db.getClosedSaleTransactionById(transactionId, products);
     }
 
     @Override

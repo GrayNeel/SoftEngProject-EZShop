@@ -910,18 +910,34 @@ public class EZShopDB {
     }
     
 
-    /*public SaleTransaction getSaleTransactionById(Integer transactionId) {
-        String sql = "SELECT transactionId,discountRate,date,time,price,paymentType,state FROM saleTransactions "
-                + "WHERE state == 'CLOSED' AND transactionId=?";
+    public SaleTransaction getClosedSaleTransactionById(Integer transactionId, List<TicketEntry> products ) {
+        String sql = "SELECT id,discountRate,date,time,price,paymentType,state FROM saleTransactions "
+                + "WHERE state == 'CLOSED' AND id=?";
         SaleTransaction saletransaction = null;
-        // Change after implementing ticketentries
 
-        String products = "SELECT productEntries.id AS id,productEntries.productCode as productCode,productTypes.productDescription AS productDescription,productEntries.amount AS amount,productTypes.pricePerUnit AS pricePerUnit"
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, transactionId);
+            ResultSet rs = pstmt.executeQuery();
+
+            saletransaction = new SaleTransactionClass(rs.getInt("id"), rs.getString("date"),
+                    rs.getString("time"), rs.getDouble("price"), rs.getString("paymentType"),
+                    rs.getDouble("discountRate"), products , rs.getString("state"));
+            System.out.println("si HAY");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.out.println("NO HAY");
+        }
+
+        return saletransaction;
+    }
+    
+    public List<TicketEntry> getProductEntriesByTransactionId(Integer transactionId) {
+    	String sql = "SELECT productEntries.id AS id,productEntries.productCode as productCode,productTypes.productDescription AS productDescription,productEntries.amount AS amount,productTypes.pricePerUnit AS pricePerUnit"
                 + " FROM productTypes JOIN productEntries ON productTypes.barCode=productEntries.productCode"
                 + " WHERE productEntries.transactionId=?";
         List<TicketEntry> productslist = new ArrayList<>();
 
-        try (PreparedStatement pstmt = connection.prepareStatement(products)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, transactionId);
             ResultSet rs = pstmt.executeQuery();
 
@@ -939,22 +955,11 @@ public class EZShopDB {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+        
+        return productslist;
+    
+    }
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, transactionId);
-            ResultSet rs = pstmt.executeQuery();
-
-            saletransaction = new SaleTransactionClass(rs.getInt("transactionId"), rs.getString("date"),
-                    rs.getString("time"), rs.getDouble("price"), rs.getString("paymentType"),
-                    rs.getDouble("discountRate"), productslist, rs.getString("state"));
-            System.out.println("si HAY");
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            System.out.println("NO HAY");
-        }
-
-        return saletransaction;
-    }*/
 
     public Integer startReturnTransaction(ReturnTransactionClass returnTransaction) {
         String sql = "INSERT INTO returnTransactions(id, transactionId, quantity, returnValue, state) VALUES(?,?,?,?,?)";
