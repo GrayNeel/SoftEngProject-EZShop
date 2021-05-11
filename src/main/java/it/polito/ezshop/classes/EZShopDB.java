@@ -548,7 +548,7 @@ public class EZShopDB {
 				Double pricePerUnit = rs.getDouble("pricePerUnit");
 				Integer quantity = rs.getInt("quantity");
 				String status = rs.getString("status");
-				Integer orderId = rs.getInt("orderId");
+				Integer orderId = rs.getInt("id");
 
 				Order order = new OrderClass(orderId, balanceId, productCode, pricePerUnit, quantity, status);
 				orderList.add(order);
