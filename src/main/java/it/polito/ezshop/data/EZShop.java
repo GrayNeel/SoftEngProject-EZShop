@@ -17,7 +17,6 @@ public class EZShop implements EZShopInterface {
 	// List<TicketEntry> ticket = ArrayList<>();
 	// SaleTransactionClass transaction = null;
 	Map<Integer,TicketEntry> tickets = new HashMap<>();
-	Map<String,Integer> tempProducts = new HashMap<>();
 	
 	
 	
@@ -840,7 +839,7 @@ public class EZShop implements EZShopInterface {
 			return false;
 		}
 
-		if(product.getQuantity()<(amount-tempAmount)){
+		if(product.getQuantity()<amount){
 			return false;
 		}
 

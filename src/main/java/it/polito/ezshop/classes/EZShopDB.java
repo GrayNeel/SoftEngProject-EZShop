@@ -431,6 +431,24 @@ public class EZShopDB {
 		return true;
 	}
 
+	public boolean updateQuantityByBarCode(String productCode, int newQuantity) {
+		String sql = "UPDATE productTypes SET quantity=? WHERE id=?";
+		Integer qty = 0;
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+			pstmt.setInt(1, qty + toBeAdded);
+
+			pstmt.setInt(2, id);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+
+		return true;
+	}
+
 	public boolean updateLocation(Integer productId, String newPos) {
 
 		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE location=?";
