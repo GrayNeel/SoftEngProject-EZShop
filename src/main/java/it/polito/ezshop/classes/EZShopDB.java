@@ -487,12 +487,12 @@ public class EZShopDB {
 		String sql = "INSERT INTO orders(id,balanceId,productCode,pricePerUnit,quantity,status) VALUES(?,?,?,?,?,?)";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setInt(6, order.getOrderId());
-			pstmt.setInt(1, order.getBalanceId());
-			pstmt.setString(2, order.getProductCode());
-			pstmt.setDouble(3, order.getPricePerUnit());
-			pstmt.setInt(4, order.getQuantity());
-			pstmt.setString(5, order.getStatus());
+			pstmt.setInt(1, order.getOrderId());
+			pstmt.setInt(2, order.getBalanceId());
+			pstmt.setString(3, order.getProductCode());
+			pstmt.setDouble(4, order.getPricePerUnit());
+			pstmt.setInt(5, order.getQuantity());
+			pstmt.setString(6, order.getStatus());
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -549,7 +549,7 @@ public class EZShopDB {
 				Double pricePerUnit = rs.getDouble("pricePerUnit");
 				Integer quantity = rs.getInt("quantity");
 				String status = rs.getString("status");
-				Integer orderId = rs.getInt("orderId");
+				Integer orderId = rs.getInt("id");
 
 				Order order = new OrderClass(orderId, balanceId, productCode, pricePerUnit, quantity, status);
 				orderList.add(order);
@@ -563,7 +563,7 @@ public class EZShopDB {
 
 	public boolean payOrder(Integer orderId) {
 
-		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE orderId=?";
+		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
 
 		// CHECK IF Order ALREADY EXISTS
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -578,7 +578,7 @@ public class EZShopDB {
 		}
 
 		// CHECK Order status
-		sql = "SELECT status FROM orders WHERE orderId=?";
+		sql = "SELECT status FROM orders WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, orderId);
 			ResultSet rs = pstmt.executeQuery();
@@ -591,7 +591,7 @@ public class EZShopDB {
 		}
 
 		// UPDATE status into ORDERED
-		sql = "UPDATE orders SET status=? WHERE orderId=?";
+		sql = "UPDATE orders SET status=? WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, "ORDERED");
@@ -606,7 +606,7 @@ public class EZShopDB {
 
 	public boolean recordOrderArrival(Integer orderId, String barCode, Integer newQty) {
 
-		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE orderId=?";
+		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
 
 		// CHECK IF Order ALREADY EXISTS
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -621,7 +621,7 @@ public class EZShopDB {
 		}
 
 		// CHECK Order status
-		sql = "SELECT status FROM orders WHERE orderId=?";
+		sql = "SELECT status FROM orders WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, orderId);
 			ResultSet rs = pstmt.executeQuery();
@@ -635,7 +635,7 @@ public class EZShopDB {
 		}
 
 		// UPDATE status into COMPLETED
-		sql = "UPDATE orders SET status=? WHERE orderId=?";
+		sql = "UPDATE orders SET status=? WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, "COMPLETED");
@@ -1038,7 +1038,7 @@ public class EZShopDB {
         String sql = "INSERT INTO productReturns(id,returnId,productCode,quantity,returnValue) VALUES(?,?,?,?,?)";
         boolean success = false;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, newId);
+            pstmt.setInt(1, newId+1);
             pstmt.setInt(2, returnId);
             pstmt.setString(3, productCode);
             pstmt.setInt(4, amount);
