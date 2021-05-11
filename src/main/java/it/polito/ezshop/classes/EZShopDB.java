@@ -486,12 +486,12 @@ public class EZShopDB {
 		String sql = "INSERT INTO orders(id,balanceId,productCode,pricePerUnit,quantity,status) VALUES(?,?,?,?,?,?)";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setInt(6, order.getOrderId());
-			pstmt.setInt(1, order.getBalanceId());
-			pstmt.setString(2, order.getProductCode());
-			pstmt.setDouble(3, order.getPricePerUnit());
-			pstmt.setInt(4, order.getQuantity());
-			pstmt.setString(5, order.getStatus());
+			pstmt.setInt(1, order.getOrderId());
+			pstmt.setInt(2, order.getBalanceId());
+			pstmt.setString(3, order.getProductCode());
+			pstmt.setDouble(4, order.getPricePerUnit());
+			pstmt.setInt(5, order.getQuantity());
+			pstmt.setString(6, order.getStatus());
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
