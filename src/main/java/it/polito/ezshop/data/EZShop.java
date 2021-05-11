@@ -1049,131 +1049,183 @@ public class EZShop implements EZShopInterface {
     
     @Override
     // chiedere se si può cambiare il nome dil parameter
-    public boolean deleteSaleTransaction(Integer saleNumber) throws InvalidTransactionIdException, UnauthorizedException {
-		User user = db.getLoggedUser();
-    	
-    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
-    		throw new UnauthorizedException();
-    	}
-    	
-    	if(saleNumber==null || saleNumber<=0) {
-    		throw new InvalidTransactionIdException();
-    	}
-    	
-    	boolean flag = db.deleteSaleTransaction(saleNumber);
-    	return flag;
+    public boolean deleteSaleTransaction(Integer saleNumber)
+            throws InvalidTransactionIdException, UnauthorizedException {
+        User user = this.loggedUser;
+
+        if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+                && !user.getRole().equals("Cashier"))) {
+            throw new UnauthorizedException();
+        }
+
+        if (saleNumber == null || saleNumber <= 0) {
+            throw new InvalidTransactionIdException();
+        }
+
+        boolean flag = db.deleteSaleTransaction(saleNumber);
+        return flag;
     }
 
     @Override
-    public SaleTransaction getSaleTransaction(Integer transactionId) throws InvalidTransactionIdException, UnauthorizedException {
-    	
-    	User user = db.getLoggedUser();
-    	
-    	if(user==null || !user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier")) {
-    		throw new UnauthorizedException();
-    	}
+    public SaleTransaction getSaleTransaction(Integer transactionId)
+            throws InvalidTransactionIdException, UnauthorizedException {
 
-    	if(transactionId<=0 || transactionId==null) {
-    		throw new InvalidTransactionIdException();
-    	}
-    	
+        User user = this.loggedUser;
+
+        if (user == null || !user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+                && !user.getRole().equals("Cashier")) {
+            throw new UnauthorizedException();
+        }
+
+        if (transactionId <= 0 || transactionId == null) {
+            throw new InvalidTransactionIdException();
+        }
+
         return db.getSaleTransactionById(transactionId);
     }
 
     @Override
-    public Integer startReturnTransaction(Integer saleNumber) throws /*InvalidTicketNumberException,*/InvalidTransactionIdException, UnauthorizedException {
-    	User user = db.getLoggedUser();
-    	
-    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
-    		throw new UnauthorizedException();
-    	}
-    	   	
-    	if(saleNumber==null || saleNumber<=0)
-    		throw new InvalidTransactionIdException();
-    	
-    	int lastid = db.getLastId("returnTransactions");
-    	ReturnTransactionClass returnTransaction = new ReturnTransactionClass(lastid+1, saleNumber, 0, 0, "");
-    	Integer result = db.startReturnTransaction(returnTransaction);
+    public Integer startReturnTransaction(Integer saleNumber)
+            throws /* InvalidTicketNumberException, */InvalidTransactionIdException, UnauthorizedException {
+        User user = this.loggedUser;
 
-    	return result;
+        if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+                && !user.getRole().equals("Cashier"))) {
+            throw new UnauthorizedException();
+        }
+
+        if (saleNumber == null || saleNumber <= 0)
+            throw new InvalidTransactionIdException();
+
+        int lastid = db.getLastId("returnTransactions");
+        ReturnTransactionClass returnTransaction = new ReturnTransactionClass(lastid + 1, saleNumber, 0, 0, "");
+        Integer result = db.startReturnTransaction(returnTransaction);
+
+        return result;
     }
+
     /**
-     * This method adds a product to the return transaction
-     * The amount of units of product to be returned should not exceed the amount originally sold.
-     * This method DOES NOT update the product quantity
-     * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+     * This method adds a product to the return transaction The amount of units of
+     * product to be returned should not exceed the amount originally sold. This
+     * method DOES NOT update the product quantity It can be invoked only after a
+     * user with role "Administrator", "ShopManager" or "Cashier" is logged in.
      *
-     * @param returnId the id of the return transaction
+     * @param returnId    the id of the return transaction
      * @param productCode the bar code of the product to be returned
-     * @param amount the amount of product to be returned
+     * @param amount      the amount of product to be returned
      *
-     * @return  true if the operation is successful
-     *          false   if the the product to be returned does not exists,
-     *                  if it was not in the transaction,
-     *                  if the amount is higher than the one in the sale transaction,
-     *                  if the transaction does not exist
+     * @return true if the operation is successful false if the the product to be
+     *         returned does not exists, if it was not in the transaction, if the
+     *         amount is higher than the one in the sale transaction, if the
+     *         transaction does not exist
      *
-     * @throws InvalidTransactionIdException if the return id is less ther or equal to 0 or if it is null
-     * @throws InvalidProductCodeException if the product code is empty, null or invalid
-     * @throws InvalidQuantityException if the quantity is less than or equal to 0
-     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+     * @throws InvalidTransactionIdException if the return id is less ther or equal
+     *                                       to 0 or if it is null
+     * @throws InvalidProductCodeException   if the product code is empty, null or
+     *                                       invalid
+     * @throws InvalidQuantityException      if the quantity is less than or equal
+     *                                       to 0
+     * @throws UnauthorizedException         if there is no logged user or if it has
+     *                                       not the rights to perform the operation
      */
     @Override
-    public boolean returnProduct(Integer returnId, String productCode, int amount) throws InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, UnauthorizedException {
-    	User user = db.getLoggedUser();
-    	
-    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
-    		throw new UnauthorizedException();
-    	}
-    	   	
-    	if(returnId==null || returnId<=0)
-    		throw new InvalidTransactionIdException();
-    	
-    	if(amount<=0)
-    		throw new InvalidQuantityException();
-    	
-    	if(productCode=="" || productCode==null)
-    		throw new InvalidProductCodeException();
-    	
-    	ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
-    	if(returnTransaction==null)
-    		return false;
-    	
-    	//Integer result = db.startReturnTransaction(returnTransaction);
-    	return true;
+    public boolean returnProduct(Integer returnId, String productCode, int amount) throws InvalidTransactionIdException,
+            InvalidProductCodeException, InvalidQuantityException, UnauthorizedException {
+        User user = this.loggedUser;
+
+        if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+                && !user.getRole().equals("Cashier"))) {
+            throw new UnauthorizedException();
+        }
+
+        if (returnId == null || returnId <= 0)
+            throw new InvalidTransactionIdException();
+
+        if (amount <= 0)
+            throw new InvalidQuantityException();
+
+        if (productCode == "" || productCode == null)
+            throw new InvalidProductCodeException();
+
+        ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
+        if (returnTransaction == null)
+            return false;
+
+        boolean flag = db.returnProduct(returnTransaction.getId(), returnTransaction.getTransactionId(), productCode,
+                amount);
+
+        return flag;
     }
 
+    /**
+     * This method closes a return transaction. A closed return transaction can be
+     * committed (i.e. <commit> = true) thus it increases the product quantity
+     * available on the shelves or not (i.e. <commit> = false) thus the whole
+     * transaction is undone. This method updates the transaction status (decreasing
+     * the number of units sold by the number of returned one and decreasing the
+     * final price). If committed, the return transaction must be persisted in the
+     * system's memory. It can be invoked only after a user with role
+     * "Administrator", "ShopManager" or "Cashier" is logged in.
+     *
+     * @param returnId the id of the transaction
+     * @param commit   whether we want to commit (True) or rollback(false) the
+     *                 transaction
+     *
+     * @return true if the operation is successful false if the returnId does not
+     *         correspond to an active return transaction, if there is some problem
+     *         with the db
+     *
+     * @throws InvalidTransactionIdException if returnId is less than or equal to 0
+     *                                       or if it is null
+     * @throws UnauthorizedException         if there is no logged user or if it has
+     *                                       not the rights to perform the operation
+     */
     @Override
-    public boolean endReturnTransaction(Integer returnId, boolean commit) throws InvalidTransactionIdException, UnauthorizedException {
+    public boolean endReturnTransaction(Integer returnId, boolean commit)
+            throws InvalidTransactionIdException, UnauthorizedException {
+        User user = this.loggedUser;
+
+        if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+                && !user.getRole().equals("Cashier"))) {
+            throw new UnauthorizedException();
+        }
+
+        if (commit) {
+            return true;
+        }
         return false;
     }
 
     @Override
-    public boolean deleteReturnTransaction(Integer returnId) throws InvalidTransactionIdException, UnauthorizedException {
-    	User user = db.getLoggedUser();
-    	
-    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
-    		throw new UnauthorizedException();
-    	}
-    	
-    	if(returnId==null || returnId<=0) {
-    		throw new InvalidTransactionIdException();
-    	}
-    	
-    	boolean flag = db.deleteReturnTransaction(returnId);
-    	if(flag) { //update quantity and price on sale transaction
-    		
-    	}
-    	return flag;
+    public boolean deleteReturnTransaction(Integer returnId)
+            throws InvalidTransactionIdException, UnauthorizedException {
+        User user = this.loggedUser;
+
+        if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+                && !user.getRole().equals("Cashier"))) {
+            throw new UnauthorizedException();
+        }
+
+        if (returnId == null || returnId <= 0) {
+            throw new InvalidTransactionIdException();
+        }
+
+        boolean flag = db.deleteReturnTransaction(returnId);
+        if (flag) { // update quantity and price on sale transaction
+
+        }
+        return flag;
     }
 
     @Override
-    public double receiveCashPayment(Integer ticketNumber, double cash) throws InvalidTransactionIdException, InvalidPaymentException, UnauthorizedException {
+    public double receiveCashPayment(Integer ticketNumber, double cash)
+            throws InvalidTransactionIdException, InvalidPaymentException, UnauthorizedException {
         return 0;
     }
 
     @Override
-    public boolean receiveCreditCardPayment(Integer ticketNumber, String creditCard) throws InvalidTransactionIdException, InvalidCreditCardException, UnauthorizedException {
+    public boolean receiveCreditCardPayment(Integer ticketNumber, String creditCard)
+            throws InvalidTransactionIdException, InvalidCreditCardException, UnauthorizedException {
         return false;
     }
 
@@ -1183,7 +1235,8 @@ public class EZShop implements EZShopInterface {
     }
 
     @Override
-    public double returnCreditCardPayment(Integer returnId, String creditCard) throws InvalidTransactionIdException, InvalidCreditCardException, UnauthorizedException {
+    public double returnCreditCardPayment(Integer returnId, String creditCard)
+            throws InvalidTransactionIdException, InvalidCreditCardException, UnauthorizedException {
         return 0;
     }
 
@@ -1194,8 +1247,8 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public List<BalanceOperation> getCreditsAndDebits(LocalDate from, LocalDate to) throws UnauthorizedException {
-    	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
-    	List<BalanceOperation> bolist = new ArrayList<>();
+        // TEMP: REMOVE IT!! IT IS JUST FOR TESTING
+        List<BalanceOperation> bolist = new ArrayList<>();
         return bolist;
     }
 
@@ -1203,3 +1256,4 @@ public class EZShop implements EZShopInterface {
     public double computeBalance() throws UnauthorizedException {
         return 0;
     }
+}
