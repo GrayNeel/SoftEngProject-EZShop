@@ -851,6 +851,20 @@ public class EZShop implements EZShopInterface {
 		if(entries==null){
 			return false;
 		}
+		
+		boolean flag = false;
+		for(TicketEntry entry : entries){
+			if(entry.getBarCode()==productCode){
+				flag = true;
+				entry.setAmount(entry.getAmount()+amount);
+				db.updateQuantityByBarCode(productCode, product.getQuantity()-(entry.getAmount()+amount));
+			}
+		}
+		if(flag==false) {
+			db.updateQuantityByBarCode(productCode,product.getQuantity()-amount);
+			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),0.0);
+			entries.add(entry);			
+		}
 
 		
 //		List<TicketEntry> entries = transaction.getEntries();
