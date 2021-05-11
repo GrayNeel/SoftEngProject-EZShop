@@ -1034,7 +1034,7 @@ public class EZShopDB {
         String sql = "INSERT INTO productReturns(id,returnId,productCode,quantity,returnValue) VALUES(?,?,?,?,?)";
         boolean success = false;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, newId);
+            pstmt.setInt(1, newId+1);
             pstmt.setInt(2, returnId);
             pstmt.setString(3, productCode);
             pstmt.setInt(4, amount);
