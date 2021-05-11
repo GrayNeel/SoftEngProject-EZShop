@@ -1173,14 +1173,18 @@ public class EZShop implements EZShopInterface {
         ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
         if (returnTransaction == null)
             return false;
+        boolean existProduct = db.checkExistingProductType(productCode);
+        boolean existProductInSale = db.checkProductInSaleTransaction(returnTransaction.getTransactionId(), productCode);
         
-        int entryAmount = db.getAmount(returnTransaction.getTransactionId(), productCode);
-        
-        if (entryAmount < amount)
+        int entryAmount = db.getAmountonEntry(returnTransaction.getTransactionId(), productCode);
+        //The amount of units of product to be returned should not exceed the amount originally sold.
+        // if it was not in the transaction
+        if (entryAmount < amount || !existProductInSale || !existProduct)
         	return false;
+        double returnValue = db.getPricePerUnit(productCode)*amount;
         
         boolean flag = db.returnProduct(returnTransaction.getId(), returnTransaction.getTransactionId(), productCode,
-                amount);
+                amount, returnValue);
 
         return flag;
     }
