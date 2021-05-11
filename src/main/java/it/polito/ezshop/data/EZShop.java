@@ -25,7 +25,7 @@ public class EZShop implements EZShopInterface {
 	
     @Override
     public void reset() {
-
+    	//TODO: reset all the application (delete entries in DB and reset local variables
     }
 
     @Override
@@ -47,11 +47,11 @@ public class EZShop implements EZShopInterface {
     		throw new InvalidRoleException("Invalid role");
     	
     	
-    	//Get the last used ID
+    	//Get the last used ID from users table
     	lastid = db.getLastId("users"); 
     	
     	//Create User Object with newID
-    	UserClass user = new UserClass(lastid+1, username, password, role);
+    	User user = new UserClass(lastid+1, username, password, role);
     	
     	//Add user to the DB
     	db.addUser(user);

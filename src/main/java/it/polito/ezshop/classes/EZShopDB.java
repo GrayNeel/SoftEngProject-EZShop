@@ -72,7 +72,7 @@ public class EZShopDB {
 	 * 
 	 * @param user the UserClass containing parameters to add
 	 */
-	public void addUser(UserClass user) {
+	public void addUser(User user) {
 		String sql = "INSERT INTO users(id,username,password,role) VALUES(?,?,?,?)";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
