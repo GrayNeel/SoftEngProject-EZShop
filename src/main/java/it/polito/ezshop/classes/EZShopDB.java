@@ -1021,23 +1021,8 @@ public class EZShopDB {
             return -1;
         }
     }
-
+    
     public boolean returnProduct(int returnId, int transactionId, String productCode, int amount) {
-        String amountDB = "SELECT PE.amount FROM returnTransactions AS RT JOIN productEntries AS PE ON RT.transactionId = PE.transactionId"
-                + " WHERE RT.id=? AND PE.productCode=?";
-        // The amount of units of product to be returned should not exceed the amount
-        // originally sold
-        try (PreparedStatement pstmt = connection.prepareStatement(amountDB)) {
-            pstmt.setInt(1, returnId);
-            pstmt.setString(2, productCode);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.getInt("amount") < amount) {
-                return false;
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
         // If amount to return is smaller or equal than sale transaction amount,
         // continue
         int newId = getLastId("productReturns");
@@ -1066,6 +1051,21 @@ public class EZShopDB {
         // UPDATE state of returnTransaction
 
         return true;
+    }
+    
+    public Integer getAmount(Integer transactionId, String productCode) {
+    	String sql = "SELECT amount FROM productEntries WHERE transactionId=? AND productCode=?";
+        Integer result = -1;
+    	try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, transactionId);
+            pstmt.setString(2, productCode);
+            ResultSet rs = pstmt.executeQuery();
+            result = rs.getInt("amount");
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    	return result;
     }
 
 }

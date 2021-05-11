@@ -1173,7 +1173,12 @@ public class EZShop implements EZShopInterface {
         ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
         if (returnTransaction == null)
             return false;
-
+        
+        int entryAmount = db.getAmount(returnTransaction.getTransactionId(), productCode);
+        
+        if (entryAmount < amount)
+        	return false;
+        
         boolean flag = db.returnProduct(returnTransaction.getId(), returnTransaction.getTransactionId(), productCode,
                 amount);
 
