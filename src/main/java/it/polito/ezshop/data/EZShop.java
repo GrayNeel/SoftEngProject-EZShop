@@ -313,13 +313,25 @@ public class EZShop implements EZShopInterface {
     	
     	if(productId == null || productId <= 0) {
     		throw new InvalidProductIdException("Invalid Product id");
-    	}    	
+    	}   
     	
-    	Pattern p = Pattern.compile("\\d+-\\d+-\\d+");
-    	Matcher m = p.matcher(newPos);    	
-    	 if (!m.matches()) {
-    		 throw new InvalidLocationException("Invalid Location format");
-    	 }   	
+    	if(newPos == null || newPos.length() == 0) {
+    		newPos = "";
+    	}
+    	else
+    	{
+    		Pattern p = Pattern.compile("\\d+-\\d+-\\d+");
+        	Matcher m = p.matcher(newPos);    	
+        	 if (!m.matches()) {
+        		 throw new InvalidLocationException("Invalid Location format");
+        	 } 
+        	 
+        	 if(db.isLocationUsed(newPos))
+         		return false;
+         	
+    	}
+    	
+    	  	
     	    	
     	User user = this.loggedUser;
     	
@@ -327,11 +339,7 @@ public class EZShop implements EZShopInterface {
     		throw new UnauthorizedException();
     	} 
     	
-    	if(newPos == null || newPos.length() == 0) {
-    		newPos = "";
-    	}else if(db.isLocationUsed(newPos)) {
-    		return false;
-    	}
+    	   	
     		
     	return db.updateProductTypeLocation(productId,newPos);
     }
@@ -360,7 +368,7 @@ public class EZShop implements EZShopInterface {
     	
     	//Get the last used ID
     	Integer lastid = db.getLastId("orders"); 
-    	
+    	System.out.println(lastid);
     	//Create Order Object with newOrderID
     	Order order = new OrderClass(lastid+1,0, productCode, pricePerUnit, quantity, "ISSUED"); //balanceID??**********************************
     	
