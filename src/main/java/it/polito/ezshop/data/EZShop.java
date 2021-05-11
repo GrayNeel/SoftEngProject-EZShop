@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +16,8 @@ public class EZShop implements EZShopInterface {
 	User loggedUser = null;
 	// List<TicketEntry> ticket = ArrayList<>();
 	// SaleTransactionClass transaction = null;
-	Map<TicketEntry,List<SaleTransactionClass>> tickets = new HashMap<>();
+	Map<Integer,TicketEntry> tickets = new HashMap<>();
+	Map<String,Integer> tempProducts = new HashMap<>();
 	
 	
 	
@@ -801,12 +803,12 @@ public class EZShop implements EZShopInterface {
     	}
 		Integer lastId = db.getLastId("saleTransactions");
 		lastId = lastId + tickets.size() + 1;
-		SaleTransactionClass transaction = new SaleTransactionClass();
-    	tickets.put()
-
-    	Date date = new Date();
-    	SaleTransactionClass saleTransaction = new SaleTransactionClass(lastid+1, date.toString(), date.toString(), 0, "", 0, tickets,"OPEN");
-		Integer returnId = db.startSaleTransaction(saleTransaction);
+		Date date = new Date();
+		String[] datesplit = date.toString().split(" ");
+		List<TicketEntry> entries = new ArrayList<>();
+		SaleTransactionClass transaction = new SaleTransactionClass(lastId,datesplit[0],datesplit[1],0,0,"",entries,"OPEN");
+    	tickets.put(lastId,transaction);
+		// Integer returnId = db.startSaleTransaction(saleTransaction);
         return returnId;
     }
 
@@ -817,7 +819,36 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
     	}
+		
+		if(transactionId<0 || transactionId==null){
+			throw new InvalidTransactionIdException();
+		}
 
+		
+		if(productCode==null || productCode==""){
+			throw new InvalidProductCodeException();
+		}
+		
+		ProductTypeClass product = getProductTypeByBarCode(productCode);
+		Integer tempAmount = tempProducts.getOrDefault(productCode, 0);
+
+		if(product==null){
+			return false;
+		}
+
+		if(product.getQuantity()<(amount-tempAmount)){
+			return false;
+		}
+
+		SaleTransaction transaction = tickets.get(transactionId);
+		if(transaction==null){
+			return false;
+		}
+
+		List<TicketEntry> entries = transaction.getEntries();
+		TicketEntryClass entry = new TicketEntryClass();
+
+		tempProducts.put(productCode, amount+tempAmount);
 
     	/**
          * This method adds a product to a sale transaction decreasing the temporary amount of product available on the
