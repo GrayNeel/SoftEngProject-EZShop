@@ -92,12 +92,48 @@ public class ProductTypeClass implements ProductType {
 		this.id = id;		
 	}
 	
-	public boolean validateBarCode(String barCode) {
-		int keyFormat = barCode.length();
-		int finalSum = 0;
-		for (int i = 0; i < keyFormat; i++) {
-			
-		}
-		return false;
+	public static boolean validateProductCode(String productCode) {
+		Integer barCodeLength = productCode.length();
+		
+		//Verifying that the string is a number
+    	try {
+    		Double.parseDouble(productCode);
+    	}catch(NumberFormatException e) {
+    		return false;    		
+    	}
+    	
+    	//Only GTIN-8, GTIN-12, GTIN-13, GTIN-14, GSIN and SSCC are allowed 
+    	if(barCodeLength != 8 && barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14 && barCodeLength != 17 && barCodeLength != 18) {
+    		return false;
+    	}
+    	
+    	//Check digit to be verified (last number of the barcode)
+    	Integer checkDigitToBeVerified = Character.getNumericValue(productCode.charAt(barCodeLength-1));
+    	
+    	//Calculation of the "Check digit"
+    	Integer accumulator = 0;
+    	for(Integer i=0; i<barCodeLength-1;i++) {
+    		int n = Character.getNumericValue(productCode.charAt(i));
+    		
+    		if((i%2) == 0) {
+    			//multiply by 1
+    			accumulator+=n;
+    		}else {
+    			//multiply by 3
+    			accumulator+=n*3;
+    		}
+    	}
+    	
+    	Integer checkDigitCalculated = 0;
+    	while(accumulator%10 != 0) {
+    		accumulator++;
+    		checkDigitCalculated++;
+    	}
+    	
+    	//If the calculated check digit does not correspond to the one to be verified, it is invalid
+    	if(checkDigitCalculated != checkDigitToBeVerified)
+    		return false;
+    	
+		return true;
 	}
 }
