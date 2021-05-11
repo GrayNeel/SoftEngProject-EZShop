@@ -1,11 +1,14 @@
 package it.polito.ezshop.data;
 
+import java.util.Date;
+
 import it.polito.ezshop.classes.*;
 import it.polito.ezshop.exceptions.*;
 
-import java.sql.Date;
+//import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -16,7 +19,7 @@ public class EZShop implements EZShopInterface {
 	User loggedUser = null;
 	// List<TicketEntry> ticket = ArrayList<>();
 	// SaleTransactionClass transaction = null;
-	Map<Integer,TicketEntry> tickets = new HashMap<>();
+	Map<Integer,List<TicketEntry>> tickets = new HashMap<>();
 	
 	
 	
@@ -808,7 +811,7 @@ public class EZShop implements EZShopInterface {
 		SaleTransactionClass transaction = new SaleTransactionClass(lastId,datesplit[0],datesplit[1],0,0,"",entries,"OPEN");
     	tickets.put(lastId,transaction);
 		// Integer returnId = db.startSaleTransaction(saleTransaction);
-        return returnId;
+        return lastId;
     }
 
     @Override
@@ -832,8 +835,7 @@ public class EZShop implements EZShopInterface {
 			throw new InvalidQuantityException();
 		}
 		
-		ProductTypeClass product = getProductTypeByBarCode(productCode);
-		Integer tempAmount = tempProducts.getOrDefault(productCode, 0);
+		ProductType product = getProductTypeByBarCode(productCode);
 
 		if(product==null){
 			return false;
@@ -843,7 +845,7 @@ public class EZShop implements EZShopInterface {
 			return false;
 		}
 
-		SaleTransaction transaction = tickets.get(transactionId);
+		SaleTransactionClass transaction = tickets.get(transactionId);
 		if(transaction==null){
 			return false;
 		}
@@ -857,12 +859,11 @@ public class EZShop implements EZShopInterface {
 			}
 		}
 		if(flag==false){
-			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),0);
+			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),0.0);
 			entries.add(entry);
 		}
 		transaction.setEntries(entries);
 		tickets.put(transactionId,transaction);
-		tempProducts.put(productCode, amount+tempAmount);
     	return true;
     }
 
@@ -887,7 +888,7 @@ public class EZShop implements EZShopInterface {
 			throw new InvalidQuantityException();
 		}
 
-		ProductTypeClass product = getProductTypeByBarCode(productCode);
+		ProductType product = getProductTypeByBarCode(productCode);
 
 		if(product==null){
 			return false;
@@ -931,11 +932,11 @@ public class EZShop implements EZShopInterface {
 			throw new InvalidProductCodeException();
 		}
 
-		if(amount <= 0){
-			throw new InvalidQuantityException();
+		if(discountRate <= 0){
+			throw new InvalidDiscountRateException();
 		}
 
-		ProductTypeClass product = getProductTypeByBarCode(productCode);
+		ProductType product = getProductTypeByBarCode(productCode);
 
 		if(product==null){
 			return false;
