@@ -867,21 +867,8 @@ public class EZShop implements EZShopInterface {
 			entries.add(entry);			
 		}
 
-		
-//		List<TicketEntry> entries = transaction.getEntries();
-//		boolean flag = false;
-//		for(TicketEntry prod : entries){
-//			if(prod.getBarCode()==productCode){
-//				flag = true;
-//				prod.setAmount(prod.getAmount()+amount);
-//			}
-//		}
-//		if(flag==false){
-//			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),0.0);
-//			entries.add(entry);
-//		}
-//		transaction.setEntries(entries);
-//		tickets.put(transactionId,transaction);
+		tickets.put(transactionId,entries);
+
     	return true;
     }
 
