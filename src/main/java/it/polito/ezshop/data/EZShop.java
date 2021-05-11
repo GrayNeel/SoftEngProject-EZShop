@@ -666,9 +666,8 @@ public class EZShop implements EZShopInterface {
 		String[] datesplit = date.toString().split(" ");
 		List<TicketEntry> entries = new ArrayList<>();
 		SaleTransaction transaction = new SaleTransactionClass(lastId,datesplit[0],datesplit[1],0.0,"",0.0,entries,"OPEN");
-		//db.createTransaction(transaction);
+		lastId = db.startSaleTransaction(transaction);
     	tickets.put(lastId,entries);
-		// Integer returnId = db.startSaleTransaction(saleTransaction);
         return lastId;
     }
 
