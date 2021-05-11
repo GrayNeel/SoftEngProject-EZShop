@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.sqlite.SQLiteConnection;
@@ -828,16 +829,19 @@ public class EZShopDB {
 		return flag;
 	}
 
-	public Integer startSaleTransaction(SaleTransactionClass saleTransaction) {
-		String sql = "INSERT INTO saleTransactions(transactionId, price, discountRate, date, time, paymentType, state) VALUES(?,?,?,?,?,?,?)";
+	public Integer startSaleTransaction(SaleTransaction saleTransaction) {
+		Date curdate = new Date();
+		String[] datesplit = curdate.toString().split(" ");
+		String sql = "INSERT INTO saleTransactions(id, price, discountRate, date, time, paymentType, state) VALUES(?,?,?,?,?,'CASH','OPEN')";
+		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, saleTransaction.getTicketNumber());
 			pstmt.setDouble(2, saleTransaction.getPrice());
 			pstmt.setDouble(3, saleTransaction.getDiscountRate());
-			pstmt.setString(4, saleTransaction.getDate());
-			pstmt.setString(5, saleTransaction.getTime());
-			pstmt.setString(6, saleTransaction.getPaymentType());
-			pstmt.setString(7, saleTransaction.getState());
+			pstmt.setString(4, datesplit[0]);
+			pstmt.setString(5, datesplit[1]);
+//			pstmt.setString(6, saleTransaction.getPaymentType());
+//			pstmt.setString(7, saleTransaction.getState());
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
