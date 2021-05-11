@@ -979,6 +979,10 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
     	}
+    	
+    	if(transactionId<0 || transactionId==null){
+			throw new InvalidTransactionIdException();
+		}
     	/**
          * This method applies a discount rate to the whole sale transaction.
          * The discount rate should be greater than or equal to 0 and less than 1.
@@ -1005,6 +1009,10 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
     	}
+    	
+    	if(transactionId<0 || transactionId==null){
+			throw new InvalidTransactionIdException();
+		}
     	/**
          * This method returns the number of points granted by a specific sale transaction.
          * Every 10€ the number of points is increased by 1 (i.e. 19.99€ returns 1 point, 20.00€ returns 2 points).
