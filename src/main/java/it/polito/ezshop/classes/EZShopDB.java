@@ -834,7 +834,7 @@ public class EZShopDB {
 		return saleTransaction.getTicketNumber();
 	}
 
-	/*public boolean createTicketEntry(TicketEntryClass ticketEntry) {
+	public boolean createTicketEntry(TicketEntryClass ticketEntry) {
 		Integer id, String barCode, String productDescription,
 			Integer amount, Double pricePerUnit, Double discountRate
 		String sql = "INSERT INTO productEntries(id, barCode, productDescription, amount, time, paymentType, state) VALUES(?,?,?,?,?,?,?)";
@@ -855,7 +855,7 @@ public class EZShopDB {
 
 
 		return saleTransaction.getTicketNumber();
-	} */
+	}
 
     ///////////////// Pablo write methods after this point
 
