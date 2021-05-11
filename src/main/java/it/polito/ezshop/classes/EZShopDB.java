@@ -482,16 +482,16 @@ public class EZShopDB {
 	 * @param user the OrderClass containing parameters to add
 	 * @return
 	 */
-	public boolean issueOrder(OrderClass order) {
-		String sql = "INSERT INTO orders(balanceId,productCode,pricePerUnit,quantity,status,orderId) VALUES(?,?,?,?,?,?)";
+	public boolean addAndIssueOrder(Order order) {
+		String sql = "INSERT INTO orders(id,balanceId,productCode,pricePerUnit,quantity,status) VALUES(?,?,?,?,?,?)";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(6, order.getOrderId());
 			pstmt.setInt(1, order.getBalanceId());
 			pstmt.setString(2, order.getProductCode());
 			pstmt.setDouble(3, order.getPricePerUnit());
 			pstmt.setInt(4, order.getQuantity());
 			pstmt.setString(5, order.getStatus());
-			pstmt.setInt(6, order.getOrderId());
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -501,38 +501,39 @@ public class EZShopDB {
 		return true;
 	}
 
-	public boolean issueAndPayOrder(OrderClass order) {
-		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE orderId=?";
-
-		// CHECK IF Order ALREADY EXISTS
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setInt(1, order.getOrderId());
-			ResultSet rs = pstmt.executeQuery();
-
-			if (rs.getInt("tot") > 0)
-				return false;
-
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-		}
-
-		sql = "INSERT INTO orders(balanceId,productCode,pricePerUnit,quantity,status,orderId) VALUES(?,?,?,?,?,?)";
-
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setInt(1, order.getBalanceId());
-			pstmt.setString(2, order.getProductCode());
-			pstmt.setDouble(3, order.getPricePerUnit());
-			pstmt.setInt(4, order.getQuantity());
-			pstmt.setString(5, order.getStatus());
-			pstmt.setInt(6, order.getOrderId());
-
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-			return false;
-		}
-		return true;
-	}
+	// It is totally wrong
+//	public boolean issueAndPayOrder(OrderClass order) {
+//		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE orderId=?";
+//
+//		// CHECK IF Order ALREADY EXISTS
+//		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+//			pstmt.setInt(1, order.getOrderId());
+//			ResultSet rs = pstmt.executeQuery();
+//
+//			if (rs.getInt("tot") > 0)
+//				return false;
+//
+//		} catch (SQLException e) {
+//			System.err.println(e.getMessage());
+//		}
+//
+//		sql = "INSERT INTO orders(balanceId,productCode,pricePerUnit,quantity,status,orderId) VALUES(?,?,?,?,?,?)";
+//
+//		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+//			pstmt.setInt(1, order.getBalanceId());
+//			pstmt.setString(2, order.getProductCode());
+//			pstmt.setDouble(3, order.getPricePerUnit());
+//			pstmt.setInt(4, order.getQuantity());
+//			pstmt.setString(5, order.getStatus());
+//			pstmt.setInt(6, order.getOrderId());
+//
+//			pstmt.executeUpdate();
+//		} catch (SQLException e) {
+//			System.err.println(e.getMessage());
+//			return false;
+//		}
+//		return true;
+//	}
 
 	public List<Order> getAllOrders() {
 		String sql = "SELECT * FROM orders";
@@ -549,7 +550,7 @@ public class EZShopDB {
 				String status = rs.getString("status");
 				Integer orderId = rs.getInt("orderId");
 
-				Order order = new OrderClass(balanceId, productCode, pricePerUnit, quantity, status, orderId);
+				Order order = new OrderClass(orderId, balanceId, productCode, pricePerUnit, quantity, status);
 				orderList.add(order);
 			}
 		} catch (SQLException e) {

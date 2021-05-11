@@ -339,45 +339,9 @@ public class EZShop implements EZShopInterface {
     @Override
     public Integer issueOrder(String productCode, int quantity, double pricePerUnit) throws InvalidProductCodeException, InvalidQuantityException, InvalidPricePerUnitException, UnauthorizedException {
     	
-    	if(productCode == null || productCode.length() == 0) { 
+    	if(productCode == null || productCode.length() == 0 || !ProductTypeClass.validateProductCode(productCode)) { 
     		throw new InvalidProductCodeException("Invalid Product code");
     	}
-    	
-    	Integer barCodeLength = productCode.length();
-    	//check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
-    	
-    	//Only GTIN-8, GTIN-12, GTIN-13, GTIN-14, GSIN and SSCC are allowed 
-    	if(barCodeLength != 8 && barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14 && barCodeLength != 17 && barCodeLength != 18) {
-    		throw new InvalidProductCodeException();
-    	}
-    	
-    	
-    	//Check digit to be verified (last number of the barcode)
-    	Integer checkDigitToBeVerified = Character.getNumericValue(productCode.charAt(barCodeLength-1));
-    	
-    	//Calculation of the "Check digit"
-    	Integer accumulator = 0;
-    	for(Integer i=0; i<barCodeLength-1;i++) {
-    		int n = Character.getNumericValue(productCode.charAt(i));
-    		
-    		if((i%2) == 0) {
-    			//multiply by 1
-    			accumulator+=n;
-    		}else {
-    			//multiply by 3
-    			accumulator+=n*3;
-    		}
-    	}
-    	
-    	Integer checkDigitCalculated = 0;
-    	while(accumulator%10 != 0) {
-    		accumulator++;
-    		checkDigitCalculated++;
-    	}
-    	
-    	//If the calculated check digit does not correspond to the one to be verified, it is invalid
-    	if(checkDigitCalculated != checkDigitToBeVerified)
-    		throw new InvalidProductCodeException();
     	
     	if(db.getProductTypeByBarCode(productCode) == null)
     		return -1;
@@ -398,10 +362,10 @@ public class EZShop implements EZShopInterface {
     	Integer lastid = db.getLastId("orders"); 
     	
     	//Create Order Object with newOrderID
-    	OrderClass order = new OrderClass(0, productCode, pricePerUnit, quantity, "ISSUED", lastid+1); //balanceID??**********************************
+    	Order order = new OrderClass(lastid+1,0, productCode, pricePerUnit, quantity, "ISSUED"); //balanceID??**********************************
     	
     	//Add Order to the DB    	
-    	if(!db.issueOrder(order))
+    	if(!db.addAndIssueOrder(order))
     		return -1;
     	
         return lastid+1;
@@ -409,17 +373,7 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public Integer payOrderFor(String productCode, int quantity, double pricePerUnit) throws InvalidProductCodeException, InvalidQuantityException, InvalidPricePerUnitException, UnauthorizedException {
-    	/**
-        
-         * This method affects the balance of the system.
-         * It can be invoked only after a user with role "Administrator" or "ShopManager" is logged in.
-                 *
-         * @return  the id of the order (> 0)
-         *          -1 if the product does not exists, if the balance is not enough to satisfy the order, if there are some ////TO DOO!! The balance
-         *          problems with the db
-         *      
-         */
-    	if(productCode == null || productCode.length() == 0) { //TO DO -> not valid barcode
+    	if(productCode == null || productCode.length() == 0 || !ProductTypeClass.validateProductCode(productCode)) { 
     		throw new InvalidProductCodeException("Invalid Product code");
     	}
     	
@@ -441,11 +395,20 @@ public class EZShop implements EZShopInterface {
     	//Get the last used ID
     	Integer lastid = db.getLastId("orders"); 
     	
+        /** 
+         * This method affects the balance of the system.
+         * @return  the id of the order (> 0)
+         *          -1 if the product does not exists, if the balance is not enough to satisfy the order, if there are some
+         *          problems with the db
+    	 */
+    	
+    	//TODO: manage balance
+    	
     	//Create Order Object with newID
-    	OrderClass order = new OrderClass(lastid+1, productCode, pricePerUnit, quantity, "PAYED", lastid+1); //balanceID??**********************************
+    	Order order = new OrderClass(lastid+1, lastid+1, productCode, pricePerUnit, quantity, "PAYED"); //balanceID??**********************************
     	
     	//Add Order to the DB    	
-    	if(!db.issueAndPayOrder(order))
+    	if(!db.addAndIssueOrder(order))
     		return -1;
     	
         return lastid+1;
