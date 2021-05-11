@@ -828,6 +828,10 @@ public class EZShop implements EZShopInterface {
 		if(productCode==null || productCode==""){
 			throw new InvalidProductCodeException();
 		}
+
+		if(amount <= 0){
+			throw new InvalidQuantityException();
+		}
 		
 		ProductTypeClass product = getProductTypeByBarCode(productCode);
 		Integer tempAmount = tempProducts.getOrDefault(productCode, 0);
@@ -846,29 +850,21 @@ public class EZShop implements EZShopInterface {
 		}
 
 		List<TicketEntry> entries = transaction.getEntries();
-		TicketEntryClass entry = new TicketEntryClass();
-
+		boolean flag = false;
+		for(TicketEntry prod : entries){
+			if(prod.getBarCode()==productCode){
+				flag = true;
+				prod.setAmount(prod.getAmount()+amount);
+			}
+		}
+		if(flag==false){
+			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),0);
+			entries.add(entry);
+		}
+		transaction.setEntries(entries);
+		tickets.put(transactionId,transaction);
 		tempProducts.put(productCode, amount+tempAmount);
-
-    	/**
-         * This method adds a product to a sale transaction decreasing the temporary amount of product available on the
-         * shelves for other customers.
-         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-         *
-         * @param transactionId the id of the Sale transaction
-         * @param productCode the barcode of the product to be added
-         * @param amount the quantity of product to be added
-         * @return  true if the operation is successful
-         *          false   if the product code does not exist,
-         *                  if the quantity of product cannot satisfy the request,
-         *                  if the transaction id does not identify a started and open transaction.
-         *
-         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
-         * @throws InvalidProductCodeException if the product code is empty, null or invalid
-         * @throws InvalidQuantityException if the quantity is less than 0
-         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-         */
-    	return false;
+    	return true;
     }
 
     @Override
@@ -878,26 +874,45 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
     	}
-    	/**
-         * This method deletes a product from a sale transaction increasing the temporary amount of product available on the
-         * shelves for other customers.
-         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-         *
-         * @param transactionId the id of the Sale transaction
-         * @param productCode the barcode of the product to be deleted
-         * @param amount the quantity of product to be deleted
-         *
-         * @return  true if the operation is successful
-         *          false   if the product code does not exist,
-         *                  if the quantity of product cannot satisfy the request,
-         *                  if the transaction id does not identify a started and open transaction.
-         *
-         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
-         * @throws InvalidProductCodeException if the product code is empty, null or invalid
-         * @throws InvalidQuantityException if the quantity is less than 0
-         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-         */
-    	return false;
+		
+		if(transactionId<0 || transactionId==null){
+			throw new InvalidTransactionIdException();
+		}
+
+		
+		if(productCode==null || productCode==""){
+			throw new InvalidProductCodeException();
+		}
+
+		if(amount <= 0){
+			throw new InvalidQuantityException();
+		}
+
+		ProductTypeClass product = getProductTypeByBarCode(productCode);
+
+		if(product==null){
+			return false;
+		}
+
+		SaleTransactionClass transaction = tickets.get(transactionId);
+		if(transaction==null){
+			return false;
+		}
+
+		List<TicketEntry> entries = transaction.getEntries();
+		Integer totQuantity = 0;
+		for(TicketEntry entry : entries){
+			if(entry.getBarCode()==productCode){
+				if(entry.getAmount()<amount){
+					return false;
+				}
+				else{
+					entry.setAmount(entry.getAmount()-amount);
+				}
+			}
+		}
+		transaction.setEntries(entries);
+		return true;
     }
 
     @Override
