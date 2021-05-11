@@ -233,7 +233,7 @@ public class EZShop implements EZShopInterface {
     	
     	//Create productType Object with newID
     	//(Integer id, Integer quantity, String location, String note, String productDescription, String barCode, Double pricePerUnit)
-    	ProductTypeClass productType = new ProductTypeClass(lastid+1, 0, "location", note, description, productCode, pricePerUnit);
+    	ProductType productType = new ProductTypeClass(lastid+1, 0, "location", note, description, productCode, pricePerUnit);
     	
     	//Add productType to the DB
     	db.addProductType(productType);
@@ -246,7 +246,8 @@ public class EZShop implements EZShopInterface {
     	/*   
          * @throws InvalidProductCodeException if the product code is null or empty, if it is not a number or if it is not a valid barcode  
          */   	
-    	Integer barCodeLength = newCode.length();
+    	
+    	//Integer barCodeLength = newCode.length();
     	
     	if(id<=0 || id==null) {
     		throw new InvalidProductIdException();
@@ -256,43 +257,43 @@ public class EZShop implements EZShopInterface {
     		throw new InvalidProductDescriptionException();
     	}
     	
-    	if(newCode == null || newCode.length() == 0  || db.checkExistingProductType(newCode)) {
+    	if(newCode == null || newCode.length() == 0  || db.checkExistingProductType(newCode) || !ProductTypeClass.validateProductCode(newCode)) {
     		throw new InvalidProductCodeException();    		
     	} 	  
-    	//check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
-    	
-    	//Only GTIN-8, GTIN-12, GTIN-13, GTIN-14, GSIN and SSCC are allowed 
-    	if(barCodeLength != 8 && barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14 && barCodeLength != 17 && barCodeLength != 18) {
-    		throw new InvalidProductCodeException();
-    	}
-    	
-    	
-    	//Check digit to be verified (last number of the barcode)
-    	Integer checkDigitToBeVerified = Character.getNumericValue(newCode.charAt(barCodeLength-1));
-    	
-    	//Calculation of the "Check digit"
-    	Integer accumulator = 0;
-    	for(Integer i=0; i<barCodeLength-1;i++) {
-    		int n = Character.getNumericValue(newCode.charAt(i));
-    		
-    		if((i%2) == 0) {
-    			//multiply by 1
-    			accumulator+=n;
-    		}else {
-    			//multiply by 3
-    			accumulator+=n*3;
-    		}
-    	}
-    	
-    	Integer checkDigitCalculated = 0;
-    	while(accumulator%10 != 0) {
-    		accumulator++;
-    		checkDigitCalculated++;
-    	}
-    	
-    	//If the calculated check digit does not correspond to the one to be verified, it is invalid
-    	if(checkDigitCalculated != checkDigitToBeVerified)
-    		throw new InvalidProductCodeException();
+//    	//check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
+//    	
+//    	//Only GTIN-8, GTIN-12, GTIN-13, GTIN-14, GSIN and SSCC are allowed 
+//    	if(barCodeLength != 8 && barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14 && barCodeLength != 17 && barCodeLength != 18) {
+//    		throw new InvalidProductCodeException();
+//    	}
+//    	
+//    	
+//    	//Check digit to be verified (last number of the barcode)
+//    	Integer checkDigitToBeVerified = Character.getNumericValue(newCode.charAt(barCodeLength-1));
+//    	
+//    	//Calculation of the "Check digit"
+//    	Integer accumulator = 0;
+//    	for(Integer i=0; i<barCodeLength-1;i++) {
+//    		int n = Character.getNumericValue(newCode.charAt(i));
+//    		
+//    		if((i%2) == 0) {
+//    			//multiply by 1
+//    			accumulator+=n;
+//    		}else {
+//    			//multiply by 3
+//    			accumulator+=n*3;
+//    		}
+//    	}
+//    	
+//    	Integer checkDigitCalculated = 0;
+//    	while(accumulator%10 != 0) {
+//    		accumulator++;
+//    		checkDigitCalculated++;
+//    	}
+//    	
+//    	//If the calculated check digit does not correspond to the one to be verified, it is invalid
+//    	if(checkDigitCalculated != checkDigitToBeVerified)
+//    		throw new InvalidProductCodeException();
 
     	if(newPrice <= 0) {
     		throw new InvalidPricePerUnitException();    		
@@ -327,10 +328,10 @@ public class EZShop implements EZShopInterface {
     	
     	boolean del = db.deleteProductType(id);
     	
-    	if(del == true)
-    		System.out.println("Product with id: " + id + "deleted");
-    	else
-    		System.out.println("Product with id: " + id + "NOT deleted");
+//    	if(del == true)
+//    		System.out.println("Product with id: " + id + "deleted");
+//    	else
+//    		System.out.println("Product with id: " + id + "NOT deleted");
         return del;
     }
 
@@ -338,7 +339,7 @@ public class EZShop implements EZShopInterface {
     public List<ProductType> getAllProductTypes() throws UnauthorizedException {    	
     	User user = this.loggedUser;
     	
-    	if(user==null || !user.getRole().equals("Administrator") != !user.getRole().equals("ShopManager") != !user.getRole().equals("Cashier"))
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier")))
     		throw new UnauthorizedException(); 
     	
     	return db.getAllProductTypes();
@@ -347,45 +348,45 @@ public class EZShop implements EZShopInterface {
     @Override
     public ProductType getProductTypeByBarCode(String barCode) throws InvalidProductCodeException, UnauthorizedException {
     	    	
-    	Integer barCodeLength = barCode.length();
+    	//Integer barCodeLength = barCode.length();
     	
-    	if(barCode == null || barCode.length() == 0  || !db.checkExistingProductType(barCode)) { //il checkExist ci vuole davvero?
+    	if(barCode == null || barCode.length() == 0  || !db.checkExistingProductType(barCode) || !ProductTypeClass.validateProductCode(barCode)) {
     		throw new InvalidProductCodeException();    		
     	} 	  
-    	//check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
-    	
-    	//Only GTIN-8, GTIN-12, GTIN-13, GTIN-14, GSIN and SSCC are allowed 
-    	if(barCodeLength != 8 && barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14 && barCodeLength != 17 && barCodeLength != 18) {
-    		throw new InvalidProductCodeException();
-    	}
-    	
-    	
-    	//Check digit to be verified (last number of the barcode)
-    	Integer checkDigitToBeVerified = Character.getNumericValue(barCode.charAt(barCodeLength-1));
-    	
-    	//Calculation of the "Check digit"
-    	Integer accumulator = 0;
-    	for(Integer i=0; i<barCodeLength-1;i++) {
-    		int n = Character.getNumericValue(barCode.charAt(i));
-    		
-    		if((i%2) == 0) {
-    			//multiply by 1
-    			accumulator+=n;
-    		}else {
-    			//multiply by 3
-    			accumulator+=n*3;
-    		}
-    	}
-    	
-    	Integer checkDigitCalculated = 0;
-    	while(accumulator%10 != 0) {
-    		accumulator++;
-    		checkDigitCalculated++;
-    	}
-    	
-    	//If the calculated check digit does not correspond to the one to be verified, it is invalid
-    	if(checkDigitCalculated != checkDigitToBeVerified)
-    		throw new InvalidProductCodeException();
+//    	//check barcode validity (https://www.gs1.org/services/how-calculate-check-digit-manually)
+//    	
+//    	//Only GTIN-8, GTIN-12, GTIN-13, GTIN-14, GSIN and SSCC are allowed 
+//    	if(barCodeLength != 8 && barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14 && barCodeLength != 17 && barCodeLength != 18) {
+//    		throw new InvalidProductCodeException();
+//    	}
+//    	
+//    	
+//    	//Check digit to be verified (last number of the barcode)
+//    	Integer checkDigitToBeVerified = Character.getNumericValue(barCode.charAt(barCodeLength-1));
+//    	
+//    	//Calculation of the "Check digit"
+//    	Integer accumulator = 0;
+//    	for(Integer i=0; i<barCodeLength-1;i++) {
+//    		int n = Character.getNumericValue(barCode.charAt(i));
+//    		
+//    		if((i%2) == 0) {
+//    			//multiply by 1
+//    			accumulator+=n;
+//    		}else {
+//    			//multiply by 3
+//    			accumulator+=n*3;
+//    		}
+//    	}
+//    	
+//    	Integer checkDigitCalculated = 0;
+//    	while(accumulator%10 != 0) {
+//    		accumulator++;
+//    		checkDigitCalculated++;
+//    	}
+//    	
+//    	//If the calculated check digit does not correspond to the one to be verified, it is invalid
+//    	if(checkDigitCalculated != checkDigitToBeVerified)
+//    		throw new InvalidProductCodeException();
     	
     	User user = this.loggedUser;
     	

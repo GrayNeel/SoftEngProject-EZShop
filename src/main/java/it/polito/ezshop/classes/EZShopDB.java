@@ -255,7 +255,7 @@ public class EZShopDB {
 	 * 
 	 * @param productType the ProductTypeClass containing parameters to add
 	 */
-	public void addProductType(ProductTypeClass productType) {
+	public void addProductType(ProductType productType) {
 		String sql = "INSERT INTO productTypes(id, quantity, location, note, productDescription, barCode, pricePerUnit) VALUES(?,?,?,?,?,?,?)";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
