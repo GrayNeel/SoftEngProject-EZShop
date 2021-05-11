@@ -399,28 +399,26 @@ public class EZShopDB {
 		return productTypeList;
 	}
 
-	public boolean updateQuantity(Integer id, int toBeAdded) {
-		String sqlRead = "SELECT * FROM productTypes WHERE id=?";
-		String sql = "UPDATE productTypes SET quantity=? WHERE id=?";
-		Integer qty = 0;
-		try (PreparedStatement pstmt = connection.prepareStatement(sqlRead)) {
+	public Integer getQuantityByProductTypeId(Integer id) {
+		String sql = "SELECT quantity FROM productTypes WHERE id=?";
+		Integer qty = null;
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			qty = rs.getInt("quantity");
-
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
-
-		if (qty + toBeAdded < 0) {
-			System.err.println("Qty can not be less than 0");
-			return false;
-		}
+		
+		return qty;
+	}
+	
+	public boolean updateQuantityByProductTypeId(Integer id, int newQuantity) {
+		String sql = "UPDATE productTypes SET quantity=? WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-
-			pstmt.setInt(1, qty + toBeAdded);
-
+			pstmt.setInt(1, newQuantity);
 			pstmt.setInt(2, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -446,24 +444,25 @@ public class EZShopDB {
 		return true;
 	}
 
-	public boolean updateLocation(Integer productId, String newPos) {
-
+	public boolean isLocationUsed(String pos) {
 		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE location=?";
-
+		Integer res = null;
 		// CHECK IF Position is ALREADY used
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setString(1, newPos);
+			pstmt.setString(1, pos);
 			ResultSet rs = pstmt.executeQuery();
-
-			if (rs.getInt("tot") > 0) {
-				System.err.println("Location Already Used");
-				return false;
-			}
-
+			res = rs.getInt("tot");
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
-
+		
+		if(res==0)
+			return false;
+		else 
+			return true;
+	}
+	
+	public boolean updateProductTypeLocation(Integer productId, String newPos) {
 		String sqlUpd = "UPDATE productTypes SET location=? WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sqlUpd)) {

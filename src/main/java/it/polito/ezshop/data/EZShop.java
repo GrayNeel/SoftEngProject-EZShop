@@ -295,7 +295,14 @@ public class EZShop implements EZShopInterface {
     		throw new UnauthorizedException();
     	} 
     	
-    	if(db.updateQuantity(productId, toBeAdded))
+    	//Get product quantity
+    	Integer quantity = db.getQuantityByProductTypeId(productId);
+    	
+    	if(quantity + toBeAdded < 0)
+    		return false;
+    	
+    	//update product quantity
+    	if(db.updateQuantityByProductTypeId(productId, quantity + toBeAdded))
     		return true;
     	else
     		return false;  	      
@@ -319,7 +326,14 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
     		throw new UnauthorizedException();
     	} 
-    	return db.updateLocation(productId, newPos);
+    	
+    	if(newPos == null || newPos.length() == 0) {
+    		newPos = "";
+    	}else if(db.isLocationUsed(newPos)) {
+    		return false;
+    	}
+    		
+    	return db.updateProductTypeLocation(productId,newPos);
     }
 
     @Override
