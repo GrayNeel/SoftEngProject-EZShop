@@ -25,7 +25,7 @@ public class EZShop implements EZShopInterface {
 	
     @Override
     public void reset() {
-    	//TODO: reset all the application (delete entries in DB and reset local variables
+    	//TODO: reset all the application (delete entries in DB and reset local variables)
     }
 
     @Override
@@ -74,11 +74,12 @@ public class EZShop implements EZShopInterface {
     
     	
     	boolean del = db.deleteUser(id);
-    	
-    	if(del == true)
-    		System.out.println("User with id: " + id + " deleted");
-    	else
-    		System.out.println("User with id: " + id + " NOT deleted");
+   
+    	// IT IS NOT NEEDED
+//    	if(del == true)
+//    		System.out.println("User with id: " + id + " deleted");
+//    	else
+//    		System.out.println("User with id: " + id + " NOT deleted");
         return del;
     }    
     

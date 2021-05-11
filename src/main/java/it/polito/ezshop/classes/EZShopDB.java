@@ -56,9 +56,9 @@ public class EZShopDB {
 	public Integer getLastId(String table) {
 		String sql = "SELECT MAX(id) AS tot FROM " + table;
 		Integer id = -1;
-
+		
 		try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-
+			//If table is empty, gives id = 0
 			id = rs.getInt("tot");
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
@@ -234,21 +234,21 @@ public class EZShopDB {
 	// return true;
 	// }
 
-	public User getLoggedUser() {
-		String sql = "SELECT id,username,password,role FROM loggedusers";
-		User user = null;
-
-		try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-
-			user = new UserClass(rs.getInt("id"), rs.getString("username"), rs.getString("password"),
-					rs.getString("role"));
-
-		} catch (SQLException e) {
-			return null;
-		}
-
-		return user;
-	}
+//	public User getLoggedUser() {
+//		String sql = "SELECT id,username,password,role FROM loggedusers";
+//		User user = null;
+//
+//		try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+//
+//			user = new UserClass(rs.getInt("id"), rs.getString("username"), rs.getString("password"),
+//					rs.getString("role"));
+//
+//		} catch (SQLException e) {
+//			return null;
+//		}
+//
+//		return user;
+//	}
 
 	/**
 	 * This method adds a new productType to the database "productTypes"
