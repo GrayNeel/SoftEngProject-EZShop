@@ -944,6 +944,18 @@ public class EZShop implements EZShopInterface {
 		if(product==null){
 			return false;
 		}
+		
+		List<TicketEntry> entries = tickets.get(transactionId);
+		if(entries==null){
+			return false;
+		}
+			
+		for(TicketEntry entry : entries){
+			if(entry.getBarCode()==productCode){
+				entry.setDiscountRate(discountRate);
+			}
+		}
+		tickets.put(transactionId, entries);
 
 //		SaleTransactionClass transaction = tickets.get(transactionId);
 //		if(transaction==null){
@@ -970,7 +982,7 @@ public class EZShop implements EZShopInterface {
          * @throws InvalidDiscountRateException if the discount rate is less than 0 or if it greater than or equal to 1.00
          * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
          */
-    	return false;
+    	return true;
     }
 
     @Override
