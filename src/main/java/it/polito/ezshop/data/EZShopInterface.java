@@ -670,7 +670,7 @@ public interface EZShopInterface {
 
     /**
      * This method closes a return transaction. A closed return transaction can be committed (i.e. <commit> = true) thus
-     * it increases the product quantity available on the shelves or not (i.e. <commit> = false) thus the whole trasaction
+     * it increases the product quantity available on the shelves or not (i.e. <commit> = false) thus the whole transaction
      * is undone.
      * This method updates the transaction status (decreasing the number of units sold by the number of returned one and
      * decreasing the final price).

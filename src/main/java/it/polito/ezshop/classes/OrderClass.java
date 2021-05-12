@@ -10,7 +10,7 @@ public class OrderClass implements Order {
 	private String status;
 	private Integer orderId;
 	
-	public OrderClass (Integer balanceId, String productCode, Double pricePerUnit, Integer quantity, String status, Integer orderId) {
+	public OrderClass (Integer orderId, Integer balanceId, String productCode, Double pricePerUnit, Integer quantity, String status) {
 		this.balanceId = balanceId;
 		this.productCode = productCode;
 		this.pricePerUnit = pricePerUnit;
