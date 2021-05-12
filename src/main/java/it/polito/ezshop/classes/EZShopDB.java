@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -1264,6 +1265,30 @@ public class EZShopDB {
 			System.err.println(e.getMessage());
 		}
     	return total;
+    }
+    
+    public List<BalanceOperation> getBalanceOperations(String from, String to) {
+    	String sql = "SELECT * FROM balanceOperations WHERE STR_TO_DATE(date,'%Y-%m-%d') >=? "
+    			+ "STR_TO_DATE(date,'%Y-%m-%d') <=?";
+    	List<BalanceOperation> operations =  new ArrayList<>();
+    	try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, from);
+			pstmt.setString(2, to);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Integer balanceId = rs.getInt("id");
+				String dateString = rs.getString("date");
+				double money = rs.getDouble("money");
+				String type = rs.getString("type");
+				
+				LocalDate date = LocalDate.parse(dateString);
+				BalanceOperation operation = new BalanceOperationClass(balanceId, date, money, type);
+				operations.add(operation);
+			}
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+    	return operations;
     }
 
 }
