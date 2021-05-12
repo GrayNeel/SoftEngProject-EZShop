@@ -639,24 +639,23 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public boolean modifyPointsOnCard(String customerCard, int pointsToBeAdded) throws InvalidCustomerCardException, UnauthorizedException {
-//    	User user = this.loggedUser;
-//    	
-//    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
-//    		throw new UnauthorizedException();
-//    	}
-//    	
-//    	if(customerCard=="" || customerCard==null || customerCard.length()!=10) {
-//    		throw new InvalidCustomerCardException();
-//    	}
-//    	
-//		Integer currentPoints = db.getCardPoints(customerCard);
-//		if(pointsToBeAdded*(-1)>currentPoints || currentPoints==-1){
-//			return false;
-//		}
-//    	boolean flag = db.updateCardPoints(customerCard, currentPoints+pointsToBeAdded);
-//    	
-//    	return flag;
-    	return true;
+    	User user = this.loggedUser;
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	
+    	if(customerCard=="" || customerCard==null || customerCard.length()!=10) {
+    		throw new InvalidCustomerCardException();
+    	}
+    	
+		Integer currentPoints = db.getCardPoints(customerCard);
+		if(pointsToBeAdded*(-1)>currentPoints || currentPoints==-1){
+			return false;
+		}
+    	boolean flag = db.updateCardPoints(customerCard, currentPoints+pointsToBeAdded);
+    	
+    	return flag;
     }
 
     @Override
@@ -736,57 +735,56 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public boolean deleteProductFromSale(Integer transactionId, String productCode, int amount) throws InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, UnauthorizedException {
-//    	User user = this.loggedUser;
-//    	
-//    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
-//    		throw new UnauthorizedException();
-//    	}
-//		
-//		if(transactionId<0 || transactionId==null){
-//			throw new InvalidTransactionIdException();
-//		}
-//
-//		
-//		if(productCode==null || productCode==""){
-//			throw new InvalidProductCodeException();
-//		}
-//
-//		if(amount <= 0){
-//			throw new InvalidQuantityException();
-//		}
-//
-//
-//		ProductType product = getProductTypeByBarCode(productCode);
-//
-//		if(product==null){
-//			return false;
-//		}
-//
-//		List<TicketEntry> entries = tickets.get(transactionId);
-//		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
-//		if(transaction==null || entries==null){
-//			return false;
-//		}
-//
-//		if(transaction.getState().equals("PAYED") || transaction.getState().equals("CLOSED")){
-//			return false;
-//		}
-//		
-//		for(TicketEntry entry: entries){
-//			if(entry.getBarCode().equals(productCode)){
-//				Integer curramount = entry.getAmount();
-//				if(amount>curramount){
-//					return false;
-//				}
-//				entry.setAmount(curramount-amount);
-//				boolean flag = db.updateQuantityByBarCode(productCode, product.getQuantity()+newQuantity);
-//			}
-//		}
-//
-//		tickets.put(transactionId,entries);
-//
-//		return flag;
-    	return false;
+    	User user = this.loggedUser;
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+		
+		if(transactionId<0 || transactionId==null){
+			throw new InvalidTransactionIdException();
+		}
+
+		
+		if(productCode==null || productCode==""){
+			throw new InvalidProductCodeException();
+		}
+
+		if(amount <= 0){
+			throw new InvalidQuantityException();
+		}
+
+
+		ProductType product = getProductTypeByBarCode(productCode);
+
+		if(product==null){
+			return false;
+		}
+
+		List<TicketEntry> entries = tickets.get(transactionId);
+		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
+		if(transaction==null || entries==null){
+			return false;
+		}
+
+		if(transaction.getState().equals("PAYED") || transaction.getState().equals("CLOSED")){
+			return false;
+		}
+		
+		for(TicketEntry entry: entries){
+			if(entry.getBarCode().equals(productCode)){
+				Integer curramount = entry.getAmount();
+				if(amount>curramount){
+					return false;
+				}
+				entry.setAmount(curramount-amount);
+				boolean flag = db.updateQuantityByBarCode(productCode, product.getQuantity()+newQuantity);
+			}
+		}
+
+		tickets.put(transactionId,entries);
+
+		return flag;
     }
 
     @Override
@@ -858,49 +856,48 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public int computePointsForSale(Integer transactionId) throws InvalidTransactionIdException, UnauthorizedException {
-//    	User user = this.loggedUser;
-//    	
-//    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
-//    		throw new UnauthorizedException();
-//    	}
-//    	
-//    	if(transactionId<0 || transactionId==null){
-//			throw new InvalidTransactionIdException();
-//		}
-//		
-//		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
-//		if(transaction==null){
-//			return -1;
-//		}
-//
-//		List<TicketEntry> entries = tickets.get(transactionId);
-//		if(transaction.getState().equals("OPEN")){
-//			if(entries==null){
-//				return -1;
-//			}
-//			Double total = 0.0;
-//			Double prodTotal = 0.0;
-//			for(TicketEntry entry: entries){
-//				prodTotal = entry.getAmount() * entry.getPricePerUnit();
-//				total = total + prodTotal*(1-entry.getDiscountRate());
-//			}
-//			total = total*(1-transaction.getDiscountRate());
-//		}
-//		else{
-//			SaleTransactionClass transactionClosed = getClosedSaleTransactionById(transactionId);
-//			entries = transactionClosed.getEntries();
-//			Double total = 0.0;
-//			Double prodTotal = 0.0;
-//			for(TicketEntry entry: entries){
-//				prodTotal = entry.getAmount() * entry.getPricePerUnit();
-//				total = total + prodTotal*(1-entry.getDiscountRate());
-//			}
-//			total = total*(1-transactionClosed.getDiscountRate());
-//		}
-//
-//		Integer points = Integer.parseInt(total);
-//    	return points;
-    	return 1;
+    	User user = this.loggedUser;
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	
+    	if(transactionId<0 || transactionId==null){
+			throw new InvalidTransactionIdException();
+		}
+		
+		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
+		if(transaction==null){
+			return -1;
+		}
+
+		List<TicketEntry> entries = tickets.get(transactionId);
+		if(transaction.getState().equals("OPEN")){
+			if(entries==null){
+				return -1;
+			}
+			Double total = 0.0;
+			Double prodTotal = 0.0;
+			for(TicketEntry entry: entries){
+				prodTotal = entry.getAmount() * entry.getPricePerUnit();
+				total = total + prodTotal*(1-entry.getDiscountRate());
+			}
+			total = total*(1-transaction.getDiscountRate());
+		}
+		else{
+			SaleTransactionClass transactionClosed = getClosedSaleTransactionById(transactionId);
+			entries = transactionClosed.getEntries();
+			Double total = 0.0;
+			Double prodTotal = 0.0;
+			for(TicketEntry entry: entries){
+				prodTotal = entry.getAmount() * entry.getPricePerUnit();
+				total = total + prodTotal*(1-entry.getDiscountRate());
+			}
+			total = total*(1-transactionClosed.getDiscountRate());
+		}
+
+		Integer points = Integer.parseInt(total);
+    	return points;
     }
 
     @Override

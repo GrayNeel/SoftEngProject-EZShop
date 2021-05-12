@@ -865,31 +865,31 @@ public class EZShopDB {
 		return saleTransaction.getTicketNumber();
 	}
 
-//	public boolean createTicketEntry(TicketEntryClass ticketEntry) {
-//		Integer id;
-//		String barCode, productDescription;
-//		Integer amount;
-//		Double pricePerUnit, discountRate;
-//		
-//		String sql = "INSERT INTO productEntries(id, barCode, productDescription, amount, time, paymentType, state) VALUES(?,?,?,?,?,?,?)";
-//		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-////			pstmt.setInt(1, saleTransaction.getTicketNumber());
-////			pstmt.setDouble(2, saleTransaction.getPrice());
-////			pstmt.setDouble(3, saleTransaction.getDiscountRate());
-////			pstmt.setString(4, saleTransaction.getDate());
-////			pstmt.setString(5, saleTransaction.getTime());
-////			pstmt.setString(6, saleTransaction.getPaymentType());
-////			pstmt.setString(7, saleTransaction.getState());
-//
-//			pstmt.executeUpdate();
-//		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
-//			return -1;
-//		}
-//
-//
-//		return saleTransaction.getTicketNumber();
-//	}
+	public boolean createTicketEntry(TicketEntryClass ticketEntry) {
+		Integer id;
+		String barCode, productDescription;
+		Integer amount;
+		Double pricePerUnit, discountRate;
+		
+		String sql = "INSERT INTO productEntries(id, barCode, productDescription, amount, time, paymentType, state) VALUES(?,?,?,?,?,?,?)";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, saleTransaction.getTicketNumber());
+			pstmt.setDouble(2, saleTransaction.getPrice());
+			pstmt.setDouble(3, saleTransaction.getDiscountRate());
+			pstmt.setString(4, saleTransaction.getDate());
+			pstmt.setString(5, saleTransaction.getTime());
+			pstmt.setString(6, saleTransaction.getPaymentType());
+			pstmt.setString(7, saleTransaction.getState());
+
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return -1;
+		}
+
+
+		return saleTransaction.getTicketNumber();
+	}
 	
 	public SaleTransactionClass getSaleTransactionById(Integer transactionId) {
     	String sql = "SELECT * FROM saleTransactions WHERE id=?";
