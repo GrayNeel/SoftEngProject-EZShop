@@ -20,6 +20,7 @@ public class EZShop implements EZShopInterface {
 	// List<TicketEntry> ticket = ArrayList<>();
 	// SaleTransactionClass transaction = null;
 	Map<Integer,List<TicketEntry>> tickets = new HashMap<>();
+	List<ProductReturnClass> returns = new ArrayList<>();
 	
 	
 	
@@ -977,7 +978,7 @@ public class EZShop implements EZShopInterface {
             throw new InvalidTransactionIdException();
 
         int lastid = db.getLastId("returnTransactions");
-        ReturnTransactionClass returnTransaction = new ReturnTransactionClass(lastid + 1, saleNumber, 0, 0, "");
+        ReturnTransactionClass returnTransaction = new ReturnTransactionClass(lastid + 1, saleNumber, 0, 0, "ACTIVE");
         Integer result = db.startReturnTransaction(returnTransaction);
 
         return result;
@@ -1014,11 +1015,12 @@ public class EZShop implements EZShopInterface {
         if (entryAmount < amount || !existProductInSale || !existProduct)
         	return false;
         double returnValue = db.getPricePerUnit(productCode)*amount;
-        
-        boolean flag = db.returnProduct(returnTransaction.getId(), returnTransaction.getTransactionId(), productCode,
-                amount, returnValue);
+        ProductReturnClass tempReturn = new ProductReturnClass(0, returnId, productCode, amount, returnValue);
+        returns.add(tempReturn);
+//        boolean flag = db.returnProduct(returnTransaction.getId(), returnTransaction.getTransactionId(), productCode,
+//                amount, returnValue);
 
-        return flag;
+        return true;
     }
 
     /**
@@ -1053,10 +1055,44 @@ public class EZShop implements EZShopInterface {
                 && !user.getRole().equals("Cashier"))) {
             throw new UnauthorizedException();
         }
+        if (returnId==null || returnId<=0) {
+        	throw new InvalidTransactionIdException();
+        }
 
         if (commit) {
+			ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
+			int totalAmountReturned = returnTransaction.getQuantity();
+			double totalReturnValue = returnTransaction.getReturnValue();
+			double totalSold = 0;
+        	for(ProductReturnClass productReturn : returns){
+        		int lastId = db.getLastId("productReturns"); 
+        		boolean addedReturnEntry = db.returnProduct(lastId+1, productReturn.getReturnId(), productReturn.getProductCode(),
+        				productReturn.getQuantity(), productReturn.getReturnValue());
+        		if(addedReturnEntry) {
+            		int actualAmount = db.getQuantityByProductTypeBarCode(productReturn.getProductCode());
+        			int newAmount = actualAmount+productReturn.getQuantity();
+    				db.updateQuantityByBarCode(productReturn.getProductCode(), newAmount);
+    				
+    				totalAmountReturned += productReturn.getQuantity();
+    				totalReturnValue += productReturn.getReturnValue();
+    				
+    				int actualAmountSold = db.getAmountonEntry(returnTransaction.getTransactionId(), productReturn.getProductCode());
+    				int newAmountSold = actualAmountSold - productReturn.getQuantity();
+    				
+    				double actualTotalSold = db.getTotalOnEntry(returnTransaction.getTransactionId(), productReturn.getProductCode());
+    				double newTotalSold = actualTotalSold - productReturn.getReturnValue();
+    				totalSold += newTotalSold;
+    				db.updateEntryAfterCommit(returnTransaction.getTransactionId(), productReturn.getProductCode(), newAmountSold, newTotalSold);
+        		}
+    		}
+			db.updateReturnTransaction(returnId, totalAmountReturned, totalReturnValue);
+			db.updateSaleTransactionAfterCommit(returnTransaction.getTransactionId(), totalSold);
+        	returns.clear();
             return true;
         }
+        //Close the return transaction
+		db.updateReturnTransaction(returnId, 0, 0.0);
+		returns.clear();
         return false;
     }
 
@@ -1073,12 +1109,32 @@ public class EZShop implements EZShopInterface {
         if (returnId == null || returnId <= 0) {
             throw new InvalidTransactionIdException();
         }
-
-        boolean flag = db.deleteReturnTransaction(returnId);
-        if (flag) { // update quantity and price on sale transaction
-
+        //Update first entries and products
+		ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
+        List<ProductReturnClass> returnProducts = db.getAllProductReturnsById(returnId);
+        double newTotal = 0;
+        for(ProductReturnClass productReturn : returnProducts){
+    		int actualAmount = db.getQuantityByProductTypeBarCode(productReturn.getProductCode());
+			int newAmount = actualAmount-productReturn.getQuantity();
+			db.updateQuantityByBarCode(productReturn.getProductCode(), newAmount);
+			
+			int actualAmountSold = db.getAmountonEntry(returnTransaction.getTransactionId(), productReturn.getProductCode());
+			int newAmountSold = actualAmountSold - productReturn.getQuantity();
+			
+			double actualTotalSold = db.getTotalOnEntry(returnTransaction.getTransactionId(), productReturn.getProductCode());
+			double newTotalSold = actualTotalSold - productReturn.getReturnValue();
+			newTotal += newTotalSold;			
+			db.updateEntryAfterCommit(returnTransaction.getTransactionId(), productReturn.getProductCode(), newAmountSold, newTotalSold);
+		}
+        // Update sale transaction
+		db.updateSaleTransactionAfterCommit(returnTransaction.getTransactionId(), newTotal);
+		// delete first return products since it has foreign key
+		boolean deletedProductReturns = db.deleteProductReturnsByReturnId(returnId);
+        boolean deletedReturnTransaction = db.deleteReturnTransaction(returnId);
+        if (deletedProductReturns && deletedReturnTransaction) { 
+        	return true;
         }
-        return flag;
+        return false;
     }
 
     @Override

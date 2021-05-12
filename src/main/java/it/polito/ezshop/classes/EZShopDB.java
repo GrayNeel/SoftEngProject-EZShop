@@ -415,6 +415,21 @@ public class EZShopDB {
 		return qty;
 	}
 	
+	public Integer getQuantityByProductTypeBarCode(String barCode) {
+		String sql = "SELECT quantity FROM productTypes WHERE barCode=?";
+		Integer qty = null;
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, barCode);
+			ResultSet rs = pstmt.executeQuery();
+			qty = rs.getInt("quantity");
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		
+		return qty;
+	}
+	
 	public boolean updateQuantityByProductTypeId(Integer id, int newQuantity) {
 		String sql = "UPDATE productTypes SET quantity=? WHERE id=?";
 
@@ -431,7 +446,7 @@ public class EZShopDB {
 	}
 
 	public boolean updateQuantityByBarCode(String productCode, int newQuantity) {
-		String sql = "UPDATE productTypes SET quantity=? WHERE id=?";
+		String sql = "UPDATE productTypes SET quantity=? WHERE barCode=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, newQuantity);
@@ -1002,16 +1017,17 @@ public class EZShopDB {
     }
 
     public boolean deleteReturnTransaction(Integer returnId) {
-        String sql = "DELETE FROM returnTransactions WHERE state != 'CLOSED' AND id=?";
+        String sql = "DELETE FROM returnTransactions WHERE state = 'CLOSED' AND id=?";
+        boolean success = false;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, returnId);
             pstmt.executeUpdate();
+            success = true;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            return false;
         }
 
-        return true;
+        return success;
     }
 
     public ReturnTransactionClass getReturnTransactionById(Integer returnId) {
@@ -1045,13 +1061,11 @@ public class EZShopDB {
         return result;
     }
     
-    public boolean returnProduct(int returnId, int transactionId, String productCode, int amount, double returnValue) {
-        int newId = getLastId("productReturns");
-
+    public boolean returnProduct(int id, int returnId, String productCode, int amount, double returnValue) {
         String sql = "INSERT INTO productReturns(id,returnId,productCode,quantity,returnValue) VALUES(?,?,?,?,?)";
         boolean success = false;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, newId+1);
+            pstmt.setInt(1, id);
             pstmt.setInt(2, returnId);
             pstmt.setString(3, productCode);
             pstmt.setInt(4, amount);
@@ -1081,6 +1095,21 @@ public class EZShopDB {
     	return result;
     }
     
+    public double getTotalOnEntry(Integer transactionId, String productCode) {
+    	String sql = "SELECT total FROM productEntries WHERE transactionId=? AND productCode=?";
+        double result = 0.0;
+    	try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, transactionId);
+            pstmt.setString(2, productCode);
+            ResultSet rs = pstmt.executeQuery();
+            result = rs.getInt("total");
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    	return result;
+    }
+    
     public boolean checkProductInSaleTransaction(Integer transactionId, String productCode) {
     	String sql = "SELECT COUNT(*) as tot FROM productEntries WHERE transactionId=? AND productCode=?";
     	boolean exists = false;
@@ -1095,6 +1124,83 @@ public class EZShopDB {
             System.err.println(e.getMessage());
         }
     	return exists;
+    }
+    
+    public void updateReturnTransaction(Integer returnId, Integer newAmount, Double newReturnValue) {
+    	String sql = "UPDATE returnTransactions SET quantity=? , returnValue=? , state=? WHERE id=?";
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, newAmount);
+			pstmt.setDouble(2, newReturnValue);
+			pstmt.setString(3, "CLOSED");
+			pstmt.setInt(4, returnId);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+    }
+    
+    public void updateSaleTransactionAfterCommit(Integer transactionId, Double newReturnValue) {
+    	String sql = "UPDATE saleTransactions SET price=? WHERE id=?";
+    		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setDouble(1, newReturnValue);
+			pstmt.setInt(2, transactionId);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+    	}
+    }
+    
+    public void updateEntryAfterCommit(Integer transactionId, String productCode, int newAmountSold, double newTotalSold){
+    	String sql = "UPDATE productEntries SET amount=?, total=? WHERE transactionId=? AND productCode=?";
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, newAmountSold);
+			pstmt.setDouble(2, newTotalSold);
+			pstmt.setInt(3, transactionId);
+			pstmt.setString(4, productCode);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+    	}
+    }
+    
+    public List<ProductReturnClass> getAllProductReturnsById(Integer returnId) {
+		String sql = "SELECT * FROM productReturns WHERE returnId=?";
+		List<ProductReturnClass> returnlist = new ArrayList<>();
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, returnId);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Integer id = rs.getInt("id");
+				String productCode = rs.getString("productCode");
+				Integer quantity = rs.getInt("quantity");
+				double returnValue = rs.getDouble("returnValue");
+
+				ProductReturnClass returnEntry = new ProductReturnClass(id, returnId, productCode, quantity, returnValue);
+				returnlist.add(returnEntry);
+			}
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+
+		return returnlist;
+	}
+    
+    public boolean deleteProductReturnsByReturnId(Integer returnId) {
+    	String sql = "DELETE FROM productReturns WHERE returnId=?";
+        boolean success = false;
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, returnId);
+            pstmt.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return success;
     }
 
 }
