@@ -1220,12 +1220,13 @@ public class EZShopDB {
         return success;
     }
     
-    public boolean updateStateSaleTransaction(Integer transactionId, String state) {
-    	String sql = "UPDATE saleTransactions SET state=? WHERE id=?";
+    public boolean updatePaymentSaleTransaction(Integer transactionId, String paymentMethod, String state) {
+    	String sql = "UPDATE saleTransactions SET state=?, paymentMethod=? WHERE id=?";
         boolean success = false;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, state);
-            pstmt.setInt(2, transactionId);
+            pstmt.setString(2, paymentMethod);
+            pstmt.setInt(3, transactionId);
             pstmt.executeUpdate();
             success = true;
         } catch (SQLException e) {
@@ -1286,8 +1287,33 @@ public class EZShopDB {
 			System.err.println(e.getMessage());
 		}
     	return operations;
- 
-
     }
+    
+    public CreditCardClass getCreditCardByCardNumber(String cardNumber) {
+		String sql = "SELECT * FROM creditCards WHERE creditCardNumber=?";
+		CreditCardClass creditCard = null;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, cardNumber);
+			ResultSet rs = pstmt.executeQuery();
+			creditCard = new CreditCardClass(rs.getString("creditCardNumber"), rs.getDouble("balance"));
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return creditCard;
+	}
+    
+    public boolean updateBalanceInCreditCard(String cardNumber, double newBalance) {
+    	String sql = "UPDATE creditCards SET balance=? WHERE creditCardNumber=?";
+        boolean success = false;
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setDouble(1, newBalance);
+            pstmt.setString(2, cardNumber);
+            pstmt.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return success;
+	}
 
 }

@@ -1137,7 +1137,7 @@ public class EZShop implements EZShopInterface {
         if (salePrice > cash) {
         	return change;
         }
-        boolean updatedSaleTransaction = db.updateStateSaleTransaction(transactionId, "PAYED");
+        boolean updatedSaleTransaction = db.updatePaymentSaleTransaction(transactionId, "CASH", "PAYED");
     	boolean updatedBalanceOperation = recordBalanceUpdate(salePrice);
     	
     	//Only return cash if no problems in db and recorded
@@ -1147,10 +1147,44 @@ public class EZShop implements EZShopInterface {
       
         return change;
     }
-
+ 
     @Override
     public boolean receiveCreditCardPayment(Integer ticketNumber, String creditCard)
             throws InvalidTransactionIdException, InvalidCreditCardException, UnauthorizedException {
+    	User user = this.loggedUser;
+
+    	if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+                && !user.getRole().equals("Cashier"))) {
+            throw new UnauthorizedException();
+        }
+    	if (ticketNumber == null || ticketNumber <= 0) {
+    		throw new InvalidTransactionIdException();
+    	}
+    	boolean validCard = CreditCardClass.checkValidCard(creditCard);
+    	if (creditCard == "" || creditCard == null | !validCard){
+    		throw new InvalidCreditCardException();
+    	}
+    	
+    	CreditCardClass creditCardInstance = db.getCreditCardByCardNumber(creditCard);
+    	if (creditCardInstance==null) {
+    		return false;
+    	}
+		SaleTransaction saleTransaction = db.getSaleTransactionById(ticketNumber);
+	    if (saleTransaction == null){
+	    	return false;
+	    }
+	    double salePrice = saleTransaction.getPrice();
+	    double cardBalance = creditCardInstance.getBalance();
+	    if (salePrice > cardBalance) {
+	    	return false;
+	    }
+	    double newBalance = cardBalance - salePrice;
+
+	    boolean updatedBalanceCard = db.updateBalanceInCreditCard(creditCard, newBalance);
+	    boolean updatedSaleTransaction = db.updatePaymentSaleTransaction(ticketNumber, "CREDIT", "PAYED");
+     	boolean updatedBalanceOperation = recordBalanceUpdate(salePrice);
+     	if (updatedSaleTransaction && updatedBalanceOperation && updatedBalanceCard)
+     		return true;
         return false;
     }
 
@@ -1168,8 +1202,6 @@ public class EZShop implements EZShopInterface {
     	
     	ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
     	if (returnTransaction == null) {
-        	System.out.println("ENTRE 1");
-
     		return -1;
     	}
     	double amountToBeReturned = returnTransaction.getReturnValue();
@@ -1184,7 +1216,43 @@ public class EZShop implements EZShopInterface {
     @Override
     public double returnCreditCardPayment(Integer returnId, String creditCard)
             throws InvalidTransactionIdException, InvalidCreditCardException, UnauthorizedException {
-        return 0;
+    	User user = this.loggedUser;
+
+    	if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+                && !user.getRole().equals("Cashier"))) {
+            throw new UnauthorizedException();
+        }
+    	if (returnId==null || returnId<=0) {
+    		throw new InvalidTransactionIdException();	
+    	}
+    	
+    	boolean validCard = CreditCardClass.checkValidCard(creditCard);
+    	
+    	if (creditCard == "" || creditCard == null | !validCard){
+    		throw new InvalidCreditCardException();
+    	}
+    	
+    	ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
+    	if (returnTransaction == null) {
+    		return -1;
+    	}
+    	double amountToBeReturned = returnTransaction.getReturnValue();
+    
+    	CreditCardClass creditCardInstance = db.getCreditCardByCardNumber(creditCard);
+    	if (creditCardInstance==null) {
+    		return -1;
+    	}
+    	
+	    double cardBalance = creditCardInstance.getBalance();
+	    double newBalance = cardBalance + amountToBeReturned;
+	    boolean updatedBalanceCredit = db.updateBalanceInCreditCard(creditCard, newBalance);
+	    
+    	boolean recordedOperation = recordBalanceUpdate(-amountToBeReturned);
+    	if (!recordedOperation || !updatedBalanceCredit) {
+    		return -1;
+    	}
+    	
+        return amountToBeReturned;
     }
 
     @Override
