@@ -1170,9 +1170,27 @@ public class EZShop implements EZShopInterface {
         if (cash <= 0) {
             throw new InvalidPaymentException();
         }
-        
+        double change = -1;
+        SaleTransaction saleTransaction = db.getSaleTransactionById(transactionId);
+        if (saleTransaction == null){
+        	return change;
+        }
+        double salePrice = saleTransaction.getPrice();
+        if (salePrice > cash) {
+        	return change;
+        }
+        boolean updatedSaleTransaction = db.updateStateSaleTransaction(transactionId, "PAYED");
+    	int newId = db.getLastId("balanceOperations");
+    	LocalDate date = LocalDate.now();
+    	BalanceOperation balanceOperation = new BalanceOperationClass(newId+1,date, salePrice, "CREDIT");
+    	boolean recordedBalanceOperation = db.recordBalanceOperation(balanceOperation);
     	
-        return 0;
+    	//Only return cash if no problems in db and recorded
+    	if (updatedSaleTransaction && recordedBalanceOperation) {
+    		change = cash-salePrice;
+    	}
+      
+        return change;
     }
 
     @Override

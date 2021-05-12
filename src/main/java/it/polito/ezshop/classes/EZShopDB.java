@@ -13,6 +13,7 @@ import org.sqlite.SQLiteConnection;
 import org.sqlite.SQLiteUpdateListener;
 import org.sqlite.util.StringUtils;
 
+import it.polito.ezshop.data.BalanceOperation;
 import it.polito.ezshop.data.Customer;
 import it.polito.ezshop.data.Order;
 import it.polito.ezshop.data.ProductType;
@@ -811,21 +812,21 @@ public class EZShopDB {
 		return flag;
 	}
 
-	public Integer getCardPoints(String customerCard) {
-		boolean flag;
-		String sql = "SELECT points from cards WHERE id=?";
-		
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setString(1, customerCard);
-			ResultSet rs = pstmt.executeQuery();
-			Integer points = rs.getInt("points");
-
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-			return -1;
-		}
-		return points;
-	}
+//	public Integer getCardPoints(String customerCard) {
+//		boolean flag;
+//		String sql = "SELECT points from cards WHERE id=?";
+//		
+//		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+//			pstmt.setString(1, customerCard);
+//			ResultSet rs = pstmt.executeQuery();
+//			Integer points = rs.getInt("points");
+//
+//		} catch (SQLException e) {
+//			System.err.println(e.getMessage());
+//			return -1;
+//		}
+//		return points;
+//	}
 	
 	public boolean updateCardPoints(String customerCard, Integer points) {
 		boolean flag;
@@ -864,31 +865,31 @@ public class EZShopDB {
 		return saleTransaction.getTicketNumber();
 	}
 
-//	public boolean createTicketEntry(TicketEntryClass ticketEntry) {
-//		Integer id;
-//		String barCode, productDescription;
-//		Integer amount;
-//		Double pricePerUnit, discountRate;
-//		
-//		String sql = "INSERT INTO productEntries(id, barCode, productDescription, amount, time, paymentType, state) VALUES(?,?,?,?,?,?,?)";
-//		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-////			pstmt.setInt(1, saleTransaction.getTicketNumber());
-////			pstmt.setDouble(2, saleTransaction.getPrice());
-////			pstmt.setDouble(3, saleTransaction.getDiscountRate());
-////			pstmt.setString(4, saleTransaction.getDate());
-////			pstmt.setString(5, saleTransaction.getTime());
-////			pstmt.setString(6, saleTransaction.getPaymentType());
-////			pstmt.setString(7, saleTransaction.getState());
-//
-//			pstmt.executeUpdate();
-//		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
-//			return -1;
-//		}
-//
-//
-//		return saleTransaction.getTicketNumber();
-//	}
+	public boolean createTicketEntry(TicketEntryClass ticketEntry) {
+		Integer id;
+		String barCode, productDescription;
+		Integer amount;
+		Double pricePerUnit, discountRate;
+		
+		String sql = "INSERT INTO productEntries(id, barCode, productDescription, amount, time, paymentType, state) VALUES(?,?,?,?,?,?,?)";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, saleTransaction.getTicketNumber());
+			pstmt.setDouble(2, saleTransaction.getPrice());
+			pstmt.setDouble(3, saleTransaction.getDiscountRate());
+			pstmt.setString(4, saleTransaction.getDate());
+			pstmt.setString(5, saleTransaction.getTime());
+			pstmt.setString(6, saleTransaction.getPaymentType());
+			pstmt.setString(7, saleTransaction.getState());
+
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return -1;
+		}
+
+
+		return saleTransaction.getTicketNumber();
+	}
 	
 	public SaleTransactionClass getSaleTransactionById(Integer transactionId) {
     	String sql = "SELECT * FROM saleTransactions WHERE id=?";
@@ -1214,6 +1215,25 @@ public class EZShopDB {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+
+        return success;
+    }
+    
+    public boolean recordBalanceOperation(BalanceOperation balanceOperation) {
+    	String sql = "INSERT INTO  saleTransactions(id,date,money,type) VALUES(?,?,?,?)";
+    	String date = balanceOperation.getDate().toString();
+    	boolean success = false;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, balanceOperation.getBalanceId());
+			pstmt.setString(2, date);
+			pstmt.setDouble(3, balanceOperation.getMoney());
+			pstmt.setString(4, balanceOperation.getType());
+
+			pstmt.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
 
         return success;
     }
