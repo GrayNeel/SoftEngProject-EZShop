@@ -928,7 +928,6 @@ public class EZShop implements EZShopInterface {
     //////////////////////////////////////////////////////////////////// Marco ^ , Pablo v
     
     @Override
-    // chiedere se si può cambiare il nome dil parameter
     public boolean deleteSaleTransaction(Integer saleNumber)
             throws InvalidTransactionIdException, UnauthorizedException {
         User user = this.loggedUser;
@@ -1017,35 +1016,10 @@ public class EZShop implements EZShopInterface {
         double returnValue = db.getPricePerUnit(productCode)*amount;
         ProductReturnClass tempReturn = new ProductReturnClass(0, returnId, productCode, amount, returnValue);
         returns.add(tempReturn);
-//        boolean flag = db.returnProduct(returnTransaction.getId(), returnTransaction.getTransactionId(), productCode,
-//                amount, returnValue);
 
         return true;
     }
 
-    /**
-     * This method closes a return transaction. A closed return transaction can be
-     * committed (i.e. <commit> = true) thus it increases the product quantity
-     * available on the shelves or not (i.e. <commit> = false) thus the whole
-     * transaction is undone. This method updates the transaction status (decreasing
-     * the number of units sold by the number of returned one and decreasing the
-     * final price). If committed, the return transaction must be persisted in the
-     * system's memory. It can be invoked only after a user with role
-     * "Administrator", "ShopManager" or "Cashier" is logged in.
-     *
-     * @param returnId the id of the transaction
-     * @param commit   whether we want to commit (True) or rollback(false) the
-     *                 transaction
-     *
-     * @return true if the operation is successful false if the returnId does not
-     *         correspond to an active return transaction, if there is some problem
-     *         with the db
-     *
-     * @throws InvalidTransactionIdException if returnId is less than or equal to 0
-     *                                       or if it is null
-     * @throws UnauthorizedException         if there is no logged user or if it has
-     *                                       not the rights to perform the operation
-     */
     @Override
     public boolean endReturnTransaction(Integer returnId, boolean commit)
             throws InvalidTransactionIdException, UnauthorizedException {
@@ -1136,23 +1110,7 @@ public class EZShop implements EZShopInterface {
         }
         return false;
     }
-    /**
-     * This method record the payment of a sale transaction with cash and returns the change (if present).
-     * This method affects the balance of the system.
-     * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-     *
-     * @param transactionId the number of the transaction that the customer wants to pay
-     * @param cash the cash received by the cashier
-     *
-     * @return the change (cash - sale price)
-     *         -1   if the sale does not exists,
-     *              if the cash is not enough,
-     *              if there is some problemi with the db
-     *
-     * @throws InvalidTransactionIdException if the  number is less than or equal to 0 or if it is null
-     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-     * @throws InvalidPaymentException if the cash is less than or equal to 0
-     */
+    
     @Override
     public double receiveCashPayment(Integer transactionId, double cash)
             throws InvalidTransactionIdException, InvalidPaymentException, UnauthorizedException {
@@ -1198,7 +1156,29 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public double returnCashPayment(Integer returnId) throws InvalidTransactionIdException, UnauthorizedException {
-        return 0;
+    	User user = this.loggedUser;
+
+    	if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+                && !user.getRole().equals("Cashier"))) {
+            throw new UnauthorizedException();
+        }
+    	if (returnId==null || returnId<=0) {
+    		throw new InvalidTransactionIdException();	
+    	}
+    	
+    	ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
+    	if (returnTransaction == null) {
+        	System.out.println("ENTRE 1");
+
+    		return -1;
+    	}
+    	double amountToBeReturned = returnTransaction.getReturnValue();
+    	boolean recordedOperation = recordBalanceUpdate(-amountToBeReturned);
+    	if (!recordedOperation) {
+    		return -1;
+    	}
+    	
+        return amountToBeReturned;
     }
 
     @Override
@@ -1232,24 +1212,10 @@ public class EZShop implements EZShopInterface {
     	LocalDate date = LocalDate.now();
     	BalanceOperation balanceOperation = new BalanceOperationClass(newId+1,date, toBeAdded, type);
     	boolean recordedBalanceOperation = db.recordBalanceOperation(balanceOperation);
+    	System.out.println(recordedBalanceOperation);
         return recordedBalanceOperation;
     }
-    /**
-     * This method returns a list of all the balance operations (CREDIT,DEBIT,ORDER,SALE,RETURN) performed between two
-     * given dates.
-     * This method should understand if a user exchanges the order of the dates and act consequently to correct
-     * them.
-     * Both <from> and <to> are included in the range of dates and might be null. This means the absence of one (or
-     * both) temporal constraints.
-     *
-     *
-     * @param from the start date : if null it means that there should be no constraint on the start date
-     * @param to the end date : if null it means that there should be no constraint on the end date
-     *
-     * @return All the operations on the balance whose date is <= to and >= from
-     *
-     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-     */
+    
     @Override
     public List<BalanceOperation> getCreditsAndDebits(LocalDate from, LocalDate to) throws UnauthorizedException {
     	User user = this.loggedUser;

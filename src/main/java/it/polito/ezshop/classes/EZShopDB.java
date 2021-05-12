@@ -963,7 +963,7 @@ public class EZShopDB {
 
     public SaleTransaction getClosedSaleTransactionById(Integer transactionId, List<TicketEntry> products ) {
         String sql = "SELECT id,discountRate,date,time,price,paymentType,state FROM saleTransactions "
-                + "WHERE state == 'CLOSED' AND id=?";
+                + "WHERE state == 'PAYED' AND id=?";
         SaleTransaction saletransaction = null;
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -973,10 +973,8 @@ public class EZShopDB {
             saletransaction = new SaleTransactionClass(rs.getInt("id"), rs.getString("date"),
                     rs.getString("time"), rs.getDouble("price"), rs.getString("paymentType"),
                     rs.getDouble("discountRate"), products , rs.getString("state"));
-            System.out.println("si HAY");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            System.out.println("NO HAY");
         }
 
         return saletransaction;
@@ -1238,7 +1236,7 @@ public class EZShopDB {
     }
     
     public boolean recordBalanceOperation(BalanceOperation balanceOperation) {
-    	String sql = "INSERT INTO saleTransactions(id,date,money,type) VALUES(?,?,?,?)";
+    	String sql = "INSERT INTO balanceOperations(id,date,money,type) VALUES(?,?,?,?)";
     	String date = balanceOperation.getDate().toString();
     	boolean success = false;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
