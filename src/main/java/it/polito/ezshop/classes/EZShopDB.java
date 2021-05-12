@@ -865,31 +865,31 @@ public class EZShopDB {
 		return saleTransaction.getTicketNumber();
 	}
 
-	public boolean createTicketEntry(TicketEntryClass ticketEntry) {
-		Integer id;
-		String barCode, productDescription;
-		Integer amount;
-		Double pricePerUnit, discountRate;
-		
-		String sql = "INSERT INTO productEntries(id, barCode, productDescription, amount, time, paymentType, state) VALUES(?,?,?,?,?,?,?)";
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setInt(1, saleTransaction.getTicketNumber());
-			pstmt.setDouble(2, saleTransaction.getPrice());
-			pstmt.setDouble(3, saleTransaction.getDiscountRate());
-			pstmt.setString(4, saleTransaction.getDate());
-			pstmt.setString(5, saleTransaction.getTime());
-			pstmt.setString(6, saleTransaction.getPaymentType());
-			pstmt.setString(7, saleTransaction.getState());
-
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-			return -1;
-		}
-
-
-		return saleTransaction.getTicketNumber();
-	}
+//	public boolean createTicketEntry(TicketEntryClass ticketEntry) {
+//		Integer id;
+//		String barCode, productDescription;
+//		Integer amount;
+//		Double pricePerUnit, discountRate;
+//		
+//		String sql = "INSERT INTO productEntries(id, barCode, productDescription, amount, time, paymentType, state) VALUES(?,?,?,?,?,?,?)";
+//		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+////			pstmt.setInt(1, saleTransaction.getTicketNumber());
+////			pstmt.setDouble(2, saleTransaction.getPrice());
+////			pstmt.setDouble(3, saleTransaction.getDiscountRate());
+////			pstmt.setString(4, saleTransaction.getDate());
+////			pstmt.setString(5, saleTransaction.getTime());
+////			pstmt.setString(6, saleTransaction.getPaymentType());
+////			pstmt.setString(7, saleTransaction.getState());
+//
+//			pstmt.executeUpdate();
+//		} catch (SQLException e) {
+//			System.err.println(e.getMessage());
+//			return -1;
+//		}
+//
+//
+//		return saleTransaction.getTicketNumber();
+//	}
 	
 	public SaleTransactionClass getSaleTransactionById(Integer transactionId) {
     	String sql = "SELECT * FROM saleTransactions WHERE id=?";
@@ -1220,7 +1220,7 @@ public class EZShopDB {
     }
     
     public boolean recordBalanceOperation(BalanceOperation balanceOperation) {
-    	String sql = "INSERT INTO  saleTransactions(id,date,money,type) VALUES(?,?,?,?)";
+    	String sql = "INSERT INTO saleTransactions(id,date,money,type) VALUES(?,?,?,?)";
     	String date = balanceOperation.getDate().toString();
     	boolean success = false;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1236,6 +1236,17 @@ public class EZShopDB {
 		}
 
         return success;
+    }
+    
+    public double getActualBalance() {
+    	String sql = "SELECT SUM(money) as total FROM balanceOperations";
+    	double total = 0;
+    	try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+				total = rs.getDouble("total");
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+    	return total;
     }
 
 }
