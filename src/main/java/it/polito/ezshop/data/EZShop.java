@@ -404,14 +404,19 @@ public class EZShop implements EZShopInterface {
     	//Get the last used ID
     	Integer lastid = db.getLastId("orders"); 
     	
-        /** 
-         * This method affects the balance of the system.
-         * @return  the id of the order (> 0)
-         *          -1 if the product does not exists, if the balance is not enough to satisfy the order, if there are some
-         *          problems with the db
-    	 */
+
+    	//Balance management
+    	Double actbalance = db.getActualBalance();
+    	if(actbalance < quantity*pricePerUnit)
+    		return -1;
     	
-    	//TODO: manage balance
+    	Integer balanceId = db.getLastId("balanceOperations")+1;
+    	
+    	if(balanceId == 0)
+    		return -1;
+    	
+    	BalanceOperation balOp = new BalanceOperationClass(balanceId,LocalDate.now(),((double)quantity)*pricePerUnit*(-1),"DEBIT"); 
+    	db.recordBalanceOperation(balOp);
     	
     	//Create Order Object with newID
     	Order order = new OrderClass(lastid+1, lastid+1, productCode, pricePerUnit, quantity, "PAYED"); //balanceID??**********************************
@@ -425,11 +430,6 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public boolean payOrder(Integer orderId) throws InvalidOrderIdException, UnauthorizedException {
-    	/**
-         
-         * This method affects the balance of the system.
-                
-         */
     	if(orderId == null || orderId <= 0)
     		throw new InvalidOrderIdException("Order ID can not be less than 0");
     	
@@ -438,6 +438,25 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
     		throw new UnauthorizedException();
     	}     	
+    	
+    	//Balance management
+    	Double actbalance = db.getActualBalance();
+    	
+    	Order order = db.getOrderById(orderId);
+    	
+    	Integer quantity = order.getQuantity();
+    	Double pricePerUnit = order.getPricePerUnit();
+    	
+    	if(actbalance < quantity*pricePerUnit)
+    		return false;
+    	
+    	Integer balanceId = db.getLastId("balanceOperations")+1;
+    	
+    	if(balanceId == 0)
+    		return false;
+    	
+    	BalanceOperation balOp = new BalanceOperationClass(balanceId,LocalDate.now(),((double)quantity)*pricePerUnit*(-1),"DEBIT"); 
+    	db.recordBalanceOperation(balOp);
     	
     	return db.payOrder(orderId);
     }
@@ -658,6 +677,7 @@ public class EZShop implements EZShopInterface {
     	return flag;
     }
 
+    //Everything is ok from top to here. Marco S.
     @Override
     public Integer startSaleTransaction() throws UnauthorizedException {
     	User user = this.loggedUser;

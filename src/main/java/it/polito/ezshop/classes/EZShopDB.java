@@ -553,6 +553,30 @@ public class EZShopDB {
 //		return true;
 //	}
 
+	public Order getOrderById(Integer orderId) {
+		String sql = "SELECT * FROM orders WHERE id=?";
+		Order order;
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, orderId);
+			ResultSet rs = pstmt.executeQuery();
+
+			Integer id = rs.getInt("id");
+			Integer balanceId = rs.getInt("balanceId");
+			String productCode = rs.getString("productCode");
+			Double pricePerUnit = rs.getDouble("pricePerUnit");
+			Integer quantity = rs.getInt("quantity");
+			String status = rs.getString("status");
+			
+			order = new OrderClass(id, balanceId, productCode, pricePerUnit, quantity, status);
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			order = null;
+		}
+
+		return order;
+	}
+	
 	public List<Order> getAllOrders() {
 		String sql = "SELECT * FROM orders";
 		List<Order> orderList = new ArrayList<>();
@@ -1252,6 +1276,7 @@ public class EZShopDB {
 			success = true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			success = false;
 		}
 
         return success;
