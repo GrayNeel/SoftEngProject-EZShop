@@ -618,41 +618,8 @@ public class EZShopDB {
 		return true;
 	}
 
-<<<<<<< HEAD
+
 	public boolean recordOrderArrivalById(Integer orderId) {
-=======
-	public boolean recordOrderArrival(Integer orderId, String barCode, Integer newQty) {
-
-		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
-
-		// CHECK IF Order ALREADY EXISTS
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setInt(1, orderId);
-			ResultSet rs = pstmt.executeQuery();
-
-			if (rs.getInt("tot") == 0)
-				return false;
-
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-			return false;
-		}
-
-		// CHECK Order status
-		sql = "SELECT status FROM orders WHERE id=?";
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setInt(1, orderId);
-			ResultSet rs = pstmt.executeQuery();
-			if (!rs.getString("status").equals("PAYED"))
-				return false;
-			if (rs.getString("status").equals("COMPLETED"))
-				return true;
-
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-			return false;
-		}
->>>>>>> b23259af9a3fc4a7efc041fcaa53b75996674c3c
 
 		// UPDATE status into COMPLETED
 		String sql = "UPDATE orders SET status=? WHERE id=?";

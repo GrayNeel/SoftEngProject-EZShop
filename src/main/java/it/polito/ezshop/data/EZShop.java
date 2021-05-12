@@ -430,15 +430,14 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public boolean payOrder(Integer orderId) throws InvalidOrderIdException, UnauthorizedException {
-<<<<<<< HEAD
+
     	/**
          
          * This method affects the balance of the system.
                 
          */
     	
-=======
->>>>>>> b23259af9a3fc4a7efc041fcaa53b75996674c3c
+
     	if(orderId == null || orderId <= 0)
     		throw new InvalidOrderIdException("Order ID can not be less than 0");
     	
@@ -456,13 +455,9 @@ public class EZShop implements EZShopInterface {
     	if(order == null || !(order.getStatus().equals("ISSUED") || order.getStatus().equals("ORDERED")))
     		return false;  	
     	
-<<<<<<< HEAD
-    	return db.payOrderById(orderId);
-=======
     	//Balance management
-    	Double actbalance = db.getActualBalance();
+    	Double actbalance = db.getActualBalance();  	
     	
-    	Order order = db.getOrderById(orderId);
     	
     	Integer quantity = order.getQuantity();
     	Double pricePerUnit = order.getPricePerUnit();
@@ -478,8 +473,8 @@ public class EZShop implements EZShopInterface {
     	BalanceOperation balOp = new BalanceOperationClass(balanceId,LocalDate.now(),((double)quantity)*pricePerUnit*(-1),"DEBIT"); 
     	db.recordBalanceOperation(balOp);
     	
-    	return db.payOrder(orderId);
->>>>>>> b23259af9a3fc4a7efc041fcaa53b75996674c3c
+    	return db.payOrderById(orderId);
+
     }
 
     @Override
