@@ -1268,8 +1268,7 @@ public class EZShopDB {
     }
     
     public List<BalanceOperation> getBalanceOperations(String from, String to) {
-    	String sql = "SELECT * FROM balanceOperations WHERE STR_TO_DATE(date,'%Y-%m-%d') >=? "
-    			+ "STR_TO_DATE(date,'%Y-%m-%d') <=?";
+    	String sql = "SELECT id,date,money,type FROM balanceOperations WHERE date >=? AND date <=?";
     	List<BalanceOperation> operations =  new ArrayList<>();
     	try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, from);
@@ -1289,6 +1288,8 @@ public class EZShopDB {
 			System.err.println(e.getMessage());
 		}
     	return operations;
+ 
+
     }
 
 }

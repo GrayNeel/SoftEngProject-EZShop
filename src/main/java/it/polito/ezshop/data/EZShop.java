@@ -1253,8 +1253,8 @@ public class EZShop implements EZShopInterface {
     @Override
     public List<BalanceOperation> getCreditsAndDebits(LocalDate from, LocalDate to) throws UnauthorizedException {
     	User user = this.loggedUser;
-    	String fromString = "";
-    	String toString = "";
+    	String fromString = "0000/01/01";
+    	String toString = "9000/12/31";
         if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
             throw new UnauthorizedException();
         }
@@ -1264,7 +1264,6 @@ public class EZShop implements EZShopInterface {
         if (to!=null) {
         	toString = to.toString();
         }
-        
         List<BalanceOperation> bolist = db.getBalanceOperations(fromString, toString);
         return bolist;
     }
