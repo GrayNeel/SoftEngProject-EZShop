@@ -1136,10 +1136,42 @@ public class EZShop implements EZShopInterface {
         }
         return false;
     }
-
+    /**
+     * This method record the payment of a sale transaction with cash and returns the change (if present).
+     * This method affects the balance of the system.
+     * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+     *
+     * @param transactionId the number of the transaction that the customer wants to pay
+     * @param cash the cash received by the cashier
+     *
+     * @return the change (cash - sale price)
+     *         -1   if the sale does not exists,
+     *              if the cash is not enough,
+     *              if there is some problemi with the db
+     *
+     * @throws InvalidTransactionIdException if the  number is less than or equal to 0 or if it is null
+     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+     * @throws InvalidPaymentException if the cash is less than or equal to 0
+     */
     @Override
-    public double receiveCashPayment(Integer ticketNumber, double cash)
+    public double receiveCashPayment(Integer transactionId, double cash)
             throws InvalidTransactionIdException, InvalidPaymentException, UnauthorizedException {
+    	User user = this.loggedUser;
+
+        if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+                && !user.getRole().equals("Cashier"))) {
+            throw new UnauthorizedException();
+        }
+
+        if (transactionId == null || transactionId <= 0) {
+            throw new InvalidTransactionIdException();
+        }
+        
+        if (cash <= 0) {
+            throw new InvalidPaymentException();
+        }
+        
+    	
         return 0;
     }
 

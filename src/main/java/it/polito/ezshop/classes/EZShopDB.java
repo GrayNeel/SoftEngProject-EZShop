@@ -1202,5 +1202,20 @@ public class EZShopDB {
 
         return success;
     }
+    
+    public boolean updateStateSaleTransaction(Integer transactionId, String state) {
+    	String sql = "UPDATE saleTransactions SET state=? WHERE id=?";
+        boolean success = false;
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, state);
+            pstmt.setInt(2, transactionId);
+            pstmt.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return success;
+    }
 
 }
