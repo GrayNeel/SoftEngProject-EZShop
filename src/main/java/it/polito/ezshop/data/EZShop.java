@@ -648,13 +648,13 @@ public class EZShop implements EZShopInterface {
     		throw new InvalidCustomerCardException();
     	}
     	
-		Integer currentPoints = db.getCardPoints(customerCard)
-		if(pointsToBeAdded*(-1)>currentPoints){
+		Integer currentPoints = db.getCardPoints(customerCard);
+		if(pointsToBeAdded*(-1)>currentPoints || currentPoints==-1){
 			return false;
 		}
-    	boolean flag = db.updateCardPoints(customerCard, pointsToBeAdded);
+    	boolean flag = db.updateCardPoints(customerCard, currentPoints+pointsToBeAdded);
     	
-    	return true;
+    	return flag;
     }
 
     @Override
@@ -669,7 +669,7 @@ public class EZShop implements EZShopInterface {
 		Date date = new Date();
 		String[] datesplit = date.toString().split(" ");
 		List<TicketEntry> entries = new ArrayList<>();
-		SaleTransaction transaction = new SaleTransactionClass(lastId,datesplit[0],datesplit[1],0.0,"",0.0,entries,"OPEN");
+		SaleTransactionClass transaction = new SaleTransactionClass(lastId,datesplit[0],datesplit[1],0.0,"",0.0,entries,"OPEN");
 		lastId = db.startSaleTransaction(transaction);
     	tickets.put(lastId,entries);
         return lastId;
@@ -707,13 +707,15 @@ public class EZShop implements EZShopInterface {
 		}
 
 		List<TicketEntry> entries = tickets.get(transactionId);
-		if(entries==null){
+		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
+		if(transaction==null || entries==null){
 			return false;
 		}
 		
+		
 		boolean flag = false;
 		for(TicketEntry entry : entries){
-			if(entry.getBarCode()==productCode){
+			if(entry.getBarCode().equals(productCode)){
 				flag = true;
 				entry.setAmount(entry.getAmount()+amount);
 				db.updateQuantityByBarCode(productCode, product.getQuantity()-(entry.getAmount()+amount));
@@ -727,7 +729,7 @@ public class EZShop implements EZShopInterface {
 
 		tickets.put(transactionId,entries);
 
-    	return true;
+    	return flag;
     }
 
     @Override
@@ -751,31 +753,37 @@ public class EZShop implements EZShopInterface {
 			throw new InvalidQuantityException();
 		}
 
+
 		ProductType product = getProductTypeByBarCode(productCode);
 
 		if(product==null){
 			return false;
 		}
 
-//		SaleTransactionClass transaction = tickets.get(transactionId);
-//		if(transaction==null){
-//			return false;
-//		}
+		List<TicketEntry> entries = tickets.get(transactionId);
+		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
+		if(transaction==null || entries==null){
+			return false;
+		}
 
-//		List<TicketEntry> entries = transaction.getEntries();
-//		Integer totQuantity = 0;
-//		for(TicketEntry entry : entries){
-//			if(entry.getBarCode()==productCode){
-//				if(entry.getAmount()<amount){
-//					return false;
-//				}
-//				else{
-//					entry.setAmount(entry.getAmount()-amount);
-//				}
-//			}
-//		}
-//		transaction.setEntries(entries);
-		return true;
+		if(transaction.getState().equals("PAYED") || transaction.getState().equals("CLOSED")){
+			return false;
+		}
+		
+		for(TicketEntry entry: entries){
+			if(entry.getBarCode().equals(productCode)){
+				Integer curramount = entry.getAmount();
+				if(amount>curramount){
+					return false;
+				}
+				entry.setAmount(curramount-amount);
+				boolean flag = db.updateQuantityByBarCode(productCode, product.getQuantity()+newQuantity);
+			}
+		}
+
+		tickets.put(transactionId,entries);
+
+		return flag;
     }
 
     @Override
@@ -832,29 +840,17 @@ public class EZShop implements EZShopInterface {
 			throw new InvalidTransactionIdException();
 		}
 
-		if(db.getSaleTransactionById(transactionId)==null || tickets.get(transactionId)==null){
+		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
+		if(transaction==null || tickets.get(transactionId)==null){
 			return false;
 		}
 
-		boolean flag = db.set
+		if(transaction.getState().equals("PAYED")){
+			return false;
+		}
 
-    	/**
-         * This method applies a discount rate to the whole sale transaction.
-         * The discount rate should be greater than or equal to 0 and less than 1.
-         * The sale transaction can be either started or closed but not already payed.
-         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-         *
-         * @param transactionId the id of the Sale transaction
-         * @param discountRate the discount rate of the sale
-         *
-         * @return  true if the operation is successful
-         *          false if the transaction does not exists
-         *
-         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
-         * @throws InvalidDiscountRateException if the discount rate is less than 0 or if it greater than or equal to 1.00
-         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-         */
-    	return false;
+		boolean flag = db.applyDiscountRate(transactionId, discountRate);
+    	return flag;
     }
 
     @Override
@@ -868,6 +864,40 @@ public class EZShop implements EZShopInterface {
     	if(transactionId<0 || transactionId==null){
 			throw new InvalidTransactionIdException();
 		}
+		
+		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
+		if(transaction==null){
+			return -1;
+		}
+
+		List<TicketEntry> entries = tickets.get(transactionId);
+		if(transaction.getState().equals("OPEN")){
+			if(entries==null){
+				return -1;
+			}
+			Double total = 0.0;
+			Double prodTotal = 0.0;
+			for(TicketEntry entry: entries){
+				prodTotal = entry.getAmount() * entry.getPricePerUnit();
+				total = total + prodTotal*(1-entry.getDiscountRate());
+			}
+			total = total*(1-transaction.getDiscountRate());
+		}
+		else{
+			SaleTransactionClass transactionClosed = getClosedSaleTransactionById(transactionId);
+			entries = transactionClosed.getEntries();
+			Double total = 0.0;
+			Double prodTotal = 0.0;
+			for(TicketEntry entry: entries){
+				prodTotal = entry.getAmount() * entry.getPricePerUnit();
+				total = total + prodTotal*(1-entry.getDiscountRate());
+			}
+			total = total*(1-transactionClosed.getDiscountRate());
+		}
+
+		Integer points = Integer.parseInt(total);
+
+
     	/**
          * This method returns the number of points granted by a specific sale transaction.
          * Every 10€ the number of points is increased by 1 (i.e. 19.99€ returns 1 point, 20.00€ returns 2 points).
@@ -882,7 +912,7 @@ public class EZShop implements EZShopInterface {
          * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
          * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
          */
-    	return 0;
+    	return points;
     }
 
     @Override

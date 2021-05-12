@@ -815,11 +815,9 @@ public class EZShopDB {
 	public boolean updateCardPoints(String customerCard, Integer points) {
 		boolean flag;
 
-		String sql = "UPDATE cards SET points=points+? WHERE id=?";
+		String sql = "UPDATE cards SET points=? WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, points);
-			pstmt.setString(2, customerCard);
-			pstmt.setInt(3, -points);
 			pstmt.executeUpdate();
 			flag = true;
 		} catch (SQLException e) {
@@ -830,10 +828,10 @@ public class EZShopDB {
 		return flag;
 	}
 
-	public Integer startSaleTransaction(SaleTransaction saleTransaction) {
+	public Integer startSaleTransaction(SaleTransactionClass saleTransaction) {
 		Date curdate = new Date();
 		String[] datesplit = curdate.toString().split(" ");
-		String sql = "INSERT INTO saleTransactions(id, price, discountRate, date, time, paymentType, state) VALUES(?,?,?,?,?,'CASH','OPEN')";
+		String sql = "INSERT INTO saleTransactions(id, price, discountRate, date, time, paymentType, state) VALUES(?,?,?,?,?,'CASH','STARTED')";
 		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, saleTransaction.getTicketNumber());
@@ -841,9 +839,6 @@ public class EZShopDB {
 			pstmt.setDouble(3, saleTransaction.getDiscountRate());
 			pstmt.setString(4, datesplit[0]);
 			pstmt.setString(5, datesplit[1]);
-//			pstmt.setString(6, saleTransaction.getPaymentType());
-//			pstmt.setString(7, saleTransaction.getState());
-
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
@@ -880,9 +875,9 @@ public class EZShopDB {
 //		return saleTransaction.getTicketNumber();
 //	}
 	
-	public SaleTransaction getSaleTransactionById(Integer transactionId) {
+	public SaleTransactionClass getSaleTransactionById(Integer transactionId) {
     	String sql = "SELECT * FROM saleTransactions WHERE id=?";
-		SaleTransaction transaction = null;
+		SaleTransactionClass transaction = null;
 		List<TicketEntry> entries = new ArrayList<>();
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -897,6 +892,23 @@ public class EZShopDB {
 		}
 
 		return transaction;
+	}
+
+	public boolean applyDiscountRate(Integer transactionId, Double discountRate) {
+		boolean flag;
+
+		String sql = "UPDATE saleTransactions SET discountRate=? WHERE id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setDouble(1, discountRate);
+			pstmt.setInt(2, transactionId);
+			pstmt.executeUpdate();
+			flag = true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			flag = false;
+		}
+
+		return flag;
 	}
 
     ///////////////// Pablo write methods after this point
