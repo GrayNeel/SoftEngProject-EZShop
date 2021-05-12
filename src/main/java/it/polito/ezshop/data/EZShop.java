@@ -1180,13 +1180,10 @@ public class EZShop implements EZShopInterface {
         	return change;
         }
         boolean updatedSaleTransaction = db.updateStateSaleTransaction(transactionId, "PAYED");
-    	int newId = db.getLastId("balanceOperations");
-    	LocalDate date = LocalDate.now();
-    	BalanceOperation balanceOperation = new BalanceOperationClass(newId+1,date, salePrice, "CREDIT");
-    	boolean recordedBalanceOperation = db.recordBalanceOperation(balanceOperation);
+    	boolean updatedBalanceOperation = recordBalanceUpdate(salePrice);
     	
     	//Only return cash if no problems in db and recorded
-    	if (updatedSaleTransaction && recordedBalanceOperation) {
+    	if (updatedSaleTransaction && updatedBalanceOperation) {
     		change = cash-salePrice;
     	}
       
@@ -1237,16 +1234,49 @@ public class EZShop implements EZShopInterface {
     	boolean recordedBalanceOperation = db.recordBalanceOperation(balanceOperation);
         return recordedBalanceOperation;
     }
-
+    /**
+     * This method returns a list of all the balance operations (CREDIT,DEBIT,ORDER,SALE,RETURN) performed between two
+     * given dates.
+     * This method should understand if a user exchanges the order of the dates and act consequently to correct
+     * them.
+     * Both <from> and <to> are included in the range of dates and might be null. This means the absence of one (or
+     * both) temporal constraints.
+     *
+     *
+     * @param from the start date : if null it means that there should be no constraint on the start date
+     * @param to the end date : if null it means that there should be no constraint on the end date
+     *
+     * @return All the operations on the balance whose date is <= to and >= from
+     *
+     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+     */
     @Override
     public List<BalanceOperation> getCreditsAndDebits(LocalDate from, LocalDate to) throws UnauthorizedException {
-        // TEMP: REMOVE IT!! IT IS JUST FOR TESTING
-        List<BalanceOperation> bolist = new ArrayList<>();
+    	User user = this.loggedUser;
+    	String fromString = "";
+    	String toString = "";
+        if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+            throw new UnauthorizedException();
+        }
+        if (from!=null) {
+        	fromString = from.toString();
+        }
+        if (to!=null) {
+        	toString = to.toString();
+        }
+        
+        List<BalanceOperation> bolist = db.getBalanceOperations(fromString, toString);
         return bolist;
     }
-
+    
     @Override
     public double computeBalance() throws UnauthorizedException {
-        return 0;
+    	User user = this.loggedUser;
+
+        if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+            throw new UnauthorizedException();
+        }
+        double actualBalance = db.getActualBalance();
+        return actualBalance;
     }
 }
