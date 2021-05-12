@@ -673,7 +673,6 @@ public class EZShop implements EZShopInterface {
     	}
     	
     	boolean flag = db.attachCardToCustomer(customerCard, customerId);
-
     	return flag;
     }
 
