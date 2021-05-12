@@ -807,12 +807,12 @@ public class EZShopDB {
 			pstmt.setString(1, customerCard);
 			pstmt.setInt(2, customerId);
 			pstmt.executeUpdate();
+			flag = true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			flag = false;
 		}
-		flag = true;
-
+		
 		return flag;
 	}
 
