@@ -782,6 +782,7 @@ public class EZShop implements EZShopInterface {
     @Override
     public boolean deleteProductFromSale(Integer transactionId, String productCode, int amount) throws InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, UnauthorizedException {
     	User user = this.loggedUser;
+    	boolean flag = false;
     	
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
@@ -824,7 +825,7 @@ public class EZShop implements EZShopInterface {
 					return false;
 				}
 				entry.setAmount(curramount-amount);
-				boolean flag = db.updateQuantityByBarCode(productCode, product.getQuantity()+newQuantity);
+				flag = db.updateQuantityByBarCode(productCode, product.getQuantity()+amount);
 			}
 		}
 
@@ -918,11 +919,12 @@ public class EZShop implements EZShopInterface {
 		}
 
 		List<TicketEntry> entries = tickets.get(transactionId);
+		Double total = 0.0;
 		if(transaction.getState().equals("OPEN")){
 			if(entries==null){
 				return -1;
 			}
-			Double total = 0.0;
+			
 			Double prodTotal = 0.0;
 			for(TicketEntry entry: entries){
 				prodTotal = entry.getAmount() * entry.getPricePerUnit();
@@ -931,9 +933,8 @@ public class EZShop implements EZShopInterface {
 			total = total*(1-transaction.getDiscountRate());
 		}
 		else{
-			SaleTransactionClass transactionClosed = getClosedSaleTransactionById(transactionId);
+			SaleTransactionClass transactionClosed = db.getClosedSaleTransactionById(transactionId);
 			entries = transactionClosed.getEntries();
-			Double total = 0.0;
 			Double prodTotal = 0.0;
 			for(TicketEntry entry: entries){
 				prodTotal = entry.getAmount() * entry.getPricePerUnit();
@@ -942,7 +943,7 @@ public class EZShop implements EZShopInterface {
 			total = total*(1-transactionClosed.getDiscountRate());
 		}
 
-		Integer points = Integer.parseInt(total);
+		Integer points = total.intValue();
     	return points;
     }
 
