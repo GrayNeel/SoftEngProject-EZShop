@@ -568,45 +568,41 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public Customer getCustomer(Integer id) throws InvalidCustomerIdException, UnauthorizedException {
-    	/**
-         * This method returns a customer with given id.
-         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-         *
-         * @param id the id of the customer
-         *
-         * @return the customer with given id
-         *          null if that user does not exists
-         *
-         * @throws InvalidCustomerIdException if the id is null, less than or equal to 0.
-         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-         */
+    	Customer customer;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	
+    	if(id==null) {
+    		throw new InvalidCustomerIdException();
+    	}
+    	
+    	customer = db.getCustomerById(id);
+    	return customer;
+    	
     }
 
     @Override
     public List<Customer> getAllCustomers() throws UnauthorizedException {
-    	//TEMP: REMOVE IT!! IT IS JUST FOR TESTING
-    	/**
-         * This method returns a list containing all registered users.
-         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-         *
-         * @return the list of all the customers registered
-         *
-         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-         */
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
     	List<Customer> customerlist = new ArrayList<>();
+    	customerlist = db.getAllCustomers();
         return customerlist;
     }
 
     @Override
     public String createCard() throws UnauthorizedException {
-    	/**
-         * This method returns a string containing the code of a new assignable card.
-         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-         *
-         * @return the code of a new available card. An empty string if the db is unreachable
-         *
-         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-         */
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
     	Integer lastid = db.getLastId("cards");
     	String cardId = lastid.toString();
     	String filler = "";
@@ -614,52 +610,264 @@ public class EZShop implements EZShopInterface {
     		filler += "0";
     	}
     	cardId = filler + cardId;
-    	return cardId;
+    	boolean flag = db.createCard(cardId);
+    	
+    	if(flag) {
+    		return cardId;
+    	}
+    	else {
+    		return "";
+    	}
     }
 
     @Override
     public boolean attachCardToCustomer(String customerCard, Integer customerId) throws InvalidCustomerIdException, InvalidCustomerCardException, UnauthorizedException {
-        return false;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	
+    	if(customerId==null || customerId<=0) {
+    		throw new InvalidCustomerIdException();
+    	}
+    	
+    	if(customerCard=="" || customerCard==null || customerCard.length()!=10) {
+    		throw new InvalidCustomerCardException();
+    	}
+    	
+    	boolean flag = db.attachCardToCustomer(customerCard, customerId);
+    	/**
+         * This method assigns a card with given card code to a customer with given identifier. A card with given card code
+         * can be assigned to one customer only.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param customerCard the number of the card to be attached to a customer
+         * @param customerId the id of the customer the card should be assigned to
+         *
+         * @return true if the operation was successful
+         *          false if the card is already assigned to another user, if there is no customer with given id, if the db is unreachable
+         *
+         * @throws InvalidCustomerIdException if the id is null, less than or equal to 0.
+         * @throws InvalidCustomerCardException if the card is null, empty or in an invalid format
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	return flag;
     }
 
     @Override
     public boolean modifyPointsOnCard(String customerCard, int pointsToBeAdded) throws InvalidCustomerCardException, UnauthorizedException {
-        return false;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	
+    	if(customerCard=="" || customerCard==null || customerCard.length()!=10) {
+    		throw new InvalidCustomerCardException();
+    	}
+    	
+    	
+    	/**
+         * This method updates the points on a card adding to the number of points available on the card the value assumed by
+         * <pointsToBeAdded>. The points on a card should always be greater than or equal to 0.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param customerCard the card the points should be added to
+         * @param pointsToBeAdded the points to be added or subtracted ( this could assume a negative value)
+         *
+         * @return true if the operation is successful
+         *          false   if there is no card with given code,
+         *                  if pointsToBeAdded is negative and there were not enough points on that card before this operation,
+         *                  if we cannot reach the db.
+         *
+         * @throws InvalidCustomerCardException if the card is null, empty or in an invalid format
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	return false;
     }
 
     @Override
     public Integer startSaleTransaction() throws UnauthorizedException {
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	// -------------------- FR6 ------------------- //
+        // ------------------- ADMIN ------------------ //
+        // --------------- SHOP MANAGER --------------- //
+        // ------------------ CASHIER ----------------- //
+
+
+        /**
+         * This method starts a new sale transaction and returns its unique identifier.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @return the id of the transaction (greater than or equal to 0)
+         */
         return null;
     }
 
     @Override
     public boolean addProductToSale(Integer transactionId, String productCode, int amount) throws InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, UnauthorizedException {
-        return false;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	/**
+         * This method adds a product to a sale transaction decreasing the temporary amount of product available on the
+         * shelves for other customers.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param transactionId the id of the Sale transaction
+         * @param productCode the barcode of the product to be added
+         * @param amount the quantity of product to be added
+         * @return  true if the operation is successful
+         *          false   if the product code does not exist,
+         *                  if the quantity of product cannot satisfy the request,
+         *                  if the transaction id does not identify a started and open transaction.
+         *
+         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
+         * @throws InvalidProductCodeException if the product code is empty, null or invalid
+         * @throws InvalidQuantityException if the quantity is less than 0
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	return false;
     }
 
     @Override
     public boolean deleteProductFromSale(Integer transactionId, String productCode, int amount) throws InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, UnauthorizedException {
-        return false;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	/**
+         * This method deletes a product from a sale transaction increasing the temporary amount of product available on the
+         * shelves for other customers.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param transactionId the id of the Sale transaction
+         * @param productCode the barcode of the product to be deleted
+         * @param amount the quantity of product to be deleted
+         *
+         * @return  true if the operation is successful
+         *          false   if the product code does not exist,
+         *                  if the quantity of product cannot satisfy the request,
+         *                  if the transaction id does not identify a started and open transaction.
+         *
+         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
+         * @throws InvalidProductCodeException if the product code is empty, null or invalid
+         * @throws InvalidQuantityException if the quantity is less than 0
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	return false;
     }
 
     @Override
     public boolean applyDiscountRateToProduct(Integer transactionId, String productCode, double discountRate) throws InvalidTransactionIdException, InvalidProductCodeException, InvalidDiscountRateException, UnauthorizedException {
-        return false;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	/**
+         * This method applies a discount rate to all units of a product type with given type in a sale transaction. The
+         * discount rate should be greater than or equal to 0 and less than 1.
+         * The sale transaction should be started and open.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param transactionId the id of the Sale transaction
+         * @param productCode the barcode of the product to be discounted
+         * @param discountRate the discount rate of the product
+         *
+         * @return  true if the operation is successful
+         *          false   if the product code does not exist,
+         *                  if the transaction id does not identify a started and open transaction.
+         *
+         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
+         * @throws InvalidProductCodeException if the product code is empty, null or invalid
+         * @throws InvalidDiscountRateException if the discount rate is less than 0 or if it greater than or equal to 1.00
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	return false;
     }
 
     @Override
     public boolean applyDiscountRateToSale(Integer transactionId, double discountRate) throws InvalidTransactionIdException, InvalidDiscountRateException, UnauthorizedException {
-        return false;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	/**
+         * This method applies a discount rate to the whole sale transaction.
+         * The discount rate should be greater than or equal to 0 and less than 1.
+         * The sale transaction can be either started or closed but not already payed.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param transactionId the id of the Sale transaction
+         * @param discountRate the discount rate of the sale
+         *
+         * @return  true if the operation is successful
+         *          false if the transaction does not exists
+         *
+         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
+         * @throws InvalidDiscountRateException if the discount rate is less than 0 or if it greater than or equal to 1.00
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	return false;
     }
 
     @Override
     public int computePointsForSale(Integer transactionId) throws InvalidTransactionIdException, UnauthorizedException {
-        return 0;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	/**
+         * This method returns the number of points granted by a specific sale transaction.
+         * Every 10€ the number of points is increased by 1 (i.e. 19.99€ returns 1 point, 20.00€ returns 2 points).
+         * If the transaction with given id does not exist then the number of points returned should be -1.
+         * The transaction may be in any state (open, closed, payed).
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param transactionId the id of the Sale transaction
+         *
+         * @return the points of the sale (1 point for each 10€) or -1 if the transaction does not exists
+         *
+         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	return 0;
     }
 
     @Override
     public boolean endSaleTransaction(Integer transactionId) throws InvalidTransactionIdException, UnauthorizedException {
-        return false;
+    	User user = db.getLoggedUser();
+    	
+    	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+    		throw new UnauthorizedException();
+    	}
+    	/**
+         * This method closes an opened transaction. After this operation the
+         * transaction is persisted in the system's memory.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param transactionId the id of the Sale transaction
+         *
+         * @return  true    if the transaction was successfully closed
+         *          false   if the transaction does not exist,
+         *                  if it has already been closed,
+         *                  if there was a problem in registering the data
+         *
+         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	return false;
     }
 
     //////////////////////////////////////////////////////////////////// Marco ^ , Pablo v

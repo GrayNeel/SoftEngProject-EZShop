@@ -12,6 +12,7 @@ import org.sqlite.SQLiteConnection;
 import org.sqlite.SQLiteUpdateListener;
 import org.sqlite.util.StringUtils;
 
+import it.polito.ezshop.data.Customer;
 import it.polito.ezshop.data.Order;
 import it.polito.ezshop.data.ProductType;
 import it.polito.ezshop.data.User;
@@ -713,6 +714,87 @@ public class EZShopDB {
 		
 		
 		return true;
+	}
+	
+	public boolean createCard(String cardId) {
+		String sql = "INSERT INTO cards(id,assigned) VALUES(?,0)";
+
+	    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+	            pstmt.setString(1, cardId);	            
+	            pstmt.executeUpdate();
+	        } catch (SQLException e) {
+	            System.err.println(e.getMessage());
+	            return false;
+	        }	
+	    return true;
+	}
+	
+	public Customer getCustomerById(Integer id) {
+		String sql = "SELECT id,customerName,customerCard,points FROM customers WHERE id=?";
+		Customer customer = null;
+        
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            
+            customer = new CustomerClass(rs.getInt("id"),rs.getString("customerName"),rs.getString("customerCard"),rs.getInt("points"));
+            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        
+        return customer;
+	}
+	
+	public List<Customer> getAllCustomers() {
+		String sql = "SELECT id,customerName,customerCard,points FROM customers";
+		List<Customer> customerlist = new ArrayList<>();
+		
+		try (Statement stmt  = connection.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)){
+	            
+			 while (rs.next()) {
+				 Integer id = rs.getInt("id");
+				 String customerName = rs.getString("customerName");
+				 String customerCard = rs.getString("customerCard");
+				 Integer points = rs.getInt("points");
+				 
+				 Customer customer = new CustomerClass(id,customerName,customerCard,points);
+				 customerlist.add(customer);
+	         }
+	    } catch (SQLException e) {
+	    	System.err.println(e.getMessage());
+	    }
+		
+		return customerlist;
+	}
+	
+	public boolean attachCardToCustomer(String customerCard, Integer customerId) {
+		boolean flag;
+		String sql = "UPDATE customers SET customerCard=? WHERE id=?; UPDATE cards SET assigned=1 WHERE id=? and assigned=0";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setString(1, customerCard);
+        	pstmt.setInt(2, customerId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            flag = false;
+        }
+		flag = true;
+		
+		/*boolean flagcard;
+		sql = "UPDATE cards SET assigned=1 WHERE id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        	pstmt.setString(1, customerCard);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            flagcard = false;
+        }
+		flagcard = true;*/
+		
+		
+		return flag;
 	}
 	
 	///////////////// Pablo write methods after this point
