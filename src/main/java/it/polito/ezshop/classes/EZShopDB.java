@@ -635,6 +635,7 @@ public class EZShopDB {
 
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			return false;
 		}
 
 		// CHECK Order status
@@ -649,6 +650,7 @@ public class EZShopDB {
 
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			return false;
 		}
 
 		// UPDATE status into COMPLETED
@@ -689,6 +691,7 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			return false;
 		}
 		return true;
 	}
