@@ -765,7 +765,7 @@ public class EZShop implements EZShopInterface {
 		}
 		if(flag==false) {
 			db.updateQuantityByBarCode(productCode,product.getQuantity()-amount);
-			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),0.0);
+			TicketEntry entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),transactionId, 0.0);
 			entries.add(entry);			
 		}
 
@@ -837,7 +837,7 @@ public class EZShop implements EZShopInterface {
     		throw new UnauthorizedException();
     	}
 		
-		if(transactionId<0 || transactionId==null){
+		if(transactionId<=0 || transactionId==null){
 			throw new InvalidTransactionIdException();
 		}
 
@@ -879,7 +879,7 @@ public class EZShop implements EZShopInterface {
     		throw new UnauthorizedException();
     	}
     	
-    	if(transactionId<0 || transactionId==null){
+    	if(transactionId<=0 || transactionId==null){
 			throw new InvalidTransactionIdException();
 		}
 
@@ -904,7 +904,7 @@ public class EZShop implements EZShopInterface {
     		throw new UnauthorizedException();
     	}
     	
-    	if(transactionId<0 || transactionId==null){
+    	if(transactionId<=0 || transactionId==null){
 			throw new InvalidTransactionIdException();
 		}
 		
@@ -928,7 +928,7 @@ public class EZShop implements EZShopInterface {
 			total = total*(1-transaction.getDiscountRate());
 		}
 		else{
-			SaleTransactionClass transactionClosed = db.getClosedSaleTransactionById(transactionId);
+			SaleTransaction transactionClosed = db.getClosedSaleTransactionById(transactionId);
 			entries = transactionClosed.getEntries();
 			Double prodTotal = 0.0;
 			for(TicketEntry entry: entries){
@@ -949,6 +949,29 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
     		throw new UnauthorizedException();
     	}
+    	
+    	if(transactionId<=0 || transactionId==null){
+			throw new InvalidTransactionIdException();
+		}
+    	
+    	SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
+		if(transaction==null){
+			return false;
+		}
+		
+		if(transaction.getState().equals("OPEN")==false) {
+			return false;
+		}
+		
+		List<TicketEntry> entries = tickets.get(transactionId);
+		// method to save productEntries to DB;
+		
+		for(TicketEntry entry: entries) {
+			db.createTicketEntry(entry,transactionId);
+		}
+		
+		boolean flag = db.updateTransactionState(transactionId, "CLOSED");
+		
     	/**
          * This method closes an opened transaction. After this operation the
          * transaction is persisted in the system's memory.
@@ -964,7 +987,7 @@ public class EZShop implements EZShopInterface {
          * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
          * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
          */
-    	return false;
+    	return flag;
     }
 
     //////////////////////////////////////////////////////////////////// Marco ^ , Pablo v
@@ -1001,8 +1024,9 @@ public class EZShop implements EZShopInterface {
         if (transactionId <= 0 || transactionId == null) {
             throw new InvalidTransactionIdException();
         }
-        List<TicketEntry> products = db.getProductEntriesByTransactionId(transactionId);
-        return db.getClosedSaleTransactionById(transactionId, products);
+//        List<TicketEntry> products = db.getProductEntriesByTransactionId(transactionId);
+//        return db.getClosedSaleTransactionById(transactionId, products);
+        return db.getClosedSaleTransactionById(transactionId);
     }
 
     @Override

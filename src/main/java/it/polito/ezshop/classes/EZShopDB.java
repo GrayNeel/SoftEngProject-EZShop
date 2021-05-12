@@ -877,21 +877,14 @@ public class EZShopDB {
 		return flag;
 	}
 	
-	public boolean createTicketEntry(TicketEntryClass ticketEntry) {
-		Integer id;
-		String barCode, productDescription;
-		Integer amount;
-		Double pricePerUnit, discountRate;
-		
-		String sql = "INSERT INTO productEntries(productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,?,?,?,?)";
+	public boolean createTicketEntry(TicketEntry ticketEntry, Integer transactionId) {		
+		String sql = "INSERT INTO productEntries(productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,0.0,?,?,?,?)";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, ticketEntry.getBarCode());
 			pstmt.setInt(2, ticketEntry.getAmount());
-//			pstmt.setDouble(3, ticketEntry);
-//			pstmt.setString(4, ticketEntry.getDate());
-//			pstmt.setString(5, ticketEntry.getTime());
-//			pstmt.setString(6, ticketEntry.getPaymentType());
-//			pstmt.setString(7, ticketEntry.getState());
+			pstmt.setInt(3, transactionId);
+			pstmt.setDouble(4, ticketEntry.getPricePerUnit());
+			pstmt.setDouble(5, ticketEntry.getDiscountRate());
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -902,6 +895,20 @@ public class EZShopDB {
 
 		return true;
 	}
+	
+	public boolean updateTransactionState(Integer transactionId, String state) {
+    	String sql = "UPDATE saleTransactions SET state=? WHERE id=?";
+    		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, transactionId);
+			pstmt.setString(2, state);
+			pstmt.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+    	}
+    }
 
     ///////////////// Pablo write methods after this point
 
@@ -919,9 +926,10 @@ public class EZShopDB {
     }
     
 
-    public SaleTransaction getClosedSaleTransactionById(Integer transactionId, List<TicketEntry> products ) {
+    public SaleTransaction getClosedSaleTransactionById(Integer transactionId) {
         String sql = "SELECT id,discountRate,date,time,price,paymentType,state FROM saleTransactions "
                 + "WHERE state == 'PAYED' AND id=?";
+        List<TicketEntry> products = getProductEntriesByTransactionId(transactionId);
         SaleTransaction saletransaction = null;
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -956,7 +964,7 @@ public class EZShopDB {
                 double pricePerUnit = rs.getDouble("pricePerUnit");
 
                 TicketEntry productEntry = new TicketEntryClass(id, productCode, productDescription, amount,
-                        pricePerUnit, 0.0);
+                        pricePerUnit, transactionId, 0.0);
                 productslist.add(productEntry);
             }
         } catch (SQLException e) {
