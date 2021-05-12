@@ -824,31 +824,31 @@ public class EZShopDB {
 		return saleTransaction.getTicketNumber();
 	}
 
-//	public boolean createTicketEntry(TicketEntryClass ticketEntry) {
-//		Integer id;
-//		String barCode, productDescription;
-//		Integer amount;
-//		Double pricePerUnit, discountRate;
-//		
-//		String sql = "INSERT INTO productEntries(productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,?,?,?,?)";
-//		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-//			pstmt.setInt(1, ticketEntry.getBarCode());
-//			pstmt.setDouble(2, ticketEntry.getAmount());
-//			pstmt.setDouble(3, ticketEntry.ge);
-//			pstmt.setString(4, ticketEntry.getDate());
-//			pstmt.setString(5, ticketEntry.getTime());
-//			pstmt.setString(6, ticketEntry.getPaymentType());
-//			pstmt.setString(7, ticketEntry.getState());
-//
-//			pstmt.executeUpdate();
-//		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
-//			return -1;
-//		}
-//
-//
-//		return saleTransaction.getTicketNumber();
-//	}
+	public boolean createTicketEntry(TicketEntryClass ticketEntry) {
+		Integer id;
+		String barCode, productDescription;
+		Integer amount;
+		Double pricePerUnit, discountRate;
+		
+		String sql = "INSERT INTO productEntries(productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,?,?,?,?)";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, ticketEntry.getBarCode());
+			pstmt.setDouble(2, ticketEntry.getAmount());
+			pstmt.setDouble(3, ticketEntry);
+			pstmt.setString(4, ticketEntry.getDate());
+			pstmt.setString(5, ticketEntry.getTime());
+			pstmt.setString(6, ticketEntry.getPaymentType());
+			pstmt.setString(7, ticketEntry.getState());
+
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return -1;
+		}
+
+
+		return saleTransaction.getTicketNumber();
+	}
 	
 	public SaleTransactionClass getSaleTransactionById(Integer transactionId) {
     	String sql = "SELECT * FROM saleTransactions WHERE id=?";
