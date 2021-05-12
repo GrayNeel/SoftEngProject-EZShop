@@ -795,36 +795,37 @@ public class EZShopDB {
 
 		return flag;
 	}
+
+	public Integer getCardPoints(String customerCard) {
+		boolean flag;
+		String sql = "SELECT points from cards WHERE id=?";
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, customerCard);
+			ResultSet rs = pstmt.executeQuery();
+			Integer points = rs.getInt("points");
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return -1;
+		}
+		return points;
+	}
 	
 	public boolean updateCardPoints(String customerCard, Integer points) {
 		boolean flag;
-		if(points>0) {
-			String sql = "UPDATE cards SET points=points+? WHERE id=?";
-			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-				pstmt.setInt(1, points);
-				pstmt.setString(2, customerCard);
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				System.err.println(e.getMessage());
-				flag = false;
-			}
+
+		String sql = "UPDATE cards SET points=points+? WHERE id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, points);
+			pstmt.setString(2, customerCard);
+			pstmt.setInt(3, -points);
+			pstmt.executeUpdate();
 			flag = true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			flag = false;
 		}
-		else {
-			String sql = "UPDATE cards SET points=points+? WHERE id=? and points >= ?";
-			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-				pstmt.setInt(1, points);
-				pstmt.setString(2, customerCard);
-				pstmt.setInt(3, -points);
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				System.err.println(e.getMessage());
-				flag = false;
-			}
-			flag = true;
-		}
-		
-		
 
 		return flag;
 	}

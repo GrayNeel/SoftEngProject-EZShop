@@ -648,9 +648,13 @@ public class EZShop implements EZShopInterface {
     		throw new InvalidCustomerCardException();
     	}
     	
+		Integer currentPoints = db.getCardPoints(customerCard)
+		if(pointsToBeAdded*(-1)>currentPoints){
+			return false;
+		}
     	boolean flag = db.updateCardPoints(customerCard, pointsToBeAdded);
     	
-    	return false;
+    	return true;
     }
 
     @Override
@@ -787,11 +791,11 @@ public class EZShop implements EZShopInterface {
 		}
 
 		
-		if(productCode==null || productCode==""){
+		if(productCode==null || productCode=="" || ProductTypeClass.validateProductCode(productCode)==false){
 			throw new InvalidProductCodeException();
 		}
 
-		if(discountRate <= 0){
+		if(discountRate <= 0 || discountRate > 1){
 			throw new InvalidDiscountRateException();
 		}
 
@@ -813,31 +817,6 @@ public class EZShop implements EZShopInterface {
 		}
 		tickets.put(transactionId, entries);
 
-//		SaleTransactionClass transaction = tickets.get(transactionId);
-//		if(transaction==null){
-//			return false;
-//		}
-
-
-    	/**
-         * This method applies a discount rate to all units of a product type with given type in a sale transaction. The
-         * discount rate should be greater than or equal to 0 and less than 1.
-         * The sale transaction should be started and open.
-         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
-         *
-         * @param transactionId the id of the Sale transaction
-         * @param productCode the barcode of the product to be discounted
-         * @param discountRate the discount rate of the product
-         *
-         * @return  true if the operation is successful
-         *          false   if the product code does not exist,
-         *                  if the transaction id does not identify a started and open transaction.
-         *
-         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
-         * @throws InvalidProductCodeException if the product code is empty, null or invalid
-         * @throws InvalidDiscountRateException if the discount rate is less than 0 or if it greater than or equal to 1.00
-         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-         */
     	return true;
     }
 
@@ -852,6 +831,13 @@ public class EZShop implements EZShopInterface {
     	if(transactionId<0 || transactionId==null){
 			throw new InvalidTransactionIdException();
 		}
+
+		if(db.getSaleTransactionById(transactionId)==null || tickets.get(transactionId)==null){
+			return false;
+		}
+
+		boolean flag = db.set
+
     	/**
          * This method applies a discount rate to the whole sale transaction.
          * The discount rate should be greater than or equal to 0 and less than 1.
