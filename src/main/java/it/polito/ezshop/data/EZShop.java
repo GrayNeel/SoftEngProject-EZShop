@@ -429,22 +429,30 @@ public class EZShop implements EZShopInterface {
          * This method affects the balance of the system.
                 
          */
+    	
     	if(orderId == null || orderId <= 0)
     		throw new InvalidOrderIdException("Order ID can not be less than 0");
     	
     	User user = this.loggedUser;
     	
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
-    		throw new UnauthorizedException();
+    		throw new UnauthorizedException();   		
     	}     	
+    	Order order = null;
+    	List<Order> orderList = getAllOrders();
+    	for(Order o : orderList)    	
+    		if(o.getOrderId() == orderId)
+    			order = o;    	
     	
-    	return db.payOrder(orderId);
+    	if(order == null || !(order.getStatus().equals("ISSUED") || order.getStatus().equals("ORDERED")))
+    		return false;  	
+    	
+    	return db.payOrderById(orderId);
     }
 
     @Override
-    public boolean recordOrderArrival(Integer orderId) throws InvalidOrderIdException, UnauthorizedException, InvalidLocationException {
-    	    
-    	
+    public boolean recordOrderArrival(Integer orderId) throws InvalidOrderIdException, UnauthorizedException, InvalidLocationException {    	    
+    
     	if(orderId == null || orderId <= 0)
     		throw new InvalidOrderIdException("Order ID can not be less than 0");
     	
@@ -458,7 +466,13 @@ public class EZShop implements EZShopInterface {
     	List<Order> orderList = getAllOrders();
     	for(Order o : orderList)    	
     		if(o.getOrderId() == orderId)
-    			order = o;
+    			order = o;    	
+    
+    	if(order == null || !(order.getStatus().equals("PAYED") || order.getStatus().equals("COMPLETED")))
+    		return false; 
+    	
+    	if(order.getStatus().equals("COMPLETED"))
+    		return true;
     	
     	ProductType prod = null;
     	List<ProductType> productList = getAllProductTypes();
@@ -478,13 +492,13 @@ public class EZShop implements EZShopInterface {
     		System.err.println("Product does not exist anymore. Cannot change the status!");
     		return false;
     	}
-    		
+   
     	
     	if(prod.getLocation().length() == 0)
     		throw new InvalidLocationException("Product type of the ordered product has not an assigned location");
-    	
-    	
-    	return db.recordOrderArrival(orderId, prod.getBarCode(), prod.getQuantity() + order.getQuantity());
+    	if(!db.updateQuantityByProductTypeId(prod.getId(), prod.getQuantity() + order.getQuantity()))
+    		return false;
+    	return db.recordOrderArrivalById(orderId); 
     }
 
     @Override
