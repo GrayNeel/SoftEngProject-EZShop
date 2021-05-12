@@ -910,6 +910,23 @@ public class EZShopDB {
 		return transaction;
 	}
 
+	public boolean applyDiscountRateToProduct(Integer transactionId, String productCode, Double discountRate) {
+		boolean flag;
+
+		String sql = "UPDATE p SET discountRate=? WHERE id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setDouble(1, discountRate);
+			pstmt.setInt(2, transactionId);
+			pstmt.executeUpdate();
+			flag = true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			flag = false;
+		}
+
+		return flag;
+	}
+
 	public boolean applyDiscountRate(Integer transactionId, Double discountRate) {
 		boolean flag;
 
