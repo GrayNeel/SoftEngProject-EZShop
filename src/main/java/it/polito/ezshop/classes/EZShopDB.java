@@ -816,21 +816,20 @@ public class EZShopDB {
 		return flag;
 	}
 
-//	public Integer getCardPoints(String customerCard) {
-//		boolean flag;
-//		String sql = "SELECT points from cards WHERE id=?";
-//		
-//		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-//			pstmt.setString(1, customerCard);
-//			ResultSet rs = pstmt.executeQuery();
-//			Integer points = rs.getInt("points");
-//
-//		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
-//			return -1;
-//		}
-//		return points;
-//	}
+	public Integer getCardPoints(String customerCard) {
+		String sql = "SELECT points from cards WHERE id=?";
+		Integer points = -1;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, customerCard);
+			ResultSet rs = pstmt.executeQuery();
+			points = rs.getInt("points");
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return -1;
+		}
+		return points;
+	}
 	
 	public boolean updateCardPoints(String customerCard, Integer points) {
 		boolean flag;
