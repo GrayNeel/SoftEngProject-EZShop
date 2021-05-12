@@ -885,22 +885,22 @@ public class EZShopDB {
 		
 		String sql = "INSERT INTO productEntries(productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,?,?,?,?)";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setInt(1, ticketEntry.getBarCode());
-			pstmt.setDouble(2, ticketEntry.getAmount());
-			pstmt.setDouble(3, ticketEntry);
-			pstmt.setString(4, ticketEntry.getDate());
-			pstmt.setString(5, ticketEntry.getTime());
-			pstmt.setString(6, ticketEntry.getPaymentType());
-			pstmt.setString(7, ticketEntry.getState());
+			pstmt.setString(1, ticketEntry.getBarCode());
+			pstmt.setInt(2, ticketEntry.getAmount());
+//			pstmt.setDouble(3, ticketEntry);
+//			pstmt.setString(4, ticketEntry.getDate());
+//			pstmt.setString(5, ticketEntry.getTime());
+//			pstmt.setString(6, ticketEntry.getPaymentType());
+//			pstmt.setString(7, ticketEntry.getState());
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			return -1;
+			return false;
 		}
 
 
-		return saleTransaction.getTicketNumber();
+		return true;
 	}
 
     ///////////////// Pablo write methods after this point
