@@ -49,7 +49,21 @@ public class EZShopDB {
 	public EZShopDB() {
 		createConnection();
 	}
+	
+	public boolean resetDB(String table) {		
+		System.out.println("ASD");
+		String sql = "DELETE FROM " + table;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
+												// nulla
+			return false;
+		}
 
+		return true;
+	}
+	
 	/**
 	 * This method gives back the number of registered user, which corresponds to
 	 * the last added ID of a user

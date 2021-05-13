@@ -26,7 +26,20 @@ public class EZShop implements EZShopInterface {
 	
     @Override
     public void reset() {
-    	//TODO: reset all the application (delete entries in DB and reset local variables)
+    	//reset all the application (delete entries in DB and reset local variables)
+    	this.loggedUser = null;
+    	db.resetDB("balanceOperations");
+    	db.resetDB("cards");
+    	db.resetDB("creditCards");
+    	db.resetDB("customers");
+    	db.resetDB("orders");
+    	db.resetDB("productEntries");
+    	db.resetDB("productReturns");
+    	db.resetDB("productTypes");
+    	db.resetDB("returnTransactions");
+    	db.resetDB("saleTransactions");
+    	db.resetDB("sqlite_sequence");
+    	db.resetDB("users");
     }
 
     @Override
@@ -369,9 +382,9 @@ public class EZShop implements EZShopInterface {
     	
     	//Get the last used ID
     	Integer lastid = db.getLastId("orders"); 
-    	System.out.println(lastid);
+    	
     	//Create Order Object with newOrderID
-    	Order order = new OrderClass(lastid+1,-1, productCode, pricePerUnit, quantity, "ISSUED"); //balanceID??**********************************
+    	Order order = new OrderClass(lastid+1,-1, productCode, pricePerUnit, quantity, "ISSUED");
     	
     	//Add Order to the DB    	
     	if(!db.addAndIssueOrder(order))
