@@ -675,7 +675,6 @@ public class EZShop implements EZShopInterface {
     	return flag;
     }
 
-    //Everything is ok from top to here. Marco S.
     @Override
     public Integer startSaleTransaction() throws UnauthorizedException {
     	User user = this.loggedUser;
@@ -731,7 +730,7 @@ public class EZShop implements EZShopInterface {
 			return false;
 		}
 		
-		
+		// Why are you scanning the TicketEntry if the product has to be added?
 		boolean flag = false;
 		for(TicketEntry entry : entries){
 			if(entry.getBarCode().equals(productCode)){
@@ -742,7 +741,7 @@ public class EZShop implements EZShopInterface {
 		}
 		if(flag==false) {
 			db.updateQuantityByBarCode(productCode,product.getQuantity()-amount);
-			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),0.0);
+			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),transactionId,0.0);
 			entries.add(entry);			
 		}
 
