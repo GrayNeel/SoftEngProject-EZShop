@@ -843,6 +843,8 @@ public class EZShop implements EZShopInterface {
 				entry.setDiscountRate(discountRate);
 			}
 		}
+		
+		//if it is already set, why you put it again?
 		tickets.put(transactionId, entries);
 
     	return true;
@@ -873,6 +875,7 @@ public class EZShop implements EZShopInterface {
     	return flag;
     }
 
+    // Checked from top to here. Marco S.
     @Override
     public int computePointsForSale(Integer transactionId) throws InvalidTransactionIdException, UnauthorizedException {
     	User user = this.loggedUser;
