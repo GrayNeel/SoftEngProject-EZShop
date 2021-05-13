@@ -51,7 +51,7 @@ public class EZShopDB {
 	}
 	
 	public boolean resetDB(String table) {		
-		System.out.println("ASD");
+		
 		String sql = "DELETE FROM " + table;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {			
 			pstmt.executeUpdate();
