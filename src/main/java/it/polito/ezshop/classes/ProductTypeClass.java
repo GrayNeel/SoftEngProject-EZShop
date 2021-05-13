@@ -112,10 +112,10 @@ public class ProductTypeClass implements ProductType {
     	
     	//Calculation of the "Check digit"
     	Integer accumulator = 0;
-    	for(Integer i=0; i<barCodeLength-1;i++) {
+    	for(Integer i=barCodeLength-2; i>=0;i--) {
     		int n = Character.getNumericValue(productCode.charAt(i));
     		
-    		if((i%2) == 0) {
+    		if((i%2) != 0) {
     			//multiply by 1
     			accumulator+=n;
     		}else {
