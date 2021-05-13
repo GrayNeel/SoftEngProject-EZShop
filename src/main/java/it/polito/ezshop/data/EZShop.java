@@ -419,7 +419,7 @@ public class EZShop implements EZShopInterface {
     	db.recordBalanceOperation(balOp);
     	
     	//Create Order Object with newID
-    	Order order = new OrderClass(lastid+1, lastid+1, productCode, pricePerUnit, quantity, "PAYED"); //balanceID??**********************************
+    	Order order = new OrderClass(lastid+1, balanceId, productCode, pricePerUnit, quantity, "PAYED"); //balanceID??**********************************
     	
     	//Add Order to the DB    	
     	if(!db.addAndIssueOrder(order))
