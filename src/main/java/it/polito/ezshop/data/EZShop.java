@@ -371,7 +371,7 @@ public class EZShop implements EZShopInterface {
     	Integer lastid = db.getLastId("orders"); 
     	System.out.println(lastid);
     	//Create Order Object with newOrderID
-    	Order order = new OrderClass(lastid+1,0, productCode, pricePerUnit, quantity, "ISSUED"); //balanceID??**********************************
+    	Order order = new OrderClass(lastid+1,-1, productCode, pricePerUnit, quantity, "ISSUED"); //balanceID??**********************************
     	
     	//Add Order to the DB    	
     	if(!db.addAndIssueOrder(order))
@@ -430,14 +430,6 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public boolean payOrder(Integer orderId) throws InvalidOrderIdException, UnauthorizedException {
-
-    	/**
-         
-         * This method affects the balance of the system.
-                
-         */
-    	
-
     	if(orderId == null || orderId <= 0)
     		throw new InvalidOrderIdException("Order ID can not be less than 0");
     	
@@ -446,11 +438,8 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
     		throw new UnauthorizedException();   		
     	}     	
-    	Order order = null;
-    	List<Order> orderList = getAllOrders();
-    	for(Order o : orderList)    	
-    		if(o.getOrderId() == orderId)
-    			order = o;    	
+    	
+    	Order order = db.getOrderById(orderId);
     	
     	if(order == null || !(order.getStatus().equals("ISSUED") || order.getStatus().equals("ORDERED")))
     		return false;  	
@@ -471,7 +460,10 @@ public class EZShop implements EZShopInterface {
     		return false;
     	
     	BalanceOperation balOp = new BalanceOperationClass(balanceId,LocalDate.now(),((double)quantity)*pricePerUnit*(-1),"DEBIT"); 
-    	db.recordBalanceOperation(balOp);
+    	if(db.recordBalanceOperation(balOp)) {
+    		order.setBalanceId(balanceId);
+    		db.setBalanceIdInOrder(orderId, balanceId);
+    	}
     	
     	return db.payOrderById(orderId);
 
@@ -489,40 +481,25 @@ public class EZShop implements EZShopInterface {
     		throw new UnauthorizedException();
     	} 
     	    	
-    	Order order = null;
-    	List<Order> orderList = getAllOrders();
-    	for(Order o : orderList)    	
-    		if(o.getOrderId() == orderId)
-    			order = o;    	
+    	Order order = db.getOrderById(orderId);	
     
-    	if(order == null || !(order.getStatus().equals("PAYED") || order.getStatus().equals("COMPLETED")))
+    	if(order == null || (!order.getStatus().equals("PAYED") && !order.getStatus().equals("COMPLETED")))
     		return false; 
     	
     	if(order.getStatus().equals("COMPLETED"))
     		return true;
     	
-    	ProductType prod = null;
-    	List<ProductType> productList = getAllProductTypes();
-    	
-    	for(ProductType p : productList)    
-    	{    		
-    		if(p.getBarCode().equals(order.getProductCode()))
-    		{    			
-    			prod = p;
-    			break;
-    		}
-    			
-    	}
+    	ProductType prod = db.getProductTypeByBarCode(order.getProductCode());
     	
     	if(prod == null) //Non existing product Type anymore, maybe deleted. Cannot update status
     	{
-    		System.err.println("Product does not exist anymore. Cannot change the status!");
     		return false;
     	}
    
     	
     	if(prod.getLocation().length() == 0)
     		throw new InvalidLocationException("Product type of the ordered product has not an assigned location");
+    	
     	if(!db.updateQuantityByProductTypeId(prod.getId(), prod.getQuantity() + order.getQuantity()))
     		return false;
     	return db.recordOrderArrivalById(orderId); 

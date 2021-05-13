@@ -617,7 +617,22 @@ public class EZShopDB {
 		}
 		return true;
 	}
+	
+	public boolean setBalanceIdInOrder(Integer orderId, Integer balanceId) {
+		
+		// UPDATE status into ORDERED
+		String sql = "UPDATE orders SET balanceId=? WHERE id=?";
 
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, balanceId);
+			pstmt.setInt(2, orderId);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		return true;
+	}
 
 	public boolean recordOrderArrivalById(Integer orderId) {
 
