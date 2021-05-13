@@ -788,6 +788,7 @@ public class EZShop implements EZShopInterface {
 			return false;
 		}
 		
+		boolean flag = false;
 		for(TicketEntry entry: entries){
 			if(entry.getBarCode().equals(productCode)){
 				Integer curramount = entry.getAmount();
@@ -795,10 +796,11 @@ public class EZShop implements EZShopInterface {
 					return false;
 				}
 				entry.setAmount(curramount-amount);
-				boolean flag = db.updateQuantityByBarCode(productCode, product.getQuantity()+newQuantity);
+				flag = db.updateQuantityByBarCode(productCode, product.getQuantity()+amount);
 			}
 		}
 
+		//Should it be removed from the list instead?
 		tickets.put(transactionId,entries);
 
 		return flag;
