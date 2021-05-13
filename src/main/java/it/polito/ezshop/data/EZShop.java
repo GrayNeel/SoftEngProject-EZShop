@@ -371,7 +371,7 @@ public class EZShop implements EZShopInterface {
     	Integer lastid = db.getLastId("orders"); 
     	System.out.println(lastid);
     	//Create Order Object with newOrderID
-    	Order order = new OrderClass(lastid+1,0, productCode, pricePerUnit, quantity, "ISSUED"); //balanceID??**********************************
+    	Order order = new OrderClass(lastid+1,-1, productCode, pricePerUnit, quantity, "ISSUED"); //balanceID??**********************************
     	
     	//Add Order to the DB    	
     	if(!db.addAndIssueOrder(order))
@@ -430,14 +430,6 @@ public class EZShop implements EZShopInterface {
 
     @Override
     public boolean payOrder(Integer orderId) throws InvalidOrderIdException, UnauthorizedException {
-
-    	/**
-         
-         * This method affects the balance of the system.
-                
-         */
-    	
-
     	if(orderId == null || orderId <= 0)
     		throw new InvalidOrderIdException("Order ID can not be less than 0");
     	
@@ -446,11 +438,8 @@ public class EZShop implements EZShopInterface {
     	if(user==null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
     		throw new UnauthorizedException();   		
     	}     	
-    	Order order = null;
-    	List<Order> orderList = getAllOrders();
-    	for(Order o : orderList)    	
-    		if(o.getOrderId() == orderId)
-    			order = o;    	
+    	
+    	Order order = db.getOrderById(orderId);
     	
     	if(order == null || !(order.getStatus().equals("ISSUED") || order.getStatus().equals("ORDERED")))
     		return false;  	
@@ -471,7 +460,10 @@ public class EZShop implements EZShopInterface {
     		return false;
     	
     	BalanceOperation balOp = new BalanceOperationClass(balanceId,LocalDate.now(),((double)quantity)*pricePerUnit*(-1),"DEBIT"); 
-    	db.recordBalanceOperation(balOp);
+    	if(db.recordBalanceOperation(balOp)) {
+    		order.setBalanceId(balanceId);
+    		db.setBalanceIdInOrder(orderId, balanceId);
+    	}
     	
     	return db.payOrderById(orderId);
 
@@ -489,40 +481,25 @@ public class EZShop implements EZShopInterface {
     		throw new UnauthorizedException();
     	} 
     	    	
-    	Order order = null;
-    	List<Order> orderList = getAllOrders();
-    	for(Order o : orderList)    	
-    		if(o.getOrderId() == orderId)
-    			order = o;    	
+    	Order order = db.getOrderById(orderId);	
     
-    	if(order == null || !(order.getStatus().equals("PAYED") || order.getStatus().equals("COMPLETED")))
+    	if(order == null || (!order.getStatus().equals("PAYED") && !order.getStatus().equals("COMPLETED")))
     		return false; 
     	
     	if(order.getStatus().equals("COMPLETED"))
     		return true;
     	
-    	ProductType prod = null;
-    	List<ProductType> productList = getAllProductTypes();
-    	
-    	for(ProductType p : productList)    
-    	{    		
-    		if(p.getBarCode().equals(order.getProductCode()))
-    		{    			
-    			prod = p;
-    			break;
-    		}
-    			
-    	}
+    	ProductType prod = db.getProductTypeByBarCode(order.getProductCode());
     	
     	if(prod == null) //Non existing product Type anymore, maybe deleted. Cannot update status
     	{
-    		System.err.println("Product does not exist anymore. Cannot change the status!");
     		return false;
     	}
    
     	
     	if(prod.getLocation().length() == 0)
     		throw new InvalidLocationException("Product type of the ordered product has not an assigned location");
+    	
     	if(!db.updateQuantityByProductTypeId(prod.getId(), prod.getQuantity() + order.getQuantity()))
     		return false;
     	return db.recordOrderArrivalById(orderId); 
@@ -698,7 +675,6 @@ public class EZShop implements EZShopInterface {
     	return flag;
     }
 
-    //Everything is ok from top to here. Marco S.
     @Override
     public Integer startSaleTransaction() throws UnauthorizedException {
     	User user = this.loggedUser;
@@ -754,7 +730,7 @@ public class EZShop implements EZShopInterface {
 			return false;
 		}
 		
-		
+		// Why are you scanning the TicketEntry if the product has to be added?
 		boolean flag = false;
 		for(TicketEntry entry : entries){
 			if(entry.getBarCode().equals(productCode)){
@@ -765,7 +741,7 @@ public class EZShop implements EZShopInterface {
 		}
 		if(flag==false) {
 			db.updateQuantityByBarCode(productCode,product.getQuantity()-amount);
-			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),0.0);
+			TicketEntryClass entry = new TicketEntryClass(0,productCode,product.getProductDescription(),amount,product.getPricePerUnit(),transactionId,0.0);
 			entries.add(entry);			
 		}
 
@@ -812,6 +788,7 @@ public class EZShop implements EZShopInterface {
 			return false;
 		}
 		
+		boolean flag = false;
 		for(TicketEntry entry: entries){
 			if(entry.getBarCode().equals(productCode)){
 				Integer curramount = entry.getAmount();
@@ -819,10 +796,11 @@ public class EZShop implements EZShopInterface {
 					return false;
 				}
 				entry.setAmount(curramount-amount);
-				boolean flag = db.updateQuantityByBarCode(productCode, product.getQuantity()+newQuantity);
+				flag = db.updateQuantityByBarCode(productCode, product.getQuantity()+amount);
 			}
 		}
 
+		//Should it be removed from the list instead?
 		tickets.put(transactionId,entries);
 
 		return flag;
@@ -865,6 +843,8 @@ public class EZShop implements EZShopInterface {
 				entry.setDiscountRate(discountRate);
 			}
 		}
+		
+		//if it is already set, why you put it again?
 		tickets.put(transactionId, entries);
 
     	return true;
@@ -895,6 +875,7 @@ public class EZShop implements EZShopInterface {
     	return flag;
     }
 
+    // Checked from top to here. Marco S.
     @Override
     public int computePointsForSale(Integer transactionId) throws InvalidTransactionIdException, UnauthorizedException {
     	User user = this.loggedUser;
