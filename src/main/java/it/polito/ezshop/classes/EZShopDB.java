@@ -388,11 +388,11 @@ public class EZShopDB {
 	}
 
 	public List<ProductType> getProductTypesByDescription(String description) {
-		String sql = "SELECT * FROM productTypes WHERE productDescription=?";
+		String sql = "SELECT * FROM productTypes WHERE productDescription LIKE ?";
 		List<ProductType> productTypeList = new ArrayList<>();
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setString(1, description);
+			pstmt.setString(1, "%"+description+"%");
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
