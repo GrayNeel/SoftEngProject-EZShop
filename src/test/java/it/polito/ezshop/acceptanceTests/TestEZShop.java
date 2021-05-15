@@ -21,6 +21,7 @@ public class TestEZShop {
 		validateProductCodeTestCase();
 		getterAndSetterProductTypeTestCase();
 		getterAndSetterOrderTestCase();
+		addAndDeleteProductTypeTestCase();
 
 
 /////////////////////////////////////// Francesco
@@ -84,7 +85,7 @@ public class TestEZShop {
 	
 	@Test
 	public void getterAndSetterOrderTestCase() {
-		//Integer orderId, Integer balanceId, String productCode, Double pricePerUnit, Integer quantity, String status
+
 		Order o = new OrderClass(1,-1, "333", 2.01, 5, "ISSUED");
 		assertNotNull(o);
 		
@@ -134,6 +135,27 @@ public class TestEZShop {
 		assertFalse(ProductTypeClass.validateProductCode("123446743328277775"));
 		assertTrue(ProductTypeClass.validateProductCode("123446743328277771"));
 	}
+	
+	@Test
+	public void addAndDeleteProductTypeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		
+		assertTrue(db.addProductType(pt));
+		assertFalse(db.addProductType(null));
+		
+		assertTrue(db.deleteProductType(1741));
+		assertFalse(db.deleteProductType(-1));
+	}
+	
+	@Test
+	public void checkExistingProductTypeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		
+		db.addProductType(pt);
+		assertTrue(db.checkExistingProductType("22345212"));
+		db.deleteProductType(1741);
+		assertFalse(db.checkExistingProductType("22345212"));
+	}
 
 /////////////////////////////////////// Francesco
 
@@ -158,7 +180,10 @@ public class TestEZShop {
 	
 	@Test
 	public void validateStartReturnTransaction() {
-//		assertEqual(1,db.startReturnTransaction(returnTransaction));
+		ReturnTransactionClass returnok = new ReturnTransactionClass(10, 1, 1, 0, "");
+		ReturnTransactionClass returnfail = new ReturnTransactionClass(10, 1, 1000, 0, "");
+		assertEquals(1,db.startReturnTransaction(returnok),0);
+		assertNotEquals(-1,db.startReturnTransaction(returnfail),0);
 	}
 	
 	@Test
@@ -181,7 +206,8 @@ public class TestEZShop {
 	
 	@Test
 	public void validateReturnProduct() {
-		
+		assertTrue(db.deleteReturnTransaction(1));
+		assertFalse(db.deleteReturnTransaction(10));
 	}
 	
 	@Test
@@ -253,6 +279,5 @@ public class TestEZShop {
 	public void validateUpdateBalanceInCreditCard() {
 
 	}
-	
 	
 }
