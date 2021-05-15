@@ -14,6 +14,22 @@ public class TestEZShop {
 /////////////////////////////////////// Pablo
 		
 /////////////////////////////////////// Marco S.
+		validateProductCodeTestCase();
+
+
+/////////////////////////////////////// Francesco
+
+/////////////////////////////////////// Marco C.
+		
+		assertNotNull(db.getClosedSaleTransactionById(1));
+		assertNull(db.getClosedSaleTransactionById(10));
+		
+		assertTrue(db.deleteSaleTransaction(1));
+		assertFalse(db.deleteSaleTransaction(10));
+	}
+	
+	@Test
+	public void validateProductCodeTestCase() {
 		assertFalse(ProductTypeClass.validateProductCode("df"));
 		assertFalse(ProductTypeClass.validateProductCode(""));
 		assertFalse(ProductTypeClass.validateProductCode("1234567"));
@@ -32,16 +48,5 @@ public class TestEZShop {
 		assertTrue(ProductTypeClass.validateProductCode("12344674332827772"));
 		assertFalse(ProductTypeClass.validateProductCode("123446743328277775"));
 		assertTrue(ProductTypeClass.validateProductCode("123446743328277771"));
-
-/////////////////////////////////////// Francesco
-
-/////////////////////////////////////// Marco C.
-		
-		assertNotNull(db.getClosedSaleTransactionById(1));
-		assertNull(db.getClosedSaleTransactionById(10));
-		
-		assertTrue(db.deleteSaleTransaction(1));
-		assertFalse(db.deleteSaleTransaction(10));
 	}
-
 }
