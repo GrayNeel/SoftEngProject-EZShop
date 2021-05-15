@@ -9,10 +9,11 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class TestEZShop {
+	EZShopDB db = new EZShopDB();
 	
 	@Test
 	public void test() {
-		EZShopDB db = new EZShopDB();
+		
 		
 /////////////////////////////////////// Pablo
 		
@@ -26,13 +27,38 @@ public class TestEZShop {
 
 /////////////////////////////////////// Marco C.
 		
-		assertNotNull(db.getClosedSaleTransactionById(1));
-		assertNull(db.getClosedSaleTransactionById(10));
+		String productCode = "";
+		String wrongProductCode = "";
+		
+		
+		
+		
 		
 		assertTrue(db.deleteSaleTransaction(1));
 		assertFalse(db.deleteSaleTransaction(10));
+		
+//		assertEqual(1,db.startReturnTransaction(returnTransaction));
+		
+		assertTrue(db.deleteReturnTransaction(1));
+		assertFalse(db.deleteReturnTransaction(10));
+		
+		assertNotNull(db.getReturnTransactionById(1));
+		assertNull(db.getReturnTransactionById(10));
+		
+		assertNotEquals(0,db.getPricePerUnit(productCode),0.01);
+		assertEquals(0,db.getPricePerUnit(wrongProductCode),0.01);
+		
+		
+		
 	}
 	
+	
+	
+/////////////////////////////////////////// Testing Functions
+	
+/////////////////////////////////////// Pablo
+	
+/////////////////////////////////////// Marco S.
 	@Test
 	public void getterAndSetterProductTypeTestCase() {
 		ProductType pt = new ProductTypeClass(1, 0, "location", "test", "this is a test", "2222222", 3.22);
@@ -117,4 +143,21 @@ public class TestEZShop {
 		assertFalse(ProductTypeClass.validateProductCode("123446743328277775"));
 		assertTrue(ProductTypeClass.validateProductCode("123446743328277771"));
 	}
+
+/////////////////////////////////////// Francesco
+
+/////////////////////////////////////// Marco C.
+	@Test
+	public void validateClosedSaleTransaction() {
+		assertNotNull(db.getClosedSaleTransactionById(1));
+		assertNull(db.getClosedSaleTransactionById(10));
+	}
+	
+	@Test
+	public void validateGetProductEntries() {
+		assertFalse(db.getProductEntriesByTransactionId(1).isEmpty());
+		assertTrue(db.getProductEntriesByTransactionId(10).isEmpty());
+	}
+	
+	
 }
