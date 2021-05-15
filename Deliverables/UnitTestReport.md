@@ -383,10 +383,10 @@ Version: 01
 
 **Combination of predicates**:
 
-| Parameter pos found in the DB | NoValid / Invalid | Description of the test case        | JUnit test case |
-| ----------------------------- | ----------------- | ----------------------------------- | --------------- |
-| No                            | Invalid           | T1(position not in the db) -> false |                 |
-| Yes                           | Valid             | T2(position in the DB) -> true      |                 |
+| Parameter pos found in the DB | NoValid / Invalid | Description of the test case        | JUnit test case          |
+| ----------------------------- | ----------------- | ----------------------------------- | ------------------------ |
+| No                            | Invalid           | T1(position not in the db) -> false | isLocationUsedTestCase() |
+| Yes                           | Valid             | T2(position in the DB) -> true      | ''                       |
 
 ### **Class *EZShopDB* - method *updateProductTypeLocation***
 
@@ -416,11 +416,11 @@ Version: 01
 
 **Combination of predicates**:
 
-| Validity of the productId parameter | Validity of the newPos parameter | NoValid / Invalid | Description of the test case             | JUnit test case |
-| ----------------------------------- | -------------------------------- | ----------------- | ---------------------------------------- | --------------- |
-| No                                  | *                                | Invalid           | T1(an ID not in the DB,"4-4-4") -> false |                 |
-| *                                   | No                               | Invalid           | T2(an ID in the DB, 4) -> false          |                 |
-| Yes                                 | Yes                              | Valid             | T3(an ID in the DB, "4-4-4") -> true     |                 |
+| Validity of the productId parameter | Validity of the newPos parameter | NoValid / Invalid | Description of the test case             | JUnit test case                     |
+| ----------------------------------- | -------------------------------- | ----------------- | ---------------------------------------- | ----------------------------------- |
+| No                                  | *                                | Invalid           | T1(an ID not in the DB,"4-4-4") -> false | updateProductTypeLocationTestCase() |
+| *                                   | No                               | Invalid           | T2(an ID in the DB, 4) -> false          | ''                                  |
+| Yes                                 | Yes                              | Valid             | T3(an ID in the DB, "4-4-4") -> true     | ''                                  |
 
 ### **Class *EZShopDB* - method *addAndIssueOrder***
 
@@ -447,10 +447,10 @@ Version: 01
 
 **Combination of predicates**:
 
-| Validity of the Order object | Valid / Invalid | Description of the test case | JUnit test case |
-| ---------------------------- | --------------- | ---------------------------- | --------------- |
-| Yes                          | Valid           | T1(valid Order) -> true      |                 |
-| No                           | Invalid         | T2(NULL) -> false            |                 |
+| Validity of the Order object | Valid / Invalid | Description of the test case | JUnit test case                      |
+| ---------------------------- | --------------- | ---------------------------- | ------------------------------------ |
+| Yes                          | Valid           | T1(valid Order) -> true      | addAndIssueOrderThenDeleteTestCase() |
+| No                           | Invalid         | T2(NULL) -> false            | ''                                   |
 
 ### **Class *EZShopDB* - method *setBalanceIdInOrder***
 
@@ -480,11 +480,11 @@ Version: 01
 
 **Combination of predicates**:
 
-| Validity of the orderId parameter | Validity of the balanceId parameter | NoValid / Invalid | Description of the test case       | JUnit test case |
-| --------------------------------- | ----------------------------------- | ----------------- | ---------------------------------- | --------------- |
-| No                                | *                                   | Invalid           | T1(an ID not in the DB,4) -> false |                 |
-| *                                 | No                                  | Invalid           | T2(an ID in the DB, NULL) -> false |                 |
-| Yes                               | Yes                                 | Valid             | T3(an ID in the DB, 4) -> true     |                 |
+| Validity of the orderId parameter | Validity of the balanceId parameter | NoValid / Invalid | Description of the test case       | JUnit test case               |
+| --------------------------------- | ----------------------------------- | ----------------- | ---------------------------------- | ----------------------------- |
+| No                                | *                                   | Invalid           | T1(an ID not in the DB,4) -> false | setBalanceIdInOrderTestCase() |
+| *                                 | No                                  | Invalid           | T2(an ID in the DB, NULL) -> false | ''                            |
+| Yes                               | Yes                                 | Valid             | T3(an ID in the DB, 4) -> true     | ''                            |
 
 ### **Class *EZShopDB* - method *payOrderById***
 
@@ -511,10 +511,10 @@ Version: 01
 
 **Combination of predicates**:
 
-| Validity of the orderId parameter | Valid / Invalid | Description of the test case      | JUnit test case |
-| --------------------------------- | --------------- | --------------------------------- | --------------- |
-| Yes                               | Valid           | T1(an ID in the database) -> true |                 |
-| No                                | Invalid         | T2(NULL) -> false                 |                 |
+| Validity of the orderId parameter | Valid / Invalid | Description of the test case      | JUnit test case        |
+| --------------------------------- | --------------- | --------------------------------- | ---------------------- |
+| Yes                               | Valid           | T1(an ID in the database) -> true | payOrderByIdTestCase() |
+| No                                | Invalid         | T2(NULL) -> false                 | ''                     |
 
 ### **Class *EZShopDB* - method *recordOrderArrivalById***
 
@@ -541,10 +541,10 @@ Version: 01
 
 **Combination of predicates**:
 
-| Validity of the orderId parameter | Valid / Invalid | Description of the test case      | JUnit test case |
-| --------------------------------- | --------------- | --------------------------------- | --------------- |
-| Yes                               | Valid           | T1(an ID in the database) -> true |                 |
-| No                                | Invalid         | T2(NULL) -> false                 |                 |
+| Validity of the orderId parameter | Valid / Invalid | Description of the test case      | JUnit test case                  |
+| --------------------------------- | --------------- | --------------------------------- | -------------------------------- |
+| Yes                               | Valid           | T1(an ID in the database) -> true | recordOrderArrivalByIdTestCase() |
+| No                                | Invalid         | T2(NULL) -> false                 | ''                               |
 
 ### **Class *EZShopDB* - method *getAllOrders***
 
@@ -571,10 +571,10 @@ Version: 01
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case |
-| -------------------------------- | --------------- | ---------------------------- | --------------- |
-| Yes                              | Valid           | T1() -> List(Order)          |                 |
-| No                               | Invalid         | T2() -> Emptylist            |                 |
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
 
 # White Box Unit Tests
 
@@ -587,9 +587,9 @@ Version: 01
 
 | Unit name | JUnit test case |
 |--|--|
+|ProductType|getterAndSetterProductTypeTestCase()|
+|Order|getterAndSetterOrderTestCase()|
 |||
-|||
-||||
 
 ### Code coverage report
 
