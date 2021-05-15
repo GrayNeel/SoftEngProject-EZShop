@@ -62,6 +62,7 @@ public class TestEZShop {
 	@Test
 	public void getterAndSetterProductTypeTestCase() {
 		ProductType pt = new ProductTypeClass(1, 0, "location", "test", "this is a test", "2222222", 3.22);
+		assertNotNull(pt);
 		
 		pt.setId(5);
 		Integer id = pt.getId();
@@ -96,6 +97,7 @@ public class TestEZShop {
 	public void getterAndSetterOrderTestCase() {
 		//Integer orderId, Integer balanceId, String productCode, Double pricePerUnit, Integer quantity, String status
 		Order o = new OrderClass(1,-1, "333", 2.01, 5, "ISSUED");
+		assertNotNull(o);
 		
 		o.setOrderId(5);
 		Integer id = o.getOrderId();
