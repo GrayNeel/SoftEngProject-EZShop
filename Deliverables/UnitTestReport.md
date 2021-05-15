@@ -67,7 +67,7 @@ Version: 01
 |Yes|12|No|Invalid|T8("123456756328") -> true||
 |Yes|12|Yes|Valid|T9("123456756324") -> false||
 |Yes|13|No|Invalid|T10("8717163994254") -> false||
-|Yes|13|Yes|Valid|T11("8717163994252") -> true||
+|Yes|13|Yes|Valid|T11("8717163994250") -> true||
 |Yes|14|No|Invalid|T12("12344674332822") -> false||
 |Yes|14|Yes|Valid|T13("12344674332827") -> true||
 |Yes|17|No|Invalid|T14("12344674332827777") -> false||
