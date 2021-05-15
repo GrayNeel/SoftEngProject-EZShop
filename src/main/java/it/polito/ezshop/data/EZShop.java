@@ -313,6 +313,9 @@ public class EZShop implements EZShopInterface {
     	//Get product quantity
     	Integer quantity = db.getQuantityByProductTypeId(productId);
     	
+    	if(quantity == null)
+    		return false;
+    	
     	if(quantity + toBeAdded < 0)
     		return false;
     	
