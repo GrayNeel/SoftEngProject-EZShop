@@ -27,15 +27,10 @@ public class TestEZShop {
 
 /////////////////////////////////////// Marco C.
 		validateClosedSaleTransaction();
-		
 		validateGetProductEntries();
-		
 		validateDeleteSaleTransaction();
-		
 		validateDeleteReturnTransaction();
-		
 //		validateStartReturnTransaction();
-		
 		validateGetReturnTransaction();
 		
 
@@ -186,7 +181,7 @@ public class TestEZShop {
 	
 	@Test
 	public void validateReturnProduct() {
-
+		
 	}
 	
 	@Test
