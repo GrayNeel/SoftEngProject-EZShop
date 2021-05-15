@@ -317,6 +317,9 @@ public class EZShopDB {
 			String newNote) {
 		String sql = "UPDATE productTypes SET productDescription=?, barCode=?, pricePerUnit=?, note=? WHERE id=?";
 
+		if(id < 0)
+			return false;
+		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, newDescription);
 			pstmt.setString(2, newCode);

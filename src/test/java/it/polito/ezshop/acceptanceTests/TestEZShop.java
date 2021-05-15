@@ -6,6 +6,8 @@ import it.polito.ezshop.data.ProductType;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 public class TestEZShop {
@@ -23,6 +25,8 @@ public class TestEZShop {
 		getterAndSetterOrderTestCase();
 		addAndDeleteProductTypeTestCase();
 		checkExistingProductTypeTestCase();
+		updateProductTypeTestCase();
+		getAllProductTypesTestCase();
 
 
 /////////////////////////////////////// Francesco
@@ -156,6 +160,38 @@ public class TestEZShop {
 		assertTrue(db.checkExistingProductType("22345212"));
 		db.deleteProductType(1741);
 		assertFalse(db.checkExistingProductType("22345212"));
+	}
+	
+	@Test
+	public void updateProductTypeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		
+		db.addProductType(pt);
+		assertFalse(db.updateProductType(-1, "ok", "333", 4.18, "good"));
+		//assertFalse(db.updateProductType(1741, 3, "333", 4.18, "good"));
+		assertTrue(db.updateProductType(1741, "ok", "333", 4.18, "good"));
+		db.deleteProductType(1741);
+	}
+	
+	@Test
+	public void getAllProductTypesTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		
+		db.addProductType(pt);
+		
+		List<ProductType> ptlist = db.getAllProductTypes();
+		assertNotNull(ptlist);
+		
+		ptlist.remove(pt);
+		db.deleteProductType(1741);
+		
+		db.resetDB("productTypes");
+		
+		assertTrue(db.getAllProductTypes().isEmpty());
+		
+		for(ProductType prod : ptlist) {
+			db.addProductType(prod);
+		}
 	}
 
 /////////////////////////////////////// Francesco
