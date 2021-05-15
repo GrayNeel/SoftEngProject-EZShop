@@ -414,15 +414,16 @@ public class EZShopDB {
 	}
 
 	public List<ProductType> getProductTypesByDescription(String description) {
-		String sql = "SELECT * FROM productTypes WHERE productDescription LIKE ?";
+		String sql = "SELECT * FROM productTypes WHERE productDescription LIKE (?)";
 		List<ProductType> productTypeList = new ArrayList<>();
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setString(1, "%"+description+"%");
+			String toSend = "%"+description+"%";
+			System.out.println("Sending: "+toSend);
+			pstmt.setString(1, toSend);
 			ResultSet rs = pstmt.executeQuery();
-
+			
 			while (rs.next()) {
-
 				Integer id = rs.getInt("id");
 				Integer quantity = rs.getInt("quantity");
 				String location = rs.getString("location");
@@ -430,6 +431,8 @@ public class EZShopDB {
 				String productDescription = rs.getString("productDescription");
 				String barCode = rs.getString("barCode");
 				Double pricePerUnit = rs.getDouble("pricePerUnit");
+				
+				System.out.println("Found: " + id);
 
 				ProductType product = new ProductTypeClass(id, quantity, location, note, productDescription, barCode,
 						pricePerUnit);
@@ -473,9 +476,27 @@ public class EZShopDB {
 	}
 	
 	public boolean updateQuantityByProductTypeId(Integer id, int newQuantity) {
-		String sql = "UPDATE productTypes SET quantity=? WHERE id=?";
+		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE id=?";
+		boolean exists = false;
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
+		String sql2 = "UPDATE productTypes SET quantity=? WHERE id=?";
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setInt(1, newQuantity);
 			pstmt.setInt(2, id);
 			pstmt.executeUpdate();
@@ -521,6 +542,24 @@ public class EZShopDB {
 	}
 	
 	public boolean updateProductTypeLocation(Integer productId, String newPos) {
+		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE id=?";
+		boolean exists = false;
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, productId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
 		String sqlUpd = "UPDATE productTypes SET location=? WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sqlUpd)) {

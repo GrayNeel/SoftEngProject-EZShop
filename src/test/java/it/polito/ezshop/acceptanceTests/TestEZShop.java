@@ -27,7 +27,18 @@ public class TestEZShop {
 		checkExistingProductTypeTestCase();
 		updateProductTypeTestCase();
 		getAllProductTypesTestCase();
-
+		getProductTypeByBarCodeTestCase();
+		getProductTypesByDescriptionTestCase();
+		getQuantityByProductTypeIdTestCase();
+		updateQuantityByProductTypeIdTestCase();
+		isLocationUsedTestCase();
+		updateProductTypeLocationTestCase();
+		
+		addAndIssueOrderTestCase();
+		setBalanceIdInOrderTestCase();
+		payOrderByIdTestCase();
+		recordOrderArrivalByIdTestCase();
+		getAllOrdersTestCase();
 
 /////////////////////////////////////// Francesco
 
@@ -192,6 +203,110 @@ public class TestEZShop {
 		for(ProductType prod : ptlist) {
 			db.addProductType(prod);
 		}
+	}
+	
+	@Test
+	public void getProductTypeByBarCodeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		assertNotNull(db.getProductTypeByBarCode("22345212"));
+		assertNull(db.getProductTypeByBarCode("222"));
+		db.deleteProductType(1741);
+	}
+	
+	@Test
+	public void getProductTypesByDescriptionTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "nice", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		ProductType pt2 = new ProductTypeClass(1742, 2, "locational", "test", "nicest", "22345212", 3.22);
+		db.addProductType(pt2);
+		
+		//NOT WORKING:
+		List<ProductType> ptlist = db.getProductTypesByDescription("nic");
+		assert(ptlist.size() >= 2);
+		//GIVES 0 AS RESULT
+		
+		assertNotNull(db.getProductTypesByDescription("nicest"));
+		assertNotNull(db.getProductTypesByDescription("nice"));
+
+		assertTrue(db.getProductTypesByDescription("222dasdas12134").isEmpty());
+		
+		db.deleteProductType(1741);
+		db.deleteProductType(1742);
+	}
+	
+	@Test
+	public void getQuantityByProductTypeIdTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		assert(db.getQuantityByProductTypeId(1741) == 2);
+		assertNull(db.getQuantityByProductTypeId(-1));
+		
+		db.deleteProductType(1741);
+	}
+	
+	@Test
+	public void updateQuantityByProductTypeIdTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		assertFalse(db.updateQuantityByProductTypeId(-1, 4));
+		//assertFalse(db.updateQuantityByProductTypeId(1741, "434");
+		assertTrue(db.updateQuantityByProductTypeId(1741, 4));
+		assert(db.getQuantityByProductTypeId(1741) == 4);
+		
+		db.deleteProductType(1741);
+	}
+	
+	@Test
+	public void isLocationUsedTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "4-4-4", "test", "this is a test", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		assertTrue(db.isLocationUsed("4-4-4"));
+		
+		db.deleteProductType(1741);
+		
+		assertFalse(db.isLocationUsed("4-4-4"));
+	}
+	
+	@Test
+	public void updateProductTypeLocationTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "4-4-4", "test", "this is a test", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		assertTrue(db.updateProductTypeLocation(1741,"5-5-5"));
+		assertFalse(db.updateProductTypeLocation(-1,"5-5-5"));
+		
+		db.deleteProductType(1741);
+	}
+	
+	@Test
+	public void addAndIssueOrderTestCase() {
+		
+	}
+	
+	@Test
+	public void setBalanceIdInOrderTestCase() {
+		
+	}
+	
+	@Test
+	public void payOrderByIdTestCase() {
+		
+	}
+	
+	@Test
+	public void recordOrderArrivalByIdTestCase() {
+		
+	}
+	
+	@Test
+	public void getAllOrdersTestCase() {
+		
 	}
 
 /////////////////////////////////////// Francesco
