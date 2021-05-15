@@ -57,23 +57,23 @@ Version: 01
 
 | String contains a number | Length of the string | Last number is the check of the previous ones | Valid / Invalid | Description of the test case | JUnit test case |
 |-------|-------|-------|-------|-------|-------|
-|No|*|*|Invalid|T1("df") -> false <br />T2("") -> false||
-|*|[0,7]|*|Invalid|T3("1234567") -> false||
-|*|[9, 11]|*|Invalid|T4("1234567890") -> false||
-|*|[15, 16]|*|Invalid|T5("333333333333333") -> false||
-|*|[19, maxDouble]|*|Invalid|T5("44444444444444444444") -> false||
-|Yes|8|No|Invalid|T6("12345678") -> false||
-|Yes|8|Yes|Valid|T7("12345670") -> true||
-|Yes|12|No|Invalid|T8("123456756328") -> true||
-|Yes|12|Yes|Valid|T9("123456756324") -> false||
-|Yes|13|No|Invalid|T10("8717163994254") -> false||
-|Yes|13|Yes|Valid|T11("8717163994250") -> true||
-|Yes|14|No|Invalid|T12("12344674332822") -> false||
-|Yes|14|Yes|Valid|T13("12344674332827") -> true||
-|Yes|17|No|Invalid|T14("12344674332827777") -> false||
-|Yes|17|Yes|Valid|T15("12344674332827772") -> true||
-|Yes|18|No|Invalid|T16("123446743328277775") -> false||
-|Yes|18|Yes|Valid|T17("123446743328277771") -> true||
+|No|*|*|Invalid|T1("df") -> false <br />T2("") -> false|validateProductCodeTestCase()|
+|*|[0,7]|*|Invalid|T3("1234567") -> false|''|
+|*|[9, 11]|*|Invalid|T4("1234567890") -> false|''|
+|*|[15, 16]|*|Invalid|T5("333333333333333") -> false|''|
+|*|[19, maxDouble]|*|Invalid|T5("44444444444444444444") -> false|''|
+|Yes|8|No|Invalid|T6("12345678") -> false|''|
+|Yes|8|Yes|Valid|T7("12345670") -> true|''|
+|Yes|12|No|Invalid|T8("123456756328") -> true|''|
+|Yes|12|Yes|Valid|T9("123456756324") -> false|''|
+|Yes|13|No|Invalid|T10("8717163994254") -> false|''|
+|Yes|13|Yes|Valid|T11("8717163994250") -> true|''|
+|Yes|14|No|Invalid|T12("12344674332822") -> false|''|
+|Yes|14|Yes|Valid|T13("12344674332827") -> true|''|
+|Yes|17|No|Invalid|T14("12344674332827777") -> false|''|
+|Yes|17|Yes|Valid|T15("12344674332827772") -> true|''|
+|Yes|18|No|Invalid|T16("123446743328277775") -> false|''|
+|Yes|18|Yes|Valid|T17("123446743328277771") -> true|''|
 
  ### **Class *EZShopDB* - method *checkExistingProductType***
 
