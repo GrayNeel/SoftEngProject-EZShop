@@ -21,6 +21,8 @@ public class TestEZShop {
 		validateProductCodeTestCase();
 		getterAndSetterProductTypeTestCase();
 		getterAndSetterOrderTestCase();
+		addAndDeleteProductTypeTestCase();
+		checkExistingProductTypeTestCase();
 
 
 /////////////////////////////////////// Francesco
@@ -133,6 +135,27 @@ public class TestEZShop {
 		assertTrue(ProductTypeClass.validateProductCode("12344674332827772"));
 		assertFalse(ProductTypeClass.validateProductCode("123446743328277775"));
 		assertTrue(ProductTypeClass.validateProductCode("123446743328277771"));
+	}
+	
+	@Test
+	public void addAndDeleteProductTypeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		
+		assertTrue(db.addProductType(pt));
+		assertFalse(db.addProductType(null));
+		
+		assertTrue(db.deleteProductType(1741));
+		assertFalse(db.deleteProductType(-1));
+	}
+	
+	@Test
+	public void checkExistingProductTypeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		
+		db.addProductType(pt);
+		assertTrue(db.checkExistingProductType("22345212"));
+		db.deleteProductType(1741);
+		assertFalse(db.checkExistingProductType("22345212"));
 	}
 
 /////////////////////////////////////// Francesco
