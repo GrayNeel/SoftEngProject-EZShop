@@ -369,12 +369,13 @@ public class TestEZShop {
 	public void saleTransactionTestCase() {
 		Integer transactionId = 180;
 		Integer wrongTransactionId = 200;
+		String productCode = "22345212";
 		
-		ProductType pt = new ProductTypeClass(1741, 2, "4-4-4", "test", "this is a test", "22345212", 3.22);
+		ProductType pt = new ProductTypeClass(1741, 2, "4-4-4", "test", "this is a test", productCode, 3.22);
 		db.addProductType(pt);
 		
 		
-		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,transactionId,0.0);
+		TicketEntry te = new TicketEntryClass(132,productCode,"test description",10,1.50,transactionId,0.0);
 		
 //		assertNotEquals(-1,nextId+0);
 		String[] date = (new Date()).toString().split(" ");
@@ -394,8 +395,17 @@ public class TestEZShop {
 		assertTrue(db.createTicketEntry(te,transactionId));
 //		assertFalse(db.createTicketEntry(te,transactionId));
 		
+		assertTrue(db.applyDiscountRateToProduct(transactionId, productCode, 0.2));
+		assertFalse(db.applyDiscountRateToProduct(wrongTransactionId, productCode, 0.2));
+		
+		assertTrue(db.updateTransactionState(transactionId, "CLOSED"));
+		assertFalse(db.updateTransactionState(wrongTransactionId, "CLOSED"));
+		
 		assertNotNull(db.getClosedSaleTransactionById(transactionId));
 		assertNull(db.getClosedSaleTransactionById(wrongTransactionId));
+		
+		assertNotNull(db.getProductEntriesByTransactionId(transactionId));
+		assertNull(db.getProductEntriesByTransactionId(wrongTransactionId));
 		
 		assertTrue(db.deleteSaleTransaction(transactionId));
 		assertFalse(db.deleteSaleTransaction(wrongTransactionId));
