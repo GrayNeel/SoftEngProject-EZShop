@@ -180,10 +180,10 @@ public class TestEZShop {
 	
 	@Test
 	public void validateStartReturnTransaction() {
-		ReturnTransactionClass returnok = new ReturnTransactionClass(10, 1, 1, 0, "");
-		ReturnTransactionClass returnfail = new ReturnTransactionClass(10, 1, 1000, 0, "");
-		assertEquals(1,db.startReturnTransaction(returnok),0);
-		assertNotEquals(-1,db.startReturnTransaction(returnfail),0);
+		ReturnTransactionClass returnok = new ReturnTransactionClass(10, 1, 0, 0, "");
+		ReturnTransactionClass returnfail = new ReturnTransactionClass(10, 1, 0, 0, "");
+		assertNotEquals(-1,db.startReturnTransaction(returnok),0);
+		assertEquals(-1,db.startReturnTransaction(returnfail),0);
 	}
 	
 	@Test
@@ -212,72 +212,86 @@ public class TestEZShop {
 	
 	@Test
 	public void validateGetAmountEntry() {
-
+//		assertEquals(1,db.getAmountEntry(1),0);
+//		assertNotEquals(-1,db.getAmountEntry(returnfail),0);
 	}
 	
 	@Test
 	public void validateGetTotalOnEntry() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateCheckProductInSaleTransaction() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateUpdateReturnTransaction() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateUpdateSaleTransactionAfterCommit() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateUpdateEntryAfterCommit() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateGetAllProductReturnsById() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateDeleteAllProductReturnsByReturnId() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateUpdatePaymentSaleTransaction() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateRecordBalanceOperation() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateGetActualBalance() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateGetBalanceOperations() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateGetCreditCardByCardNumber() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 	@Test
 	public void validateUpdateBalanceInCreditCard() {
-
+//		assertEquals(1,db.getTotalOnEntry(1,""),0);
+//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
 	}
 	
 }
