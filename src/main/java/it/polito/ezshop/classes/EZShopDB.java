@@ -414,15 +414,16 @@ public class EZShopDB {
 	}
 
 	public List<ProductType> getProductTypesByDescription(String description) {
-		String sql = "SELECT * FROM productTypes WHERE productDescription LIKE ?";
+		String sql = "SELECT * FROM productTypes WHERE productDescription LIKE (?)";
 		List<ProductType> productTypeList = new ArrayList<>();
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setString(1, "%"+description+"%");
+			String toSend = "%"+description+"%";
+			System.out.println("Sending: "+toSend);
+			pstmt.setString(1, toSend);
 			ResultSet rs = pstmt.executeQuery();
-
+			
 			while (rs.next()) {
-
 				Integer id = rs.getInt("id");
 				Integer quantity = rs.getInt("quantity");
 				String location = rs.getString("location");
@@ -430,6 +431,8 @@ public class EZShopDB {
 				String productDescription = rs.getString("productDescription");
 				String barCode = rs.getString("barCode");
 				Double pricePerUnit = rs.getDouble("pricePerUnit");
+				
+				System.out.println("Found: " + id);
 
 				ProductType product = new ProductTypeClass(id, quantity, location, note, productDescription, barCode,
 						pricePerUnit);
@@ -473,9 +476,27 @@ public class EZShopDB {
 	}
 	
 	public boolean updateQuantityByProductTypeId(Integer id, int newQuantity) {
-		String sql = "UPDATE productTypes SET quantity=? WHERE id=?";
+		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE id=?";
+		boolean exists = false;
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
+		String sql2 = "UPDATE productTypes SET quantity=? WHERE id=?";
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setInt(1, newQuantity);
 			pstmt.setInt(2, id);
 			pstmt.executeUpdate();
@@ -521,6 +542,24 @@ public class EZShopDB {
 	}
 	
 	public boolean updateProductTypeLocation(Integer productId, String newPos) {
+		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE id=?";
+		boolean exists = false;
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, productId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
 		String sqlUpd = "UPDATE productTypes SET location=? WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sqlUpd)) {
@@ -543,6 +582,9 @@ public class EZShopDB {
 	public boolean addAndIssueOrder(Order order) {
 		String sql = "INSERT INTO orders(id,balanceId,productCode,pricePerUnit,quantity,status) VALUES(?,?,?,?,?,?)";
 
+		if(order == null)
+			return false;
+		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, order.getOrderId());
 			pstmt.setInt(2, order.getBalanceId());
@@ -554,6 +596,37 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean deleteOrder(Integer id) {
+		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
+		boolean exists = false;
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
+		String sql2 = "DELETE FROM orders WHERE id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
+			pstmt.setInt(1, id);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
+												// nulla
 			return false;
 		}
 		return true;
@@ -643,11 +716,31 @@ public class EZShopDB {
 	}
 
 	public boolean payOrderById(Integer orderId) {
+		if(orderId == null)
+			return false;
 		
-		// UPDATE status into ORDERED
-		String sql = "UPDATE orders SET status=? WHERE id=?";
+		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
+		boolean exists = false;
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, orderId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
+		// UPDATE status into ORDERED
+		String sql2 = "UPDATE orders SET status=? WHERE id=?";
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setString(1, "PAYED");
 			pstmt.setInt(2, orderId);
 			pstmt.executeUpdate();
@@ -659,11 +752,33 @@ public class EZShopDB {
 	}
 	
 	public boolean setBalanceIdInOrder(Integer orderId, Integer balanceId) {
-		
-		// UPDATE status into ORDERED
-		String sql = "UPDATE orders SET balanceId=? WHERE id=?";
+		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
+		boolean exists = false;
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, orderId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
+		// UPDATE status into ORDERED
+		String sql2 = "UPDATE orders SET balanceId=? WHERE id=?";
+
+		if(balanceId == null)
+			return false;
+		
+		
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setInt(1, balanceId);
 			pstmt.setInt(2, orderId);
 			pstmt.executeUpdate();
@@ -675,11 +790,30 @@ public class EZShopDB {
 	}
 
 	public boolean recordOrderArrivalById(Integer orderId) {
-
-		// UPDATE status into COMPLETED
-		String sql = "UPDATE orders SET status=? WHERE id=?";
+		if(orderId == null) 
+			return false;
+		
+		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
+		boolean exists = false;
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, orderId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		// UPDATE status into COMPLETED
+		String sql2 = "UPDATE orders SET status=? WHERE id=?";
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setString(1, "COMPLETED");
 			pstmt.setInt(2, orderId);
 			pstmt.executeUpdate();
