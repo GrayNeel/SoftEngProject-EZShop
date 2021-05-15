@@ -272,7 +272,7 @@ public class EZShopDB {
 	 * 
 	 * @param productType the ProductTypeClass containing parameters to add
 	 */
-	public void addProductType(ProductType productType) {
+	public boolean addProductType(ProductType productType) {
 		String sql = "INSERT INTO productTypes(id, quantity, location, note, productDescription, barCode, pricePerUnit) VALUES(?,?,?,?,?,?,?)";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -285,8 +285,10 @@ public class EZShopDB {
 			pstmt.setDouble(7, productType.getPricePerUnit());
 
 			pstmt.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			return false;
 		}
 	}
 
