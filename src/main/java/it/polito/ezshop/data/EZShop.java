@@ -197,9 +197,10 @@ public class EZShop implements EZShopInterface {
     	ProductType productType = new ProductTypeClass(lastid+1, 0, "location", note, description, productCode, pricePerUnit);
     	
     	//Add productType to the DB
-    	db.addProductType(productType);
-    	
-        return lastid+1;  
+    	if(db.addProductType(productType))
+    		return lastid+1;  
+    	else
+    		return -1;
     }
 
     @Override
