@@ -21,27 +21,21 @@ public class TestEZShop {
 /////////////////////////////////////// Francesco
 
 /////////////////////////////////////// Marco C.
+		validateClosedSaleTransaction();
 		
-		String productCode = "";
-		String wrongProductCode = "";
+		validateGetProductEntries();
+		
+		validateDeleteSaleTransaction();
+		
+		validateDeleteReturnTransaction();
+		
+//		validateStartReturnTransaction();
+		
+		validateGetReturnTransaction();
+		
+
 		
 		
-		
-		
-		
-		assertTrue(db.deleteSaleTransaction(1));
-		assertFalse(db.deleteSaleTransaction(10));
-		
-//		assertEqual(1,db.startReturnTransaction(returnTransaction));
-		
-		assertTrue(db.deleteReturnTransaction(1));
-		assertFalse(db.deleteReturnTransaction(10));
-		
-		assertNotNull(db.getReturnTransactionById(1));
-		assertNull(db.getReturnTransactionById(10));
-		
-		assertNotEquals(0,db.getPricePerUnit(productCode),0.01);
-		assertEquals(0,db.getPricePerUnit(wrongProductCode),0.01);
 		
 		
 		
@@ -89,6 +83,110 @@ public class TestEZShop {
 	public void validateGetProductEntries() {
 		assertFalse(db.getProductEntriesByTransactionId(1).isEmpty());
 		assertTrue(db.getProductEntriesByTransactionId(10).isEmpty());
+	}
+	
+	@Test
+	public void validateDeleteSaleTransaction() {
+		assertTrue(db.deleteSaleTransaction(1));
+		assertFalse(db.deleteSaleTransaction(10));
+	}
+	
+	@Test
+	public void validateStartReturnTransaction() {
+//		assertEqual(1,db.startReturnTransaction(returnTransaction));
+	}
+	
+	@Test
+	public void validateDeleteReturnTransaction() {
+		assertTrue(db.deleteReturnTransaction(1));
+		assertFalse(db.deleteReturnTransaction(10));
+	}
+	
+	@Test
+	public void validateGetReturnTransaction() {
+		assertNotNull(db.getReturnTransactionById(1));
+		assertNull(db.getReturnTransactionById(10));
+	}
+	
+	@Test
+	public void validateGetPricePerUnit() {
+		assertNotEquals(0,db.getPricePerUnit("12345670"),0.01);
+		assertEquals(0,db.getPricePerUnit("1234567"),0.01);
+	}
+	
+	@Test
+	public void validateReturnProduct() {
+
+	}
+	
+	@Test
+	public void validateGetAmountEntry() {
+
+	}
+	
+	@Test
+	public void validateGetTotalOnEntry() {
+
+	}
+	
+	@Test
+	public void validateCheckProductInSaleTransaction() {
+
+	}
+	
+	@Test
+	public void validateUpdateReturnTransaction() {
+
+	}
+	
+	@Test
+	public void validateUpdateSaleTransactionAfterCommit() {
+
+	}
+	
+	@Test
+	public void validateUpdateEntryAfterCommit() {
+
+	}
+	
+	@Test
+	public void validateGetAllProductReturnsById() {
+
+	}
+	
+	@Test
+	public void validateDeleteAllProductReturnsByReturnId() {
+
+	}
+	
+	@Test
+	public void validateUpdatePaymentSaleTransaction() {
+
+	}
+	
+	@Test
+	public void validateRecordBalanceOperation() {
+
+	}
+	
+	@Test
+	public void validateGetActualBalance() {
+
+	}
+	
+	@Test
+	public void validateGetBalanceOperations() {
+
+	}
+	
+	@Test
+	public void validateGetCreditCardByCardNumber() {
+
+	}
+	
+	@Test
+	public void validateUpdateBalanceInCreditCard() {
+
 	}
 	
 	
