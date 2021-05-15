@@ -1110,6 +1110,15 @@ public class EZShopDB {
             System.err.println(e.getMessage());
             return false;
         }
+        
+        sql = "DELETE FROM productEntries WHERE transactionId=?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, transactionId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
 
         return true;
     }
