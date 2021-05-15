@@ -6,10 +6,11 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class TestEZShop {
+	EZShopDB db = new EZShopDB();
 	
 	@Test
 	public void test() {
-		EZShopDB db = new EZShopDB();
+		
 		
 /////////////////////////////////////// Pablo
 		
@@ -24,11 +25,9 @@ public class TestEZShop {
 		String productCode = "";
 		String wrongProductCode = "";
 		
-		assertNotNull(db.getClosedSaleTransactionById(1));
-		assertNull(db.getClosedSaleTransactionById(10));
 		
-		assertFalse(db.getProductEntriesByTransactionId(1).isEmpty());
-		assertTrue(db.getProductEntriesByTransactionId(10).isEmpty());
+		
+		
 		
 		assertTrue(db.deleteSaleTransaction(1));
 		assertFalse(db.deleteSaleTransaction(10));
@@ -48,6 +47,13 @@ public class TestEZShop {
 		
 	}
 	
+	
+	
+/////////////////////////////////////////// Testing Functions
+	
+/////////////////////////////////////// Pablo
+	
+/////////////////////////////////////// Marco S.
 	@Test
 	public void validateProductCodeTestCase() {
 		assertFalse(ProductTypeClass.validateProductCode("df"));
@@ -69,4 +75,21 @@ public class TestEZShop {
 		assertFalse(ProductTypeClass.validateProductCode("123446743328277775"));
 		assertTrue(ProductTypeClass.validateProductCode("123446743328277771"));
 	}
+
+/////////////////////////////////////// Francesco
+
+/////////////////////////////////////// Marco C.
+	@Test
+	public void validateClosedSaleTransaction() {
+		assertNotNull(db.getClosedSaleTransactionById(1));
+		assertNull(db.getClosedSaleTransactionById(10));
+	}
+	
+	@Test
+	public void validateGetProductEntries() {
+		assertFalse(db.getProductEntriesByTransactionId(1).isEmpty());
+		assertTrue(db.getProductEntriesByTransactionId(10).isEmpty());
+	}
+	
+	
 }
