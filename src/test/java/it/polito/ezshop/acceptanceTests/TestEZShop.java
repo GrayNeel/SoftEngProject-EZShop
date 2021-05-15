@@ -32,12 +32,12 @@ public class TestEZShop {
 /////////////////////////////////////// Francesco
 
 /////////////////////////////////////// Marco C.
-		validateClosedSaleTransaction();
-		validateGetProductEntries();
-		validateDeleteSaleTransaction();
-		validateDeleteReturnTransaction();
+//		validateClosedSaleTransaction();
+//		validateGetProductEntries();
+//		validateDeleteSaleTransaction();
+//		validateDeleteReturnTransaction();
 //		validateStartReturnTransaction();
-		validateGetReturnTransaction();
+//		validateGetReturnTransaction();
 		
 
 		
@@ -217,7 +217,8 @@ public class TestEZShop {
 	
 	@Test
 	public void validateStartReturnTransaction() {
-//		assertEqual(1,db.startReturnTransaction(returnTransaction));
+		assertNotEquals(-1,db.startReturnTransaction(returnTransaction)+0);
+		assertEquals(-1,db.startReturnTransaction(wrongTransaction)+0);
 	}
 	
 	@Test
