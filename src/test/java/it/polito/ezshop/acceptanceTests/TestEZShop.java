@@ -21,6 +21,7 @@ public class TestEZShop {
 		validateProductCodeTestCase();
 		getterAndSetterProductTypeTestCase();
 		getterAndSetterOrderTestCase();
+		addAndDeleteProductTypeTestCase();
 
 
 /////////////////////////////////////// Francesco
@@ -95,7 +96,7 @@ public class TestEZShop {
 	
 	@Test
 	public void getterAndSetterOrderTestCase() {
-		//Integer orderId, Integer balanceId, String productCode, Double pricePerUnit, Integer quantity, String status
+
 		Order o = new OrderClass(1,-1, "333", 2.01, 5, "ISSUED");
 		assertNotNull(o);
 		
@@ -145,6 +146,27 @@ public class TestEZShop {
 		assertFalse(ProductTypeClass.validateProductCode("123446743328277775"));
 		assertTrue(ProductTypeClass.validateProductCode("123446743328277771"));
 	}
+	
+	@Test
+	public void addAndDeleteProductTypeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		
+		assertTrue(db.addProductType(pt));
+		assertFalse(db.addProductType(null));
+		
+		assertTrue(db.deleteProductType(1741));
+		assertFalse(db.deleteProductType(-1));
+	}
+	
+	@Test
+	public void checkExistingProductTypeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		
+		db.addProductType(pt);
+		assertTrue(db.checkExistingProductType("22345212"));
+		db.deleteProductType(1741);
+		assertFalse(db.checkExistingProductType("22345212"));
+	}
 
 /////////////////////////////////////// Francesco
 
@@ -160,6 +182,5 @@ public class TestEZShop {
 		assertFalse(db.getProductEntriesByTransactionId(1).isEmpty());
 		assertTrue(db.getProductEntriesByTransactionId(10).isEmpty());
 	}
-	
-	
+
 }

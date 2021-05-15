@@ -274,7 +274,9 @@ public class EZShopDB {
 	 */
 	public boolean addProductType(ProductType productType) {
 		String sql = "INSERT INTO productTypes(id, quantity, location, note, productDescription, barCode, pricePerUnit) VALUES(?,?,?,?,?,?,?)";
-
+		if(productType ==  null)
+			return false;
+		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, productType.getId());
 			pstmt.setInt(2, productType.getQuantity());
@@ -358,8 +360,27 @@ public class EZShopDB {
 	}
 
 	public boolean deleteProductType(Integer id) {
-		String sql = "DELETE FROM productTypes WHERE id=?";
+		
+		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE id=?";
+		boolean exists = false;
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
+		String sql2 = "DELETE FROM productTypes WHERE id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {

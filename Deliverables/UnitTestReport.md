@@ -97,10 +97,10 @@ Version: 01
 **Combination of predicates**:
 
 
-| The string is contained in the database | Valid / Invalid | Description of the test case | JUnit test case |
-| --------------------------------------- | --------------- | ---------------------------- | --------------- |
-| Yes                                     | Valid           | T1("8859392701093") -> true  |                 |
-| No                                      | Invalid         | T2("blabla") -> false        |                 |
+| The string is contained in the database | Valid / Invalid | Description of the test case | JUnit test case                    |
+| --------------------------------------- | --------------- | ---------------------------- | ---------------------------------- |
+| Yes                                     | Valid           | T1("8859392701093") -> true  | checkExistingProductTypeTestCase() |
+| No                                      | Invalid         | T2("blabla") -> false        | ''                                 |
 
  ### **Class *EZShopDB* - method *addProductType***
 
@@ -128,10 +128,10 @@ Version: 01
 **Combination of predicates**:
 
 
-| Validity of the object ProductType | Valid / Invalid | Description of the test case | JUnit test case |
-| ---------------------------------- | --------------- | ---------------------------- | --------------- |
-| Yes                                | Valid           | T1(valid PT) -> true         |                 |
-| No                                 | Invalid         | T2(NULL) -> false            |                 |
+| Validity of the object ProductType | Valid / Invalid | Description of the test case | JUnit test case                   |
+| ---------------------------------- | --------------- | ---------------------------- | --------------------------------- |
+| Yes                                | Valid           | T1(valid PT) -> true         | addAndDeleteProductTypeTestCase() |
+| No                                 | Invalid         | T2(NULL) -> false            | ''                                |
 
 ### **Class *EZShopDB* - method *updateProductType***
 
@@ -199,10 +199,10 @@ Version: 01
 **Combination of predicates**:
 
 
-| The given ID is in the database | Valid / Invalid | Description of the test case           | JUnit test case |
-| ------------------------------- | --------------- | -------------------------------------- | --------------- |
-| Yes                             | Valid           | T1(an ID in the database) -> true      |                 |
-| No                              | Invalid         | T2(an ID not in the database) -> false |                 |
+| The given ID is in the database | Valid / Invalid | Description of the test case           | JUnit test case                   |
+| ------------------------------- | --------------- | -------------------------------------- | --------------------------------- |
+| Yes                             | Valid           | T1(an ID in the database) -> true      | addAndDeleteProductTypeTestCase() |
+| No                              | Invalid         | T2(an ID not in the database) -> false | ''                                |
 
 ### **Class *EZShopDB* - method *getAllProductTypes***
 
@@ -557,9 +557,9 @@ Version: 01
 
 | Unit name | JUnit test case |
 |--|--|
+|ProductType|getterAndSetterProductTypeTestCase()|
+|Order|getterAndSetterOrderTestCase()|
 |||
-|||
-||||
 
 ### Code coverage report
 
