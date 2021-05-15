@@ -34,7 +34,7 @@ public class TestEZShop {
 		isLocationUsedTestCase();
 		updateProductTypeLocationTestCase();
 		
-		addAndIssueOrderTestCase();
+		addAndIssueOrderThenDeleteTestCase();
 		setBalanceIdInOrderTestCase();
 		payOrderByIdTestCase();
 		recordOrderArrivalByIdTestCase();
@@ -285,28 +285,77 @@ public class TestEZShop {
 	}
 	
 	@Test
-	public void addAndIssueOrderTestCase() {
-		
+	public void addAndIssueOrderThenDeleteTestCase() {
+    	Order o = new OrderClass(5853,-1, "1741", 8.5, 5, "ISSUED");
+    	
+    	assertTrue(db.addAndIssueOrder(o));
+    	assertFalse(db.addAndIssueOrder(null));
+    	assertTrue(db.deleteOrder(5853));
+    	assertFalse(db.deleteOrder(-1));
 	}
 	
 	@Test
 	public void setBalanceIdInOrderTestCase() {
-		
+    	Order o = new OrderClass(5853,-1, "1741", 8.5, 5, "ISSUED");
+    	
+    	db.addAndIssueOrder(o);
+    	
+    	assertFalse(db.setBalanceIdInOrder(-1, 500));
+    	assertFalse(db.setBalanceIdInOrder(5853, null));
+    	assertTrue(db.setBalanceIdInOrder(5853, 500));
+    	
+    	db.deleteOrder(5853);
 	}
 	
 	@Test
 	public void payOrderByIdTestCase() {
-		
+    	Order o = new OrderClass(5853,-1, "1741", 8.5, 5, "ISSUED");
+    	
+    	db.addAndIssueOrder(o);
+    	
+    	assertFalse(db.payOrderById(null));
+    	assertTrue(db.payOrderById(5853));
+    	
+    	assert(db.getOrderById(5853).getStatus().equals("PAYED"));
+    	
+    	db.deleteOrder(5853);
 	}
 	
 	@Test
 	public void recordOrderArrivalByIdTestCase() {
-		
+    	Order o = new OrderClass(5853,-1, "1741", 8.5, 5, "ISSUED");
+    	
+    	db.addAndIssueOrder(o);
+    	db.payOrderById(5853);
+    	
+    	assertFalse(db.recordOrderArrivalById(null));
+    	assertFalse(db.recordOrderArrivalById(-1));
+    	assertTrue(db.recordOrderArrivalById(5853));
+    	
+    	assert(db.getOrderById(5853).getStatus().equals("COMPLETED"));
+    	
+    	db.deleteOrder(5853);
 	}
 	
 	@Test
 	public void getAllOrdersTestCase() {
+		Order o = new OrderClass(5853,-1, "1741", 8.5, 5, "ISSUED");
 		
+		db.addAndIssueOrder(o);
+		
+		List<Order> orlist = db.getAllOrders();
+		assertNotNull(orlist);
+		
+		orlist.remove(o);
+		db.deleteOrder(5853);
+		
+		db.resetDB("orders");
+		
+		assertTrue(db.getAllOrders().isEmpty());
+		
+		for(Order or : orlist) {
+			db.addAndIssueOrder(or);
+		}
 	}
 
 /////////////////////////////////////// Francesco
