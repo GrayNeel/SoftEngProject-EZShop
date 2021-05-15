@@ -6,6 +6,8 @@ import it.polito.ezshop.data.ProductType;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 public class TestEZShop {
@@ -22,6 +24,9 @@ public class TestEZShop {
 		getterAndSetterProductTypeTestCase();
 		getterAndSetterOrderTestCase();
 		addAndDeleteProductTypeTestCase();
+		checkExistingProductTypeTestCase();
+		updateProductTypeTestCase();
+		getAllProductTypesTestCase();
 
 
 /////////////////////////////////////// Francesco
@@ -85,7 +90,7 @@ public class TestEZShop {
 	
 	@Test
 	public void getterAndSetterOrderTestCase() {
-
+		//Integer orderId, Integer balanceId, String productCode, Double pricePerUnit, Integer quantity, String status
 		Order o = new OrderClass(1,-1, "333", 2.01, 5, "ISSUED");
 		assertNotNull(o);
 		
@@ -156,6 +161,38 @@ public class TestEZShop {
 		db.deleteProductType(1741);
 		assertFalse(db.checkExistingProductType("22345212"));
 	}
+	
+	@Test
+	public void updateProductTypeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		
+		db.addProductType(pt);
+		assertFalse(db.updateProductType(-1, "ok", "333", 4.18, "good"));
+		//assertFalse(db.updateProductType(1741, 3, "333", 4.18, "good"));
+		assertTrue(db.updateProductType(1741, "ok", "333", 4.18, "good"));
+		db.deleteProductType(1741);
+	}
+	
+	@Test
+	public void getAllProductTypesTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		
+		db.addProductType(pt);
+		
+		List<ProductType> ptlist = db.getAllProductTypes();
+		assertNotNull(ptlist);
+		
+		ptlist.remove(pt);
+		db.deleteProductType(1741);
+		
+		db.resetDB("productTypes");
+		
+		assertTrue(db.getAllProductTypes().isEmpty());
+		
+		for(ProductType prod : ptlist) {
+			db.addProductType(prod);
+		}
+	}
 
 /////////////////////////////////////// Francesco
 
@@ -180,10 +217,7 @@ public class TestEZShop {
 	
 	@Test
 	public void validateStartReturnTransaction() {
-		ReturnTransactionClass returnok = new ReturnTransactionClass(10, 1, 0, 0, "");
-		ReturnTransactionClass returnfail = new ReturnTransactionClass(10, 1, 0, 0, "");
-		assertNotEquals(-1,db.startReturnTransaction(returnok),0);
-		assertEquals(-1,db.startReturnTransaction(returnfail),0);
+//		assertEqual(1,db.startReturnTransaction(returnTransaction));
 	}
 	
 	@Test
@@ -206,92 +240,78 @@ public class TestEZShop {
 	
 	@Test
 	public void validateReturnProduct() {
-		assertTrue(db.deleteReturnTransaction(1));
-		assertFalse(db.deleteReturnTransaction(10));
+		
 	}
 	
 	@Test
 	public void validateGetAmountEntry() {
-//		assertEquals(1,db.getAmountEntry(1),0);
-//		assertNotEquals(-1,db.getAmountEntry(returnfail),0);
+
 	}
 	
 	@Test
 	public void validateGetTotalOnEntry() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateCheckProductInSaleTransaction() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateUpdateReturnTransaction() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateUpdateSaleTransactionAfterCommit() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateUpdateEntryAfterCommit() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateGetAllProductReturnsById() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateDeleteAllProductReturnsByReturnId() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateUpdatePaymentSaleTransaction() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateRecordBalanceOperation() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateGetActualBalance() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateGetBalanceOperations() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateGetCreditCardByCardNumber() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
 	
 	@Test
 	public void validateUpdateBalanceInCreditCard() {
-//		assertEquals(1,db.getTotalOnEntry(1,""),0);
-//		assertNotEquals(-1,db.getTotalOnEntry(1,""),0);
+
 	}
+	
 	
 }
