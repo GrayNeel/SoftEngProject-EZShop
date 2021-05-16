@@ -1030,10 +1030,11 @@ public class EZShopDB {
 	public boolean applyDiscountRateToProduct(Integer transactionId, String productCode, Double discountRate) {
 		boolean flag;
 
-		String sql = "UPDATE p SET discountRate=? WHERE id=?";
+		String sql = "UPDATE productEntries SET discountRate=? WHERE transactionId=? and productCode=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setDouble(1, discountRate);
 			pstmt.setInt(2, transactionId);
+			pstmt.setString(3, productCode);
 			pstmt.executeUpdate();
 			flag = true;
 		} catch (SQLException e) {
@@ -1061,14 +1062,16 @@ public class EZShopDB {
 		return flag;
 	}
 	
-	public boolean createTicketEntry(TicketEntry ticketEntry, Integer transactionId) {		
-		String sql = "INSERT INTO productEntries(productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,0.0,?,?,?,?)";
+	public boolean createTicketEntry(TicketEntry ticketEntry, Integer transactionId) {	
+		Integer id = getLastId("productEntries");
+		String sql = "INSERT INTO productEntries(id, productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,?,0.0,?,?,?)";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setString(1, ticketEntry.getBarCode());
-			pstmt.setInt(2, ticketEntry.getAmount());
-			pstmt.setInt(3, transactionId);
-			pstmt.setDouble(4, ticketEntry.getPricePerUnit());
-			pstmt.setDouble(5, ticketEntry.getDiscountRate());
+			pstmt.setInt(1, id+1);
+			pstmt.setString(2, ticketEntry.getBarCode());
+			pstmt.setInt(3, ticketEntry.getAmount());
+			pstmt.setInt(4, transactionId);
+			pstmt.setDouble(5, ticketEntry.getPricePerUnit());
+			pstmt.setDouble(6, ticketEntry.getDiscountRate());
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -1097,7 +1100,7 @@ public class EZShopDB {
     ///////////////// Pablo write methods after this point
 
     public boolean deleteSaleTransaction(Integer transactionId) {
-        String sql = "DELETE FROM saleTransactions WHERE state != 'PAYED' AND transactionId=?";
+        String sql = "DELETE FROM saleTransactions WHERE state != 'PAYED' AND id=?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, transactionId);
             pstmt.executeUpdate();
