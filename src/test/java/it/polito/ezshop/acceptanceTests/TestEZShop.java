@@ -881,6 +881,7 @@ public class TestEZShop {
 	@Test
 	public void returnTransactionTestCase() {
 		db.resetDB("saleTransactions");
+		db.resetDB("returnTransactions");
 		List<TicketEntry> productList = new ArrayList<>();
 		String[] date = (new Date()).toString().split(" ");
 		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
@@ -896,38 +897,60 @@ public class TestEZShop {
 		
 		assertNotEquals(-1,db.startReturnTransaction(returnTransaction)+0);
 		assertEquals(-1,db.startReturnTransaction(wrongReturnTransaction)+0);
+		
+		assertNotNull(db.getReturnTransactionById(12));
+		assertNull(db.getReturnTransactionById(13));
+		
+		assertTrue(db.checkProductInSaleTransaction(170, "22345212"));
+		assertFalse(db.checkProductInSaleTransaction(170, "22345215"));
+		
+		assertTrue(db.updateReturnTransaction(12, 12, 10.15));
+		
+		assertTrue(db.deleteReturnTransaction(12));
 	}
-//	
-//	@Test
-//	public void validateGetPricePerUnit() {
-//		assertNotEquals(0,db.getPricePerUnit("12345670"),0.01);
-//		assertEquals(0,db.getPricePerUnit("1234567"),0.01);
-//	}
-//	
-//	@Test
-//	public void validateReturnProduct() {
-//		
-//	}
-//	
-//	@Test
-//	public void validateGetAmountEntry() {
-//
-//	}
-//	
-//	@Test
-//	public void validateGetTotalOnEntry() {
-//
-//	}
-//	
-//	@Test
-//	public void validateCheckProductInSaleTransaction() {
-//
-//	}
-//	
-//	@Test
-//	public void validateUpdateReturnTransaction() {
-//
-//	}
+	
+	@Test
+	public void getPriceUnitTestCase() {
+		db.resetDB("productTypes");
+		ProductType pt = new ProductTypeClass(1741, 20, "4-4-4", "test", "this is a test", "22345212", 3.22);
+		db.addProductType(pt);
+		assertNotEquals(0,db.getPricePerUnit("22345212"),0.01);
+		assertEquals(0,db.getPricePerUnit("22342212"),0.01);
+	}
+	
+	@Test
+	public void returnProductTestCase() {
+		db.resetDB("productReturns");
+		
+		assertTrue(db.returnProduct(12, 23, "22345212", 12, 14.50));
+	}
+	
+	@Test
+	public void getAmountOnEntryTestCase() {
+		db.resetDB("productTypes");
+		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);
+		assertTrue(db.createTicketEntry(te,170));
+		assertNotEquals(-1,db.getAmountonEntry(170, "22345212")+0);
+		assertEquals(-1,db.getAmountonEntry(171, "22345212")+0);
+			
+	}
+	
+	@Test
+	public void validateGetTotalOnEntry() {
+
+	}
+	
+	@Test
+	public void updateSaleTransactionAfterCommitTestCase() {
+		db.resetDB("saleTransactions");
+
+		String[] date = (new Date()).toString().split(" ");
+		List<TicketEntry> productList = new ArrayList<>();
+		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
+
+		assertEquals(170,db.startSaleTransaction(saleTransaction)+0);
+		assertTrue(db.updateSaleTransactionAfterCommit(170,12.50));
+	}
 //	
 //	@Test
 //	public void validateUpdateSaleTransactionAfterCommit() {

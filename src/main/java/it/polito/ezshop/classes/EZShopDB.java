@@ -1296,7 +1296,7 @@ public class EZShopDB {
             pstmt.setInt(1, transactionId);
             pstmt.setString(2, productCode);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.getInt("tot")==1)
+            if (rs.getInt("tot")>0)
             	exists = true;
 
         } catch (SQLException e) {
@@ -1305,7 +1305,7 @@ public class EZShopDB {
     	return exists;
     }
     
-    public void updateReturnTransaction(Integer returnId, Integer newAmount, Double newReturnValue) {
+    public boolean updateReturnTransaction(Integer returnId, Integer newAmount, Double newReturnValue) {
     	String sql = "UPDATE returnTransactions SET quantity=? , returnValue=? , state=? WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1316,10 +1316,13 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			return false;
 		}
+		
+		return true;
     }
     
-    public void updateSaleTransactionAfterCommit(Integer transactionId, Double newReturnValue) {
+    public boolean updateSaleTransactionAfterCommit(Integer transactionId, Double newReturnValue) {
     	String sql = "UPDATE saleTransactions SET price=? WHERE id=?";
     		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1328,7 +1331,10 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			return false;
     	}
+		
+		return true;
     }
     
     public void updateEntryAfterCommit(Integer transactionId, String productCode, int newAmountSold, double newTotalSold){
