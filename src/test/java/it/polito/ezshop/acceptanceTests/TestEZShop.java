@@ -1,6 +1,7 @@
 package it.polito.ezshop.acceptanceTests;
 
 import it.polito.ezshop.classes.*;
+import it.polito.ezshop.data.Customer;
 import it.polito.ezshop.data.Order;
 import it.polito.ezshop.data.ProductType;
 
@@ -41,7 +42,15 @@ public class TestEZShop {
 		getAllOrdersTestCase();
 
 /////////////////////////////////////// Francesco
-
+		getterAndSetterCustomerTestCase();		
+		
+		addAndDeleteCustomerTestCase();
+		modifyCustomerTestCase();
+		getCustomerByIdTestCase();
+		createCardTestCase();
+		attachCardToCustomerTestCase();
+		updateAndgetCardPointsTestCase();
+		
 /////////////////////////////////////// Marco C.
 		validateClosedSaleTransaction();
 		validateGetProductEntries();
@@ -359,7 +368,114 @@ public class TestEZShop {
 	}
 
 /////////////////////////////////////// Francesco
+	@Test
+	public void getterAndSetterCustomerTestCase() {
+		CustomerClass c = new CustomerClass(1,  "Carlo", "1423673214", 122);
+		assertNotNull(c);
+		
+		c.setId(5);
+		Integer id = c.getId();
+		assert(id == 5);
+		
+		c.setCustomerName("Alberto");
+		String customerName = c.getCustomerName();
+		assert(customerName == "Alberto");
+		
+		c.setCustomerCard("4562342134");
+		String customerCard = c.getCustomerCard();
+		assert(customerCard == "4562342134");
+		
+		c.setPoints(444);
+		Integer points = c.getPoints();
+		assert(points == 444);	
+		
+	}
+		
 
+	@Test
+	public void addAndDeleteCustomerTestCase() {
+		CustomerClass c = new CustomerClass(18,  "Stefano", "1478973214", 178);
+		assertTrue(db.defineCustomer(c));		
+		assertFalse(db.defineCustomer(c));
+		assertTrue(db.deleteCustomer(18));
+		//assertFalse(db.deleteCustomer(-1));	
+	}
+	
+	@Test
+	public void modifyCustomerTestCase() {
+		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
+		db.defineCustomer(c);
+		//assertFalse(db.updateCustomer(-1, "Giovanni", "1423373228"));		
+		assertTrue(db.updateCustomer(12, "Giovanni", "1423373228"));
+		db.deleteCustomer(12);	
+	}
+	
+	@Test
+	public void getCustomerByIdTestCase() {
+		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
+		db.defineCustomer(c);
+		
+		assertNotNull(db.getCustomerById(12));
+		assertNull(db.getCustomerById(-1));
+		db.deleteCustomer(12);
+	}
+	
+	@Test
+	public void getAllCustomerTestCase() {
+		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
+		
+		db.defineCustomer(c);
+		
+		List<Customer> clist = db.getAllCustomers();
+		assertNotNull(clist);
+		
+		clist.remove(c);
+		db.deleteCustomer(12);
+		
+		db.resetDB("customers");
+		
+		assertTrue(db.getAllCustomers().isEmpty());
+		
+		for(Customer c2 : clist) {
+			db.defineCustomer((CustomerClass) c2); //potrei dover cambiare parametro defineCustomer
+		}
+		db.resetDB("customers");
+	}
+	
+	@Test
+	public void createCardTestCase() {		
+		assertTrue(db.createCard("2400000000"));
+		assertFalse(db.createCard("2400000000"));
+		db.resetDB("cards");
+	}
+	
+	@Test
+	public void attachCardToCustomerTestCase() {
+		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
+		db.defineCustomer(c);
+		db.createCard("2000000000");
+		
+		
+		assertTrue(db.attachCardToCustomer("2000000000", 12));
+		db.deleteCustomer(12);
+		assertFalse(db.attachCardToCustomer("2000000000", 14));
+		//assertFalse(db.attachCardToCustomer("", -1));
+		
+	}
+	
+	@Test
+	public void updateAndgetCardPointsTestCase() {		
+		db.createCard("1234567890");		
+		db.updateCardPoints("1234567890", 122);
+		
+		
+		assertFalse(db.getCardPoints("1234567890") == 1022);
+		assertTrue(db.getCardPoints("1234567890") == 122);
+		
+		db.resetDB("cards");		
+	}	
+	
+	
 /////////////////////////////////////// Marco C.
 	@Test
 	public void validateClosedSaleTransaction() {

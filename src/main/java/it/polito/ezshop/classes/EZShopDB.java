@@ -945,20 +945,18 @@ public class EZShopDB {
 		return customerlist;
 	}
 
-	public boolean attachCardToCustomer(String customerCard, Integer customerId) {
-		boolean flag;
+	public boolean attachCardToCustomer(String customerCard, Integer customerId) {		
 		String sql = "UPDATE customers SET customerCard=? WHERE id=?; UPDATE cards SET assigned=1 WHERE id=? and assigned=0";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, customerCard);
 			pstmt.setInt(2, customerId);
-			pstmt.executeUpdate();
-			flag = true;
+			pstmt.executeUpdate();			
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			flag = false;
+			return false;
 		}
 		
-		return flag;
+		return true;
 	}
 
 	public Integer getCardPoints(String customerCard) {
@@ -977,19 +975,16 @@ public class EZShopDB {
 	}
 	
 	public boolean updateCardPoints(String customerCard, Integer points) {
-		boolean flag;
-
 		String sql = "UPDATE cards SET points=? WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, points);
-			pstmt.executeUpdate();
-			flag = true;
+			pstmt.setString(2, customerCard);
+			pstmt.executeUpdate();			
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			flag = false;
+			return false;
 		}
-
-		return flag;
+		return true;
 	}
 
 	public Integer startSaleTransaction(SaleTransactionClass saleTransaction) {
