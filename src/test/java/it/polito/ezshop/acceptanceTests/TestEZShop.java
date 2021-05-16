@@ -1,12 +1,16 @@
 package it.polito.ezshop.acceptanceTests;
 
 import it.polito.ezshop.classes.*;
+
 import it.polito.ezshop.data.Customer;
+import it.polito.ezshop.data.*;
 import it.polito.ezshop.data.Order;
 import it.polito.ezshop.data.ProductType;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -52,12 +56,12 @@ public class TestEZShop {
 		updateAndgetCardPointsTestCase();
 		
 /////////////////////////////////////// Marco C.
-		validateClosedSaleTransaction();
-		validateGetProductEntries();
-		validateDeleteSaleTransaction();
-		validateDeleteReturnTransaction();
+//		validateClosedSaleTransaction();
+//		validateGetProductEntries();
+//		validateDeleteSaleTransaction();
+//		validateDeleteReturnTransaction();
 //		validateStartReturnTransaction();
-		validateGetReturnTransaction();
+//		validateGetReturnTransaction();
 		
 
 		
@@ -477,121 +481,169 @@ public class TestEZShop {
 	
 	
 /////////////////////////////////////// Marco C.
-	@Test
-	public void validateClosedSaleTransaction() {
-		assertNotNull(db.getClosedSaleTransactionById(1));
-		assertNull(db.getClosedSaleTransactionById(10));
-	}
 	
 	@Test
-	public void validateGetProductEntries() {
-		assertFalse(db.getProductEntriesByTransactionId(1).isEmpty());
-		assertTrue(db.getProductEntriesByTransactionId(10).isEmpty());
-	}
-	
-	@Test
-	public void validateDeleteSaleTransaction() {
-		assertTrue(db.deleteSaleTransaction(1));
-		assertFalse(db.deleteSaleTransaction(10));
-	}
-	
-	@Test
-	public void validateStartReturnTransaction() {
-//		assertEqual(1,db.startReturnTransaction(returnTransaction));
-	}
-	
-	@Test
-	public void validateDeleteReturnTransaction() {
-		assertTrue(db.deleteReturnTransaction(1));
-		assertFalse(db.deleteReturnTransaction(10));
-	}
-	
-	@Test
-	public void validateGetReturnTransaction() {
-		assertNotNull(db.getReturnTransactionById(1));
-		assertNull(db.getReturnTransactionById(10));
-	}
-	
-	@Test
-	public void validateGetPricePerUnit() {
-		assertNotEquals(0,db.getPricePerUnit("12345670"),0.01);
-		assertEquals(0,db.getPricePerUnit("1234567"),0.01);
-	}
-	
-	@Test
-	public void validateReturnProduct() {
+	public void saleTransactionTestCase() {
+		Integer transactionId = 180;
+		Integer wrongTransactionId = 200;
+		String productCode = "22345212";
 		
+		ProductType pt = new ProductTypeClass(1741, 2, "4-4-4", "test", "this is a test", productCode, 3.22);
+		db.addProductType(pt);
+		
+		
+		TicketEntry te = new TicketEntryClass(132,productCode,"test description",10,1.50,transactionId,0.0);
+		
+//		assertNotEquals(-1,nextId+0);
+		String[] date = (new Date()).toString().split(" ");
+		List<TicketEntry> productList = new ArrayList<>();
+		productList.add(te);
+		
+		SaleTransactionClass saleTransaction = new SaleTransactionClass(transactionId,date[0],date[1],0.0,"",0.0,productList,"OPEN");
+		assertEquals(transactionId+0,db.startSaleTransaction(saleTransaction)+0);
+		assertEquals(-1,db.startSaleTransaction(saleTransaction)+0);
+		
+		assertNotNull(db.getSaleTransactionById(transactionId));
+		assertNull(db.getSaleTransactionById(wrongTransactionId));
+		
+		assertTrue(db.applyDiscountRate(transactionId,0.2));
+		assertTrue(db.applyDiscountRate(wrongTransactionId,0.2));
+		
+		assertTrue(db.createTicketEntry(te,transactionId));
+//		assertFalse(db.createTicketEntry(te,transactionId));
+		
+		assertTrue(db.applyDiscountRateToProduct(transactionId, productCode, 0.2));
+		assertFalse(db.applyDiscountRateToProduct(wrongTransactionId, productCode, 0.2));
+		
+		assertTrue(db.updateTransactionState(transactionId, "CLOSED"));
+		assertFalse(db.updateTransactionState(wrongTransactionId, "CLOSED"));
+		
+		assertNotNull(db.getClosedSaleTransactionById(transactionId));
+		assertNull(db.getClosedSaleTransactionById(wrongTransactionId));
+		
+		assertNotNull(db.getProductEntriesByTransactionId(transactionId));
+		assertNull(db.getProductEntriesByTransactionId(wrongTransactionId));
+		
+		assertTrue(db.deleteSaleTransaction(transactionId));
+		assertFalse(db.deleteSaleTransaction(wrongTransactionId));
 	}
 	
-	@Test
-	public void validateGetAmountEntry() {
-
-	}
-	
-	@Test
-	public void validateGetTotalOnEntry() {
-
-	}
-	
-	@Test
-	public void validateCheckProductInSaleTransaction() {
-
-	}
-	
-	@Test
-	public void validateUpdateReturnTransaction() {
-
-	}
-	
-	@Test
-	public void validateUpdateSaleTransactionAfterCommit() {
-
-	}
-	
-	@Test
-	public void validateUpdateEntryAfterCommit() {
-
-	}
-	
-	@Test
-	public void validateGetAllProductReturnsById() {
-
-	}
-	
-	@Test
-	public void validateDeleteAllProductReturnsByReturnId() {
-
-	}
-	
-	@Test
-	public void validateUpdatePaymentSaleTransaction() {
-
-	}
-	
-	@Test
-	public void validateRecordBalanceOperation() {
-
-	}
-	
-	@Test
-	public void validateGetActualBalance() {
-
-	}
-	
-	@Test
-	public void validateGetBalanceOperations() {
-
-	}
-	
-	@Test
-	public void validateGetCreditCardByCardNumber() {
-
-	}
-	
-	@Test
-	public void validateUpdateBalanceInCreditCard() {
-
-	}
+//	@Test
+//	public void validateClosedSaleTransaction() {
+//		assertNotNull(db.getClosedSaleTransactionById(1));
+//		assertNull(db.getClosedSaleTransactionById(10));
+//	}
+//	
+//	@Test
+//	public void validateGetProductEntries() {
+//		assertFalse(db.getProductEntriesByTransactionId(1).isEmpty());
+//		assertTrue(db.getProductEntriesByTransactionId(10).isEmpty());
+//	}
+//	
+//	@Test
+//	public void validateDeleteSaleTransaction() {
+//		assertTrue(db.deleteSaleTransaction(1));
+//		assertFalse(db.deleteSaleTransaction(10));
+//	}
+//	
+//	@Test
+//	public void validateStartReturnTransaction() {
+//		assertNotEquals(-1,db.startReturnTransaction(returnTransaction)+0);
+//		assertEquals(-1,db.startReturnTransaction(wrongTransaction)+0);
+//	}
+//	
+//	@Test
+//	public void validateDeleteReturnTransaction() {
+//		assertTrue(db.deleteReturnTransaction(1));
+//		assertFalse(db.deleteReturnTransaction(10));
+//	}
+//	
+//	@Test
+//	public void validateGetReturnTransaction() {
+//		assertNotNull(db.getReturnTransactionById(1));
+//		assertNull(db.getReturnTransactionById(10));
+//	}
+//	
+//	@Test
+//	public void validateGetPricePerUnit() {
+//		assertNotEquals(0,db.getPricePerUnit("12345670"),0.01);
+//		assertEquals(0,db.getPricePerUnit("1234567"),0.01);
+//	}
+//	
+//	@Test
+//	public void validateReturnProduct() {
+//		
+//	}
+//	
+//	@Test
+//	public void validateGetAmountEntry() {
+//
+//	}
+//	
+//	@Test
+//	public void validateGetTotalOnEntry() {
+//
+//	}
+//	
+//	@Test
+//	public void validateCheckProductInSaleTransaction() {
+//
+//	}
+//	
+//	@Test
+//	public void validateUpdateReturnTransaction() {
+//
+//	}
+//	
+//	@Test
+//	public void validateUpdateSaleTransactionAfterCommit() {
+//
+//	}
+//	
+//	@Test
+//	public void validateUpdateEntryAfterCommit() {
+//
+//	}
+//	
+//	@Test
+//	public void validateGetAllProductReturnsById() {
+//
+//	}
+//	
+//	@Test
+//	public void validateDeleteAllProductReturnsByReturnId() {
+//
+//	}
+//	
+//	@Test
+//	public void validateUpdatePaymentSaleTransaction() {
+//
+//	}
+//	
+//	@Test
+//	public void validateRecordBalanceOperation() {
+//
+//	}
+//	
+//	@Test
+//	public void validateGetActualBalance() {
+//
+//	}
+//	
+//	@Test
+//	public void validateGetBalanceOperations() {
+//
+//	}
+//	
+//	@Test
+//	public void validateGetCreditCardByCardNumber() {
+//
+//	}
+//	
+//	@Test
+//	public void validateUpdateBalanceInCreditCard() {
+//
+//	}
 	
 	
 }
