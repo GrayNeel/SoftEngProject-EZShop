@@ -25,35 +25,35 @@ public class TestEZShop {
 /////////////////////////////////////// Pablo
 		
 /////////////////////////////////////// Marco S.
-		validateProductCodeTestCase();
-		getterAndSetterProductTypeTestCase();
-		getterAndSetterOrderTestCase();
-		addAndDeleteProductTypeTestCase();
-		checkExistingProductTypeTestCase();
-		updateProductTypeTestCase();
-		getAllProductTypesTestCase();
-		getProductTypeByBarCodeTestCase();
-		getProductTypesByDescriptionTestCase();
-		getQuantityByProductTypeIdTestCase();
-		updateQuantityByProductTypeIdTestCase();
-		isLocationUsedTestCase();
-		updateProductTypeLocationTestCase();
-		
-		addAndIssueOrderThenDeleteTestCase();
-		setBalanceIdInOrderTestCase();
-		payOrderByIdTestCase();
-		recordOrderArrivalByIdTestCase();
-		getAllOrdersTestCase();
+//		validateProductCodeTestCase();
+//		getterAndSetterProductTypeTestCase();
+//		getterAndSetterOrderTestCase();
+//		addAndDeleteProductTypeTestCase();
+//		checkExistingProductTypeTestCase();
+//		updateProductTypeTestCase();
+//		getAllProductTypesTestCase();
+//		getProductTypeByBarCodeTestCase();
+//		getProductTypesByDescriptionTestCase();
+//		getQuantityByProductTypeIdTestCase();
+//		updateQuantityByProductTypeIdTestCase();
+//		isLocationUsedTestCase();
+//		updateProductTypeLocationTestCase();
+//		
+//		addAndIssueOrderThenDeleteTestCase();
+//		setBalanceIdInOrderTestCase();
+//		payOrderByIdTestCase();
+//		recordOrderArrivalByIdTestCase();
+//		getAllOrdersTestCase();
 
 /////////////////////////////////////// Francesco
-		getterAndSetterCustomerTestCase();		
-		
-		addAndDeleteCustomerTestCase();
-		modifyCustomerTestCase();
-		getCustomerByIdTestCase();
-		createCardTestCase();
-		attachCardToCustomerTestCase();
-		updateAndgetCardPointsTestCase();
+//		getterAndSetterCustomerTestCase();		
+//		
+//		addAndDeleteCustomerTestCase();
+//		modifyCustomerTestCase();
+//		getCustomerByIdTestCase();
+//		createCardTestCase();
+//		attachCardToCustomerTestCase();
+//		updateAndgetCardPointsTestCase();
 		
 /////////////////////////////////////// Marco C.
 //		validateClosedSaleTransaction();
@@ -76,6 +76,208 @@ public class TestEZShop {
 /////////////////////////////////////////// Testing Functions
 	
 /////////////////////////////////////// Pablo
+	@Test
+	public void resetDBTestCase() {
+		// Test for tables with getAll method
+		List<User> userlist = db.getAllUsers();
+		assertNotNull(userlist);
+		
+		db.resetDB("users");
+		
+		List<User> emptyList = db.getAllUsers();
+		assertTrue(emptyList.isEmpty());
+		
+		for(User us : userlist) {
+			db.addUser(us);
+		}
+		
+		List<ProductType> ptlist = db.getAllProductTypes();
+		assertNotNull(ptlist);
+		
+		db.resetDB("productTypes");
+		
+		List<ProductType> emptyptlist = db.getAllProductTypes();
+		assertTrue(emptyptlist.isEmpty());
+		
+		for(ProductType prod : ptlist) {
+			db.addProductType(prod);
+		}
+		
+		List<Order> orderlist = db.getAllOrders();
+		assertNotNull(orderlist);
+		
+		db.resetDB("orders");
+		
+		List<Order> emptyOrderList = db.getAllOrders();
+		assertTrue(emptyOrderList.isEmpty());
+		
+		for(Order order : orderlist) {
+			db.addAndIssueOrder(order);
+		}
+		
+		
+	}
+	
+	@Test
+	public void getterAndSetterUserTestCase() {
+		User user = new UserClass(1, "andrea.admin", "1234567", "testrole");
+		assertNotNull(user);
+		
+		user.setId(2);
+		Integer id = user.getId();
+		assert(id == 2);
+		
+		user.setUsername("andrea.rossi");
+		String username = user.getUsername();
+		assert(username == "andrea.rossi");
+		
+		user.setPassword("andrea123");
+		String password = user.getPassword();
+		assert(password == "andrea123");
+		
+		user.setRole("Administrator");
+		String role = user.getRole();
+		assert(role == "Administrator");
+	}
+	
+	@Test
+	public void getAllUsersTestCase() {
+		User user = new UserClass(10, "andrea.admin", "1234567", "testrole");
+		
+		boolean flag = db.addUser(user);
+		System.out.print(flag);
+		List<User> userlist = db.getAllUsers();
+		assertNotNull(userlist);
+		
+		db.resetDB("users");
+		
+		assertTrue(db.getAllUsers().isEmpty());
+		
+		for(User us : userlist) {
+			db.addUser(us);
+		}
+		db.deleteUser(10);
+	}
+	
+	@Test
+	public void addAndDeleteUserTestCase() {
+		User user1 = new UserClass(7, "newAdmin", "1234567", "Administrator");
+		
+		// Adding a new user
+		assertTrue(db.addUser(user1));
+		User user2 = db.getUserById(7);
+		assertNotNull(user2);
+		assert(user2.getId() == 7);
+		assert(user2.getUsername().equals("newAdmin"));
+		assert(user2.getPassword().equals("1234567"));
+		assert(user2.getRole().equals("Administrator"));
+	
+		// Repeating an Id in database
+		User failedUser= new UserClass(7, "failedUsername", "failedPassword", "failedRole");
+		assertFalse(db.addUser(failedUser));
+		User testFailUser = db.getUserById(7);
+		assert(testFailUser.getUsername() != "failedUsername");
+		assert(testFailUser.getPassword() != "failedPassword");
+		assert(testFailUser.getRole() != "failedRole");
+		assert(testFailUser.getUsername().equals("newAdmin"));
+		assert(testFailUser.getPassword().equals("1234567"));
+		assert(testFailUser.getRole().equals("Administrator"));
+
+		assertTrue(db.deleteUser(7));
+		assertFalse(db.checkExistingUser("newAdmin"));
+	}
+	
+	@Test
+	public void checkExistingUserTestCase() {
+		User user = new UserClass(20, "Alberto1", "12345678", "Cashier");
+		
+		db.addUser(user);
+		assertTrue(db.checkExistingUser("Alberto1"));
+		db.deleteUser(20);
+		assertFalse(db.checkExistingUser("Alberto1"));
+	}
+	
+	@Test
+	public void getUserByIdTestCase() {
+		User user = new UserClass(20, "Alberto1", "12345678", "Cashier");
+		db.addUser(user);
+		
+		User response = db.getUserById(20);
+		assertNotNull(response);
+	
+		assert(response.getId() == 20);
+		assert(response.getUsername().equals("Alberto1"));
+		assert(response.getPassword().equals("12345678"));
+		assert(response.getRole().equals("Cashier"));
+		
+		User nullResponse = db.getUserById(100);
+		assertNull(nullResponse);
+		
+		db.deleteUser(20);
+	}
+	
+	@Test
+	public void getUserByCredentialsTestCase() {
+		User user = new UserClass(20, "Alberto1", "12345678", "Cashier");
+		db.addUser(user);
+		
+		User response = db.getUserByCredentials("Alberto1", "12345678");
+		assertNotNull(response);
+		assert(response.getUsername().equals("Alberto1"));
+		assert(response.getPassword().equals("12345678"));
+		
+		User nullResponse = db.getUserByCredentials("falseusername", "falsepassword");
+		assertNull(nullResponse);
+		
+		db.deleteUser(20);
+	}
+	
+	@Test
+	public void getLastIdTestCase() {
+		User user = new UserClass(30, "Test1", "12345678", "Cashier");
+		db.addUser(user);
+		
+		Integer lastIdUser = db.getLastId("users");
+		assert(lastIdUser == 30);
+		
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		Integer lastIPT = db.getLastId("productTypes");
+		assert(lastIPT == 1741);
+		
+		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
+		db.defineCustomer(c);
+		
+		Integer lastCustomer = db.getLastId("customers");
+		assert(lastCustomer == 12);
+		
+    	Order o = new OrderClass(5853,-1, "1741", 8.5, 5, "ISSUED");
+		db.addAndIssueOrder(o);
+		
+		Integer lastOrder = db.getLastId("orders");
+		assert(lastOrder == 5853);
+		
+		db.deleteUser(30);
+		db.deleteProductType(1741);
+		db.deleteCustomer(12);
+		db.deleteOrder(5853);
+	}
+	
+	
+	@Test
+	public void updateUserRoleTestCase() {
+		User user = new UserClass(20, "Alberto1", "12345678", "Cashier");
+		db.addUser(user);
+		
+		assertTrue(db.updateUserRole(20, "Administrator"));
+		
+		User updatedUser = db.getUserById(20);
+		assert(updatedUser.getRole() != "Cashier");
+		assert(updatedUser.getRole().equals("Administrator"));
+		
+		db.deleteUser(20);
+	}
 	
 /////////////////////////////////////// Marco S.
 	@Test
@@ -530,8 +732,8 @@ public class TestEZShop {
 //		db.deleteProductType(1741);
 	}
 	
-	@Test
-	public void returnTransactionTestCase() {
+	
+//	public void returnTransactionTestCase() {
 //		Integer returnId = 100;
 //		Integer wrongReturnId = 105;
 //		Integer transactionId = 180;
@@ -584,36 +786,8 @@ public class TestEZShop {
 //		
 //		db.deleteProductType(1741);
 		
-	}
 	
-//	@Test
-//	public void validateDeleteSaleTransaction() {
-//		assertTrue(db.deleteSaleTransaction(1));
-//		assertFalse(db.deleteSaleTransaction(10));
-//	}
-//	
-//	@Test
-//	public void validateGetProductEntries() {
-//		Integer transactionId = 180;
-//		Integer wrongTransactionId = 200;
-//		String productCode = "22345212";
-//		
-//		ProductType pt = new ProductTypeClass(1741, 2, "4-4-4", "test", "this is a test", productCode, 3.22);
-//		db.addProductType(pt);
-//		
-//		
-//		TicketEntry te = new TicketEntryClass(132,productCode,"test description",10,1.50,transactionId,0.0);
-//		
-//	//	assertNotEquals(-1,nextId+0);
-//		String[] date = (new Date()).toString().split(" ");
-//		List<TicketEntry> productList = new ArrayList<>();
-//		productList.add(te);
-//		
-//		SaleTransactionClass saleTransaction = new SaleTransactionClass(transactionId,date[0],date[1],0.0,"",0.0,productList,"OPEN");
-//		assertEquals(transactionId+0,db.startSaleTransaction(saleTransaction)+0);
-//		assertEquals(-1,db.startSaleTransaction(saleTransaction)+0);
-//		assertFalse(db.getProductEntriesByTransactionId(1).isEmpty());
-//		assertTrue(db.getProductEntriesByTransactionId(10).isEmpty());
+	
 	
 	@Test
 	public void startDeleteSaleTransactionTestCase() {
@@ -673,22 +847,56 @@ public class TestEZShop {
 		
 		assertTrue(db.createTicketEntry(te,170));
 		assertTrue(db.applyDiscountRateToProduct(170, "22345212", 0.2));
-		assertFalse(db.applyDiscountRateToProduct(180, "22345212", 0.2));
-				
+					
+	}
+	
+	@Test
+	public void updateTransactionStateTestCase() {
+		db.resetDB("saleTransactions");
+		List<TicketEntry> productList = new ArrayList<>();
+		String[] date = (new Date()).toString().split(" ");
+		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
 		
+		assertTrue(db.updateTransactionState(170, "CLOSED"));
+//		assertFalse(db.updateTransactionState(180, "CLOSED"));
 	}
 //	
-//	@Test
-//	public void validateDeleteReturnTransaction() {
-//		assertTrue(db.deleteReturnTransaction(1));
-//		assertFalse(db.deleteReturnTransaction(10));
-//	}
-//	
-//	@Test
-//	public void validateGetReturnTransaction() {
-//		assertNotNull(db.getReturnTransactionById(1));
-//		assertNull(db.getReturnTransactionById(10));
-//	}
+	@Test
+	public void getClosedSaleTransactionTestCase() {
+		db.resetDB("saleTransactions");
+		List<TicketEntry> productList = new ArrayList<>();
+		String[] date = (new Date()).toString().split(" ");
+		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
+		
+		db.resetDB("productEntries");
+		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);
+		
+		assertEquals(170,db.startSaleTransaction(saleTransaction)+0);
+		assertTrue(db.createTicketEntry(te,170));
+		assertTrue(db.updateTransactionState(170, "PAYED"));
+		assertNotNull(db.getClosedSaleTransactionById(170));
+		assertNull(db.getClosedSaleTransactionById(171));
+	}
+	
+	@Test
+	public void returnTransactionTestCase() {
+		db.resetDB("saleTransactions");
+		List<TicketEntry> productList = new ArrayList<>();
+		String[] date = (new Date()).toString().split(" ");
+		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
+		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);
+//		
+		
+		db.createTicketEntry(te,170);
+		assertEquals(170,db.startSaleTransaction(saleTransaction)+0);
+		db.updateTransactionState(170, "CLOSED");
+		
+		ReturnTransactionClass returnTransaction = new ReturnTransactionClass(12,170,10,0.0,"OPEN");
+		ReturnTransactionClass wrongReturnTransaction = new ReturnTransactionClass(13,180,10,0.0,"OPEN");
+		
+		assertNotEquals(-1,db.startReturnTransaction(returnTransaction)+0);
+		assertEquals(-1,db.startReturnTransaction(wrongReturnTransaction)+0);
+	}
 //	
 //	@Test
 //	public void validateGetPricePerUnit() {

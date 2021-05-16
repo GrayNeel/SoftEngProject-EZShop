@@ -89,9 +89,9 @@ public class EZShopDB {
 	 * 
 	 * @param user the UserClass containing parameters to add
 	 */
-	public void addUser(User user) {
+	public boolean addUser(User user) {
 		String sql = "INSERT INTO users(id,username,password,role) VALUES(?,?,?,?)";
-
+		boolean success = false;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, user.getId());
 			pstmt.setString(2, user.getUsername());
@@ -99,9 +99,12 @@ public class EZShopDB {
 			pstmt.setString(4, user.getRole());
 
 			pstmt.executeUpdate();
+			success = true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			success = false;
 		}
+		return success;
 	}
 
 	/**
@@ -129,16 +132,15 @@ public class EZShopDB {
 
 	public boolean deleteUser(Integer id) {
 		String sql = "DELETE FROM users WHERE id=?";
+		boolean success = false;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
+			success = true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
-												// nulla
-			return false;
 		}
-
-		return true;
+		return success;
 	}
 
 	public List<User> getAllUsers() {
@@ -1124,7 +1126,7 @@ public class EZShopDB {
 
     public SaleTransaction getClosedSaleTransactionById(Integer transactionId) {
         String sql = "SELECT id,discountRate,date,time,price,paymentType,state FROM saleTransactions "
-                + "WHERE state == 'PAYED' AND id=?";
+                + "WHERE state = 'PAYED' AND id=?";
         List<TicketEntry> products = getProductEntriesByTransactionId(transactionId);
         SaleTransaction saletransaction = null;
 
@@ -1144,8 +1146,7 @@ public class EZShopDB {
     
     public List<TicketEntry> getProductEntriesByTransactionId(Integer transactionId) {
     	String sql = "SELECT productEntries.id AS id,productEntries.productCode as productCode,productTypes.productDescription AS productDescription,productEntries.amount AS amount,productTypes.pricePerUnit AS pricePerUnit"
-                + " FROM productTypes JOIN productEntries ON productTypes.barCode=productEntries.productCode"
-                + " WHERE productEntries.transactionId=?";
+                + " FROM productTypes JOIN productEntries ON productTypes.barCode=productEntries.productCode WHERE productEntries.transactionId = ?";
         List<TicketEntry> productslist = new ArrayList<>();
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1159,8 +1160,7 @@ public class EZShopDB {
                 Integer amount = rs.getInt("amount");
                 double pricePerUnit = rs.getDouble("pricePerUnit");
 
-                TicketEntry productEntry = new TicketEntryClass(id, productCode, productDescription, amount,
-                        pricePerUnit, transactionId, 0.0);
+                TicketEntry productEntry = new TicketEntryClass(id, productCode, productDescription, amount, pricePerUnit, transactionId, 0.0);
                 productslist.add(productEntry);
             }
         } catch (SQLException e) {
