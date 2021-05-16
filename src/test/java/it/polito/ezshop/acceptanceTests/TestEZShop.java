@@ -526,13 +526,66 @@ public class TestEZShop {
 		
 		assertTrue(db.deleteSaleTransaction(transactionId));
 		assertFalse(db.deleteSaleTransaction(wrongTransactionId));
+		
+		db.deleteProductType(1741);
 	}
 	
-//	@Test
-//	public void validateClosedSaleTransaction() {
-//		assertNotNull(db.getClosedSaleTransactionById(1));
-//		assertNull(db.getClosedSaleTransactionById(10));
-//	}
+	@Test
+	public void returnTransactionTestCase() {
+		Integer returnId = 100;
+		Integer wrongReturnId = 105;
+		Integer transactionId = 180;
+		Integer wrongTransactionId = 200;
+		String productCode = "22345212";
+		String wrongProductCode = "24345212";
+		
+		ProductType pt = new ProductTypeClass(1741, 20, "4-4-4", "test", "this is a test", productCode, 3.22);
+		db.addProductType(pt);
+		
+		
+		TicketEntry te = new TicketEntryClass(132,productCode,"test description",10,1.50,transactionId,0.0);
+		
+//		assertNotEquals(-1,nextId+0);
+		String[] date = (new Date()).toString().split(" ");
+		List<TicketEntry> productList = new ArrayList<>();
+		productList.add(te);
+		
+		SaleTransactionClass saleTransaction = new SaleTransactionClass(transactionId,date[0],date[1],0.0,"",0.0,productList,"OPEN");
+		db.startSaleTransaction(saleTransaction);
+		db.createTicketEntry(te,transactionId);
+		db.updateTransactionState(transactionId, "CLOSED");
+		
+		ReturnTransactionClass returnTransaction = new ReturnTransactionClass(returnId,transactionId,10,0.0,"OPEN");
+		ReturnTransactionClass wrongReturnTransaction = new ReturnTransactionClass(wrongReturnId,wrongTransactionId,10,0.0,"OPEN");
+		
+		assertNotEquals(-1,db.startReturnTransaction(returnTransaction)+0);
+		assertEquals(-1,db.startReturnTransaction(wrongReturnTransaction)+0);
+		
+		assertNotNull(db.getReturnTransactionById(returnId));
+		assertNull(db.getReturnTransactionById(wrongReturnId));
+		
+		assertEquals(3.22,db.getPricePerUnit(productCode),0.01);
+		assertEquals(0,db.getPricePerUnit(wrongProductCode),0.01);
+		
+		assertEquals(20,db.getAmountonEntry(transactionId, productCode)+0);
+		assertEquals(-1,db.getAmountonEntry(wrongTransactionId, productCode)+0);
+		
+		assertEquals(15.0,db.getTotalOnEntry(transactionId, productCode),0.01);
+		assertEquals(0.0,db.getTotalOnEntry(wrongTransactionId, productCode),0.01);
+		
+		assertTrue(db.returnProduct(150, returnId, productCode, 10, 32.20));
+		assertFalse(db.returnProduct(150, returnId, productCode, 10, 32.20));
+		
+		assertTrue(db.deleteSaleTransaction(transactionId));
+		assertFalse(db.deleteSaleTransaction(wrongTransactionId));
+		
+		assertTrue(db.deleteReturnTransaction(returnId));
+		assertFalse(db.deleteReturnTransaction(wrongReturnId));
+		
+		db.deleteProductType(1741);
+		
+		
+	}
 //	
 //	@Test
 //	public void validateGetProductEntries() {
