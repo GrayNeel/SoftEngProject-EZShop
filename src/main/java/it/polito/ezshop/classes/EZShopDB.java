@@ -89,9 +89,9 @@ public class EZShopDB {
 	 * 
 	 * @param user the UserClass containing parameters to add
 	 */
-	public void addUser(User user) {
+	public boolean addUser(User user) {
 		String sql = "INSERT INTO users(id,username,password,role) VALUES(?,?,?,?)";
-
+		boolean success = false;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, user.getId());
 			pstmt.setString(2, user.getUsername());
@@ -99,9 +99,12 @@ public class EZShopDB {
 			pstmt.setString(4, user.getRole());
 
 			pstmt.executeUpdate();
+			success = true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			success = false;
 		}
+		return success;
 	}
 
 	/**
@@ -129,16 +132,15 @@ public class EZShopDB {
 
 	public boolean deleteUser(Integer id) {
 		String sql = "DELETE FROM users WHERE id=?";
+		boolean success = false;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
+			success = true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
-												// nulla
-			return false;
 		}
-
-		return true;
+		return success;
 	}
 
 	public List<User> getAllUsers() {
