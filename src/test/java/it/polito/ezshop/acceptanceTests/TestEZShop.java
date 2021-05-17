@@ -951,6 +951,17 @@ public class TestEZShop {
 		assertEquals(170,db.startSaleTransaction(saleTransaction)+0);
 		assertTrue(db.updateSaleTransactionAfterCommit(170,12.50));
 	}
+	
+	@Test
+	public void updateEntryAfterCommitTestCase() {
+		db.resetDB("productEntries");
+		
+		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);
+		assertTrue(db.createTicketEntry(te,170));
+		
+		assertTrue(db.updateEntryAfterCommit(170, "22345212", 10, 17.50));
+	}
+	
 //	
 //	@Test
 //	public void validateUpdateSaleTransactionAfterCommit() {

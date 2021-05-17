@@ -1337,18 +1337,21 @@ public class EZShopDB {
 		return true;
     }
     
-    public void updateEntryAfterCommit(Integer transactionId, String productCode, int newAmountSold, double newTotalSold){
+    public boolean updateEntryAfterCommit(Integer transactionId, String productCode, int newAmountSold, double newTotalSold){
     	String sql = "UPDATE productEntries SET amount=?, total=? WHERE transactionId=? AND productCode=?";
-		
+		boolean flag = false;
+    	
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, newAmountSold);
 			pstmt.setDouble(2, newTotalSold);
 			pstmt.setInt(3, transactionId);
 			pstmt.setString(4, productCode);
 			pstmt.executeUpdate();
+			flag = true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
     	}
+		return flag;
     }
     
     public List<ProductReturnClass> getAllProductReturnsById(Integer returnId) {
