@@ -26,6 +26,275 @@ Version: 01
     to start tests
     >
 
+ ### **Class *EZShopDB* - method *resetDB***
+
+**Criteria for method *name*:**
+
+ - The given table name is contained in database
+
+**Predicates for method *name*:**
+
+| Criteria                                | Predicate |
+| --------------------------------------- | --------- |
+| The given table name is contained in database | Yes       |
+|                                         | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+**Combination of predicates**:
+
+
+| The given table name is contained in database  | Valid / Invalid | Description of the test case | JUnit test case                    |
+| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
+| Yes                                     | Valid           | T1("users") -> true  | resetDBTestCase() |
+| Yes                                      | Valid         | T2("productTypes") -> true        | ''                                 |
+| Yes                                      | Valid         | T3("orders") -> true        | ''                                 |
+| No                                      | Invalid         | T4("nonexistingtable") -> false        | ''                                 |
+
+ ### **Class *EZShopDB* - method *getAllUsers***
+
+**Criteria for method *name*:**
+
+ - There are Users in the database
+
+**Predicates for method *name*:**
+
+| Criteria                                | Predicate |
+| --------------------------------------- | --------- |
+| There are Users in the database| Yes       |
+|                                         | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+**Combination of predicates**:
+
+
+| There are Users in the database  | Valid / Invalid | Description of the test case | JUnit test case                    |
+| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
+| Yes                                     | Valid           | T1() -> true  | getAllUsersTestCase() |
+| No                                      | Invalid         | T2() -> false        | ''                                 |
+
+### **Class *EZShopDB* - method *addUser***
+
+**Criteria for method *name*:**
+
+ - Validity of object User
+ - User with unique id in database
+
+**Predicates for method *name*:**
+
+| Criteria                                | Predicate |
+| --------------------------------------- | --------- |
+| Validity of object User| Yes       |
+|                                         | No        |
+| User with unique id in database| Yes       |
+|                                         | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+**Combination of predicates**:
+
+
+| Validity of object User  | User with unique id in database| Valid / Invalid | Description of the test case | JUnit test case                    |
+| --------------------------------------- | ------------- | --------------- | -------------------------------- | ---------------------------------- |
+| Yes                                     | Yes | Valid           | T1(validUser) -> true  | addAndDeleteUserTestCase() |
+| No                                      | *|Invalid         | T2(nullUser) -> false        | ''                                 |
+| Yes                                     | Yes|Valid           | T3(validUserWithID7) -> true  | addAndDeleteUserTestCase() |
+| Yes                                      | No |Invalid         | T4(validUserWithID7) -> false        | ''                                 |
+
+### **Class *EZShopDB* - method *deleteUser***
+
+**Criteria for method *name*:**
+
+ - The given ID is in the database
+
+**Predicates for method *name*:**
+
+| Criteria                                | Predicate |
+| --------------------------------------- | --------- |
+| The given ID is in the database | Yes       |
+|                                         | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+**Combination of predicates**:
+
+| The given ID is in the database  | Valid / Invalid | Description of the test case | JUnit test case                    |
+| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
+| Yes                                     | Valid           | T1(Existing ID in database) -> true  | addAndDeleteUserTestCase() |
+| No                                      | Invalid         | T2(Non-existing ID in database) -> false        | ''                                 |
+
+### **Class *EZShopDB* - method *checkExistingUser***
+
+**Criteria for method *name*:**
+
+ - The given username is in database
+
+**Predicates for method *name*:**
+
+| Criteria                                | Predicate |
+| --------------------------------------- | --------- |
+| The given username is in database | Yes       |
+|                                         | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+**Combination of predicates**:
+
+
+| The given username is in database  | Valid / Invalid | Description of the test case | JUnit test case                    |
+| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
+| Yes                                     | Valid           | T1(Existing username in database) -> true  | checkExistingUserTestCase() |
+| No                                      | Invalid         | T2(Non-existing username in database) -> false        | ''                                 |
+
+### **Class *EZShopDB* - method *getUserById***
+
+**Criteria for method *name*:**
+
+ - The given ID is in database
+
+**Predicates for method *name*:**
+
+| Criteria                                | Predicate |
+| --------------------------------------- | --------- |
+| The given ID is in database | Yes       |
+|                                         | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+**Combination of predicates**:
+
+
+| The given ID is in database  | Valid / Invalid | Description of the test case | JUnit test case                    |
+| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
+| Yes                                     | Valid           | T1(Existing ID in database) -> true  | getUserByIdTestCase() |
+| No                                      | Invalid         | T2(Non-existing ID in database) -> false        | ''                                 |
+
+### **Class *EZShopDB* - method *getUserByCredentials***
+
+**Criteria for method *name*:**
+
+ - The given username is in database
+ - The given password is in database
+ - The pair of username and password matches the database
+
+**Predicates for method *name*:**
+
+| Criteria                                | Predicate |
+| --------------------------------------- | --------- |
+| The given username is in database | Yes       |
+|                                         | No        |
+| The given password is in database | Yes       |
+|                                         | No        |
+| The pair of username and password matches the database | Yes       |
+|                                         | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+**Combination of predicates**:
+
+
+| The given username is in database  | The given password is in database | The pair of username and password matches the database | Valid / Invalid | Description of the test case | JUnit test case                    |
+| --------------------------------------- | ------- | ------- |--------------- | -------------------------------- | ---------------------------------- |
+| Yes                                 | Yes | Yes | Valid           | T1(Existing credentials in database match) -> true  | getUserByCredentialsTestCase() |
+| No                                      | Yes |  No | Invalid         | T2(Non-existing match in database ) -> false        | ''                                 |
+| Yes                                     |  No |  No| Invalid           | T3(Non-existing match in database ) -> false  | '' |
+| No                                      | No | No| Invalid         | T4(Non-existing match in database ) -> false        | ''                                 |
+
+### **Class *EZShopDB* - method *getLastId***
+
+**Criteria for method *name*:**
+
+ - The ID obtained is equal to the last ID added to database
+
+**Predicates for method *name*:**
+
+| Criteria                                | Predicate |
+| --------------------------------------- | --------- |
+| The ID obtained is equal to the last ID added to database | Yes       |
+|                                         | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+**Combination of predicates**:
+
+
+| The ID obtained is equal to the last ID added to database  | Valid / Invalid | Description of the test case | JUnit test case                    |
+| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
+| Yes                                     | Valid           | T1(Last ID in database users) -> true  | getLastIdTestCase() |
+| No                                      | Invalid         | T2(Non-existing ID in database users) -> false        | ''                                 |
+| Yes                                     | Valid           | T3(Last ID in productType) -> true  | '' |
+| No                                      | Invalid         | T4(Non-existing ID in database productType) -> false        | ''                                 |
+| Yes                                     | Valid           | T5(Last ID in database customers) -> true  | '' |
+| No                                      | Invalid         | T6(Non-existing ID in database customers) -> false        | ''                                 |
+| Yes                                     | Valid           | T7(Last ID in database orders) -> true  | '' |
+| No                                      | Invalid         | T8(Non-existing ID in database orders) -> false        | ''                                 |
+
+### **Class *EZShopDB* - method *updateUserRole***
+
+**Criteria for method *name*:**
+
+ - The given ID is in database
+ - The user role updates
+
+**Predicates for method *name*:**
+
+| Criteria                                | Predicate |
+| --------------------------------------- | --------- |
+| The given ID is in database | Yes       |
+|                                         | No        |
+| The user role updates | Yes       |
+|                                         | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+**Combination of predicates**:
+
+
+| The given ID is in database | The user role updates | Valid / Invalid | Description of the test case | JUnit test case                    |
+| --------------------------------------- | ------ | --------------- | -------------------------------- | ---------------------------------- |
+| Yes                                    | Yes | Valid           | T1(Last ID in database users) -> true. T2(User role is equal to updated role) -> true  | getLastIdTestCase() |
+| No                                     | *| Invalid         | T3(Non-existing ID in database users) -> false        | ''                                 |
+
+
+
+
  ### **Class *ProductTypeClass* - method *validateProductCode***
 
 **Criteria for method *name*:**
