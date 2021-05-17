@@ -637,39 +637,6 @@ public class EZShopDB {
 		return true;
 	}
 
-	// It is totally wrong
-//	public boolean issueAndPayOrder(OrderClass order) {
-//		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE orderId=?";
-//
-//		// CHECK IF Order ALREADY EXISTS
-//		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-//			pstmt.setInt(1, order.getOrderId());
-//			ResultSet rs = pstmt.executeQuery();
-//
-//			if (rs.getInt("tot") > 0)
-//				return false;
-//
-//		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
-//		}
-//
-//		sql = "INSERT INTO orders(balanceId,productCode,pricePerUnit,quantity,status,orderId) VALUES(?,?,?,?,?,?)";
-//
-//		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-//			pstmt.setInt(1, order.getBalanceId());
-//			pstmt.setString(2, order.getProductCode());
-//			pstmt.setDouble(3, order.getPricePerUnit());
-//			pstmt.setInt(4, order.getQuantity());
-//			pstmt.setString(5, order.getStatus());
-//			pstmt.setInt(6, order.getOrderId());
-//
-//			pstmt.executeUpdate();
-//		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
-//			return false;
-//		}
-//		return true;
-//	}
 
 	public Order getOrderById(Integer orderId) {
 		String sql = "SELECT * FROM orders WHERE id=?";
@@ -951,6 +918,22 @@ public class EZShopDB {
 	}
 
 	public boolean attachCardToCustomer(String customerCard, Integer customerId) {		
+		//Check if user is related
+		String sql0 = "SELECT COUNT(*) AS n FROM customers WHERE id=?";		
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql0)) {
+			pstmt.setInt(1, customerId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("n") == 0)
+				return false;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}		
+		
+		
 		String sql = "UPDATE customers SET customerCard=? WHERE id=?; UPDATE cards SET assigned=1 WHERE id=? and assigned=0";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, customerCard);
