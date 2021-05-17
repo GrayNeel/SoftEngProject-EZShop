@@ -284,6 +284,26 @@ public class TestEZShop {
 	
 /////////////////////////////////////// Marco S.
 	@Test
+	public void loopCoverageTestCase() {
+		db.resetDB("productTypes");
+		ProductType pt1 = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		ProductType pt2 = new ProductTypeClass(1742, 3, "location", "test", "this is a test", "223434232", 3.22);
+		
+		List<ProductType> ptlist = db.getAllProductTypes();
+		assert(ptlist.size() == 0);
+		
+		db.addProductType(pt1);
+		ptlist = db.getAllProductTypes();
+		assert(ptlist.size() == 1);
+
+		db.addProductType(pt2);
+		ptlist = db.getAllProductTypes();
+		assert(ptlist.size() == 2);
+
+		db.resetDB("productTypes");
+	}
+	
+	@Test
 	public void getterAndSetterProductTypeTestCase() {
 		ProductType pt = new ProductTypeClass(1, 0, "location", "test", "this is a test", "2222222", 3.22);
 		assertNotNull(pt);
@@ -435,10 +455,10 @@ public class TestEZShop {
 	
 	@Test
 	public void getProductTypesByDescriptionTestCase() {
-		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "nice", "22345212", 3.22);
+		ProductType pt = new ProductTypeClass(17441, 23, "locationthis", "test", "nice", "223452212", 3.22);
 		db.addProductType(pt);
 		
-		ProductType pt2 = new ProductTypeClass(1742, 2, "locational", "test", "nicest", "22345212", 3.22);
+		ProductType pt2 = new ProductTypeClass(17442, 3, "locationals", "test2", "nicest", "223345214", 4.22);
 		db.addProductType(pt2);
 		
 		//NOT WORKING:
@@ -456,7 +476,34 @@ public class TestEZShop {
 	}
 	
 	@Test
+	public void getQuantityByBarCodeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "nice", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		assert(db.getQuantityByProductTypeBarCode("22345212") == 2);
+		assertNull(db.getQuantityByProductTypeBarCode(null));
+		
+		db.deleteProductType(1741);
+	}
+	
+	@Test
+	public void updateQuantityByBarCodeTestCase() {
+		db.resetDB("productTypes");
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "nice", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		assertTrue(db.updateQuantityByBarCode("22345212", 5));
+		
+		assert(db.getQuantityByProductTypeBarCode("22345212") == 5);
+		
+		assertFalse(db.updateQuantityByBarCode(null, -1));
+		
+		db.deleteProductType(1741);
+	}
+	
+	@Test
 	public void getQuantityByProductTypeIdTestCase() {
+		db.resetDB("productTypes");
 		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
 		db.addProductType(pt);
 		
@@ -468,6 +515,7 @@ public class TestEZShop {
 	
 	@Test
 	public void updateQuantityByProductTypeIdTestCase() {
+		db.resetDB("productTypes");
 		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
 		db.addProductType(pt);
 		
@@ -1229,68 +1277,22 @@ public class TestEZShop {
 		assertNotNull(db.getBalanceOperations(date.toString(),date.toString()));
 	}
 	
-//	@Test
-//	public void getCreditCardTestCase() {
-//		db.resetDB("creditCards");
-//		
-//		CreditCardClass card = new CreditCardClass("18287481",180.0);
-//		
-//		assertNull(db.getBalanceOperations(date.toString(),date.toString()));
-//		
-//		assertTrue(db.recordBalanceOperation(balance));
-//		
-//		assertNotNull(db.getBalanceOperations(date.toString(),date.toString()));
-//	}
-//	
-//	@Test
-//	public void validateUpdateSaleTransactionAfterCommit() {
-//
-//	}
-//	
-//	@Test
-//	public void validateUpdateEntryAfterCommit() {
-//
-//	}
-//	
-//	@Test
-//	public void validateGetAllProductReturnsById() {
-//
-//	}
-//	
-//	@Test
-//	public void validateDeleteAllProductReturnsByReturnId() {
-//
-//	}
-//	
-//	@Test
-//	public void validateUpdatePaymentSaleTransaction() {
-//
-//	}
-//	
-//	@Test
-//	public void validateRecordBalanceOperation() {
-//
-//	}
-//	
-//	@Test
-//	public void validateGetActualBalance() {
-//
-//	}
-//	
-//	@Test
-//	public void validateGetBalanceOperations() {
-//
-//	}
-//	
-//	@Test
-//	public void validateGetCreditCardByCardNumber() {
-//
-//	}
-//	
-//	@Test
-//	public void validateUpdateBalanceInCreditCard() {
-//
-//	}
+	@Test
+	public void getCreditCardTestCase() {
+		
+		assertNotNull(db.getCreditCardByCardNumber("4485370086510891"));
+		assertNull(db.getCreditCardByCardNumber("1209219201241"));	
+		
+	}
+	
+	@Test
+	public void updateBalanceTestCase() {
+		
+		assertNotNull(db.updateBalanceInCreditCard("4485370086510891",170.0));
+//		assertNull(db.getCreditCardByCardNumber("1209219201241"));	
+		
+	}
+	
 	
 	
 }
