@@ -468,6 +468,7 @@ public class TestEZShop {
 	
 	@Test
 	public void updateQuantityByBarCodeTestCase() {
+		db.resetDB("productTypes");
 		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "nice", "22345212", 3.22);
 		db.addProductType(pt);
 		
@@ -482,6 +483,7 @@ public class TestEZShop {
 	
 	@Test
 	public void getQuantityByProductTypeIdTestCase() {
+		db.resetDB("productTypes");
 		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
 		db.addProductType(pt);
 		
@@ -493,6 +495,7 @@ public class TestEZShop {
 	
 	@Test
 	public void updateQuantityByProductTypeIdTestCase() {
+		db.resetDB("productTypes");
 		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
 		db.addProductType(pt);
 		
