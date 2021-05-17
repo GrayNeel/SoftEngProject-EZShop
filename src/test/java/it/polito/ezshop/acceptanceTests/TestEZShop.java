@@ -9,6 +9,7 @@ import it.polito.ezshop.data.ProductType;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -975,6 +976,88 @@ public class TestEZShop {
 		assertTrue(db.updateEntryAfterCommit(170, "22345212", 10, 17.50));
 	}
 	
+	@Test
+	public void getAllProductReturnsTestCase() {
+		db.resetDB("productReturns");
+		
+		assertTrue(db.returnProduct(12, 23, "22345212", 12, 14.50));
+		assertTrue(db.returnProduct(15, 23, "22845212", 15, 15.50));
+		
+		assertNotEquals(0,db.getAllProductReturnsById(23).size());
+		assertEquals(0,db.getAllProductReturnsById(21).size());
+	}
+	
+	@Test
+	public void deleteProductReturnsTestCase() {
+		db.resetDB("productReturns");
+		
+		assertTrue(db.returnProduct(12, 23, "22345212", 12, 14.50));
+		assertTrue(db.returnProduct(15, 23, "22845212", 15, 15.50));
+		
+		assertTrue(db.deleteProductReturnsByReturnId(23));
+	}
+	
+	@Test
+	public void updatePaymentSaleTransactionTestCase() {
+		db.resetDB("saleTransactions");
+		
+		List<TicketEntry> productList = new ArrayList<>();
+		String[] date = (new Date()).toString().split(" ");
+		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
+
+		assertEquals(170,db.startSaleTransaction(saleTransaction)+0);
+		
+		assertTrue(db.updatePaymentSaleTransaction(170, "CARD", "PAYED"));
+	}
+	
+	@Test
+	public void recordBalanceOperationTestCase() {
+		db.resetDB("balanceOperations");
+		
+		LocalDate date = LocalDate.now();
+		BalanceOperationClass balance = new BalanceOperationClass(15,date,150.0,"Shopping");
+
+		assertTrue(db.recordBalanceOperation(balance));
+	}
+	
+	@Test
+	public void getActualBalanceTestCase() {
+		db.resetDB("balanceOperations");
+		
+		LocalDate date = LocalDate.now();
+		BalanceOperationClass balance = new BalanceOperationClass(15,date,150.0,"Shopping");
+		assertEquals(0,db.getActualBalance(),0.01);
+		assertTrue(db.recordBalanceOperation(balance));
+		
+		assertNotEquals(0,db.getActualBalance(),0.01);
+	}
+	
+	@Test
+	public void getBalanceOperationsTestCase() {
+		db.resetDB("balanceOperations");
+		
+		LocalDate date = LocalDate.now();
+		BalanceOperationClass balance = new BalanceOperationClass(15,date,150.0,"Shopping");
+		
+		assertNull(db.getBalanceOperations(date.toString(),date.toString()));
+		
+		assertTrue(db.recordBalanceOperation(balance));
+		
+		assertNotNull(db.getBalanceOperations(date.toString(),date.toString()));
+	}
+	
+//	@Test
+//	public void getCreditCardTestCase() {
+//		db.resetDB("creditCards");
+//		
+//		CreditCardClass card = new CreditCardClass("18287481",180.0);
+//		
+//		assertNull(db.getBalanceOperations(date.toString(),date.toString()));
+//		
+//		assertTrue(db.recordBalanceOperation(balance));
+//		
+//		assertNotNull(db.getBalanceOperations(date.toString(),date.toString()));
+//	}
 //	
 //	@Test
 //	public void validateUpdateSaleTransactionAfterCommit() {
