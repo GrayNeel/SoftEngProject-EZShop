@@ -1269,12 +1269,14 @@ public class TestEZShop {
 		
 		LocalDate date = LocalDate.now();
 		BalanceOperationClass balance = new BalanceOperationClass(15,date,150.0,"Shopping");
+		BalanceOperationClass balance2 = new BalanceOperationClass(17,date,150.0,"Shopping");
 		
-		assertNull(db.getBalanceOperations(date.toString(),date.toString()));
+		assert(db.getBalanceOperations(date.toString(),date.toString()).size() == 0);
 		
 		assertTrue(db.recordBalanceOperation(balance));
+		assertTrue(db.recordBalanceOperation(balance2));
 		
-		assertNotNull(db.getBalanceOperations(date.toString(),date.toString()));
+		assert(db.getBalanceOperations(date.toString(),date.toString()).size() > 1);
 	}
 	
 	@Test
