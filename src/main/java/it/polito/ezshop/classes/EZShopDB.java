@@ -92,6 +92,8 @@ public class EZShopDB {
 	public boolean addUser(User user) {
 		String sql = "INSERT INTO users(id,username,password,role) VALUES(?,?,?,?)";
 		boolean success = false;
+		if(user == null)
+			return success;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, user.getId());
 			pstmt.setString(2, user.getUsername());
@@ -131,9 +133,27 @@ public class EZShopDB {
 	}
 
 	public boolean deleteUser(Integer id) {
-		String sql = "DELETE FROM users WHERE id=?";
-		boolean success = false;
+		String sql = "SELECT COUNT(*) AS tot FROM users WHERE id=?";
+		boolean exists = false;
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
+		String sql2 = "DELETE FROM users WHERE id=?";
+		boolean success = false;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
 			success = true;
@@ -184,8 +204,26 @@ public class EZShopDB {
 	}
 
 	public boolean updateUserRole(Integer id, String role) {
-		String sql = "UPDATE users SET role=? WHERE id=?";
+		String existance = "SELECT COUNT(*) AS tot FROM users WHERE id=?";
+		boolean exists = false;
 
+		try (PreparedStatement pstmt = connection.prepareStatement(existance)) {
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
+		String sql = "UPDATE users SET role=? WHERE id=?";
+		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, role);
 			pstmt.setInt(2, id);

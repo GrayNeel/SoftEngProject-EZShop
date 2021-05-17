@@ -85,7 +85,7 @@ public class TestEZShop {
 		List<User> userlist = db.getAllUsers();
 		assertNotNull(userlist);
 		
-		db.resetDB("users");
+		assertTrue(db.resetDB("users"));
 		
 		List<User> emptyList = db.getAllUsers();
 		assertTrue(emptyList.isEmpty());
@@ -97,7 +97,7 @@ public class TestEZShop {
 		List<ProductType> ptlist = db.getAllProductTypes();
 		assertNotNull(ptlist);
 		
-		db.resetDB("productTypes");
+		assertTrue(db.resetDB("productTypes"));
 		
 		List<ProductType> emptyptlist = db.getAllProductTypes();
 		assertTrue(emptyptlist.isEmpty());
@@ -109,7 +109,7 @@ public class TestEZShop {
 		List<Order> orderlist = db.getAllOrders();
 		assertNotNull(orderlist);
 		
-		db.resetDB("orders");
+		assertTrue(db.resetDB("orders"));
 		
 		List<Order> emptyOrderList = db.getAllOrders();
 		assertTrue(emptyOrderList.isEmpty());
@@ -118,6 +118,8 @@ public class TestEZShop {
 			db.addAndIssueOrder(order);
 		}
 		
+		assertFalse(db.resetDB("nonexistingtable"));
+
 		
 	}
 	
@@ -165,11 +167,12 @@ public class TestEZShop {
 	@Test
 	public void addAndDeleteUserTestCase() {
 		User user1 = new UserClass(7, "newAdmin", "1234567", "Administrator");
-		
+		User usernull = null;
 		// Adding a new user
 		assertTrue(db.addUser(user1));
 		User user2 = db.getUserById(7);
 		assertNotNull(user2);
+		assertFalse(db.addUser(usernull));
 		assert(user2.getId() == 7);
 		assert(user2.getUsername().equals("newAdmin"));
 		assert(user2.getPassword().equals("1234567"));
@@ -187,6 +190,7 @@ public class TestEZShop {
 		assert(testFailUser.getRole().equals("Administrator"));
 
 		assertTrue(db.deleteUser(7));
+		assertFalse(db.deleteUser(100));
 		assertFalse(db.checkExistingUser("newAdmin"));
 	}
 	
@@ -231,7 +235,10 @@ public class TestEZShop {
 		
 		User nullResponse = db.getUserByCredentials("falseusername", "falsepassword");
 		assertNull(nullResponse);
-		
+		User badPassword = db.getUserByCredentials("Alberto1", "falsepassword");
+		assertNull(badPassword);
+		User badUsername = db.getUserByCredentials("falseusername", "12345678");
+		assertNull(badUsername);
 		db.deleteUser(20);
 	}
 	
@@ -242,24 +249,28 @@ public class TestEZShop {
 		
 		Integer lastIdUser = db.getLastId("users");
 		assert(lastIdUser == 30);
+		assertFalse(lastIdUser.equals(31));
 		
 		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
 		db.addProductType(pt);
 		
 		Integer lastIPT = db.getLastId("productTypes");
 		assert(lastIPT == 1741);
+		assertFalse(lastIPT.equals(1742));
 		
 		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
 		db.defineCustomer(c);
 		
 		Integer lastCustomer = db.getLastId("customers");
 		assert(lastCustomer == 12);
+		assertFalse(lastCustomer.equals(13));
 		
     	Order o = new OrderClass(5853,-1, "1741", 8.5, 5, "ISSUED");
 		db.addAndIssueOrder(o);
 		
 		Integer lastOrder = db.getLastId("orders");
 		assert(lastOrder == 5853);
+		assertFalse(lastOrder.equals(5854));
 		
 		db.deleteUser(30);
 		db.deleteProductType(1741);
@@ -274,7 +285,8 @@ public class TestEZShop {
 		db.addUser(user);
 		
 		assertTrue(db.updateUserRole(20, "Administrator"));
-		
+		assertFalse(db.updateUserRole(100, "Role"));
+
 		User updatedUser = db.getUserById(20);
 		assert(updatedUser.getRole() != "Cashier");
 		assert(updatedUser.getRole().equals("Administrator"));
