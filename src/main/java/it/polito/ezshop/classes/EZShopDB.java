@@ -1324,17 +1324,18 @@ public class EZShopDB {
     
     public boolean updateSaleTransactionAfterCommit(Integer transactionId, Double newReturnValue) {
     	String sql = "UPDATE saleTransactions SET price=? WHERE id=?";
+    	boolean success = false;
     		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setDouble(1, newReturnValue);
 			pstmt.setInt(2, transactionId);
 			pstmt.executeUpdate();
+			success = true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			return false;
     	}
 		
-		return true;
+		return success;
     }
     
     public boolean updateEntryAfterCommit(Integer transactionId, String productCode, int newAmountSold, double newTotalSold){
@@ -1392,7 +1393,7 @@ public class EZShopDB {
     }
     
     public boolean updatePaymentSaleTransaction(Integer transactionId, String paymentMethod, String state) {
-    	String sql = "UPDATE saleTransactions SET state=?, paymentMethod=? WHERE id=?";
+    	String sql = "UPDATE saleTransactions SET state=?, paymentType=? WHERE id=?";
         boolean success = false;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, state);
@@ -1421,7 +1422,6 @@ public class EZShopDB {
 			success = true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			success = false;
 		}
 
         return success;
