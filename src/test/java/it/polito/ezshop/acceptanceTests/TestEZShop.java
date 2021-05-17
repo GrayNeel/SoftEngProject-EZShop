@@ -435,10 +435,10 @@ public class TestEZShop {
 	
 	@Test
 	public void getProductTypesByDescriptionTestCase() {
-		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "nice", "22345212", 3.22);
+		ProductType pt = new ProductTypeClass(17441, 23, "locationthis", "test", "nice", "223452212", 3.22);
 		db.addProductType(pt);
 		
-		ProductType pt2 = new ProductTypeClass(1742, 2, "locational", "test", "nicest", "22345212", 3.22);
+		ProductType pt2 = new ProductTypeClass(17442, 3, "locationals", "test2", "nicest", "223345214", 4.22);
 		db.addProductType(pt2);
 		
 		//NOT WORKING:
