@@ -761,9 +761,9 @@ public class TestEZShop {
 		String type = bo.getType();
 		assert(type == "Shopping");
 		
-		bo.setDate(LocalDate.of(2021, 4, 9));
-		LocalDate date = bo.getDate();
-		assert(date == LocalDate.of(2021, 4, 9));
+		LocalDate date = LocalDate.of(2021, 4, 9); 
+		bo.setDate(date);
+		assert(date == bo.getDate());
 		
 	}
 	
