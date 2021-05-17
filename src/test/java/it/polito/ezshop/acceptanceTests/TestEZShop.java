@@ -47,14 +47,16 @@ public class TestEZShop {
 //		getAllOrdersTestCase();
 
 /////////////////////////////////////// Francesco
-//		getterAndSetterCustomerTestCase();		
-//		
-//		addAndDeleteCustomerTestCase();
-//		modifyCustomerTestCase();
-//		getCustomerByIdTestCase();
-//		createCardTestCase();
-//		attachCardToCustomerTestCase();
-//		updateAndgetCardPointsTestCase();
+
+		/*getterAndSetterCustomerTestCase();		
+		
+		addAndDeleteCustomerTestCase();
+		modifyCustomerTestCase();
+		getCustomerByIdTestCase();
+		createCardTestCase();
+		attachCardToCustomerTestCase();
+		updateAndgetCardPointsTestCase();*/
+
 		
 /////////////////////////////////////// Marco C.
 //		validateClosedSaleTransaction();
@@ -612,8 +614,10 @@ public class TestEZShop {
 	public void modifyCustomerTestCase() {
 		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
 		db.defineCustomer(c);
-		//assertFalse(db.updateCustomer(-1, "Giovanni", "1423373228"));		
-		assertTrue(db.updateCustomer(12, "Giovanni", "1423373228"));
+		//assertFalse(db.updateCustomer(-1, "Giovanni", "1423373228"));	
+		assertTrue(db.updateCustomer(12, "Giovanni", ""));
+		assertTrue(db.updateCustomer(12, "Giovanni", "1423373228"));		
+		assertTrue(db.updateCustomer(12, "Giovanni", null));
 		db.deleteCustomer(12);	
 	}
 	
@@ -681,6 +685,13 @@ public class TestEZShop {
 		
 		db.resetDB("cards");		
 	}	
+	
+	@Test
+	public void createTicketEntryTestCase() {
+		
+		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);		
+		assertTrue(db.createTicketEntry(te,170));					
+	}
 	
 	
 /////////////////////////////////////// Marco C.
@@ -839,7 +850,8 @@ public class TestEZShop {
 //		assertFalse(db.applyDiscountRate(180,0.2));
 		
 		assertTrue(db.deleteSaleTransaction(170));
-	}
+	}	
+	
 	
 	@Test
 	public void applyDiscountToProductTestCase() {
@@ -850,6 +862,7 @@ public class TestEZShop {
 		assertTrue(db.applyDiscountRateToProduct(170, "22345212", 0.2));
 					
 	}
+	
 	
 	@Test
 	public void updateTransactionStateTestCase() {
