@@ -697,6 +697,189 @@ public class TestEZShop {
 /////////////////////////////////////// Marco C.
 	
 	@Test
+	public void getterAndSetterBalanceOperationTestCase() {
+		BalanceOperation bo = new BalanceOperationClass(10, LocalDate.of(2020, 1, 8), 32.5, "type");
+		assertNotNull(bo);
+		
+		bo.setBalanceId(2);
+		Integer id = bo.getBalanceId();
+		assert(id == 2);
+		
+		bo.setMoney(20.5);
+		Double money = bo.getMoney();
+		assert(money == 20.5);
+		
+		bo.setType("Shopping");
+		String type = bo.getType();
+		assert(type == "Shopping");
+		
+		bo.setDate(LocalDate.of(2021, 4, 9));
+		LocalDate date = bo.getDate();
+		assert(date == LocalDate.of(2021, 4, 9));
+		
+	}
+	
+	@Test
+	public void getterAndSetterCreditCardTestCase() {
+		CreditCardClass cc = new CreditCardClass("4485370086510891", 440.5);
+		assertNotNull(cc);
+		
+		cc.setCardNumber("4485123437008543");
+		String cn = cc.getCardNumber();
+		assert(cn == "4485123437008543");
+		
+		cc.setBalance(220.5);
+		Double b = cc.getBalance();
+		assert(b == 220.5);					
+	}
+	
+	@Test
+	public void getterAndSetterSaleTransactionTestCase() {		
+		List<TicketEntry> productList = new ArrayList<>();
+		String[] date = (new Date()).toString().split(" ");
+		SaleTransactionClass st = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
+		assertNotNull(st);
+		
+		st.setTicketNumber(2);
+		Integer tn = st.getTicketNumber();
+		assert(tn == 2);
+		
+		st.setDate("date");
+		String d = st.getDate();
+		assert(d == "date");
+		
+		st.setTime("time");
+		String tm = st.getTime();
+		assert(tm == "time");
+		
+		st.setPaymentType("payType");		
+		String pt = st.getPaymentType();
+		assert(pt == "payType");
+		
+		st.setPrice(2);		
+		Double p = st.getPrice();
+		assert(p == 2);
+		
+		st.setDiscountRate(0.2);		
+		Double dr = st.getDiscountRate();
+		assert(dr == 0.2);
+		
+		productList.add(new TicketEntryClass(2, "barcode", "desc", 32, 20.0, 3, 0.2));
+		st.setEntries(productList);
+		List<TicketEntry> pl = st.getEntries();
+		assert(pl == productList);
+		
+		st.setState("state");		
+		String s = st.getState();
+		assert(s == "state");
+		
+	}
+	
+	
+	@Test
+	public void getterAndSetterticketEntryTestCase() {			
+		TicketEntryClass te = new TicketEntryClass(2, "barcode", "desc", 32, 20.0, 3, 0.2);
+		assertNotNull(te);
+		
+		te.setId(4);
+		Integer id = te.getId();
+		assert(id == 4);
+		
+		te.setBarCode("bcode");
+		String bc = te.getBarCode();
+		assert(bc == "bcode");
+		
+		te.setProductDescription("Caramelle");
+		String pd = te.getProductDescription();
+		assert(pd == "Caramelle");
+		
+		te.setAmount(44);		
+		Integer a = te.getAmount();
+		assert(a == 44);
+		
+		te.setPricePerUnit(2.2);		
+		Double ppu = te.getPricePerUnit();
+		assert(ppu == 2.2);
+		
+		te.setTransactionId(90);		
+		Integer tid = te.getTransactionId();
+		assert(tid == 90);			
+		
+		te.setDiscountRate(0.5);		
+		Double dr = te.getDiscountRate();
+		assert(dr == 0.5);
+		
+	}
+	
+	
+	@Test
+	public void getterAndSetterReturnTransactionTestCase() {		
+		List<ProductType> ptlist = new ArrayList<>();
+		
+		ReturnTransactionClass rt = new ReturnTransactionClass(12, 23, 44, 3.5, "state");
+		assertNotNull(rt);
+		
+		rt.setId(2);
+		Integer id = rt.getId();
+		assert(id == 2);
+		
+		rt.setState("st");
+		String s = rt.getState();
+		assert(s == "st");
+		
+		rt.setQuantity(5);
+		Integer q = rt.getQuantity();
+		assert(q == 5);
+		
+		rt.setTransactionId(4);		
+		Integer tid = rt.getTransactionId();
+		assert(tid == 4);
+		
+		rt.setReturnValue(2.4);		
+		Double rv = rt.getReturnValue();
+		assert(rv == 2.4);
+		
+		ptlist.add(new ProductTypeClass(3, 4, "location", "note", "desc", "barcode", 33.2));
+		rt.setProductTypeList(ptlist);
+		List<ProductType> pl = rt.getProductTypeList();
+		assert(pl == ptlist);		
+	}
+	
+	@Test
+	public void getterAndSetterProductReturnTestCase() {
+		ProductReturnClass rt = new ProductReturnClass(4, 6, "barcode", 44, 2.2);
+		assertNotNull(rt);
+		
+		rt.setId(2);
+		Integer id = rt.getId();
+		assert(id == 2);
+		
+		rt.setReturnId(5);
+		Integer rid = rt.getReturnId();
+		assert(rid == 5);
+		
+		rt.setProductCode("Code");
+		String pc = rt.getProductCode();
+		assert(pc == "Code");
+		
+		rt.setQuantity(400);		
+		Integer q = rt.getQuantity();
+		assert(q == 400);
+		
+		rt.setReturnValue(2.4);		
+		Double rv = rt.getReturnValue();
+		assert(rv == 2.4);
+	}
+	
+	
+	@Test
+	public void checkValidCardTestCase() {
+		assertFalse(CreditCardClass.checkValidCard("df"));				
+		assertTrue(CreditCardClass.checkValidCard("4485370086510891"));
+		assertFalse(CreditCardClass.checkValidCard("123456756324"));				
+	}
+	
+	@Test
 	public void saleTransactionTestCase() {
 //		Integer transactionId = 180;
 //		Integer wrongTransactionId = 200;

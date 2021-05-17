@@ -32,51 +32,51 @@ public class TicketEntryClass implements TicketEntry {
 
 	@Override
 	public String getBarCode() {
-		// TODO Auto-generated method stub
+		
 		return this.barCode;
 	}
 
 	@Override
 	public void setBarCode(String barCode) {
-		// TODO Auto-generated method stub
+		
 		this.barCode = barCode;
 		
 	}
 
 	@Override
 	public String getProductDescription() {
-		// TODO Auto-generated method stub
+		
 		return this.productDescription;
 	}
 
 	@Override
 	public void setProductDescription(String productDescription) {
-		// TODO Auto-generated method stub
+		
 		this.productDescription = productDescription;
 		
 	}
 
 	@Override
 	public int getAmount() {
-		// TODO Auto-generated method stub
+		
 		return this.amount;
 	}
 
 	@Override
 	public void setAmount(int amount) {
-		// TODO Auto-generated method stub
+		
 		this.amount = amount;
 	}
 
 	@Override
 	public double getPricePerUnit() {
-		// TODO Auto-generated method stub
+	
 		return this.pricePerUnit;
 	}
 
 	@Override
 	public void setPricePerUnit(double pricePerUnit) {
-		// TODO Auto-generated method stub
+		
 		this.pricePerUnit = pricePerUnit;
 	}
 	
@@ -91,13 +91,13 @@ public class TicketEntryClass implements TicketEntry {
 
 	@Override
 	public double getDiscountRate() {
-		// TODO Auto-generated method stub
+		
 		return this.discountRate;
 	}
 
 	@Override
 	public void setDiscountRate(double discountRate) {
-		// TODO Auto-generated method stub
+		
 		this.discountRate = discountRate;
 	}
 
