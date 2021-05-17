@@ -591,6 +591,12 @@ Version: 01
 |Order|getterAndSetterOrderTestCase()|
 |User|getterAndSetterUserTestCase()|
 |Customer|getterAndSetterCustomerTestCase()|
+|BalanceOperation|getterAndSetterBalanceOperationTestCase()|
+|ReturnTransaction|getterAndSetterReturnTransactionTestCase()|
+|ProductReturn|getterAndSetterProductReturnTestCase()|
+|TicketEntry|getterAndSetterTicketEntryTestCase()|
+|SaleTransaction|getterAndSetterSaleTransactionTestCase()|
+|CreditCard|getterAndSetterCreditCardTestCase()|
 
 ### Code coverage report
 
