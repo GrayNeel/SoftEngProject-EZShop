@@ -47,7 +47,7 @@ public class EZShop implements EZShopInterface {
     	int lastid;
     	
     	//Check that username is not empty and it does not exist
-    	if(username.length() == 0 || username==null) {
+    	if(username.length() == 0 || db.checkExistingUser(username)) {
     		throw new InvalidUsernameException("Invalid username");
     	}
     	
@@ -60,20 +60,15 @@ public class EZShop implements EZShopInterface {
     	if(role.length()==0 || role==null || (!role.equals("Cashier") && !role.equals("ShopManager") && !role.equals("Administrator")))
     		throw new InvalidRoleException("Invalid role");
     	
-    	if (db.checkExistingUser(username)) {
-    		return -1;
-    	}
+    	
     	//Get the last used ID from users table
     	lastid = db.getLastId("users"); 
     	
     	//Create User Object with newID
     	User user = new UserClass(lastid+1, username, password, role);
+    	
     	//Add user to the DB
-    	boolean flag = db.addUser(user);
-    	// If there was a problem  saving the user
-    	if (!flag) {
-    		return -1;
-    	}
+    	db.addUser(user);
     	
         return lastid+1;
     }

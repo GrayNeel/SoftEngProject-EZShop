@@ -46,14 +46,14 @@ public class TestEZShop {
 		getAllOrdersTestCase();
 
 /////////////////////////////////////// Francesco
-		getterAndSetterCustomerTestCase();		
+		/*getterAndSetterCustomerTestCase();		
 		
 		addAndDeleteCustomerTestCase();
 		modifyCustomerTestCase();
 		getCustomerByIdTestCase();
 		createCardTestCase();
 		attachCardToCustomerTestCase();
-		updateAndgetCardPointsTestCase();
+		updateAndgetCardPointsTestCase();*/
 		
 /////////////////////////////////////// Marco C.
 //		validateClosedSaleTransaction();
