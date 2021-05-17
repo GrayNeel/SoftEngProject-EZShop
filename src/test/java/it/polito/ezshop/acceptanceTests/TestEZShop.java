@@ -456,6 +456,31 @@ public class TestEZShop {
 	}
 	
 	@Test
+	public void getQuantityByBarCodeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "nice", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		assert(db.getQuantityByProductTypeBarCode("22345212") == 2);
+		assertNull(db.getQuantityByProductTypeBarCode(null));
+		
+		db.deleteProductType(1741);
+	}
+	
+	@Test
+	public void updateQuantityByBarCodeTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "nice", "22345212", 3.22);
+		db.addProductType(pt);
+		
+		assertTrue(db.updateQuantityByBarCode("22345212", 5));
+		
+		assert(db.getQuantityByProductTypeBarCode("22345212") == 5);
+		
+		assertFalse(db.updateQuantityByBarCode(null, -1));
+		
+		db.deleteProductType(1741);
+	}
+	
+	@Test
 	public void getQuantityByProductTypeIdTestCase() {
 		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
 		db.addProductType(pt);

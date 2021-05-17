@@ -511,6 +511,9 @@ public class EZShopDB {
 	}
 
 	public boolean updateQuantityByBarCode(String productCode, int newQuantity) {
+		if(productCode == null)
+			return false;
+		
 		String sql = "UPDATE productTypes SET quantity=? WHERE barCode=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
