@@ -1033,68 +1033,22 @@ public class TestEZShop {
 		assertNotNull(db.getBalanceOperations(date.toString(),date.toString()));
 	}
 	
-//	@Test
-//	public void getCreditCardTestCase() {
-//		db.resetDB("creditCards");
-//		
-//		CreditCardClass card = new CreditCardClass("18287481",180.0);
-//		
-//		assertNull(db.getBalanceOperations(date.toString(),date.toString()));
-//		
-//		assertTrue(db.recordBalanceOperation(balance));
-//		
-//		assertNotNull(db.getBalanceOperations(date.toString(),date.toString()));
-//	}
-//	
-//	@Test
-//	public void validateUpdateSaleTransactionAfterCommit() {
-//
-//	}
-//	
-//	@Test
-//	public void validateUpdateEntryAfterCommit() {
-//
-//	}
-//	
-//	@Test
-//	public void validateGetAllProductReturnsById() {
-//
-//	}
-//	
-//	@Test
-//	public void validateDeleteAllProductReturnsByReturnId() {
-//
-//	}
-//	
-//	@Test
-//	public void validateUpdatePaymentSaleTransaction() {
-//
-//	}
-//	
-//	@Test
-//	public void validateRecordBalanceOperation() {
-//
-//	}
-//	
-//	@Test
-//	public void validateGetActualBalance() {
-//
-//	}
-//	
-//	@Test
-//	public void validateGetBalanceOperations() {
-//
-//	}
-//	
-//	@Test
-//	public void validateGetCreditCardByCardNumber() {
-//
-//	}
-//	
-//	@Test
-//	public void validateUpdateBalanceInCreditCard() {
-//
-//	}
+	@Test
+	public void getCreditCardTestCase() {
+		
+		assertNotNull(db.getCreditCardByCardNumber("4485370086510891"));
+		assertNull(db.getCreditCardByCardNumber("1209219201241"));	
+		
+	}
+	
+	@Test
+	public void updateBalanceTestCase() {
+		
+		assertNotNull(db.updateBalanceInCreditCard("4485370086510891",170.0));
+//		assertNull(db.getCreditCardByCardNumber("1209219201241"));	
+		
+	}
+	
 	
 	
 }
