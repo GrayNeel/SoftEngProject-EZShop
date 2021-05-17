@@ -26,7 +26,7 @@ Version: 01
     to start tests
     >
 
- ### **Class *EZShopDB* - method *resetDB***
+### **Class *EZShopDB* - method *resetDB***
 
 **Criteria for method *name*:**
 
