@@ -284,6 +284,26 @@ public class TestEZShop {
 	
 /////////////////////////////////////// Marco S.
 	@Test
+	public void loopCoverageTestCase() {
+		db.resetDB("productTypes");
+		ProductType pt1 = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+		ProductType pt2 = new ProductTypeClass(1742, 3, "location", "test", "this is a test", "223434232", 3.22);
+		
+		List<ProductType> ptlist = db.getAllProductTypes();
+		assert(ptlist.size() == 0);
+		
+		db.addProductType(pt1);
+		ptlist = db.getAllProductTypes();
+		assert(ptlist.size() == 1);
+
+		db.addProductType(pt2);
+		ptlist = db.getAllProductTypes();
+		assert(ptlist.size() == 2);
+
+		db.resetDB("productTypes");
+	}
+	
+	@Test
 	public void getterAndSetterProductTypeTestCase() {
 		ProductType pt = new ProductTypeClass(1, 0, "location", "test", "this is a test", "2222222", 3.22);
 		assertNotNull(pt);

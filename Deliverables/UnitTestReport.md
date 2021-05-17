@@ -611,9 +611,9 @@ Version: 01
 
 |Unit name | Loop rows | Number of iterations | JUnit test case |
 |---|---|---|---|
-|||||
-|||||
-||||||
+|getAllProductTypes|12|0|loopCoverageTestCase()|
+|getAllProductTypes|12|1|loopCoverageTestCase()|
+|getAllProductTypes|12|2|loopCoverageTestCase()|
 
 
 
