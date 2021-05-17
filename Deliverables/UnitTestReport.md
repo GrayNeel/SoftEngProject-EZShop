@@ -589,7 +589,8 @@ Version: 01
 |--|--|
 |ProductType|getterAndSetterProductTypeTestCase()|
 |Order|getterAndSetterOrderTestCase()|
-|||
+|User|getterAndSetterUserTestCase()|
+|Customer|getterAndSetterCustomerTestCase()|
 
 ### Code coverage report
 
