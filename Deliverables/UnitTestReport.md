@@ -845,6 +845,693 @@ Version: 01
 | Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
 | No                               | Invalid         | T2() -> Emptylist            | ''                     |
 
+### **Class *EZShopDB* - method *deleteSaleTransaction***
+
+**Criteria for method \*name\*:** 
+
+- There is a saleTransaction with a given ID in the database.
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There is a saleTransaction with a given ID | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There is a Sale Transaction with a given ID | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> True          | deleteSaletransaction() |
+| No                               | Invalid         | T2() -> True          | ''                     |
+
+### **Class *EZShopDB* - method *getClosedSaleTransactionById***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *getProductEntriesByTransactionId***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *startReturnTransaction***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *deleteReturnTransaction***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *getReturnTransactionById***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *getPricePerUnit***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *returnProduct***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *getAmountonEntry***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *getTotalOnEntry***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *checkProductInSaleTransaction***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *updateReturnTransaction***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *updateSaleTransactionAfterCommit***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *updateEntryAfterCommit***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *getAllProductReturnsById***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *checkProductInSaleTransaction***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *deleteProductReturnsByReturnId***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *updatePaymentSaleTransaction***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *recordBalanceOperation***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+### **Class *EZShopDB* - method *getActualBalance***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *getBalanceOperations***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *getCreditCardByCardNumber***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
+### **Class *EZShopDB* - method *updateBalanceInCreditCard***
+
+**Criteria for method \*name\*:** 
+
+- There are Orders in the database
+
+**Predicates for method \*name\*:**
+
+| Criteria                         | Predicate |
+| -------------------------------- | --------- |
+| There are Orders in the database | Yes       |
+|                                  | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+
 # White Box Unit Tests
 
 ### Test cases definition

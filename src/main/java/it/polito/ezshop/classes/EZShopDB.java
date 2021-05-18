@@ -1153,15 +1153,16 @@ public class EZShopDB {
                 + "WHERE state = 'PAYED' AND id=?";
         List<TicketEntry> products = getProductEntriesByTransactionId(transactionId);
         SaleTransaction saletransaction = null;
-
+        ResultSet rs = null;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, transactionId);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             saletransaction = new SaleTransactionClass(rs.getInt("id"), rs.getString("date"),
                     rs.getString("time"), rs.getDouble("price"), rs.getString("paymentType"),
                     rs.getDouble("discountRate"), products , rs.getString("state"));
         } catch (SQLException e) {
+        	System.err.println(rs);
             System.err.println(e.getMessage());
         }
 
