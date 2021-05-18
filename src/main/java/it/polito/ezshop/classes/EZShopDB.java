@@ -835,6 +835,8 @@ public class EZShopDB {
 	}
 
 	public boolean defineCustomer(CustomerClass customer) {
+		if(customer == null)
+			return false;
 		String sql = "INSERT INTO customers(id,customerName,customerCard,points) VALUES(?,?,?,?)";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -852,6 +854,24 @@ public class EZShopDB {
 	}
 
 	public boolean deleteCustomer(Integer id) {
+		String sql0 = "SELECT COUNT(*) AS tot FROM customers WHERE id=?";
+		boolean exists = false;
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql0)) {
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
 		String sql = "DELETE FROM customers WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
@@ -969,7 +989,22 @@ public class EZShopDB {
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			return false;
-		}		
+		}	
+		
+		//Check if card exists
+		String sql1 = "SELECT COUNT(*) AS c FROM cards WHERE id=?";		
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
+			pstmt.setString(1, customerCard);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("c") == 0)
+				return false;
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
 		
 		
 		String sql = "UPDATE customers SET customerCard=? WHERE id=?; UPDATE cards SET assigned=1 WHERE id=? and assigned=0";
@@ -987,7 +1022,7 @@ public class EZShopDB {
 
 	public Integer getCardPoints(String customerCard) {
 		String sql = "SELECT points from cards WHERE id=?";
-		Integer points = -1;
+		Integer points = null;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, customerCard);
 			ResultSet rs = pstmt.executeQuery();
@@ -995,12 +1030,25 @@ public class EZShopDB {
 
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-			return -1;
+			return null;
 		}
 		return points;
 	}
 	
 	public boolean updateCardPoints(String customerCard, Integer points) {
+		//Check if card exists
+		String sql1 = "SELECT COUNT(*) AS c FROM cards WHERE id=?";		
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
+			pstmt.setString(1, customerCard);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.getInt("c") == 0)
+				return false;
+			} catch (SQLException e) {
+				System.err.println(e.getMessage());
+				return false;
+		}
+		
 		String sql = "UPDATE cards SET points=? WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, points);
@@ -1055,6 +1103,9 @@ public class EZShopDB {
 
 	public boolean applyDiscountRateToProduct(Integer transactionId, String productCode, Double discountRate) {
 		boolean flag;
+		
+		if(discountRate < 0 || discountRate > 1)
+			return false;
 
 		String sql = "UPDATE productEntries SET discountRate=? WHERE transactionId=? and productCode=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1073,6 +1124,8 @@ public class EZShopDB {
 
 	public boolean applyDiscountRate(Integer transactionId, Double discountRate) {
 		boolean flag;
+		if(discountRate < 0 || discountRate > 1)
+			return false;				
 
 		String sql = "UPDATE saleTransactions SET discountRate=? WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1089,6 +1142,8 @@ public class EZShopDB {
 	}
 	
 	public boolean createTicketEntry(TicketEntry ticketEntry, Integer transactionId) {	
+		if(ticketEntry == null)
+			return false;
 		Integer id = getLastId("productEntries");
 		String sql = "INSERT INTO productEntries(id, productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,?,0.0,?,?,?)";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1110,7 +1165,22 @@ public class EZShopDB {
 	}
 	
 	public boolean updateTransactionState(Integer transactionId, String state) {
-    	String sql = "UPDATE saleTransactions SET state=? WHERE id=?";
+		if(state == null)
+			return false;
+		//Check if transaction exists
+		String sql1 = "SELECT COUNT(*) AS st FROM saleTransactions WHERE id=?";		
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
+			pstmt.setInt(1, transactionId);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.getInt("st") == 0)
+				return false;
+			} catch (SQLException e) {
+				System.err.println(e.getMessage());
+				return false;
+		}
+				
+		String sql = "UPDATE saleTransactions SET state=? WHERE id=?";
     		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, transactionId);
@@ -1126,6 +1196,18 @@ public class EZShopDB {
     ///////////////// Pablo write methods after this point
 
     public boolean deleteSaleTransaction(Integer transactionId) {
+    	//Check if card exists
+ 		String sql1 = "SELECT COUNT(*) AS sn FROM saleTransactions WHERE id=?";		
+    	try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
+    		pstmt.setInt(1, transactionId);
+    		ResultSet rs = pstmt.executeQuery();
+    		if (rs.getInt("sn") == 0)
+    			return false;
+    		} catch (SQLException e) {
+    			System.err.println(e.getMessage());
+    			return false;
+    	}
+    			
         String sql = "DELETE FROM saleTransactions WHERE state != 'PAYED' AND id=?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, transactionId);

@@ -845,35 +845,601 @@ Version: 01
 | Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
 | No                               | Invalid         | T2() -> Emptylist            | ''                     |
 
-### **Class *EZShopDB* - method *deleteSaleTransaction***
 
-**Criteria for method \*name\*:** 
 
-- Validity of the Sale Transaction ID.
+### **Class *EZShopDB* - method *defineCustomer***
 
-**Predicates for method \*name\*:**
+**Criteria for method *name*:**
+	
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
-| Validity of the Sale Transaction ID | Yes       |
-|                                  | No        |
+- Validity of the Customer object
+- Customer with unique id in database
+
+**Predicates for method *name*:**
+
+| Criterion                           | Predicate |
+|-------------------------------------|-----------|
+| Validity of the customer object     | Yes       |
+|                                     | No        |
+| Customer with unique id in database | Yes       |
+|                                     | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+**Combination of predicates**:
+
+
+
+| Validity of the customer object | Customer with unique id in database | Valid/Invalid | Description of the test case: example of input and output             | JUnit test case                |
+|---------------------------------|-------------------------------------|---------------|-----------------------------------------------------------------------|--------------------------------|
+| Yes                             | Yes                                 | Valid         | Customer c1 = {"Carlo"}<br />defineCustomer(c1);<br /><br />-> true   | addAndDeleteCustomerTestCase() |
+| Yes                             | No                                  | Invalid       | Customer c2 = {"Carlo"}<br />defineCustomer(c2);<br /> <br />-> false | ''                             |
+| No                              | *                                   | Invalid       | T3(NullCustomer) -> false                                             | ''                             |
+
+
+### **Class *EZShopDB* - method *deleteCustomer***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the id parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                    | Predicate |
+|------------------------------|-----------|
+| Validity of the id parameter | Yes       |
+|                              | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the id parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case                |
+|------------------------------|---------------|-----------------------------------------------------------|--------------------------------|
+| Yes                          | Valid         | T1(Existing ID in database)<br />-> true                  | addAndDeleteCustomerTestCase() |
+| No                           | Invalid       | T2(Non-existing ID in database) <br /> -> false           | ''                             |
+
+
+### **Class *EZShopDB* - method *updateCustomer***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the id parameter
+- Validity of the newCustomerName parameter
+- Validity of the newCustomerCard parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                                 | Predicate |
+|-------------------------------------------|-----------|
+| Validity of the id parameter              | Yes       |
+|                                           | No        |
+| Validity of the newCustomerName parameter | Yes       |
+|                                           | No        |
+| Validity of the newCustomerCard parameter | Yes       |
+|                                           | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the id parameter | Validity of the newCustomerName parameter | Validity of the newCustomerCard parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case          |
+|------------------------------|-------------------------------------------|-------------------------------------------|---------------|-----------------------------------------------------------|--------------------------|
+| Yes                          | Yes                                       | Yes                                       | Valid         | T1(12, "Carlo", "1423373228")<br />-> true                | modifyCustomerTestCase() |
+| *                            | *                                         | No                                        | Invalid       | T2(12, "Carlo", "142") <br />-> error                     | ''                       |
+| *                            | No                                        | *                                         | Invalid       | T3(12, "", "1423373228")<br />-> error                    | ''                       |
+| No                           | *                                         | *                                         | Invalid       | T4("2", "Carlo", "1423373228") <br />-> error             | ''                       |
+
+
+
+### **Class *EZShopDB* - method *getCustomerById***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the id parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                    | Predicate |
+|------------------------------|-----------|
+| Validity of the id parameter | Yes       |
+|                              | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the id parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case           |
+|------------------------------|---------------|-----------------------------------------------------------|---------------------------|
+| Yes                          | Valid         | T1(a Customerid in DB)<br />-> Customer                   | getCustomerByIdTestCase() |
+| No                           | Invalid       | T2(an id not in DB) <br />-> Null                         | ''                        |
+
+### **Class *EZShopDB* - method *getAllCustomers***
+
+**Criteria for method *name*:** 
+
+- There are ProductTypes in the database
+
+**Predicates for method *name*:**
+
+| Criteria                            | Predicate |
+|-------------------------------------|-----------|
+| There are Customers in the database | Yes       |
+|                                     | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Is the saleTransactionId valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> True          | startDeleteSaleTransactionTestCase() |
-| No                               | Invalid         | T2() -> False          | ''                     |
+| There are ProductTypes in the database | Valid / Invalid | Description of the test case | JUnit test case          |
+|----------------------------------------|-----------------|------------------------------|--------------------------|
+| Yes                                    | Valid           | T1() -> List(Customer)       | getAllCustomerTestCase() |
+| No                                     | Invalid         | T2() -> Emptylist            | ''                       |
+
+### **Class *EZShopDB* - method *createCard***
+
+**Criteria for method *name*:**	
+
+- Validity of the cardId parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                        | Predicate |
+|----------------------------------|-----------|
+| Validity of the cardId parameter | Yes       |
+|                                  | No        |
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the cardId parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case      |
+|----------------------------------|---------------|-----------------------------------------------------------|----------------------|
+| Yes                              | Valid         | T1(CardId unique in DB)<br />-> true                      | createCardTestCase() |
+| No                               | Invalid       | T2(Duplicated CardId) <br />-> false                      | ''                   |
+
+
+### **Class *EZShopDB* - method *attachCardToCustomer***
+
+**Criteria for method *name*:**	
+	
+
+- Validity of the customerId parameter
+- Validity of the customerCard parameter
+
+
+**Predicates for method *name*:**	
+
+| Criterion                              | Predicate |
+|----------------------------------------|-----------|
+| Validity of the customerId parameter   | Yes       |
+|                                        | No        |
+| Validity of the customerCard parameter | Yes       |
+|                                        | No        |
+
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the customerId parameter | Validity of the customerCard parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case                |
+|--------------------------------------|----------------------------------------|---------------|-----------------------------------------------------------|--------------------------------|
+| Yes                                  | Yes                                    | Valid         | T1("2000000000", 12)<br />-> true                         | attachCardToCustomerTestCase() |
+| *                                    | No                                     | Invalid       | T2("8000000000", 12) <br />-> false                       | ''                             |
+| No                                   | *                                      | Invalid       | T3("2000000000", 14)<br />-> false                        | ''                             |
+
+
+### **Class *EZShopDB* - method *getCardPoints***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the customerCard parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                              | Predicate |
+|----------------------------------------|-----------|
+| Validity of the customerCard parameter | Yes       |
+|                                        | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the customerCard parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case                  |
+|----------------------------------------|---------------|-----------------------------------------------------------|----------------------------------|
+| Yes                                    | Valid         | T1(CustomerCard in the DB)<br />-> cardPoints             | updateAndgetCardPointsTestCase() |
+| No                                     | Invalid       | T2(CustomerCard not in the DB) <br />-> null              | ''                               |
+
+
+### **Class *EZShopDB* - method *updateCardPoints***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the customerCard parameter
+- Validity of the points parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                              | Predicate |
+|----------------------------------------|-----------|
+| Validity of the customerCard parameter | Yes       |
+|                                        | No        |
+| Validity of the points parameter       | Yes       |
+|                                        | No        |
+
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the customerCard parameter | Validity of the points parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case                  |
+|----------------------------------------|----------------------------------|---------------|-----------------------------------------------------------|----------------------------------|
+| Yes                                    | Yes                              | Valid         | T1(a customerCard in the DB, 122)<br />-> true            | updateAndgetCardPointsTestCase() |
+| *                                      | No                               | Invalid       | T2(a customerCard not in the DB,"ss") <br />-> error      | ''                               |
+| No                                     | *                                | Invalid       | T3(a customerCard not in the DB,122)<br />-> false        | ''                               |
+
+
+### **Class *EZShopDB* - method *startSaleTransaction***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the SaleTransaction object
+
+
+**Predicates for method *name*:**
+
+| Criterion                              | Predicate |
+|----------------------------------------|-----------|
+| Validity of the SaleTransaction object | Yes       |
+|                                        | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the SaleTransaction object | Valid/Invalid | Description of the test case: example of input and output | JUnit test case                      |
+|----------------------------------------|---------------|-----------------------------------------------------------|--------------------------------------|
+| Yes                                    | Valid         | T1(valid SaleTransaction) -> transactionId                | startDeleteSaleTransactionTestCase() |
+| No                                     | Invalid       | T2(duplicated SaleTransaction insertion) -> -1            | ''                                   |
+
+### **Class *EZShopDB* - method *deleteSaleTransaction***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the id parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                               | Predicate |
+|-----------------------------------------|-----------|
+| Validity of the transactionId parameter | Yes       |
+|                                         | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the transactionId parameter | Valid/Invalid | Description of the test case: example of input and output  | JUnit test case                      |
+|-----------------------------------------|---------------|------------------------------------------------------------|--------------------------------------|
+| Yes                                     | Valid         | T1(Existing transactionId in database)<br />-> true        | startDeleteSaleTransactionTestCase() |
+| No                                      | Invalid       | T2(Non-existing transactionId in database) <br /> -> false | ''                                   |
+
+
+### **Class *EZShopDB* - method *getSaleTransactionById***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the transactionId parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                               | Predicate |
+|-----------------------------------------|-----------|
+| Validity of the transactionId parameter | Yes       |
+|                                         | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the transactionId parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case |
+|-----------------------------------------|---------------|-----------------------------------------------------------|-----------------|
+| Yes                                     | Valid         | T1(transactionId in DB)<br />-> saleTransaction           |                 |
+| No                                      | Invalid       | T2(transactionId not in DB) <br />-> null                 |                 |
+
+### **Class *EZShopDB* - method *applyDiscountRate***
+
+**Criteria for method *name*:**
+
+- Validity of the transactionId parameter
+- Validity of the discountRate parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                               | Predicate |
+|-----------------------------------------|-----------|
+| Validity of the transactionId parameter | Yes       |
+|                                         | No        |
+| Validity of the productCode parameter   | Yes       |
+|                                         | No        |
+| Validity of the discountRate parameter  | Yes       |
+|                                         | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the transactionId parameter | Validity of the discountRate parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case                      |
+|-----------------------------------------|----------------------------------------|---------------|-----------------------------------------------------------|--------------------------------------|
+| Yes                                     | Yes                                    | Valid         | T1(transactionId in the DB, 122)<br />-> true             | applyDiscountToTransactionTestCase() |
+| *                                       | No                                     | Invalid       | T2(Invalid discountRate) <br />-> false                   | ''                                   |
+| No                                      | *                                      | Invalid       | T3(Invalid transactionId) <br />-> false                  | getTransactionByIdTestCase()         |
+
+### **Class *EZShopDB* - method *applyDiscountRateToProduct***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the transactionId parameter
+- Validity of the productCode parameter
+- Validity of the discountRate parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                               | Predicate |
+|-----------------------------------------|-----------|
+| Validity of the transactionId parameter | Yes       |
+|                                         | No        |
+| Validity of the productCode parameter   | Yes       |
+|                                         | No        |
+| Validity of the discountRate parameter  | Yes       |
+|                                         | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the transactionId parameter | Validity of the productCode parameter | Validity of the discountRate parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case                    |
+|-----------------------------------------|---------------------------------------|----------------------------------------|---------------|-----------------------------------------------------------|------------------------------------|
+| Yes                                     | Yes                                   | Yes                                    | Valid         | T1(2, "22345212", 0.4)<br />-> true                       | applyDiscountToProductTestCase()   |
+| *                                       | *                                     | No                                     | Invalid       | T2(Invalid discountRate) <br />-> false                   | ''                                 |
+| *                                       | No                                    | *                                      | Invalid       | T3(Invalid productCode)<br />-> false                     | checkExistingProductTypeTestCase() |
+| No                                      | *                                     | *                                      | Invalid       | T4(Invalid transactionId) <br />-> false                  | getTransactionByIdTestCase()       |
+
+### **Class *EZShopDB* - method *createTicketEntry***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the ticketEntry parameter
+- Validity of the transactionId parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                               | Predicate |
+|-----------------------------------------|-----------|
+| Validity of the ticketEntry parameter   | Yes       |
+|                                         | No        |
+| Validity of the transactionId parameter | Yes       |
+|                                         | No        |
+
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+**Combination of predicates**
+
+
+
+| Validity of the ticketEntry parameter | Validity of the transactionId parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case              |
+|---------------------------------------|-----------------------------------------|---------------|-----------------------------------------------------------|------------------------------|
+| Yes                                   | Yes                                     | Valid         | T1(te, 170)<br />-> true                                  | createTicketEntryTestCase()  |
+| *                                     | No                                      | Invalid       | T2(transactionId not exists in the DB) <br />-> false     | getTransactionByIdTestCase() |
+| No                                    | *                                       | Invalid       | T3(ticketEntry is null)<br />-> false                     | ''                           |
+
+
+
+### **Class *EZShopDB* - method *updateTransactionState***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the transactionId parameter
+- Validity of the state parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                               | Predicate |
+|-----------------------------------------|-----------|
+| Validity of the transactionId parameter | Yes       |
+|                                         | No        |
+| Validity of the state parameter         | Yes       |
+|                                         | No        |
+
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the transactionId parameter | Validity of the state parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case                  |
+|-----------------------------------------|---------------------------------|---------------|-----------------------------------------------------------|----------------------------------|
+| Yes                                     | Yes                             | Valid         | T1(170, "CLOSED")<br />-> true                            | updateTransactionStateTestCase() |
+| *                                       | No                              | Invalid       | T2(Null state) <br />-> false                             | ''                               |
+| No                                      | *                               | Invalid       | T3(Invalid transactionId)<br />-> false                   | ''                               |
+
 
 ### **Class *EZShopDB* - method *getClosedSaleTransactionById***
 
