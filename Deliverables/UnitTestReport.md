@@ -849,13 +849,13 @@ Version: 01
 
 **Criteria for method \*name\*:** 
 
-- There is a saleTransaction with a given ID in the database.
+- Validity of the Sale Transaction ID.
 
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
 | -------------------------------- | --------- |
-| There is a saleTransaction with a given ID | Yes       |
+| Validity of the Sale Transaction ID | Yes       |
 |                                  | No        |
 
 
@@ -870,22 +870,22 @@ Version: 01
 
 **Combination of predicates**:
 
-| There is a Sale Transaction with a given ID | Valid / Invalid | Description of the test case | JUnit test case        |
+| Is the saleTransactionId valid | Valid / Invalid | Description of the test case | JUnit test case        |
 | -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> True          | deleteSaletransaction() |
-| No                               | Invalid         | T2() -> True          | ''                     |
+| Yes                              | Valid           | T1() -> True          | startDeleteSaleTransactionTestCase() |
+| No                               | Invalid         | T2() -> False          | ''                     |
 
 ### **Class *EZShopDB* - method *getClosedSaleTransactionById***
 
 **Criteria for method \*name\*:** 
 
-- There are Orders in the database
+- Validity of the Sale Transaction ID.
 
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
 | -------------------------------- | --------- |
-| There are Orders in the database | Yes       |
+| Validity of the Sale Transaction ID | Yes       |
 |                                  | No        |
 
 
@@ -900,22 +900,22 @@ Version: 01
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| Validity of the Sale Transaction ID | Valid / Invalid | Description of the test case | JUnit test case        |
 | -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| Yes                              | Valid           | T1() -> SaleTransactionClass item          | getClosedSaleTransactionTestCase() |
+| No                               | Invalid         | T2() -> null           | ''                     |
 
 ### **Class *EZShopDB* - method *getProductEntriesByTransactionId***
 
 **Criteria for method \*name\*:** 
 
-- There are Orders in the database
+- Validity of the Sale Transaction ID.
 
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
 | -------------------------------- | --------- |
-| There are Orders in the database | Yes       |
+| Validity of the Sale Transaction ID | Yes       |
 |                                  | No        |
 
 
@@ -930,22 +930,22 @@ Version: 01
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| Validity of the Sale Transaction ID | Valid / Invalid | Description of the test case | JUnit test case        |
 | -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
+| Yes                              | Valid           | T1() -> List(TicketEntry)          | getProductEntriesByTransactionId() |
 | No                               | Invalid         | T2() -> Emptylist            | ''                     |
 
 ### **Class *EZShopDB* - method *startReturnTransaction***
 
 **Criteria for method \*name\*:** 
 
-- There are Orders in the database
+- Return Transaction item valid.
 
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
 | -------------------------------- | --------- |
-| There are Orders in the database | Yes       |
+| Return Transaction item valid | Yes       |
 |                                  | No        |
 
 
@@ -960,22 +960,22 @@ Version: 01
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| Return Transaction item valid | Valid / Invalid | Description of the test case | JUnit test case        |
 | -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| Yes                              | Valid           | T1() -> Return ID          | returnTransactionTestCase() |
+| No                               | Invalid         | T2() -> -1            | ''                     |
 
 ### **Class *EZShopDB* - method *deleteReturnTransaction***
 
 **Criteria for method \*name\*:** 
 
-- There are Orders in the database
+- Return Transaction ID valid.
 
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
 | -------------------------------- | --------- |
-| There are Orders in the database | Yes       |
+| Return Transaction ID valid | Yes       |
 |                                  | No        |
 
 
@@ -990,22 +990,22 @@ Version: 01
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| Return Transaction ID valid | Valid / Invalid | Description of the test case | JUnit test case        |
 | -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| Yes                              | Valid           | T1() -> true          | returnTransactionTestCase() |
+| No                               | Invalid         | T2() -> false            | ''                     |
 
 ### **Class *EZShopDB* - method *getReturnTransactionById***
 
 **Criteria for method \*name\*:** 
 
-- There are Orders in the database
+- Return Transaction ID valid.
 
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
 | -------------------------------- | --------- |
-| There are Orders in the database | Yes       |
+| Return Transaction ID valid | Yes       |
 |                                  | No        |
 
 
@@ -1020,22 +1020,22 @@ Version: 01
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| Return Transaction ID valid | Valid / Invalid | Description of the test case | JUnit test case        |
 | -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| Yes                              | Valid           | T1() -> ReturnTransactionClass item          | returnTransactionTestCase() |
+| No                               | Invalid         | T2() -> null           | ''                     |
 
 ### **Class *EZShopDB* - method *getPricePerUnit***
 
 **Criteria for method \*name\*:** 
 
-- There are Orders in the database
+- Product Code validity.
 
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
 | -------------------------------- | --------- |
-| There are Orders in the database | Yes       |
+| Product Code validity | Yes       |
 |                                  | No        |
 
 
@@ -1050,22 +1050,28 @@ Version: 01
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| Product Code validity | Valid / Invalid | Description of the test case | JUnit test case        |
 | -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| Yes                              | Valid           | T1() -> Unit price          | getPriceUnitTestCase() |
+| No                               | Invalid         | T2() -> 0            | ''                     |
 
 ### **Class *EZShopDB* - method *returnProduct***
 
 **Criteria for method \*name\*:** 
 
-- There are Orders in the database
+- Return ID validity.
+- Product Code present on Sale transaction.
+- Amount of the product less than amount present on Sale Transaction.
 
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
 | -------------------------------- | --------- |
 | There are Orders in the database | Yes       |
+|                                  | No        |
+| Valid product Code | Yes       |
+|                                  | No        |
+| Valid amount of return product | Yes       |
 |                                  | No        |
 
 
@@ -1080,10 +1086,10 @@ Version: 01
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| Are all the parameters valid | Valid / Invalid | Description of the test case | JUnit test case        |
 | -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| Yes                              | Valid           | T1() -> true          | returnProductTestCase() |
+| No                               | Invalid         | T2() -> false           | ''                     |
 
 ### **Class *EZShopDB* - method *getAmountonEntry***
 
