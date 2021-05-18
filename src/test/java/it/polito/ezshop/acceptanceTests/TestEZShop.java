@@ -1058,6 +1058,7 @@ public class TestEZShop {
 		
 		assertTrue(db.checkProductInSaleTransaction(170, "22345212"));
 		assertFalse(db.checkProductInSaleTransaction(170, "22345215"));
+		assertFalse(db.checkProductInSaleTransaction(171, "22345215"));
 		
 		assertTrue(db.updateReturnTransaction(12, 12, 10.15));
 		
