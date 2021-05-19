@@ -42,7 +42,6 @@ public class EZShopDB {
 				}
 			});
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 	}
 
@@ -56,8 +55,6 @@ public class EZShopDB {
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
-												// nulla
 			return false;
 		}
 
@@ -78,7 +75,6 @@ public class EZShopDB {
 			//If table is empty, gives id = 0
 			id = rs.getInt("tot");
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return id;
@@ -103,7 +99,6 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 			success = true;
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			success = false;
 		}
 		return success;
@@ -126,7 +121,6 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return exists;
@@ -144,7 +138,6 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -158,7 +151,6 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 			success = true;
 		} catch (SQLException e) {
-			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
 		}
 		return success;
 	}
@@ -179,7 +171,6 @@ public class EZShopDB {
 				userlist.add(user);
 			}
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return userlist;
@@ -197,7 +188,6 @@ public class EZShopDB {
 					rs.getString("role"));
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return user;
@@ -215,7 +205,6 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -229,7 +218,6 @@ public class EZShopDB {
 			pstmt.setInt(2, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 
@@ -250,7 +238,6 @@ public class EZShopDB {
 					rs.getString("role"));
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return user;
@@ -330,7 +317,6 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 	}
@@ -347,7 +333,6 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return exists;
@@ -369,7 +354,6 @@ public class EZShopDB {
 			pstmt.setInt(5, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 
@@ -397,7 +381,6 @@ public class EZShopDB {
 				productTypeList.add(product);
 			}
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return productTypeList;
@@ -415,7 +398,7 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+//			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -427,8 +410,6 @@ public class EZShopDB {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
-												// nulla
 			return false;
 		}
 		return true;
@@ -447,7 +428,6 @@ public class EZShopDB {
 					rs.getDouble("pricePerUnit"));
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return product;
@@ -479,7 +459,6 @@ public class EZShopDB {
 				productTypeList.add(product);
 			}
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return productTypeList;
@@ -494,7 +473,6 @@ public class EZShopDB {
 			ResultSet rs = pstmt.executeQuery();
 			qty = rs.getInt("quantity");
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 		
 		return qty;
@@ -527,7 +505,6 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -541,7 +518,6 @@ public class EZShopDB {
 			pstmt.setInt(2, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 
@@ -559,7 +535,7 @@ public class EZShopDB {
 			pstmt.setString(2, productCode);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+//			System.err.println(e.getMessage());
 			return false;
 		}
 
@@ -575,7 +551,7 @@ public class EZShopDB {
 			ResultSet rs = pstmt.executeQuery();
 			res = rs.getInt("tot");
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+//			System.err.println(e.getMessage());
 		}
 		
 		if(res==0)
@@ -596,7 +572,7 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+//			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -610,7 +586,7 @@ public class EZShopDB {
 			pstmt.setInt(2, productId);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+//			System.err.println(e.getMessage());
 			return false;
 		}
 		return true;
@@ -638,7 +614,7 @@ public class EZShopDB {
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+//			System.err.println(e.getMessage());
 			return false;
 		}
 		return true;
@@ -656,7 +632,7 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+//			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -668,7 +644,7 @@ public class EZShopDB {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
+//			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
 												// nulla
 			return false;
 		}
@@ -693,7 +669,7 @@ public class EZShopDB {
 			
 			order = new OrderClass(id, balanceId, productCode, pricePerUnit, quantity, status);
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+//			System.err.println(e.getMessage());
 			order = null;
 		}
 
@@ -719,7 +695,7 @@ public class EZShopDB {
 				orderList.add(order);
 			}
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+//			System.err.println(e.getMessage());
 		}
 
 		return orderList;
@@ -740,7 +716,7 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+//			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -755,7 +731,6 @@ public class EZShopDB {
 			pstmt.setInt(2, orderId);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		return true;
@@ -773,7 +748,6 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -793,7 +767,6 @@ public class EZShopDB {
 			pstmt.setInt(2, orderId);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		return true;
@@ -814,7 +787,6 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -828,7 +800,6 @@ public class EZShopDB {
 			pstmt.setInt(2, orderId);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		return true;	
@@ -847,7 +818,6 @@ public class EZShopDB {
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		return true;
@@ -865,7 +835,6 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -877,8 +846,6 @@ public class EZShopDB {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
-												// nulla
 			return false;
 		}
 
@@ -893,7 +860,6 @@ public class EZShopDB {
 				pstmt.setInt(2, id);
 				pstmt.executeUpdate();
 			} catch (SQLException e) {
-				System.err.println(e.getMessage());
 				return false;
 			}
 		} else if (newCustomerCard == "") {
@@ -903,7 +869,6 @@ public class EZShopDB {
 				pstmt.setInt(2, id);
 				pstmt.executeUpdate();
 			} catch (SQLException e) {
-				System.err.println(e.getMessage());
 				return false;
 			}
 		} else {
@@ -914,7 +879,6 @@ public class EZShopDB {
 				pstmt.setInt(3, id);
 				pstmt.executeUpdate();
 			} catch (SQLException e) {
-				System.err.println(e.getMessage());
 				return false;
 			}
 		}
@@ -929,7 +893,6 @@ public class EZShopDB {
 			pstmt.setString(1, cardId);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		return true;
@@ -947,7 +910,6 @@ public class EZShopDB {
 					rs.getInt("points"));
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return customer;
@@ -969,7 +931,6 @@ public class EZShopDB {
 				customerlist.add(customer);
 			}
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return customerlist;
@@ -987,7 +948,6 @@ public class EZShopDB {
 				return false;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}	
 		
@@ -1002,7 +962,6 @@ public class EZShopDB {
 				return false;
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -1013,7 +972,6 @@ public class EZShopDB {
 			pstmt.setInt(2, customerId);
 			pstmt.executeUpdate();			
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		
@@ -1029,7 +987,6 @@ public class EZShopDB {
 			points = rs.getInt("points");
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return null;
 		}
 		return points;
@@ -1045,7 +1002,6 @@ public class EZShopDB {
 			if (rs.getInt("c") == 0)
 				return false;
 			} catch (SQLException e) {
-				System.err.println(e.getMessage());
 				return false;
 		}
 		
@@ -1055,7 +1011,6 @@ public class EZShopDB {
 			pstmt.setString(2, customerCard);
 			pstmt.executeUpdate();			
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		return true;
@@ -1074,7 +1029,6 @@ public class EZShopDB {
 			pstmt.setString(5, datesplit[1]);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return -1;
 		}
 
@@ -1095,14 +1049,13 @@ public class EZShopDB {
 					rs.getString("state"));
 
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return transaction;
 	}
 
 	public boolean applyDiscountRateToProduct(Integer transactionId, String productCode, Double discountRate) {
-		boolean flag;
+		boolean flag=false;
 		
 		if(discountRate < 0 || discountRate > 1)
 			return false;
@@ -1115,7 +1068,6 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 			flag = true;
 		} catch (SQLException e) {
-			flag = false;
 		}
 
 		return flag;
@@ -1245,7 +1197,6 @@ public class EZShopDB {
     	String sql = "SELECT productEntries.id AS id,productEntries.productCode as productCode,productTypes.productDescription AS productDescription,productEntries.amount AS amount,productTypes.pricePerUnit AS pricePerUnit"
                 + " FROM productTypes JOIN productEntries ON productTypes.barCode=productEntries.productCode WHERE productEntries.transactionId = ?";
         List<TicketEntry> productslist = new ArrayList<>();
-        System.out.println(sql);
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, transactionId);
             ResultSet rs = pstmt.executeQuery();
@@ -1314,7 +1265,6 @@ public class EZShopDB {
                     rs.getInt("quantity"), rs.getDouble("returnValue"), rs.getString("state"));
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
 
         return returntransaction;
@@ -1372,7 +1322,6 @@ public class EZShopDB {
             pstmt.setString(2, productCode);
             ResultSet rs = pstmt.executeQuery();
             result = rs.getDouble("total");
-            System.out.println(result);
         } catch (SQLException e) {
         }
     	return result;
