@@ -6,10 +6,13 @@ Date: 12/05/2021
 
 Version: 01
 
+# Notes
+
+The credit cards for the application testing were pre-set in the database file from the delivered document `creditcards.txt`.
+
 # Contents
 
 - [Black Box Unit Tests](#black-box-unit-tests)
-
 
 
 
