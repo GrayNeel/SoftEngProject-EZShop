@@ -1397,7 +1397,6 @@ public class EZShopDB {
             	exists = true;
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
     	return exists;
     }
@@ -1412,7 +1411,6 @@ public class EZShopDB {
 			pstmt.setInt(4, returnId);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 		
