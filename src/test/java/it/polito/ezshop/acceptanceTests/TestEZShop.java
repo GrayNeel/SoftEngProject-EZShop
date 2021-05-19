@@ -663,36 +663,44 @@ public class TestEZShop {
 
 	@Test
 	public void addAndDeleteCustomerTestCase() {
+		db.resetDB("customers");
 		CustomerClass c = new CustomerClass(18,  "Stefano", "1478973214", 178);
+		CustomerClass cnull = null;
 		assertTrue(db.defineCustomer(c));		
 		assertFalse(db.defineCustomer(c));
-		assertTrue(db.deleteCustomer(18));
-		//assertFalse(db.deleteCustomer(-1));	
+		assertFalse(db.defineCustomer(cnull));
+		
+		assertTrue(db.deleteCustomer(18));		
+		assertFalse(db.deleteCustomer(440));
 	}
 	
 	@Test
 	public void modifyCustomerTestCase() {
-		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
+		db.resetDB("customers");
+		CustomerClass c = new CustomerClass(12,  "Giacomo", "1423673214", 122);
 		db.defineCustomer(c);
-		//assertFalse(db.updateCustomer(-1, "Giovanni", "1423373228"));	
-		assertTrue(db.updateCustomer(12, "Giovanni", ""));
+	
+		assertTrue(db.updateCustomer(12, "Carlo", "1423373228"));
 		assertTrue(db.updateCustomer(12, "Giovanni", "1423373228"));		
+		assertTrue(db.updateCustomer(12, "Giovanni", ""));
 		assertTrue(db.updateCustomer(12, "Giovanni", null));
-		db.deleteCustomer(12);	
+		
 	}
 	
 	@Test
 	public void getCustomerByIdTestCase() {
+		db.resetDB("customers");
 		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
 		db.defineCustomer(c);
 		
 		assertNotNull(db.getCustomerById(12));
 		assertNull(db.getCustomerById(-1));
-		db.deleteCustomer(12);
+		
 	}
 	
 	@Test
 	public void getAllCustomerTestCase() {
+		db.resetDB("customers");
 		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
 		
 		db.defineCustomer(c);
@@ -708,56 +716,57 @@ public class TestEZShop {
 		assertTrue(db.getAllCustomers().isEmpty());
 		
 		for(Customer c2 : clist) {
-			db.defineCustomer((CustomerClass) c2); //potrei dover cambiare parametro defineCustomer
+			db.defineCustomer((CustomerClass) c2); 
 		}
-		db.resetDB("customers");
+		
 	}
 	
 	@Test
 	public void createCardTestCase() {		
-		assertTrue(db.createCard("2400000000"));
-		assertFalse(db.createCard("2400000000"));
 		db.resetDB("cards");
+		assertTrue(db.createCard("2400000000"));
+		assertFalse(db.createCard("2400000000"));		
 	}
 	
 	@Test
 	public void attachCardToCustomerTestCase() {
+		db.resetDB("customers");
+		db.resetDB("cards");
 		CustomerClass c = new CustomerClass(12,  "Carlo", "1423673214", 122);
 		db.defineCustomer(c);
 		db.createCard("2000000000");
 		
 		
-		assertTrue(db.attachCardToCustomer("2000000000", 12));
+		assertTrue(db.attachCardToCustomer("2000000000", 12));		
+		assertFalse(db.attachCardToCustomer("8000000000", 12));
 		db.deleteCustomer(12);
-		assertFalse(db.attachCardToCustomer("2000000000", 14));
-		//assertFalse(db.attachCardToCustomer("", -1));
-		
+		assertFalse(db.attachCardToCustomer("2000000000", 14));	
 	}
 	
 	@Test
-	public void updateAndgetCardPointsTestCase() {		
+	public void updateAndgetCardPointsTestCase() {	
+		db.resetDB("cards");
 		db.createCard("1234567890");		
 		db.updateCardPoints("1234567890", 122);
-		
-		
-		assertFalse(db.getCardPoints("1234567890") == 1022);
-		assertTrue(db.getCardPoints("1234567890") == 122);
-		
-		db.resetDB("cards");		
+		assertFalse(db.updateCardPoints("123", 122));		
+		assertTrue(db.updateCardPoints("1234567890", 122));			
+				
+		assert(db.getCardPoints("1234567890") == 122);
+		assertNull(db.getCardPoints(""));			
 	}	
 	
 	@Test
 	public void createTicketEntryTestCase() {
-		
+		db.resetDB("productEntries");		
 		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);		
-		assertTrue(db.createTicketEntry(te,170));					
-	}
-	
-	
-/////////////////////////////////////// Marco C.
+		assertTrue(db.createTicketEntry(te,170));		
+		assertFalse(db.createTicketEntry(null,170));	
+	}	
+
 	
 	@Test
 	public void getterAndSetterBalanceOperationTestCase() {
+		db.resetDB("balanceOperations");
 		BalanceOperation bo = new BalanceOperationClass(10, LocalDate.of(2020, 1, 8), 32.5, "type");
 		assertNotNull(bo);
 		
@@ -780,7 +789,8 @@ public class TestEZShop {
 	}
 	
 	@Test
-	public void getterAndSetterCreditCardTestCase() {
+	public void getterAndSetterCreditCardTestCase() {	
+		db.resetDB("creditCards");
 		CreditCardClass cc = new CreditCardClass("4485370086510891", 440.5);
 		assertNotNull(cc);
 		
@@ -794,7 +804,9 @@ public class TestEZShop {
 	}
 	
 	@Test
-	public void getterAndSetterSaleTransactionTestCase() {		
+	public void getterAndSetterSaleTransactionTestCase() {
+		db.resetDB("saleTransactions");
+		db.resetDB("productEntries");
 		List<TicketEntry> productList = new ArrayList<>();
 		String[] date = (new Date()).toString().split(" ");
 		SaleTransactionClass st = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
@@ -837,7 +849,8 @@ public class TestEZShop {
 	
 	
 	@Test
-	public void getterAndSetterticketEntryTestCase() {			
+	public void getterAndSetterticketEntryTestCase() {	
+		db.resetDB("productEntries");
 		TicketEntryClass te = new TicketEntryClass(2, "barcode", "desc", 32, 20.0, 3, 0.2);
 		assertNotNull(te);
 		
@@ -873,7 +886,8 @@ public class TestEZShop {
 	
 	
 	@Test
-	public void getterAndSetterReturnTransactionTestCase() {		
+	public void getterAndSetterReturnTransactionTestCase() {
+		db.resetDB("returnTransactions");
 		List<ProductType> ptlist = new ArrayList<>();
 		
 		ReturnTransactionClass rt = new ReturnTransactionClass(12, 23, 44, 3.5, "state");
@@ -907,6 +921,7 @@ public class TestEZShop {
 	
 	@Test
 	public void getterAndSetterProductReturnTestCase() {
+		db.resetDB("productReturns");
 		ProductReturnClass rt = new ProductReturnClass(4, 6, "barcode", 44, 2.2);
 		assertNotNull(rt);
 		
@@ -952,11 +967,9 @@ public class TestEZShop {
 		assertEquals(-1,db.startSaleTransaction(saleTransaction)+0);
 		
 		assertTrue(db.deleteSaleTransaction(170));
-//		assertFalse(db.deleteSaleTransaction());
-		
-		
+		assertFalse(db.deleteSaleTransaction(44));		
 	}
-//	
+
 	@Test
 	public void getTransactionByIdTestCase() {
 		db.resetDB("saleTransactions");
@@ -964,14 +977,10 @@ public class TestEZShop {
 		String[] date = (new Date()).toString().split(" ");
 		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
 		
-		assertEquals(170,db.startSaleTransaction(saleTransaction)+0);
-		assertEquals(-1,db.startSaleTransaction(saleTransaction)+0);
+		db.startSaleTransaction(saleTransaction);		
 				
 		assertNotNull(db.getSaleTransactionById(170));
-		assertNull(db.getSaleTransactionById(180));
-		
-		assertTrue(db.deleteSaleTransaction(170));
-
+		assertNull(db.getSaleTransactionById(180));	
 		
 		db.resetDB("saleTransactions");
 	}
@@ -983,23 +992,24 @@ public class TestEZShop {
 		String[] date = (new Date()).toString().split(" ");
 		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
 		
-		assertEquals(170,db.startSaleTransaction(saleTransaction)+0);
-		assertEquals(-1,db.startSaleTransaction(saleTransaction)+0);
+		db.startSaleTransaction(saleTransaction);
+		db.startSaleTransaction(saleTransaction);
 				
 		assertTrue(db.applyDiscountRate(170,0.2));
-//		assertFalse(db.applyDiscountRate(180,0.2));
+		assertFalse(db.applyDiscountRate(170,-1.5));
 		
-		assertTrue(db.deleteSaleTransaction(170));
+		db.deleteSaleTransaction(170);
 	}	
 	
 	
 	@Test
 	public void applyDiscountToProductTestCase() {
 		db.resetDB("productEntries");
-		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);
+		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);		
+		db.createTicketEntry(te,170);
 		
-		assertTrue(db.createTicketEntry(te,170));
 		assertTrue(db.applyDiscountRateToProduct(170, "22345212", 0.2));
+		assertFalse(db.applyDiscountRateToProduct(170, "22345212",-1.5));
 					
 	}
 	
@@ -1010,9 +1020,10 @@ public class TestEZShop {
 		List<TicketEntry> productList = new ArrayList<>();
 		String[] date = (new Date()).toString().split(" ");
 		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
-		assertEquals(170,db.startSaleTransaction(saleTransaction)+0);
+		db.startSaleTransaction(saleTransaction);
 		assertTrue(db.updateTransactionState(170, "CLOSED"));
-//		assertFalse(db.updateTransactionState(180, "CLOSED"));
+		assertFalse(db.updateTransactionState(180, "CLOSED"));
+		assertFalse(db.updateTransactionState(180, null));
 	}
 //	
 	@Test
