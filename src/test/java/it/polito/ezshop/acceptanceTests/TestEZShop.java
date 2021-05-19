@@ -19,63 +19,6 @@ import org.junit.Test;
 public class TestEZShop {
 	EZShopDB db = new EZShopDB();
 	
-	@Test
-	public void test() {
-		
-		
-/////////////////////////////////////// Pablo
-		
-/////////////////////////////////////// Marco S.
-//		validateProductCodeTestCase();
-//		getterAndSetterProductTypeTestCase();
-//		getterAndSetterOrderTestCase();
-//		addAndDeleteProductTypeTestCase();
-//		checkExistingProductTypeTestCase();
-//		updateProductTypeTestCase();
-//		getAllProductTypesTestCase();
-//		getProductTypeByBarCodeTestCase();
-//		getProductTypesByDescriptionTestCase();
-//		getQuantityByProductTypeIdTestCase();
-//		updateQuantityByProductTypeIdTestCase();
-//		isLocationUsedTestCase();
-//		updateProductTypeLocationTestCase();
-//		
-//		addAndIssueOrderThenDeleteTestCase();
-//		setBalanceIdInOrderTestCase();
-//		payOrderByIdTestCase();
-//		recordOrderArrivalByIdTestCase();
-//		getAllOrdersTestCase();
-
-/////////////////////////////////////// Francesco
-
-		/*getterAndSetterCustomerTestCase();		
-		
-		addAndDeleteCustomerTestCase();
-		modifyCustomerTestCase();
-		getCustomerByIdTestCase();
-		createCardTestCase();
-		attachCardToCustomerTestCase();
-		updateAndgetCardPointsTestCase();*/
-
-		
-/////////////////////////////////////// Marco C.
-//		validateClosedSaleTransaction();
-//		validateGetProductEntries();
-//		validateDeleteSaleTransaction();
-//		validateDeleteReturnTransaction();
-//		validateStartReturnTransaction();
-//		validateGetReturnTransaction();
-		
-
-		
-		
-		
-		
-		
-	}
-	
-	
-	
 /////////////////////////////////////////// Testing Functions
 	
 /////////////////////////////////////// Pablo
@@ -102,9 +45,9 @@ public class TestEZShop {
 		List<ProductType> emptyptlist = db.getAllProductTypes();
 		assertTrue(emptyptlist.isEmpty());
 		
-		for(ProductType prod : ptlist) {
-			db.addProductType(prod);
-		}
+//		for(ProductType prod : ptlist) {
+//			db.addProductType(prod);
+//		}
 		
 		List<Order> orderlist = db.getAllOrders();
 		assertNotNull(orderlist);
@@ -1044,6 +987,14 @@ public class TestEZShop {
 		assertNull(db.getClosedSaleTransactionById(171));
 		assertNotNull(db.getClosedSaleTransactionById(170));
 		
+	}
+	
+	@Test
+	public void getProductEntriesByTransactionIdTestCase() {
+		db.resetDB("productEntries");
+		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);
+		assertNotEquals(0,db.getProductEntriesByTransactionId(170).size());
+		assertEquals(0,db.getProductEntriesByTransactionId(172).size());
 	}
 	
 	@Test
