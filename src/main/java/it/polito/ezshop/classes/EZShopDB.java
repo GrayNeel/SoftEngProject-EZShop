@@ -1245,11 +1245,10 @@ public class EZShopDB {
     	String sql = "SELECT productEntries.id AS id,productEntries.productCode as productCode,productTypes.productDescription AS productDescription,productEntries.amount AS amount,productTypes.pricePerUnit AS pricePerUnit"
                 + " FROM productTypes JOIN productEntries ON productTypes.barCode=productEntries.productCode WHERE productEntries.transactionId = ?";
         List<TicketEntry> productslist = new ArrayList<>();
-
+        System.out.println(sql);
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, transactionId);
             ResultSet rs = pstmt.executeQuery();
-
             while (rs.next()) {
                 Integer id = rs.getInt("id");
                 String productCode = rs.getString("productCode");
@@ -1283,7 +1282,6 @@ public class EZShopDB {
 
                 pstmt.executeUpdate();
             } catch (SQLException e) {
-                System.err.println(e.getMessage());
             }
             idReturn = returnTransaction.getId();
             return idReturn;

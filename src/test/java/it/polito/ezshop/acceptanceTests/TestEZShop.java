@@ -974,6 +974,9 @@ public class TestEZShop {
 	@Test
 	public void getClosedSaleTransactionTestCase() {
 		db.resetDB("saleTransactions");
+		db.resetDB("productTypes");
+		ProductType pt = new ProductTypeClass(1741, 20, "4-4-4", "test", "this is a test", "22345212", 3.22);
+		db.addProductType(pt);
 		List<TicketEntry> productList = new ArrayList<>();
 		String[] date = (new Date()).toString().split(" ");
 		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
@@ -992,7 +995,11 @@ public class TestEZShop {
 	@Test
 	public void getProductEntriesByTransactionIdTestCase() {
 		db.resetDB("productEntries");
+		db.resetDB("productTypes");
+		ProductType pt = new ProductTypeClass(1741, 20, "4-4-4", "test", "this is a test", "22345212", 3.22);
+		db.addProductType(pt);
 		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);
+		assertTrue(db.createTicketEntry(te,170));
 		assertNotEquals(0,db.getProductEntriesByTransactionId(170).size());
 		assertEquals(0,db.getProductEntriesByTransactionId(172).size());
 	}
