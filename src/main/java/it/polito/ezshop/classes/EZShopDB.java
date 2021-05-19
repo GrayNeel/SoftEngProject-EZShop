@@ -1306,7 +1306,7 @@ public class EZShopDB {
             pstmt.setInt(1, transactionId);
             pstmt.setString(2, productCode);
             ResultSet rs = pstmt.executeQuery();
-            result = rs.getInt("total");
+            result = rs.getDouble("total");
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
