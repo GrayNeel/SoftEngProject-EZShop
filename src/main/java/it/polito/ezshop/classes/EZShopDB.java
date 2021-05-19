@@ -50,7 +50,9 @@ public class EZShopDB {
 	}
 	
 	public boolean resetDB(String table) {		
-		
+		if(table.equals("creditCards")) {
+			return true;
+		}
 		String sql = "DELETE FROM " + table;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {			
 			pstmt.executeUpdate();
