@@ -2140,16 +2140,11 @@ Version: 01
 |CreditCard|getterAndSetterCreditCardTestCase()|
 
 ### Code coverage report
+![](Coverage_images/coverage.png)
 
-    <Add here the screenshot report of the statement and branch coverage obtained using
-    the Eclemma tool. >
 
 
 ### Loop coverage analysis
-
-    <Identify significant loops in the units and reports the test cases
-    developed to cover zero, one or multiple iterations >
-
 |Unit name | Loop rows | Number of iterations | JUnit test case |
 |---|---|---|---|
 |getAllProductTypes|12|0|loopCoverageTestCase()|
