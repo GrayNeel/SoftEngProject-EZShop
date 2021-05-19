@@ -2061,13 +2061,13 @@ Version: 01
 
 **Criteria for method \*name\*:** 
 
-- There are Orders in the database
+- Card Number is valid.
 
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
 | -------------------------------- | --------- |
-| There are Orders in the database | Yes       |
+| Card Number is valid | Yes       |
 |                                  | No        |
 
 
@@ -2082,22 +2082,22 @@ Version: 01
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| Credit Card number is valid | Valid / Invalid | Description of the test case | JUnit test case        |
 | -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| Yes                              | Valid           | T1() -> Card item         | getCreditCardTestCase() |
+| No                               | Invalid         | T2() -> null            | ''                     |
 
 ### **Class *EZShopDB* - method *updateBalanceInCreditCard***
 
 **Criteria for method \*name\*:** 
 
-- There are Orders in the database
+- Credit Card number is valid.
 
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
 | -------------------------------- | --------- |
-| There are Orders in the database | Yes       |
+| Credit Card number is valid | Yes       |
 |                                  | No        |
 
 
@@ -2112,10 +2112,10 @@ Version: 01
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
+| Credit Card number is valid | Valid / Invalid | Description of the test case | JUnit test case        |
 | -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| Yes                              | Valid           | T1() -> true          | updateBalanceTestCase() |
+| No                               | Invalid         | T2() -> false            | ''                     |
 
 # White Box Unit Tests
 

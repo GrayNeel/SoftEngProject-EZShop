@@ -1217,7 +1217,7 @@ public class TestEZShop {
 	@Test
 	public void updateBalanceTestCase() {
 		
-		assertNotNull(db.updateBalanceInCreditCard("4485370086510891",170.0));
+		assertTrue(db.updateBalanceInCreditCard("4485370086510891",170.0));
 //		assertNull(db.getCreditCardByCardNumber("1209219201241"));	
 		
 	}
