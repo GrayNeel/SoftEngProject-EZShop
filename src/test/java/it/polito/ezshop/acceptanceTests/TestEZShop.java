@@ -1065,7 +1065,7 @@ public class TestEZShop {
 	@Test
 	public void getTotalOnEntryTestCase() {
 		db.resetDB("productEntries");
-		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,5.0);
+		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.2);
 		assertTrue(db.createTicketEntry(te,170));
 		assertNotEquals(0.0,db.getTotalOnEntry(170, "22345212"),0.01);
 		assertEquals(0.0,db.getTotalOnEntry(171, "22345212"),0.01);

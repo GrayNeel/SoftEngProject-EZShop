@@ -1115,7 +1115,6 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 			flag = true;
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			flag = false;
 		}
 
@@ -1140,17 +1139,18 @@ public class EZShopDB {
 	}
 	
 	public boolean createTicketEntry(TicketEntry ticketEntry, Integer transactionId) {	
-		if(ticketEntry == null)
+		if(ticketEntry == null || ticketEntry.getDiscountRate() < 0 || ticketEntry.getDiscountRate() > 1)
 			return false;
 		Integer id = getLastId("productEntries");
-		String sql = "INSERT INTO productEntries(id, productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,?,0.0,?,?,?)";
+		String sql = "INSERT INTO productEntries(id, productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,?,?,?,?,?)";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, id+1);
 			pstmt.setString(2, ticketEntry.getBarCode());
 			pstmt.setInt(3, ticketEntry.getAmount());
-			pstmt.setInt(4, transactionId);
-			pstmt.setDouble(5, ticketEntry.getPricePerUnit());
-			pstmt.setDouble(6, ticketEntry.getDiscountRate());
+			pstmt.setDouble(4, ticketEntry.getAmount()*ticketEntry.getPricePerUnit()*(1-ticketEntry.getDiscountRate()));
+			pstmt.setInt(5, transactionId);
+			pstmt.setDouble(6, ticketEntry.getPricePerUnit());
+			pstmt.setDouble(7, ticketEntry.getDiscountRate());
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -1260,7 +1260,6 @@ public class EZShopDB {
                 productslist.add(productEntry);
             }
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
         
         return productslist;
@@ -1298,7 +1297,6 @@ public class EZShopDB {
             pstmt.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
 
         return success;
@@ -1330,7 +1328,6 @@ public class EZShopDB {
             ResultSet rs = pstmt.executeQuery();
             result= rs.getDouble("pricePerUnit");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
         return result;
     }
@@ -1347,7 +1344,6 @@ public class EZShopDB {
             pstmt.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
         // UPDATE state of returnTransaction
 
@@ -1364,7 +1360,6 @@ public class EZShopDB {
             result = rs.getInt("amount");
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
     	return result;
     }
@@ -1377,9 +1372,8 @@ public class EZShopDB {
             pstmt.setString(2, productCode);
             ResultSet rs = pstmt.executeQuery();
             result = rs.getDouble("total");
-
+            System.out.println(result);
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
     	return result;
     }
@@ -1425,7 +1419,6 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 			success = true;
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
     	}
 		
 		return success;
@@ -1443,7 +1436,6 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 			flag = true;
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
     	}
 		return flag;
     }
@@ -1465,7 +1457,6 @@ public class EZShopDB {
 				returnlist.add(returnEntry);
 			}
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
 		return returnlist;
@@ -1479,7 +1470,6 @@ public class EZShopDB {
             pstmt.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
 
         return success;
@@ -1495,7 +1485,6 @@ public class EZShopDB {
             pstmt.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
 
         return success;
@@ -1514,7 +1503,6 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 			success = true;
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 
         return success;
@@ -1526,7 +1514,6 @@ public class EZShopDB {
     	try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 				total = rs.getDouble("total");
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
     	return total;
     }
@@ -1561,7 +1548,6 @@ public class EZShopDB {
 			ResultSet rs = pstmt.executeQuery();
 			creditCard = new CreditCardClass(rs.getString("creditCardNumber"), rs.getDouble("balance"));
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
 		return creditCard;
 	}
@@ -1575,7 +1561,6 @@ public class EZShopDB {
             pstmt.executeUpdate();
             success = true;
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
         return success;
 	}
