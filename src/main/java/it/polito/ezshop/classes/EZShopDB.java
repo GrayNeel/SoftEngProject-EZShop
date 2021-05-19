@@ -1123,7 +1123,7 @@ public class EZShopDB {
 	}
 
 	public boolean applyDiscountRate(Integer transactionId, Double discountRate) {
-		boolean flag;
+		boolean flag=false;
 		if(discountRate < 0 || discountRate > 1)
 			return false;				
 
@@ -1134,8 +1134,6 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 			flag = true;
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-			flag = false;
 		}
 
 		return flag;
@@ -1156,7 +1154,6 @@ public class EZShopDB {
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
 		}
 
@@ -1176,19 +1173,17 @@ public class EZShopDB {
 			if (rs.getInt("st") == 0)
 				return false;
 			} catch (SQLException e) {
-				System.err.println(e.getMessage());
 				return false;
 		}
 				
 		String sql = "UPDATE saleTransactions SET state=? WHERE id=?";
     		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setInt(1, transactionId);
-			pstmt.setString(2, state);
+			pstmt.setString(1, state);
+			pstmt.setInt(2, transactionId);
 			pstmt.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 			return false;
     	}
     }
@@ -1204,7 +1199,6 @@ public class EZShopDB {
     		if (rs.getInt("sn") == 0)
     			return false;
     		} catch (SQLException e) {
-    			System.err.println(e.getMessage());
     			return false;
     	}
     			
@@ -1213,7 +1207,6 @@ public class EZShopDB {
             pstmt.setInt(1, transactionId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
             return false;
         }
         
@@ -1222,7 +1215,6 @@ public class EZShopDB {
             pstmt.setInt(1, transactionId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
             return false;
         }
 
@@ -1244,8 +1236,6 @@ public class EZShopDB {
                     rs.getString("time"), rs.getDouble("price"), rs.getString("paymentType"),
                     rs.getDouble("discountRate"), products , rs.getString("state"));
         } catch (SQLException e) {
-        	System.err.println(rs);
-            System.err.println(e.getMessage());
         }
 
         return saletransaction;
@@ -1563,7 +1553,6 @@ public class EZShopDB {
 				operations.add(operation);
 			}
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
 		}
     	return operations;
     }

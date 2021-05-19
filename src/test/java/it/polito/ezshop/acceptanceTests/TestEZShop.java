@@ -790,7 +790,6 @@ public class TestEZShop {
 	
 	@Test
 	public void getterAndSetterCreditCardTestCase() {	
-		db.resetDB("creditCards");
 		CreditCardClass cc = new CreditCardClass("4485370086510891", 440.5);
 		assertNotNull(cc);
 		
@@ -1021,11 +1020,14 @@ public class TestEZShop {
 		String[] date = (new Date()).toString().split(" ");
 		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
 		db.startSaleTransaction(saleTransaction);
-		assertTrue(db.updateTransactionState(170, "CLOSED"));
 		assertFalse(db.updateTransactionState(180, "CLOSED"));
 		assertFalse(db.updateTransactionState(180, null));
+		assertTrue(db.updateTransactionState(170, "CLOSED"));
+		SaleTransactionClass transaction = db.getSaleTransactionById(170);
+		assertNotNull(transaction);
+		assertEquals("CLOSED",transaction.getState());
 	}
-//	
+	
 	@Test
 	public void getClosedSaleTransactionTestCase() {
 		db.resetDB("saleTransactions");
@@ -1052,7 +1054,7 @@ public class TestEZShop {
 		String[] date = (new Date()).toString().split(" ");
 		SaleTransactionClass saleTransaction = new SaleTransactionClass(170,date[0],date[1],0.0,"",0.0,productList,"OPEN");
 		TicketEntry te = new TicketEntryClass(132,"22345212","test description",10,1.50,170,0.0);
-//		
+		
 		
 		db.createTicketEntry(te,170);
 		assertEquals(170,db.startSaleTransaction(saleTransaction)+0);
@@ -1218,7 +1220,7 @@ public class TestEZShop {
 	public void updateBalanceTestCase() {
 		
 		assertTrue(db.updateBalanceInCreditCard("4485370086510891",170.0));
-//		assertNull(db.getCreditCardByCardNumber("1209219201241"));	
+		assertNull(db.getCreditCardByCardNumber("1209219201241"));	
 		
 	}
 	
