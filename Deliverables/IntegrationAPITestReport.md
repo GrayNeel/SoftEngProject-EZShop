@@ -1,6 +1,6 @@
 # Integration and API Test Documentation
 
-Authors:
+Authors: Group 38
 
 Date:
 
@@ -8,7 +8,7 @@ Version:
 
 # Contents
 
-- [Dependency graph](#dependency graph)
+- [Dependency graph](#dependency-graph)
 
 - [Integration approach](#integration)
 
