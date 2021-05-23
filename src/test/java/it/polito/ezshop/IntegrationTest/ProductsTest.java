@@ -8,6 +8,8 @@ import it.polito.ezshop.data.ProductType;
 import it.polito.ezshop.exceptions.*;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -107,15 +109,6 @@ public class ProductsTest {
 	
 	@Test
 	public void getAllProductTypesTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
-	    /**
-	     * This method returns the list of all registered product types. It can be invoked only after a user with role "Administrator",
-	     * "ShopManager" or "Cashier" is logged in.
-	     *
-	     * @return a list containing all saved product types
-	     *
-	     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-	     */
-	    //public List<ProductType> getAllProductTypes() throws UnauthorizedException;
 		db.resetDB("productTypes");
 		ezShop.login("admin","strong");
 		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
@@ -126,5 +119,53 @@ public class ProductsTest {
 	    ezShop.login("admin","strong");
 	    assert(ezShop.getAllProductTypes().size() == 2);
 	    ezShop.logout();
+	}
+	
+	@Test
+	public void getProductTypeByBarCodeTestCase() throws InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidUsernameException, InvalidPasswordException {
+		/**
+	     * This method returns a product type with given barcode. It can be invoked only after a user with role "Administrator"
+	     * or "ShopManager" is logged in.
+	     *
+	     * @param barCode the unique barCode of a product
+	     *
+	     * @return the product type with given barCode if present, null otherwise
+	     *
+	     * @throws InvalidProductCodeException if barCode is not a valid bar code, if is it empty or if it is null
+	     */
+	    //public ProductType getProductTypeByBarCode(String barCode) throws InvalidProductCodeException, UnauthorizedException;
+		db.resetDB("productTypes");
+		ezShop.login("admin","strong");
+		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+	    ezShop.logout();
+	    
+	    assertThrows(UnauthorizedException.class, () -> ezShop.getProductTypeByBarCode("12345670"));
+	    ezShop.login("admin","strong");
+	    
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.getProductTypeByBarCode(""));
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.getProductTypeByBarCode(null));
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.getProductTypeByBarCode("12345679"));
+	    
+	    assertNull(ezShop.getProductTypeByBarCode("860004804109"));
+	    
+	    assertNotNull(ezShop.getProductTypeByBarCode("12345670"));
+	    
+	    ezShop.logout();
+	}
+	
+	@Test
+	public void getProductTypesByDescriptionTestCase() {
+		/**
+	     * This method returns a list of all products with a description containing the string received as parameter. It can be invoked only after a user with role "Administrator"
+	     * or "ShopManager" is logged in.
+	     *
+	     * @param description the description (or part of it) of the products we are searching for.
+	     *                    Null should be considered as the empty string.
+	     *
+	     * @return a list of products containing the requested string in their description
+	     *
+	     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+	     */
+	    //public List<ProductType> getProductTypesByDescription(String description) throws UnauthorizedException;
 	}
 }

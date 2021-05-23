@@ -275,9 +275,13 @@ public class EZShop implements EZShopInterface {
     public ProductType getProductTypeByBarCode(String barCode) throws InvalidProductCodeException, UnauthorizedException {
 
     	
-    	if(barCode == null || barCode.length() == 0  || !db.checkExistingProductType(barCode) || !ProductTypeClass.validateProductCode(barCode)) {
+    	if(barCode == null || barCode.length() == 0 || !ProductTypeClass.validateProductCode(barCode)) {
     		throw new InvalidProductCodeException();    		
     	} 	  
+    	
+    	if(!db.checkExistingProductType(barCode)) {
+    		return null;
+    	}
     	
     	User user = this.loggedUser;
     	
