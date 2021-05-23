@@ -132,7 +132,6 @@ public class OrdersTest {
 	    assertThrows(InvalidOrderIdException.class, () -> ezShop.payOrder(-5));
 	    
 	    //Order not issued/ordered
-	    System.out.println(order2);
 	    assertFalse(ezShop.payOrder(order2));
 	    assertFalse(ezShop.payOrder(200));
 	    
@@ -207,7 +206,7 @@ public class OrdersTest {
 	}
 	
 	@Test
-	public void getAllOrdersTestCase() {
+	public void getAllOrdersTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidQuantityException, InvalidOrderIdException, InvalidLocationException, InvalidProductIdException {
 		 /**
 	     * This method return the list of all orders ISSUED, ORDERED and COMLPETED.
 	     * It can be invoked only after a user with role "Administrator" or "ShopManager" is logged in.
@@ -217,5 +216,37 @@ public class OrdersTest {
 	     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
 	     */
 	    //public List<Order> getAllOrders() throws UnauthorizedException;
+		db.resetDB("productTypes");
+		db.resetDB("orders");
+		db.resetDB("balanceOperations");
+		ezShop.login("admin","strong");
+		Integer productId = ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		ezShop.updatePosition(productId, "1-1-1");
+		
+		BalanceOperation balOp = new BalanceOperationClass(1,LocalDate.now(),55,"CREDIT"); 
+    	db.recordBalanceOperation(balOp);
+    	//ORDERED
+		Integer orderId = ezShop.payOrderFor("12345670", 22, 2.50);
+		
+		//ISSUED
+		ezShop.issueOrder("12345670", 13, 2.30);
+	
+		
+	    ezShop.logout();
+	    
+	    assertThrows(UnauthorizedException.class, () -> ezShop.getAllOrders());
+	    
+	    ezShop.login("admin","strong");
+
+	    //No location assigned
+	    assert(ezShop.getAllOrders().size() == 2);
+	    
+	    //COMPLETED
+	    ezShop.recordOrderArrival(orderId);
+	    
+	    assert(ezShop.getAllOrders().size() == 2);
+	    
+	    db.resetDB("balanceOperations");
+	    ezShop.logout();
 	}
 }
