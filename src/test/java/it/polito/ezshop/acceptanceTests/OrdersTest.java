@@ -72,7 +72,6 @@ public class OrdersTest {
 		db.resetDB("balanceOperations");
 		ezShop.login("admin","strong");
 		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
-		//Integer orderId = ezShop.issueOrder("12345670", 50, 2.50);
 	    ezShop.logout();
 	    
 	    assertThrows(UnauthorizedException.class, () -> ezShop.payOrderFor("12345670", 50, 2.50));
@@ -111,7 +110,7 @@ public class OrdersTest {
 	}
 	
 	@Test
-	public void payOrderTestCase() {
+	public void payOrderTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidQuantityException, InvalidOrderIdException {
 	    /**
 	     * This method change the status the order with given <orderId> into the "PAYED" state. The order should be either
 	     * issued (in this case the status changes) or payed (in this case the method has no effect).
@@ -122,11 +121,49 @@ public class OrdersTest {
 	     *
 	     * @return  true if the order has been successfully ordered
 	     *          false if the order does not exist or if it was not in an ISSUED/ORDERED state
-	     *
-	     * @throws InvalidOrderIdException if the order id is less than or equal to 0 or if it is null.
-	     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
 	     */
 	    //public boolean payOrder(Integer orderId) throws InvalidOrderIdException, UnauthorizedException;
+		
+		db.resetDB("productTypes");
+		db.resetDB("orders");
+		db.resetDB("balanceOperations");
+		ezShop.login("admin","strong");
+		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		Integer orderId = ezShop.issueOrder("12345670", 50, 2.50);
+		
+		BalanceOperation balOp = new BalanceOperationClass(1,LocalDate.now(),55,"CREDIT"); 
+    	db.recordBalanceOperation(balOp);
+		Integer order2 = ezShop.payOrderFor("12345670", 22, 2.50);
+	    ezShop.logout();
+	    
+	    assertThrows(UnauthorizedException.class, () -> ezShop.payOrder(orderId));
+	    
+	    ezShop.login("admin","strong");
+
+	    assertThrows(InvalidOrderIdException.class, () -> ezShop.payOrder(null));
+	    assertThrows(InvalidOrderIdException.class, () -> ezShop.payOrder(0));
+	    assertThrows(InvalidOrderIdException.class, () -> ezShop.payOrder(-5));
+	    
+	    //Order not issued/ordered
+	    System.out.println(order2);
+	    assertFalse(ezShop.payOrder(order2));
+	    assertFalse(ezShop.payOrder(200));
+	    
+	    //balance is 0
+	    assertFalse(ezShop.payOrder(orderId));
+	    
+	    //balance is 50
+	    BalanceOperation balOp2 = new BalanceOperationClass(2,LocalDate.now(),50,"CREDIT"); 
+    	db.recordBalanceOperation(balOp2);
+    	assertFalse(ezShop.payOrder(orderId));
+    	
+	    //balance is 200
+    	BalanceOperation balOp3 = new BalanceOperationClass(3,LocalDate.now(),150,"CREDIT"); 
+    	db.recordBalanceOperation(balOp3);
+    	assertTrue(ezShop.payOrder(orderId));
+	    
+    	db.resetDB("balanceOperations");
+	    ezShop.logout();
 	}
 	
 	@Test
