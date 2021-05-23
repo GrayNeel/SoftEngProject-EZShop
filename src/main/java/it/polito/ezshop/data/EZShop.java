@@ -213,7 +213,7 @@ public class EZShop implements EZShopInterface {
          */   	
     	
     	
-    	if(id<=0 || id==null) {
+    	if(id==null || id<=0) {
     		throw new InvalidProductIdException();
     	}  
     	
@@ -221,10 +221,13 @@ public class EZShop implements EZShopInterface {
     		throw new InvalidProductDescriptionException();
     	}
     	
-    	if(newCode == null || newCode.length() == 0  || db.checkExistingProductType(newCode) || !ProductTypeClass.validateProductCode(newCode)) {
+    	if(newCode == null || newCode.length() == 0 || !ProductTypeClass.validateProductCode(newCode)) {
     		throw new InvalidProductCodeException();    		
     	} 	  
 
+    	if(db.checkExistingProductType(newCode))
+    		return false;
+    	
     	if(newPrice <= 0) {
     		throw new InvalidPricePerUnitException();    		
     	} 	

@@ -342,12 +342,30 @@ public class EZShopDB {
 
 	public boolean updateProductType(Integer id, String newDescription, String newCode, double newPrice,
 			String newNote) {
-		String sql = "UPDATE productTypes SET productDescription=?, barCode=?, pricePerUnit=?, note=? WHERE id=?";
+		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE id=?";
+		boolean exists = false;
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+//			System.err.println(e.getMessage());
+			return false;
+		}
+		
+		if(!exists)
+			return false;
+		
+		String sql2 = "UPDATE productTypes SET productDescription=?, barCode=?, pricePerUnit=?, note=? WHERE id=?";
 
 		if(id < 0)
 			return false;
 		
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setString(1, newDescription);
 			pstmt.setString(2, newCode);
 			pstmt.setDouble(3, newPrice);
