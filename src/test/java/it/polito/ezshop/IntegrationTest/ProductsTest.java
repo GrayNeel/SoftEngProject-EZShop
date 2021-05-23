@@ -4,6 +4,7 @@ import it.polito.ezshop.classes.*;
 
 import it.polito.ezshop.data.EZShop;
 import it.polito.ezshop.data.EZShopInterface;
+import it.polito.ezshop.data.ProductType;
 import it.polito.ezshop.exceptions.*;
 
 import static org.junit.Assert.assertFalse;
@@ -102,5 +103,28 @@ public class ProductsTest {
 		assertFalse(ezShop.deleteProductType(productId));
 		
 		ezShop.logout();
+	}
+	
+	@Test
+	public void getAllProductTypesTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
+	    /**
+	     * This method returns the list of all registered product types. It can be invoked only after a user with role "Administrator",
+	     * "ShopManager" or "Cashier" is logged in.
+	     *
+	     * @return a list containing all saved product types
+	     *
+	     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+	     */
+	    //public List<ProductType> getAllProductTypes() throws UnauthorizedException;
+		db.resetDB("productTypes");
+		ezShop.login("admin","strong");
+		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		ezShop.createProductType("descriptionTest2", "860004804109",7.20, "product note");
+	    ezShop.logout();
+	    
+	    assertThrows(UnauthorizedException.class, () -> ezShop.getAllProductTypes());
+	    ezShop.login("admin","strong");
+	    assert(ezShop.getAllProductTypes().size() == 2);
+	    ezShop.logout();
 	}
 }
