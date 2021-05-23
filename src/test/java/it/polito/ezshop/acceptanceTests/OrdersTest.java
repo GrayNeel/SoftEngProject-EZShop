@@ -111,19 +111,6 @@ public class OrdersTest {
 	
 	@Test
 	public void payOrderTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidQuantityException, InvalidOrderIdException {
-	    /**
-	     * This method change the status the order with given <orderId> into the "PAYED" state. The order should be either
-	     * issued (in this case the status changes) or payed (in this case the method has no effect).
-	     * This method affects the balance of the system.
-	     * It can be invoked only after a user with role "Administrator" or "ShopManager" is logged in.
-	     *
-	     * @param orderId the id of the order to be ORDERED
-	     *
-	     * @return  true if the order has been successfully ordered
-	     *          false if the order does not exist or if it was not in an ISSUED/ORDERED state
-	     */
-	    //public boolean payOrder(Integer orderId) throws InvalidOrderIdException, UnauthorizedException;
-		
 		db.resetDB("productTypes");
 		db.resetDB("orders");
 		db.resetDB("balanceOperations");
@@ -167,7 +154,7 @@ public class OrdersTest {
 	}
 	
 	@Test
-	public void recordOrderArrivalTestCase() {
+	public void recordOrderArrivalTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidQuantityException, InvalidProductIdException, InvalidLocationException, InvalidOrderIdException {
 	    /**
 	     * This method records the arrival of an order with given <orderId>. This method changes the quantity of available product.
 	     * The product type affected must have a location registered. The order should be either in the PAYED state (in this
@@ -181,11 +168,41 @@ public class OrdersTest {
 	     *          false if the order does not exist or if it was not in an ORDERED/COMPLETED state
 	     *
 	     * @throws InvalidOrderIdException if the order id is less than or equal to 0 or if it is null.
-	     * @throws InvalidLocationException if the ordered product type has not an assigned location.
-	     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
 	     */
 	    //public boolean recordOrderArrival(Integer orderId) throws InvalidOrderIdException, UnauthorizedException, InvalidLocationException;
+		db.resetDB("productTypes");
+		db.resetDB("orders");
+		db.resetDB("balanceOperations");
+		ezShop.login("admin","strong");
+		Integer productId = ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
 
+		BalanceOperation balOp = new BalanceOperationClass(1,LocalDate.now(),55,"CREDIT"); 
+    	db.recordBalanceOperation(balOp);
+    	
+		Integer orderId = ezShop.payOrderFor("12345670", 22, 2.50);
+		Integer orderIssue = ezShop.issueOrder("12345670", 13, 2.30);
+	    ezShop.logout();
+	    
+	    assertThrows(UnauthorizedException.class, () -> ezShop.recordOrderArrival(orderId));
+	    
+	    ezShop.login("admin","strong");
+
+	    //No location assigned
+	    assertThrows(InvalidLocationException.class, () -> ezShop.recordOrderArrival(orderId));
+	    
+	    ezShop.updatePosition(productId, "1-1-1");
+	    
+	    assertThrows(InvalidOrderIdException.class, () -> ezShop.recordOrderArrival(-1));
+	    assertThrows(InvalidOrderIdException.class, () -> ezShop.recordOrderArrival(0));
+	    assertThrows(InvalidOrderIdException.class, () -> ezShop.recordOrderArrival(null));
+	    
+	    assertFalse(ezShop.recordOrderArrival(55));
+	    assertFalse(ezShop.recordOrderArrival(orderIssue));
+	    
+	    assertTrue(ezShop.recordOrderArrival(orderId));
+	    
+	    db.resetDB("balanceOperations");
+	    ezShop.logout();
 	   
 	}
 	
