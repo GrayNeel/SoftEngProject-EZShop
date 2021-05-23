@@ -34,13 +34,13 @@ public class EZShopDB {
 			// This method will create a listener that will monitor updates in the db in
 			// order to
 			// automatically update the data structures
-			connection.addUpdateListener(new SQLiteUpdateListener() {
+			/*connection.addUpdateListener(new SQLiteUpdateListener() {
 				@Override
 				public void onUpdate(Type type, String db, String table, long rowId) {
 					System.out.println("OnUpdate: " + type + " " + db + " " + table + " " + rowId);
 					// Update data here
 				}
-			});
+			}); */
 		} catch (SQLException e) {
 		}
 	}

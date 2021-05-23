@@ -82,4 +82,25 @@ public class ProductsTest {
 	
 		ezShop.logout();
 	}
+	
+	@Test
+	public void deleteProductTypeTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidProductIdException {	    
+	    db.resetDB("productTypes");
+	    
+	    ezShop.login("admin","strong");
+	    Integer productId = ezShop.createProductType("descriptionTest", "12345670",2.50, "product note");
+	    ezShop.logout();
+
+		assertThrows(UnauthorizedException.class, () -> ezShop.deleteProductType(productId));
+		ezShop.login("admin","strong");
+		
+		assertThrows(InvalidProductIdException.class, () -> ezShop.deleteProductType(0));
+		assertThrows(InvalidProductIdException.class, () -> ezShop.deleteProductType(-100));
+		assertThrows(InvalidProductIdException.class, () -> ezShop.deleteProductType(null));
+		
+		assertTrue(ezShop.deleteProductType(productId));
+		assertFalse(ezShop.deleteProductType(productId));
+		
+		ezShop.logout();
+	}
 }
