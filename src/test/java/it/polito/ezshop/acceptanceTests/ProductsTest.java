@@ -1,11 +1,8 @@
-package it.polito.ezshop.IntegrationTest;
+package it.polito.ezshop.acceptanceTests;
 
 import it.polito.ezshop.classes.*;
 
-import it.polito.ezshop.data.EZShop;
 import it.polito.ezshop.data.EZShopInterface;
-import it.polito.ezshop.data.Order;
-import it.polito.ezshop.data.ProductType;
 import it.polito.ezshop.exceptions.*;
 
 import static org.junit.Assert.assertFalse;
@@ -13,11 +10,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import org.junit.Test;
 

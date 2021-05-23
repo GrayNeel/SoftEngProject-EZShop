@@ -1,28 +1,20 @@
-package it.polito.ezshop.IntegrationTest;
+package it.polito.ezshop.acceptanceTests;
 
 import it.polito.ezshop.classes.*;
 
-import it.polito.ezshop.data.Customer;
-import it.polito.ezshop.data.*;
-import it.polito.ezshop.data.Order;
-import it.polito.ezshop.data.ProductType;
-import it.polito.ezshop.exceptions.InvalidLocationException;
-import it.polito.ezshop.exceptions.InvalidOrderIdException;
-import it.polito.ezshop.exceptions.InvalidPricePerUnitException;
-import it.polito.ezshop.exceptions.InvalidProductCodeException;
-import it.polito.ezshop.exceptions.InvalidQuantityException;
-import it.polito.ezshop.exceptions.UnauthorizedException;
+import it.polito.ezshop.data.EZShopInterface;
+import it.polito.ezshop.exceptions.*;
 
-import static org.junit.Assert.*;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 public class OrdersTest {
+	EZShopInterface ezShop = new it.polito.ezshop.data.EZShop();
 	EZShopDB db = new EZShopDB();
 	
 	@Test
