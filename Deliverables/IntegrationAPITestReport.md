@@ -106,7 +106,8 @@ digraph dependencyGraph {
 
 | Classes                | JUnit test cases                          |
 | ---------------------- | ----------------------------------------- |
-   
+| EZShop, ProductType    | All the methods in ProductsTest.java      |  
+| EZShop, Order          | All the methods in OrdersTest.java        |  
 
 ## Step n 
 

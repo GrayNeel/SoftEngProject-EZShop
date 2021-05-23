@@ -177,13 +177,16 @@ public class EZShop implements EZShopInterface {
     		throw new UnauthorizedException();    	
     	}
     	
-    	if(description.length()==0 || description == null) {
+    	if(description == null || description.length()==0) {
     		throw new InvalidProductDescriptionException();    		
     	}
     	
-    	if(productCode == null || productCode.length() == 0 || db.checkExistingProductType(productCode) || !ProductTypeClass.validateProductCode(productCode)) {
+    	if(productCode == null || productCode.length() == 0 || !ProductTypeClass.validateProductCode(productCode)) {
     		throw new InvalidProductCodeException();    		
     	}
+    	
+    	if(db.checkExistingProductType(productCode))
+    		return -1;
 
     	if(pricePerUnit <= 0) {
     		throw new InvalidPricePerUnitException();    		
