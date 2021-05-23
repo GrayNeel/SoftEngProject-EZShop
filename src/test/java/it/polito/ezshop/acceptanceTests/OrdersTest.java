@@ -1,7 +1,7 @@
 package it.polito.ezshop.acceptanceTests;
 
 import it.polito.ezshop.classes.*;
-
+import it.polito.ezshop.data.BalanceOperation;
 import it.polito.ezshop.data.EZShopInterface;
 import it.polito.ezshop.exceptions.*;
 
@@ -10,6 +10,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+
+import java.time.LocalDate;
 
 import org.junit.Test;
 
@@ -64,32 +66,48 @@ public class OrdersTest {
 	}
 	
 	@Test
-	public void payOrderForTestCase() {
-		/**
-	     * This method directly orders and pays <quantity> units of product with given <productCode>, each unit will be payed
-	     * <pricePerUnit> to the supplier. <pricePerUnit> can differ from the re-selling price of the same product. The
-	     * product might have no location assigned in this step.
-	     * This method affects the balance of the system.
-	     * It can be invoked only after a user with role "Administrator" or "ShopManager" is logged in.
-	     *
-	     * @param productCode the code of the product to be ordered
-	     * @param quantity the quantity of product to be ordered
-	     * @param pricePerUnit the price to correspond to the supplier (!= than the resale price of the shop) per unit of
-	     *                     product
-	     *
-	     * @return  the id of the order (> 0)
-	     *          -1 if the product does not exists, if the balance is not enough to satisfy the order, if there are some
-	     *          problems with the db
-	     *
-	     * @throws InvalidProductCodeException if the productCode is not a valid bar code, if it is null or if it is empty
-	     * @throws InvalidQuantityException if the quantity is less than or equal to 0
-	     * @throws InvalidPricePerUnitException if the price per unit of product is less than or equal to 0
-	     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-	     */
-	    //public Integer payOrderFor(String productCode, int quantity, double pricePerUnit)
-	    //        throws InvalidProductCodeException, InvalidQuantityException, InvalidPricePerUnitException, UnauthorizedException;
+	public void payOrderForTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidQuantityException {
+		db.resetDB("productTypes");
+		db.resetDB("orders");
+		db.resetDB("balanceOperations");
+		ezShop.login("admin","strong");
+		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		//Integer orderId = ezShop.issueOrder("12345670", 50, 2.50);
+	    ezShop.logout();
+	    
+	    assertThrows(UnauthorizedException.class, () -> ezShop.payOrderFor("12345670", 50, 2.50));
+	    
+	    ezShop.login("admin","strong");
 
-
+	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.payOrderFor("12345670", 50, -2.50));
+	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.payOrderFor("12345670", 50, 0.00));
+	   
+	    assertThrows(InvalidQuantityException.class, () -> ezShop.payOrderFor("12345670", -50, 2.50));
+	    assertThrows(InvalidQuantityException.class, () -> ezShop.payOrderFor("12345670", 0, 2.50));
+	    
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.payOrderFor("12345679", 50, 2.50));
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.payOrderFor("", 50, 2.50));
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.payOrderFor(null, 50, 2.50));
+	 
+	    assert(ezShop.payOrderFor("860004804109", 50, 2.50) == -1);
+	    
+	    //Balance is 0
+	    assert(ezShop.payOrderFor("12345670", 50, 2.50) == -1);
+	    
+    	BalanceOperation balOp = new BalanceOperationClass(1,LocalDate.now(),50,"CREDIT"); 
+    	db.recordBalanceOperation(balOp);
+    	
+    	//Balance is 50
+    	assert(ezShop.payOrderFor("12345670", 50, 2.50) == -1);
+    	
+    	BalanceOperation balOp2 = new BalanceOperationClass(2,LocalDate.now(),150,"CREDIT"); 
+    	db.recordBalanceOperation(balOp2);
+    	
+    	//balance is 200
+    	assert(ezShop.payOrderFor("12345670", 50, 2.50) == 1);
+	    
+    	db.resetDB("balanceOperations");
+	    ezShop.logout();
 	}
 	
 	@Test
