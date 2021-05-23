@@ -123,17 +123,6 @@ public class ProductsTest {
 	
 	@Test
 	public void getProductTypeByBarCodeTestCase() throws InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidUsernameException, InvalidPasswordException {
-		/**
-	     * This method returns a product type with given barcode. It can be invoked only after a user with role "Administrator"
-	     * or "ShopManager" is logged in.
-	     *
-	     * @param barCode the unique barCode of a product
-	     *
-	     * @return the product type with given barCode if present, null otherwise
-	     *
-	     * @throws InvalidProductCodeException if barCode is not a valid bar code, if is it empty or if it is null
-	     */
-	    //public ProductType getProductTypeByBarCode(String barCode) throws InvalidProductCodeException, UnauthorizedException;
 		db.resetDB("productTypes");
 		ezShop.login("admin","strong");
 		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
@@ -154,18 +143,24 @@ public class ProductsTest {
 	}
 	
 	@Test
-	public void getProductTypesByDescriptionTestCase() {
-		/**
-	     * This method returns a list of all products with a description containing the string received as parameter. It can be invoked only after a user with role "Administrator"
-	     * or "ShopManager" is logged in.
-	     *
-	     * @param description the description (or part of it) of the products we are searching for.
-	     *                    Null should be considered as the empty string.
-	     *
-	     * @return a list of products containing the requested string in their description
-	     *
-	     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
-	     */
-	    //public List<ProductType> getProductTypesByDescription(String description) throws UnauthorizedException;
+	public void getProductTypesByDescriptionTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
+		db.resetDB("productTypes");
+		ezShop.login("admin","strong");
+		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		ezShop.createProductType("this ion desc", "860004804109",2.50, "product note");
+		ezShop.createProductType("this not desc", "8859392701093",2.50, "product note");
+	    ezShop.logout();
+	    
+	    assertThrows(UnauthorizedException.class, () -> ezShop.getProductTypesByDescription("ion"));
+	    
+	    ezShop.login("admin","strong");
+	    
+	    assert(ezShop.getProductTypesByDescription("ion").size() == 2);
+	    assert(ezShop.getProductTypesByDescription("not").size() == 1);
+	    assert(ezShop.getProductTypesByDescription("").size() == 3);
+	    assert(ezShop.getProductTypesByDescription(null).size() == 3);
+	    assert(ezShop.getProductTypesByDescription("noProd").size() == 0);
+	    ezShop.logout();
+		
 	}
 }

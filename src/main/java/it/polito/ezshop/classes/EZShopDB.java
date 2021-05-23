@@ -459,7 +459,6 @@ public class EZShopDB {
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			String toSend = "%"+description+"%";
-			System.out.println("Sending: "+toSend);
 			pstmt.setString(1, toSend);
 			ResultSet rs = pstmt.executeQuery();
 			
@@ -471,8 +470,6 @@ public class EZShopDB {
 				String productDescription = rs.getString("productDescription");
 				String barCode = rs.getString("barCode");
 				Double pricePerUnit = rs.getDouble("pricePerUnit");
-				
-				System.out.println("Found: " + id);
 
 				ProductType product = new ProductTypeClass(id, quantity, location, note, productDescription, barCode,
 						pricePerUnit);
