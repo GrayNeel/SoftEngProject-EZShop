@@ -18,7 +18,7 @@ public class OrdersTest {
 	EZShopDB db = new EZShopDB();
 	
 	@Test
-	public void issueOrderTestCase() {
+	public void issueOrderTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidQuantityException {
 	    /**
 	     * This method issues an order of <quantity> units of product with given <productCode>, each unit will be payed
 	     * <pricePerUnit> to the supplier. <pricePerUnit> can differ from the re-selling price of the same product. The
@@ -33,13 +33,34 @@ public class OrdersTest {
 	     * @return  the id of the order (> 0)
 	     *          -1 if the product does not exists, if there are problems with the db
 	     *
-	     * @throws InvalidProductCodeException if the productCode is not a valid bar code, if it is null or if it is empty
-	     * @throws InvalidQuantityException if the quantity is less than or equal to 0
-	     * @throws InvalidPricePerUnitException if the price per unit of product is less than or equal to 0
-	     * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
 	     */
 	    //public Integer issueOrder(String productCode, int quantity, double pricePerUnit)
 	    //        throws InvalidProductCodeException, InvalidQuantityException, InvalidPricePerUnitException, UnauthorizedException;
+		
+		db.resetDB("productTypes");
+		db.resetDB("orders");
+		ezShop.login("admin","strong");
+		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+	    ezShop.logout();
+	    
+	    assertThrows(UnauthorizedException.class, () -> ezShop.issueOrder("12345670", 50, 2.50));
+	    
+	    ezShop.login("admin","strong");
+
+	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.issueOrder("12345670", 50, -2.50));
+	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.issueOrder("12345670", 50, 0.00));
+	    
+	    assertThrows(InvalidQuantityException.class, () -> ezShop.issueOrder("12345670", -50, 2.50));
+	    assertThrows(InvalidQuantityException.class, () -> ezShop.issueOrder("12345670", 0, 2.50));
+	    
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.issueOrder("12345679", 50, 2.50));
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.issueOrder("", 50, 2.50));
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.issueOrder(null, 50, 2.50));
+	    
+	    assert(ezShop.issueOrder("12345670", 50, 2.50) == 1);
+	    assert(ezShop.issueOrder("860004804109", 50, 2.50) == -1);
+	 
+	    ezShop.logout();
 	}
 	
 	@Test
