@@ -24,6 +24,47 @@ Version:
 # Dependency graph 
 
      <report the here the dependency graph of the classes in EzShop, using plantuml>
+
+```plantuml
+@startuml
+digraph dependencyGraph {
+ GUI -> API ;
+ API -> EZShopDB ;
+ API -> ReturnTransactionClass;
+ API -> SaleTransactionClass ;
+ API -> UserClass ;
+ API -> OrderClass ;
+ API -> ProductTypeClass ;
+ API -> CustomerClass;
+ API -> CreditCardClass;
+ API -> ProductReturnClass;
+ API -> BalanceOperationClass;
+ API -> TicketEntryClass;
+
+ EZShopDB -> ReturnTransactionClass;
+ EZShopDB -> SaleTransactionClass;
+ EZShopDB -> UserClass;
+ EZShopDB -> OrderClass;
+ EZShopDB -> ProductTypeClass;
+ EZShopDB -> CustomerClass;
+ EZShopDB -> CreditCardClass;
+ EZShopDB -> ProductReturnClass;
+ EZShopDB -> BalanceOperationClass;
+ EZShopDB -> TicketEntryClass;
+
+ ReturnTransactionClass -> ReturnTransaction;
+ SaleTransactionClass -> SaleTransaction;
+ SaleTransactionClass -> TicketEntry;
+ UserClass -> User;
+ OrderClass -> Order;
+ ProductTypeClass -> ProductType;
+ CustomerClass -> Customer;
+ BalanceOperationClass -> BalanceOperation;
+ TicketEntryClass -> TicketEntry;
+ 
+}
+@enduml
+```
      
 # Integration approach
 
@@ -32,34 +73,46 @@ Version:
     <Some steps may  correspond to unit testing (ex step1 in ex above), presented in other document UnitTestReport.md>
     <One step will  correspond to API testing>
     
-
+     Bottom Up
 
 #  Tests
 
    <define below a table for each integration step. For each integration step report the group of classes under test, and the names of
      JUnit test cases applied to them> JUnit test classes should be here src/test/java/it/polito/ezshop
 
-## Step 1
-| Classes  | JUnit test cases |
-|--|--|
-|||
+## Step 1 - Unit test of leaf classes
+| Classes                | JUnit test cases                          |
+| ---------------------- | ----------------------------------------- |
+| UserClass              | getterAndSetterUserTestCase()             |
+| BalanceOperationClass  | getterAndSetterBalanceOperationTestCase() |
+| ReturnTransactionClass | getterAndSetterReturnTransactionTestCase()|
+| SaleTransactionClass   | getterAndSetterSaleTransactionTestCase()  |
+| UserClass              | getterAndSetterUserTestCase()             |
+| OrderClass             | getterAndSetterOrderTestCase()            |
+| ProductTypeClass       | getterAndSetterProductTypeTestCase()      |
+| CustomerClass          | getterAndSetterCustomerTestCase()         |
+| CreditCardClass        | getterAndSetterCreditCardTestCase()       |
+| ProductReturnClass     | getterAndSetterProductReturnTestCase()    |
+| BalanceOperationClass  | getterAndSetterBalanceOperationTestCase() |
+| TicketEntryClass       | getterAndSetterticketEntryTestCase()      |
 
 
-## Step 2
-| Classes  | JUnit test cases |
-|--|--|
-|||
+## Step 2 - DB Test (+ Leaf classes)
+| Classes  | JUnit test cases                   |
+| -------- | ---------------------------------- |
+| EZShopDB | All the methods in TestEZShop.java |
 
+## Step 3 - API test (+ DB + Leaf classes)
+
+| Classes                | JUnit test cases                          |
+| ---------------------- | ----------------------------------------- |
+   
 
 ## Step n 
 
-   
-
 | Classes  | JUnit test cases |
 |--|--|
 |||
-
-
 
 
 # Scenarios
