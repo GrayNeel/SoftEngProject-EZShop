@@ -197,7 +197,7 @@ public class EZShop implements EZShopInterface {
     	
     	//Create productType Object with newID
     	//(Integer id, Integer quantity, String location, String note, String productDescription, String barCode, Double pricePerUnit)
-    	ProductType productType = new ProductTypeClass(lastid+1, 0, "location", note, description, productCode, pricePerUnit);
+    	ProductType productType = new ProductTypeClass(lastid+1, 0, "", note, description, productCode, pricePerUnit);
     	
     	//Add productType to the DB
     	if(db.addProductType(productType))
@@ -327,6 +327,9 @@ public class EZShop implements EZShopInterface {
     		return false;
     	
     	if(quantity + toBeAdded < 0)
+    		return false;
+    	
+    	if(db.getPositionByProductTypeId(productId).length() == 0)
     		return false;
     	
     	//update product quantity

@@ -495,6 +495,20 @@ public class EZShopDB {
 		return qty;
 	}
 	
+	public String getPositionByProductTypeId(Integer id) {
+		String sql = "SELECT location FROM productTypes WHERE id=?";
+		String pos = "";
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			pos = rs.getString("location");
+		} catch (SQLException e) {
+		}
+		
+		return pos;
+	}
+	
 	public Integer getQuantityByProductTypeBarCode(String barCode) {
 		String sql = "SELECT quantity FROM productTypes WHERE barCode=?";
 		Integer qty = null;
@@ -504,7 +518,7 @@ public class EZShopDB {
 			ResultSet rs = pstmt.executeQuery();
 			qty = rs.getInt("quantity");
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+			//System.err.println(e.getMessage());
 		}
 		
 		return qty;
