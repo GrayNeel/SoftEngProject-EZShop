@@ -145,11 +145,11 @@ public class EZShop implements EZShopInterface {
 
 	@Override
 	public User login(String username, String password) throws InvalidUsernameException, InvalidPasswordException {
-		if (username.length() == 0 || username == null) {
+		if (username == null || username.length() == 0) {
 			throw new InvalidUsernameException();
 		}
 
-		if (password.length() == 0 || password == null) {
+		if (password == null || password.length() == 0) {
 			throw new InvalidPasswordException();
 		}
 
