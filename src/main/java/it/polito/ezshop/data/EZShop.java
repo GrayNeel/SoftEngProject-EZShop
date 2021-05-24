@@ -1073,7 +1073,7 @@ public class EZShop implements EZShopInterface {
 		int lastid = db.getLastId("returnTransactions");
 		ReturnTransactionClass returnTransaction = new ReturnTransactionClass(lastid + 1, saleNumber, 0, 0, "ACTIVE");
 		Integer result = db.startReturnTransaction(returnTransaction);
-
+		System.out.println(result);
 		return result;
 	}
 
@@ -1093,9 +1093,9 @@ public class EZShop implements EZShopInterface {
 		if (amount <= 0)
 			throw new InvalidQuantityException();
 		boolean productValid = ProductTypeClass.validateProductCode(productCode);
-		if (productCode == "" || productCode == null || !productValid)
+		if (productCode == null || productCode == "" || !productValid)
 			throw new InvalidProductCodeException();
-
+		
 		ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
 		if (returnTransaction == null)
 			return false;
@@ -1184,6 +1184,9 @@ public class EZShop implements EZShopInterface {
 		}
 		// Update first entries and products
 		ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
+		if(returnTransaction == null) {
+			return false;
+		}
 		List<ProductReturnClass> returnProducts = db.getAllProductReturnsById(returnId);
 		double newTotal = 0;
 		for (ProductReturnClass productReturn : returnProducts) {
