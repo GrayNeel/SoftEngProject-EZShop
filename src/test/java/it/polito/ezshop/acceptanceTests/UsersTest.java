@@ -3,6 +3,7 @@ package it.polito.ezshop.acceptanceTests;
 import it.polito.ezshop.classes.*;
 
 import it.polito.ezshop.data.EZShopInterface;
+import it.polito.ezshop.data.User;
 import it.polito.ezshop.exceptions.*;
 
 import static org.junit.Assert.assertFalse;
@@ -150,6 +151,53 @@ public class UsersTest {
         assert (ezShop.getUser(userId).getRole().equals("ShopManager"));
         ezShop.deleteUser(userId);
         ezShop.logout();
+    }
+
+    @Test
+    public void loginTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidRoleException,
+            InvalidUserIdException, UnauthorizedException {
+
+        assertThrows(InvalidUsernameException.class, () -> ezShop.login("", "password"));
+        String nullUsername = null;
+        assertThrows(InvalidUsernameException.class, () -> ezShop.login(nullUsername, "password"));
+
+        assertThrows(InvalidPasswordException.class, () -> ezShop.login("user", ""));
+        String nullPassword = null;
+        assertThrows(InvalidPasswordException.class, () -> ezShop.login("user", nullPassword));
+
+        assertNull(ezShop.login("nonexistinguser", "nonexistingpassword"));
+        Integer newUser = ezShop.createUser("testUser", "password", "Cashier");
+        User loggedUser = ezShop.login("testUser", "password");
+        assertNotNull(loggedUser);
+        assert (loggedUser.getUsername().equals("testUser"));
+        assert (loggedUser.getPassword().equals("password"));
+        assert (loggedUser.getRole().equals("Cashier"));
+        ezShop.logout();
+
+        // reset database with user administrator
+        ezShop.login("admin", "strong");
+        ezShop.deleteUser(newUser);
+        ezShop.logout();
+    }
+
+    @Test
+    public void logoutTestCase() throws InvalidUsernameException, InvalidPasswordException {
+
+        // Do logout when no user is logged in
+
+        assertFalse(ezShop.logout());
+
+        // Do logout after a failed login
+
+        ezShop.login("NonExistingUser", "NonExistingPassword");
+
+        assertFalse(ezShop.logout());
+
+        // Do logout after succesfully log in
+
+        ezShop.login("admin", "strong");
+        assertTrue(ezShop.logout());
+
     }
 
 }
