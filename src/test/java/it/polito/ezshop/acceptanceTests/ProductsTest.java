@@ -199,7 +199,9 @@ public class ProductsTest {
 	    assertFalse(ezShop.updateQuantity(productId, 5));
 	    ezShop.updatePosition(productId,"1-1-1");
 	    assertTrue(ezShop.updateQuantity(productId, 5));
+	    assert(ezShop.getProductTypeByBarCode("12345670").getQuantity() == 5);
 	    assertTrue(ezShop.updateQuantity(productId, -3));
+	    assert(ezShop.getProductTypeByBarCode("12345670").getQuantity() == 2);
 	    assertFalse(ezShop.updateQuantity(productId, -30));
 	    ezShop.logout();
 	}
