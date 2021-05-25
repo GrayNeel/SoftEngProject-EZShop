@@ -59,6 +59,7 @@ public class ReturnTest {
         db.resetDB("returnTransactions");
         db.resetDB("productReturns");
         db.resetDB("productTypes");
+        db.resetDB("productEntries");
     	assertThrows(UnauthorizedException.class, () -> ezShop.returnProduct(1,"232320",5));
     	ezShop.login("shopManager", "1234567");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnProduct(null,"232320",5));
@@ -95,7 +96,9 @@ public class ReturnTest {
     public void endReturnTransactionTestCase() throws UnauthorizedException,InvalidTransactionIdException, InvalidUsernameException, InvalidPasswordException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidProductIdException, InvalidLocationException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
+        db.resetDB("productReturns");
         db.resetDB("productTypes");	
+        db.resetDB("productEntries");
     	assertThrows(UnauthorizedException.class, () -> ezShop.endReturnTransaction(1,true));
     	ezShop.login("admin", "strong");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.endReturnTransaction(-1,true));
@@ -121,7 +124,9 @@ public class ReturnTest {
     public void deleteReturnTransactionTestCase() throws UnauthorizedException,InvalidTransactionIdException, InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, InvalidProductIdException, InvalidLocationException, InvalidQuantityException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
+        db.resetDB("productReturns");
         db.resetDB("productTypes");
+        db.resetDB("productEntries");
     	assertThrows(UnauthorizedException.class, () -> ezShop.deleteReturnTransaction(1));
     	ezShop.login("admin", "strong");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.deleteReturnTransaction(-1));
@@ -146,7 +151,9 @@ public class ReturnTest {
     public void receiveCashPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
+        db.resetDB("productReturns");
         db.resetDB("productTypes");
+        db.resetDB("productEntries");
     	
     	assertThrows(UnauthorizedException.class, () -> ezShop.receiveCashPayment(2,5.5));
     	ezShop.login("shopManager", "1234567");
@@ -176,7 +183,9 @@ public class ReturnTest {
     public void receiveCreditCardPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
+        db.resetDB("productReturns");
         db.resetDB("productTypes");
+        db.resetDB("productEntries");
     	
     	assertThrows(UnauthorizedException.class, () -> ezShop.receiveCreditCardPayment(2,"128301928"));
     	ezShop.login("shopManager", "1234567");
@@ -201,6 +210,77 @@ public class ReturnTest {
     	assertFalse(ezShop.receiveCreditCardPayment(190,"5119705625622338"));
     	assertFalse(ezShop.receiveCreditCardPayment(transactionId,"5119705625622338"));
     	assertTrue(ezShop.receiveCreditCardPayment(transactionId,"5303098087309156"));
+
+    }
+    
+    @Test
+    public void returnCashPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
+    	db.resetDB("saleTransactions");
+        db.resetDB("returnTransactions");
+        db.resetDB("productReturns");
+        db.resetDB("productTypes");
+        db.resetDB("productEntries");
+    	
+    	assertThrows(UnauthorizedException.class, () -> ezShop.returnCashPayment(2));
+    	ezShop.login("shopManager", "1234567");
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnCashPayment(0));
+    	ezShop.logout();
+    	ezShop.login("Cashier", "1234567");
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnCashPayment(-1));
+    	ezShop.logout();
+    	ezShop.login("admin", "strong");
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnCashPayment(null));
+    	
+    	Integer transactionId = ezShop.startSaleTransaction();
+    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	ezShop.updatePosition(productId, "1-1-1");
+    	assertTrue(ezShop.updateQuantity(productId, 100));
+    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	ezShop.endSaleTransaction(transactionId);
+    	Integer returnId = ezShop.startReturnTransaction(transactionId);
+    	assertTrue(ezShop.returnProduct(returnId, "12345670", 23));
+    	assertTrue(ezShop.endReturnTransaction(returnId,true));
+    	
+    	assertEquals(-1,ezShop.returnCashPayment(190),0.01);
+    	assertNotEquals(-1,ezShop.returnCashPayment(returnId),0.01);
+    }
+    
+    @Test
+    public void returnCreditCardPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
+    	db.resetDB("saleTransactions");
+        db.resetDB("returnTransactions");
+        db.resetDB("productReturns");
+        db.resetDB("productTypes");
+        db.resetDB("productEntries");
+    	
+    	assertThrows(UnauthorizedException.class, () -> ezShop.returnCreditCardPayment(2,"5303098087309156"));
+    	ezShop.login("shopManager", "1234567");
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnCreditCardPayment(0,"5303098087309156"));
+    	ezShop.logout();
+    	ezShop.login("Cashier", "1234567");
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnCreditCardPayment(-1,"5303098087309156"));
+    	ezShop.logout();
+    	ezShop.login("admin", "strong");
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnCreditCardPayment(null,"5303098087309156"));
+    	assertThrows(InvalidCreditCardException.class, () -> ezShop.returnCreditCardPayment(12,""));
+//    	assertThrows(InvalidCreditCardException.class, () -> ezShop.returnCreditCardPayment(11,null));
+    	assertThrows(InvalidCreditCardException.class, () -> ezShop.returnCreditCardPayment(11,"11209"));
+    	
+    	Integer transactionId = ezShop.startSaleTransaction();
+    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	ezShop.updatePosition(productId, "1-1-1");
+    	assertTrue(ezShop.updateQuantity(productId, 100));
+    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	ezShop.endSaleTransaction(transactionId);
+    	Integer returnId = ezShop.startReturnTransaction(transactionId);
+    	assertTrue(ezShop.returnProduct(returnId, "12345670", 25));
+    	assertTrue(ezShop.endReturnTransaction(returnId,true));
+    	
+    	assertEquals(-1,ezShop.returnCreditCardPayment(190,"6011264249365616"),0.01);
+    	assertEquals(-1,ezShop.returnCreditCardPayment(190,"5303098087309156"),0.01);
+    	assertNotEquals(-1,ezShop.returnCreditCardPayment(returnId,"5303098087309156"),0.01);
 
     }
 }
