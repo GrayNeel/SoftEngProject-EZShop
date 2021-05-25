@@ -561,12 +561,11 @@ public class EZShop implements EZShopInterface {
 	public Integer defineCustomer(String customerName) throws InvalidCustomerNameException, UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
-		if (customerName.length() == 0)
+		if (customerName == null || customerName.length() == 0)
 			throw new InvalidCustomerNameException();
 
 		int lastid = db.getLastId("customers");
@@ -586,9 +585,12 @@ public class EZShop implements EZShopInterface {
 			UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
+		}
+		
+		if (id == null || id <= 0) {
+			throw new InvalidCustomerIdException();
 		}
 
 		if (newCustomerName == null || newCustomerName == "") {
@@ -608,8 +610,7 @@ public class EZShop implements EZShopInterface {
 	public boolean deleteCustomer(Integer id) throws InvalidCustomerIdException, UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
@@ -626,8 +627,7 @@ public class EZShop implements EZShopInterface {
 		Customer customer;
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
@@ -644,8 +644,7 @@ public class EZShop implements EZShopInterface {
 	public List<Customer> getAllCustomers() throws UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 		List<Customer> customerlist = new ArrayList<>();
@@ -657,8 +656,7 @@ public class EZShop implements EZShopInterface {
 	public String createCard() throws UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 		Integer lastid = db.getLastId("cards");
@@ -682,8 +680,7 @@ public class EZShop implements EZShopInterface {
 			throws InvalidCustomerIdException, InvalidCustomerCardException, UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
@@ -705,8 +702,7 @@ public class EZShop implements EZShopInterface {
 			throws InvalidCustomerCardException, UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
@@ -727,8 +723,7 @@ public class EZShop implements EZShopInterface {
 	public Integer startSaleTransaction() throws UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 		Integer lastId = db.getLastId("saleTransactions");
@@ -749,8 +744,7 @@ public class EZShop implements EZShopInterface {
 			UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
@@ -767,11 +761,11 @@ public class EZShop implements EZShopInterface {
 		}
 
 		ProductType product = getProductTypeByBarCode(productCode);
-
-		if (product == null) {
+		
+		/*if (product == null) {
 			return false;
-		}
-
+		}*/
+		
 		if (product.getQuantity() < amount) {
 			return false;
 		}
@@ -781,23 +775,33 @@ public class EZShop implements EZShopInterface {
 		if (transaction == null || entries == null) {
 			return false;
 		}
-
+		
 		// Why are you scanning the TicketEntry if the product has to be added?
 		boolean flag = false;
-		for (TicketEntry entry : entries) {
+		for (TicketEntry entry : entries) { //se c'è già aggiungi			
 			if (entry.getBarCode().equals(productCode)) {
 				flag = true;
 				entry.setAmount(entry.getAmount() + amount);
 				db.updateQuantityByBarCode(productCode, product.getQuantity() - amount);
 			}
 		}
-		if (flag == false) {
+		if (flag == false) { //altrimenti crea nuova ticketEntry
 			db.updateQuantityByBarCode(productCode, product.getQuantity() - amount);
 			TicketEntryClass entry = new TicketEntryClass(0, productCode, product.getProductDescription(), amount,
 					product.getPricePerUnit(), transactionId, 0.0);
-			entries.add(entry);
+			
+			entries.add(entry);			
+			transaction.setEntries(entries);	
+			flag = true;
 		}
-
+		
+		
+		System.out.println("AddSale: " + entries);
+		for (TicketEntry entry : entries) { //se c'è già aggiungi			
+			System.out.println("- " + entry.getProductDescription());
+		}
+		
+		
 		tickets.put(transactionId, entries);
 
 		return flag;
@@ -809,8 +813,7 @@ public class EZShop implements EZShopInterface {
 			UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
@@ -828,9 +831,9 @@ public class EZShop implements EZShopInterface {
 
 		ProductType product = getProductTypeByBarCode(productCode);
 
-		if (product == null) {
+		/*if (product == null) {
 			return false;
-		}
+		}*/
 
 		List<TicketEntry> entries = tickets.get(transactionId);
 		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
@@ -871,8 +874,7 @@ public class EZShop implements EZShopInterface {
 			UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
@@ -890,9 +892,9 @@ public class EZShop implements EZShopInterface {
 
 		ProductType product = getProductTypeByBarCode(productCode);
 
-		if (product == null) {
+		/*if (product == null) {
 			return false;
-		}
+		}*/
 
 		List<TicketEntry> entries = tickets.get(transactionId);
 		if (entries == null) {
@@ -916,13 +918,16 @@ public class EZShop implements EZShopInterface {
 			throws InvalidTransactionIdException, InvalidDiscountRateException, UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
 		if (transactionId < 0 || transactionId == null) {
 			throw new InvalidTransactionIdException();
+		}
+		
+		if (discountRate <= 0 || discountRate > 1) {
+			throw new InvalidDiscountRateException();
 		}
 
 		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
@@ -943,8 +948,7 @@ public class EZShop implements EZShopInterface {
 	public int computePointsForSale(Integer transactionId) throws InvalidTransactionIdException, UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
@@ -958,26 +962,31 @@ public class EZShop implements EZShopInterface {
 		}
 		Double total = 0.0;
 		List<TicketEntry> entries = tickets.get(transactionId);
-		if (transaction.getState().equals("OPEN")) {
-			if (entries == null) {
+		if (transaction.getState().equals("OPEN")) {			
+			if (entries.size() == 0) {
 				return -1;
 			}
 
 			Double prodTotal = 0.0;
 			for (TicketEntry entry : entries) {
+				
 				prodTotal = entry.getAmount() * entry.getPricePerUnit();
 				total = total + prodTotal * (1 - entry.getDiscountRate());
 			}
 			total = total * (1 - transaction.getDiscountRate());
+			System.out.println("tot: " + total );
 		} else {
 			SaleTransaction transactionClosed = db.getClosedSaleTransactionById(transactionId);
-			entries = transactionClosed.getEntries();
+			entries = tickets.get(transactionId);
+			//entries = transactionClosed.getEntries();
+			
 			Double prodTotal = 0.0;
 			for (TicketEntry entry : entries) {
+				System.out.println("E " + entry);
 				prodTotal = entry.getAmount() * entry.getPricePerUnit();
 				total = total + prodTotal * (1 - entry.getDiscountRate());
 			}
-			total = total * (1 - transactionClosed.getDiscountRate());
+			total = total * (1 - transactionClosed.getDiscountRate());			
 		}
 
 		Integer points = total.intValue();
@@ -989,8 +998,7 @@ public class EZShop implements EZShopInterface {
 			throws InvalidTransactionIdException, UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
@@ -1014,7 +1022,7 @@ public class EZShop implements EZShopInterface {
 			if (flag == false) {
 				return false;
 			}
-		}
+		}		
 		return flag;
 	}
 

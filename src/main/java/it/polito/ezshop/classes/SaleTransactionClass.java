@@ -83,13 +83,12 @@ public class SaleTransactionClass implements SaleTransaction {
 
 	@Override
 	public List<TicketEntry> getEntries() {
-		return ticketList;
+		return this.ticketList;
 	}
 
 	@Override
 	public void setEntries(List<TicketEntry> entries) {
-		this.ticketList = entries;
-		
+		this.ticketList = entries;		
 	}
 	
 	public String getState() {
