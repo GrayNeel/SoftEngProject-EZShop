@@ -767,7 +767,7 @@ public class EZShop implements EZShopInterface {
 		}
 
 		ProductType product = getProductTypeByBarCode(productCode);
-
+		System.out.println("QTY: " + product.getQuantity());
 		if (product == null) {
 			return false;
 		}
@@ -775,7 +775,8 @@ public class EZShop implements EZShopInterface {
 		if (product.getQuantity() < amount) {
 			return false;
 		}
-
+		
+		System.out.println("GOT IT");
 		List<TicketEntry> entries = tickets.get(transactionId);
 		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
 		if (transaction == null || entries == null) {
@@ -1095,7 +1096,7 @@ public class EZShop implements EZShopInterface {
 		boolean productValid = ProductTypeClass.validateProductCode(productCode);
 		if (productCode == null || productCode == "" || !productValid)
 			throw new InvalidProductCodeException();
-		
+		System.out.println("Return ID: " + returnId);
 		ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
 		if (returnTransaction == null)
 			return false;
@@ -1104,6 +1105,7 @@ public class EZShop implements EZShopInterface {
 				productCode);
 
 		int entryAmount = db.getAmountonEntry(returnTransaction.getTransactionId(), productCode);
+		System.out.println(entryAmount);
 		// The amount of units of product to be returned should not exceed the amount
 		// originally sold.
 		// if it was not in the transaction
