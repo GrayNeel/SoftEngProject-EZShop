@@ -1178,8 +1178,7 @@ public class EZShop implements EZShopInterface {
 			throws InvalidTransactionIdException, UnauthorizedException {
 		User user = this.loggedUser;
 		boolean flag = false;
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")&& !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 

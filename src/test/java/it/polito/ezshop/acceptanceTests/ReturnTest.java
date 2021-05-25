@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
+
 import org.junit.Test;
 
 import it.polito.ezshop.classes.*;
@@ -143,6 +145,8 @@ public class ReturnTest {
     	Integer returnId = ezShop.startReturnTransaction(transactionId);
     	assertFalse(ezShop.deleteReturnTransaction(2040));
     	returnId = ezShop.startReturnTransaction(transactionId);
+    	assertTrue(ezShop.returnProduct(returnId, "12345670", 12));
+    	assertTrue(ezShop.endReturnTransaction(returnId,true));
     	assertTrue(ezShop.deleteReturnTransaction(returnId));
     	ezShop.deleteSaleTransaction(transactionId);
     }
@@ -279,8 +283,48 @@ public class ReturnTest {
     	assertTrue(ezShop.endReturnTransaction(returnId,true));
     	
     	assertEquals(-1,ezShop.returnCreditCardPayment(190,"6011264249365616"),0.01);
-    	assertEquals(-1,ezShop.returnCreditCardPayment(190,"5303098087309156"),0.01);
+    	assertEquals(-1,ezShop.returnCreditCardPayment(returnId,"6011264249365616"),0.01);
     	assertNotEquals(-1,ezShop.returnCreditCardPayment(returnId,"5303098087309156"),0.01);
 
     }
+    
+    @Test
+    public void getCreditAndDebitsTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
+    	db.resetDB("saleTransactions");
+        db.resetDB("returnTransactions");
+        db.resetDB("productReturns");
+        db.resetDB("productTypes");
+        db.resetDB("productEntries");
+        LocalDate startDate = LocalDate.parse("2016-08-16");
+        LocalDate startDate2 = LocalDate.parse("2022-08-16");
+        LocalDate finalDate = LocalDate.parse("2022-10-12");
+    	assertThrows(UnauthorizedException.class, () -> ezShop.getCreditsAndDebits(startDate,finalDate));
+    	ezShop.login("shopManager", "1234567");
+    	assert(ezShop.getCreditsAndDebits(startDate,finalDate).size()>0);
+    	assert(ezShop.getCreditsAndDebits(null,finalDate).size()>0);
+    	assert(ezShop.getCreditsAndDebits(startDate,null).size()>0);
+    	assert(ezShop.getCreditsAndDebits(startDate2,finalDate).size()==0);
+    	
+    }
+    
+    @Test
+    public void computeBalanceTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
+    	assertThrows(UnauthorizedException.class, () -> ezShop.computeBalance());
+    	ezShop.login("shopManager", "1234567");
+    	
+    	assert(ezShop.computeBalance()!=0);
+    	
+    }
+    
+    @Test
+    public void recordBalanceTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
+    	assertThrows(UnauthorizedException.class, () -> ezShop.recordBalanceUpdate(10.0));
+    	ezShop.login("shopManager", "1234567");
+    	
+    	assertFalse(ezShop.recordBalanceUpdate(-1000000000));
+    	assertTrue(ezShop.recordBalanceUpdate(10.25));
+    	
+    }
+    
+    
 }
