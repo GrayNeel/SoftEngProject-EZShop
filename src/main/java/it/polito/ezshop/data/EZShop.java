@@ -761,15 +761,21 @@ public class EZShop implements EZShopInterface {
 		}
 
 		ProductType product = getProductTypeByBarCode(productCode);
+<<<<<<< HEAD
 		
 		/*if (product == null) {
+=======
+		System.out.println("QTY: " + product.getQuantity());
+		if (product == null) {
+>>>>>>> 740d368f1088d439904eef7bbd8046aeb271fcae
 			return false;
 		}*/
 		
 		if (product.getQuantity() < amount) {
 			return false;
 		}
-
+		
+		System.out.println("GOT IT");
 		List<TicketEntry> entries = tickets.get(transactionId);
 		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
 		if (transaction == null || entries == null) {
@@ -789,9 +795,13 @@ public class EZShop implements EZShopInterface {
 			db.updateQuantityByBarCode(productCode, product.getQuantity() - amount);
 			TicketEntryClass entry = new TicketEntryClass(0, productCode, product.getProductDescription(), amount,
 					product.getPricePerUnit(), transactionId, 0.0);
+<<<<<<< HEAD
 			
 			entries.add(entry);			
 			transaction.setEntries(entries);	
+=======
+			entries.add(entry);
+>>>>>>> 740d368f1088d439904eef7bbd8046aeb271fcae
 			flag = true;
 		}
 		
@@ -1017,12 +1027,19 @@ public class EZShop implements EZShopInterface {
 		}
 
 		boolean flag = false;
+		double total = 0.0;
 		for (TicketEntry entry : entries) {
+			total += entry.getPricePerUnit()*entry.getAmount()*(1-entry.getDiscountRate());
 			flag = db.createTicketEntry(entry, transactionId);
 			if (flag == false) {
 				return false;
 			}
+<<<<<<< HEAD
 		}		
+=======
+		}
+		db.updateSaleTransactionAfterCommit(transactionId, total);
+>>>>>>> 740d368f1088d439904eef7bbd8046aeb271fcae
 		return flag;
 	}
 
@@ -1058,7 +1075,7 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
-		if (transactionId <= 0 || transactionId == null) {
+		if (transactionId == null || transactionId <= 0) {
 			throw new InvalidTransactionIdException();
 		}
 		List<TicketEntry> products = db.getProductEntriesByTransactionId(transactionId);
@@ -1103,7 +1120,7 @@ public class EZShop implements EZShopInterface {
 		boolean productValid = ProductTypeClass.validateProductCode(productCode);
 		if (productCode == null || productCode == "" || !productValid)
 			throw new InvalidProductCodeException();
-		
+		System.out.println("Return ID: " + returnId);
 		ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
 		if (returnTransaction == null)
 			return false;
@@ -1129,8 +1146,7 @@ public class EZShop implements EZShopInterface {
 			throws InvalidTransactionIdException, UnauthorizedException {
 		User user = this.loggedUser;
 
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 		if (returnId == null || returnId <= 0) {
@@ -1181,9 +1197,8 @@ public class EZShop implements EZShopInterface {
 	public boolean deleteReturnTransaction(Integer returnId)
 			throws InvalidTransactionIdException, UnauthorizedException {
 		User user = this.loggedUser;
-
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
-				&& !user.getRole().equals("Cashier"))) {
+		boolean flag = false;
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")&& !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
 
@@ -1219,9 +1234,9 @@ public class EZShop implements EZShopInterface {
 		boolean deletedProductReturns = db.deleteProductReturnsByReturnId(returnId);
 		boolean deletedReturnTransaction = db.deleteReturnTransaction(returnId);
 		if (deletedProductReturns && deletedReturnTransaction) {
-			return true;
+			flag = true;
 		}
-		return false;
+		return flag;
 	}
 
 	@Override
@@ -1247,6 +1262,7 @@ public class EZShop implements EZShopInterface {
 			return change;
 		}
 		double salePrice = saleTransaction.getPrice();
+		System.out.println("saleprice: " + salePrice);
 		if (salePrice > cash) {
 			return change;
 		}
@@ -1265,6 +1281,7 @@ public class EZShop implements EZShopInterface {
 	public boolean receiveCreditCardPayment(Integer ticketNumber, String creditCard)
 			throws InvalidTransactionIdException, InvalidCreditCardException, UnauthorizedException {
 		User user = this.loggedUser;
+		boolean flag = false;
 
 		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
 				&& !user.getRole().equals("Cashier"))) {
@@ -1297,8 +1314,8 @@ public class EZShop implements EZShopInterface {
 		boolean updatedSaleTransaction = db.updatePaymentSaleTransaction(ticketNumber, "CREDIT", "PAYED");
 		boolean updatedBalanceOperation = recordBalanceUpdate(salePrice);
 		if (updatedSaleTransaction && updatedBalanceOperation && updatedBalanceCard)
-			return true;
-		return false;
+			flag = true;
+		return flag;
 	}
 
 	@Override
