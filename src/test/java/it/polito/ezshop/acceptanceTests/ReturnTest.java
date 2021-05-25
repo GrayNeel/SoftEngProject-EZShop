@@ -2,6 +2,8 @@ package it.polito.ezshop.acceptanceTests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -29,6 +31,41 @@ public class ReturnTest {
 	EZShopInterface ezShop = new it.polito.ezshop.data.EZShop();
     EZShopDB db = new EZShopDB();
     
+    @Test
+    public void transactionTestCase() throws UnauthorizedException,InvalidTransactionIdException,InvalidQuantityException,InvalidProductCodeException, InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidProductIdException, InvalidLocationException{
+    	db.resetDB("saleTransactions");
+        db.resetDB("returnTransactions");
+        db.resetDB("productReturns");
+        db.resetDB("productTypes");
+        db.resetDB("productEntries");
+    	assertThrows(UnauthorizedException.class, () -> ezShop.getSaleTransaction(1));
+    	assertThrows(UnauthorizedException.class, () -> ezShop.deleteSaleTransaction(1));
+    	ezShop.login("shopManager", "1234567");
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.getSaleTransaction(null));
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.deleteSaleTransaction(null));
+    	ezShop.logout();
+    	ezShop.login("Cashier", "1234567");
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.getSaleTransaction(0));
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.deleteSaleTransaction(0));
+    	ezShop.logout();
+    	ezShop.login("admin", "strong");
+    	
+    	
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnProduct(null,"232320",5));
+    	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnProduct(-1,"232320",5));
+    	
+    	Integer transactionId = ezShop.startSaleTransaction();
+    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	ezShop.updatePosition(productId, "1-1-1");
+    	assertTrue(ezShop.updateQuantity(productId, 100));
+    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.endSaleTransaction(transactionId));
+    	db.updateTransactionState(transactionId, "PAYED");
+    	assertNotNull(ezShop.getSaleTransaction(transactionId));
+    	ezShop.endSaleTransaction(transactionId);
+//    	ezShop.deleteSaleTransaction(transactionId);
+    }
     
     @Test
     public void startReturnTransactionTestCase() throws InvalidTransactionIdException,UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidRoleException{

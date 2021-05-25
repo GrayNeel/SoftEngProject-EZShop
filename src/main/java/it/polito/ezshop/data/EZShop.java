@@ -1055,7 +1055,7 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
-		if (transactionId <= 0 || transactionId == null) {
+		if (transactionId == null || transactionId <= 0) {
 			throw new InvalidTransactionIdException();
 		}
 		List<TicketEntry> products = db.getProductEntriesByTransactionId(transactionId);
