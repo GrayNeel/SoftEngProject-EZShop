@@ -761,16 +761,7 @@ public class EZShop implements EZShopInterface {
 		}
 
 		ProductType product = getProductTypeByBarCode(productCode);
-<<<<<<< HEAD
-		
-		/*if (product == null) {
-=======
-		System.out.println("QTY: " + product.getQuantity());
-		if (product == null) {
->>>>>>> 740d368f1088d439904eef7bbd8046aeb271fcae
-			return false;
-		}*/
-		
+
 		if (product.getQuantity() < amount) {
 			return false;
 		}
@@ -795,13 +786,10 @@ public class EZShop implements EZShopInterface {
 			db.updateQuantityByBarCode(productCode, product.getQuantity() - amount);
 			TicketEntryClass entry = new TicketEntryClass(0, productCode, product.getProductDescription(), amount,
 					product.getPricePerUnit(), transactionId, 0.0);
-<<<<<<< HEAD
 			
 			entries.add(entry);			
-			transaction.setEntries(entries);	
-=======
-			entries.add(entry);
->>>>>>> 740d368f1088d439904eef7bbd8046aeb271fcae
+			transaction.setEntries(entries);
+
 			flag = true;
 		}
 		
@@ -1034,12 +1022,12 @@ public class EZShop implements EZShopInterface {
 			if (flag == false) {
 				return false;
 			}
-<<<<<<< HEAD
+
 		}		
-=======
-		}
+
+		
 		db.updateSaleTransactionAfterCommit(transactionId, total);
->>>>>>> 740d368f1088d439904eef7bbd8046aeb271fcae
+
 		return flag;
 	}
 
