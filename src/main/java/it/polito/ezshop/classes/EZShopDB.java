@@ -993,10 +993,18 @@ public class EZShopDB {
 			return false;
 		}
 
-		String sql = "UPDATE customers SET customerCard=? WHERE id=?; UPDATE cards SET assigned=1 WHERE id=? and assigned=0";
+		String sql = "UPDATE customers SET customerCard=? WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, customerCard);
-			pstmt.setInt(2, customerId);
+			pstmt.setInt(2, customerId);			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			return false;
+		}
+		
+		sql = "UPDATE cards SET assigned=1 WHERE id=? and assigned=0";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, customerCard);						
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			return false;
