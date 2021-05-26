@@ -1074,7 +1074,7 @@ public class EZShopDB {
 		String sql = "SELECT * FROM saleTransactions WHERE id=?";
 		SaleTransactionClass transaction = null;
 		List<TicketEntry> entries = new ArrayList<>();
-		// entries = get
+		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, transactionId);
 			ResultSet rs = pstmt.executeQuery();
