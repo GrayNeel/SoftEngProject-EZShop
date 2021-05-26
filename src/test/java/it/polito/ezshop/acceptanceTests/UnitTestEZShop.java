@@ -109,22 +109,22 @@ public class UnitTestEZShop {
 	
 	@Test
 	public void addAndDeleteUserTestCase() {
-		User user1 = new UserClass(7, "newAdmin", "1234567", "Administrator");
+		User user1 = new UserClass(99, "newAdmin", "1234567", "Administrator");
 		User usernull = null;
 		// Adding a new user
 		assertTrue(db.addUser(user1));
-		User user2 = db.getUserById(7);
+		User user2 = db.getUserById(99);
 		assertNotNull(user2);
 		assertFalse(db.addUser(usernull));
-		assert(user2.getId() == 7);
+		assert(user2.getId() == 99);
 		assert(user2.getUsername().equals("newAdmin"));
 		assert(user2.getPassword().equals("1234567"));
 		assert(user2.getRole().equals("Administrator"));
 	
 		// Repeating an Id in database
-		User failedUser= new UserClass(7, "failedUsername", "failedPassword", "failedRole");
+		User failedUser= new UserClass(99, "failedUsername", "failedPassword", "failedRole");
 		assertFalse(db.addUser(failedUser));
-		User testFailUser = db.getUserById(7);
+		User testFailUser = db.getUserById(99);
 		assert(testFailUser.getUsername() != "failedUsername");
 		assert(testFailUser.getPassword() != "failedPassword");
 		assert(testFailUser.getRole() != "failedRole");
@@ -132,7 +132,7 @@ public class UnitTestEZShop {
 		assert(testFailUser.getPassword().equals("1234567"));
 		assert(testFailUser.getRole().equals("Administrator"));
 
-		assertTrue(db.deleteUser(7));
+		assertTrue(db.deleteUser(99));
 		assertFalse(db.deleteUser(100));
 		assertFalse(db.checkExistingUser("newAdmin"));
 	}
