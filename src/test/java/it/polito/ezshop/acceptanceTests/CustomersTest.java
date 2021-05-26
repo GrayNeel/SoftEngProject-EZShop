@@ -46,6 +46,7 @@ public class CustomersTest {
 	public void modifyCustomerTestCase() throws InvalidCustomerNameException, InvalidCustomerCardException, InvalidCustomerIdException,
 												UnauthorizedException, InvalidUsernameException, InvalidPasswordException {
 		db.resetDB("customers");
+		db.resetDB("cards");
 
 		assertThrows(UnauthorizedException.class, () -> ezShop.modifyCustomer(2,"newCustomerName", "1234567890"));
 		
@@ -63,14 +64,40 @@ public class CustomersTest {
 		
 		Integer customerId = ezShop.defineCustomer("customerName");
 						
-		assertTrue(ezShop.modifyCustomer(customerId,"newCustomerName", "0987654321"));
-	
+		assertFalse(ezShop.modifyCustomer(customerId,"newCustomerName", "0987654321"));
+		String card = ezShop.createCard();
+		assertTrue(ezShop.modifyCustomer(customerId,"newCustomerName", card));
+		
 		ezShop.logout();
 	}
 	
 	@Test
-	public void deleteCustomerTestCase() throws InvalidCustomerIdException, UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidCustomerNameException {	    
+	public void deleteCustomerCardTestCase() throws InvalidCustomerNameException, InvalidCustomerCardException, InvalidCustomerIdException,
+												UnauthorizedException, InvalidUsernameException, InvalidPasswordException {
 		db.resetDB("customers");
+		db.resetDB("cards");
+
+		assertThrows(UnauthorizedException.class, () -> ezShop.modifyCustomer(2,"newCustomerName", "1234567890"));
+		
+		ezShop.login("admin","strong");		
+		
+		
+		Integer customerId = ezShop.defineCustomer("customerName");						
+		//assertFalse(ezShop.modifyCustomer(customerId,"newCustomerName", "0987654321"));
+		String card = ezShop.createCard();
+		ezShop.attachCardToCustomer(card, customerId);
+		
+		assertTrue(ezShop.modifyCustomer(customerId,"newCustomerName", ""));
+		
+		/*assertFalse(db.deleteCustomerCard(card)); //to confirm that card as already been deleted*/
+		
+		ezShop.logout();
+	}
+	
+	@Test
+	public void deleteCustomerTestCase() throws InvalidCustomerIdException, UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidCustomerNameException, InvalidCustomerCardException {	    
+		db.resetDB("customers");
+		db.resetDB("cards");
 		
 	    ezShop.login("admin","strong");
 	    Integer customerId = ezShop.defineCustomer("customerName");
@@ -85,6 +112,13 @@ public class CustomersTest {
 		
 		assertTrue(ezShop.deleteCustomer(customerId));
 		assertFalse(ezShop.deleteCustomer(customerId));
+		
+		Integer customerId2 = ezShop.defineCustomer("customerName");
+		String card = ezShop.createCard();
+		ezShop.attachCardToCustomer(card, customerId2);
+		
+		assertTrue(ezShop.deleteCustomer(customerId2));
+		assertFalse(ezShop.deleteCustomer(customerId2));
 		
 		ezShop.logout();
 	}

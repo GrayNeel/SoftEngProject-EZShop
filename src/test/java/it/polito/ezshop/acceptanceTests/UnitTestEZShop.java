@@ -616,12 +616,13 @@ public class UnitTestEZShop {
 		db.resetDB("customers");
 		CustomerClass c = new CustomerClass(12, "Giacomo", "1423673214", 122);
 		db.defineCustomer(c);
-
+		db.createCard("1423373228");
 		assertTrue(db.updateCustomer(12, "Carlo", "1423373228"));
 		assertTrue(db.updateCustomer(12, "Giovanni", "1423373228"));
+		assertFalse(db.updateCustomer(12, "Giovanni", "1423373349"));
 		assertTrue(db.updateCustomer(12, "Giovanni", ""));
-		assertTrue(db.updateCustomer(12, "Giovanni", null));
-
+		//assertFalse(db.updateCustomer(12, "Giovanni", null)); /**finally, it it assumes the null value then the card code related to the customer 
+																// should not be affected from the update*/
 	}
 
 	@Test
@@ -669,13 +670,28 @@ public class UnitTestEZShop {
 	public void attachCardToCustomerTestCase() {
 		db.resetDB("customers");
 		db.resetDB("cards");
-		CustomerClass c = new CustomerClass(12, "Carlo", "1423673214", 122);
+		CustomerClass c = new CustomerClass(12, "Carlo", "", 122);
 		db.defineCustomer(c);
 		db.createCard("2000000000");
 
 		assertTrue(db.attachCardToCustomer("2000000000", 12));
 		assertFalse(db.attachCardToCustomer("8000000000", 12));
 		db.deleteCustomer(12);
+		assertFalse(db.attachCardToCustomer("2000000000", 14));
+	}
+	
+	@Test
+	public void deleteCustomerCardTestCase() {
+		db.resetDB("customers");
+		db.resetDB("cards");
+		CustomerClass c = new CustomerClass(12, "Carlo", "1423673214", 122);
+		
+		db.defineCustomer(c);
+		db.createCard("2000000000");
+
+		assertTrue(db.attachCardToCustomer("2000000000", 12));
+		assertFalse(db.attachCardToCustomer("8000000000", 12));
+		assertTrue(db.deleteCustomerCard("2000000000"));
 		assertFalse(db.attachCardToCustomer("2000000000", 14));
 	}
 

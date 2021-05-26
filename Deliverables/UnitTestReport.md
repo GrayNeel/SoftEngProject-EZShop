@@ -4,7 +4,7 @@ Authors: Group 38
 
 Date: 12/05/2021
 
-Version: 01
+Version: 02
 
 # Notes
 
@@ -37,26 +37,26 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method *name*:**
 
-| Criteria                                | Predicate |
-| --------------------------------------- | --------- |
+| Criteria                                      | Predicate |
+|-----------------------------------------------|-----------|
 | The given table name is contained in database | Yes       |
-|                                         | No        |
+|                                               | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 
-| The given table name is contained in database  | Valid / Invalid | Description of the test case | JUnit test case                    |
-| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
-| Yes                                     | Valid           | T1("users") -> true  | resetDBTestCase() |
-| Yes                                      | Valid         | T2("productTypes") -> true        | ''                                 |
-| Yes                                      | Valid         | T3("orders") -> true        | ''                                 |
-| No                                      | Invalid         | T4("nonexistingtable") -> false        | ''                                 |
+| The given table name is contained in database | Valid / Invalid | Description of the test case    | JUnit test case   |
+|-----------------------------------------------|-----------------|---------------------------------|-------------------|
+| Yes                                           | Valid           | T1("users") -> true             | resetDBTestCase() |
+| Yes                                           | Valid           | T2("productTypes") -> true      | ''                |
+| Yes                                           | Valid           | T3("orders") -> true            | ''                |
+| No                                            | Invalid         | T4("nonexistingtable") -> false | ''                |
 
  ### **Class *EZShopDB* - method *getAllUsers***
 
@@ -66,24 +66,24 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method *name*:**
 
-| Criteria                                | Predicate |
-| --------------------------------------- | --------- |
-| There are Users in the database| Yes       |
-|                                         | No        |
+| Criteria                        | Predicate |
+|---------------------------------|-----------|
+| There are Users in the database | Yes       |
+|                                 | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 
-| There are Users in the database  | Valid / Invalid | Description of the test case | JUnit test case                    |
-| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
-| Yes                                     | Valid           | T1() -> true  | getAllUsersTestCase() |
-| No                                      | Invalid         | T2() -> false        | ''                                 |
+| There are Users in the database | Valid / Invalid | Description of the test case | JUnit test case       |
+|---------------------------------|-----------------|------------------------------|-----------------------|
+| Yes                             | Valid           | T1() -> true                 | getAllUsersTestCase() |
+| No                              | Invalid         | T2() -> false                | ''                    |
 
 ### **Class *EZShopDB* - method *addUser***
 
@@ -94,28 +94,28 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method *name*:**
 
-| Criteria                                | Predicate |
-| --------------------------------------- | --------- |
-| Validity of object User| Yes       |
-|                                         | No        |
-| User with unique id in database| Yes       |
-|                                         | No        |
+| Criteria                        | Predicate |
+|---------------------------------|-----------|
+| Validity of object User         | Yes       |
+|                                 | No        |
+| User with unique id in database | Yes       |
+|                                 | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 
-| Validity of object User  | User with unique id in database| Valid / Invalid | Description of the test case | JUnit test case                    |
-| --------------------------------------- | ------------- | --------------- | -------------------------------- | ---------------------------------- |
-| Yes                                     | Yes | Valid           | T1(validUser) -> true  | addAndDeleteUserTestCase() |
-| No                                      | *|Invalid         | T2(nullUser) -> false        | ''                                 |
-| Yes                                     | Yes|Valid           | T3(validUserWithID7) -> true  | addAndDeleteUserTestCase() |
-| Yes                                      | No |Invalid         | T4(validUserWithID7) -> false        | ''                                 |
+| Validity of object User | User with unique id in database | Valid / Invalid | Description of the test case  | JUnit test case            |
+|-------------------------|---------------------------------|-----------------|-------------------------------|----------------------------|
+| Yes                     | Yes                             | Valid           | T1(validUser) -> true         | addAndDeleteUserTestCase() |
+| No                      | *                               | Invalid         | T2(nullUser) -> false         | ''                         |
+| Yes                     | Yes                             | Valid           | T3(validUserWithID7) -> true  | addAndDeleteUserTestCase() |
+| Yes                     | No                              | Invalid         | T4(validUserWithID7) -> false | ''                         |
 
 ### **Class *EZShopDB* - method *deleteUser***
 
@@ -125,23 +125,23 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method *name*:**
 
-| Criteria                                | Predicate |
-| --------------------------------------- | --------- |
+| Criteria                        | Predicate |
+|---------------------------------|-----------|
 | The given ID is in the database | Yes       |
-|                                         | No        |
+|                                 | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
-| The given ID is in the database  | Valid / Invalid | Description of the test case | JUnit test case                    |
-| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
-| Yes                                     | Valid           | T1(Existing ID in database) -> true  | addAndDeleteUserTestCase() |
-| No                                      | Invalid         | T2(Non-existing ID in database) -> false        | ''                                 |
+| The given ID is in the database | Valid / Invalid | Description of the test case             | JUnit test case            |
+|---------------------------------|-----------------|------------------------------------------|----------------------------|
+| Yes                             | Valid           | T1(Existing ID in database) -> true      | addAndDeleteUserTestCase() |
+| No                              | Invalid         | T2(Non-existing ID in database) -> false | ''                         |
 
 ### **Class *EZShopDB* - method *checkExistingUser***
 
@@ -151,24 +151,24 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method *name*:**
 
-| Criteria                                | Predicate |
-| --------------------------------------- | --------- |
+| Criteria                          | Predicate |
+|-----------------------------------|-----------|
 | The given username is in database | Yes       |
-|                                         | No        |
+|                                   | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 
-| The given username is in database  | Valid / Invalid | Description of the test case | JUnit test case                    |
-| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
-| Yes                                     | Valid           | T1(Existing username in database) -> true  | checkExistingUserTestCase() |
-| No                                      | Invalid         | T2(Non-existing username in database) -> false        | ''                                 |
+| The given username is in database | Valid / Invalid | Description of the test case                   | JUnit test case             |
+|-----------------------------------|-----------------|------------------------------------------------|-----------------------------|
+| Yes                               | Valid           | T1(Existing username in database) -> true      | checkExistingUserTestCase() |
+| No                                | Invalid         | T2(Non-existing username in database) -> false | ''                          |
 
 ### **Class *EZShopDB* - method *getUserById***
 
@@ -178,24 +178,24 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method *name*:**
 
-| Criteria                                | Predicate |
-| --------------------------------------- | --------- |
+| Criteria                    | Predicate |
+|-----------------------------|-----------|
 | The given ID is in database | Yes       |
-|                                         | No        |
+|                             | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 
-| The given ID is in database  | Valid / Invalid | Description of the test case | JUnit test case                    |
-| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
-| Yes                                     | Valid           | T1(Existing ID in database) -> true  | getUserByIdTestCase() |
-| No                                      | Invalid         | T2(Non-existing ID in database) -> false        | ''                                 |
+| The given ID is in database | Valid / Invalid | Description of the test case             | JUnit test case       |
+|-----------------------------|-----------------|------------------------------------------|-----------------------|
+| Yes                         | Valid           | T1(Existing ID in database) -> true      | getUserByIdTestCase() |
+| No                          | Invalid         | T2(Non-existing ID in database) -> false | ''                    |
 
 ### **Class *EZShopDB* - method *getUserByCredentials***
 
@@ -207,30 +207,30 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method *name*:**
 
-| Criteria                                | Predicate |
-| --------------------------------------- | --------- |
-| The given username is in database | Yes       |
-|                                         | No        |
-| The given password is in database | Yes       |
-|                                         | No        |
+| Criteria                                               | Predicate |
+|--------------------------------------------------------|-----------|
+| The given username is in database                      | Yes       |
+|                                                        | No        |
+| The given password is in database                      | Yes       |
+|                                                        | No        |
 | The pair of username and password matches the database | Yes       |
-|                                         | No        |
+|                                                        | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 
-| The given username is in database  | The given password is in database | The pair of username and password matches the database | Valid / Invalid | Description of the test case | JUnit test case                    |
-| --------------------------------------- | ------- | ------- |--------------- | -------------------------------- | ---------------------------------- |
-| Yes                                 | Yes | Yes | Valid           | T1(Existing credentials in database match) -> true  | getUserByCredentialsTestCase() |
-| No                                      | Yes |  No | Invalid         | T2(Non-existing match in database ) -> false        | ''                                 |
-| Yes                                     |  No |  No| Invalid           | T3(Non-existing match in database ) -> false  | '' |
-| No                                      | No | No| Invalid         | T4(Non-existing match in database ) -> false        | ''                                 |
+| The given username is in database | The given password is in database | The pair of username and password matches the database | Valid / Invalid | Description of the test case                       | JUnit test case                |
+|-----------------------------------|-----------------------------------|--------------------------------------------------------|-----------------|----------------------------------------------------|--------------------------------|
+| Yes                               | Yes                               | Yes                                                    | Valid           | T1(Existing credentials in database match) -> true | getUserByCredentialsTestCase() |
+| No                                | Yes                               | No                                                     | Invalid         | T2(Non-existing match in database ) -> false       | ''                             |
+| Yes                               | No                                | No                                                     | Invalid         | T3(Non-existing match in database ) -> false       | ''                             |
+| No                                | No                                | No                                                     | Invalid         | T4(Non-existing match in database ) -> false       | ''                             |
 
 ### **Class *EZShopDB* - method *getLastId***
 
@@ -240,30 +240,30 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method *name*:**
 
-| Criteria                                | Predicate |
-| --------------------------------------- | --------- |
+| Criteria                                                  | Predicate |
+|-----------------------------------------------------------|-----------|
 | The ID obtained is equal to the last ID added to database | Yes       |
-|                                         | No        |
+|                                                           | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 
-| The ID obtained is equal to the last ID added to database  | Valid / Invalid | Description of the test case | JUnit test case                    |
-| --------------------------------------- | --------------- | -------------------------------- | ---------------------------------- |
-| Yes                                     | Valid           | T1(Last ID in database users) -> true  | getLastIdTestCase() |
-| No                                      | Invalid         | T2(Non-existing ID in database users) -> false        | ''                                 |
-| Yes                                     | Valid           | T3(Last ID in productType) -> true  | '' |
-| No                                      | Invalid         | T4(Non-existing ID in database productType) -> false        | ''                                 |
-| Yes                                     | Valid           | T5(Last ID in database customers) -> true  | '' |
-| No                                      | Invalid         | T6(Non-existing ID in database customers) -> false        | ''                                 |
-| Yes                                     | Valid           | T7(Last ID in database orders) -> true  | '' |
-| No                                      | Invalid         | T8(Non-existing ID in database orders) -> false        | ''                                 |
+| The ID obtained is equal to the last ID added to database | Valid / Invalid | Description of the test case                         | JUnit test case     |
+|-----------------------------------------------------------|-----------------|------------------------------------------------------|---------------------|
+| Yes                                                       | Valid           | T1(Last ID in database users) -> true                | getLastIdTestCase() |
+| No                                                        | Invalid         | T2(Non-existing ID in database users) -> false       | ''                  |
+| Yes                                                       | Valid           | T3(Last ID in productType) -> true                   | ''                  |
+| No                                                        | Invalid         | T4(Non-existing ID in database productType) -> false | ''                  |
+| Yes                                                       | Valid           | T5(Last ID in database customers) -> true            | ''                  |
+| No                                                        | Invalid         | T6(Non-existing ID in database customers) -> false   | ''                  |
+| Yes                                                       | Valid           | T7(Last ID in database orders) -> true               | ''                  |
+| No                                                        | Invalid         | T8(Non-existing ID in database orders) -> false      | ''                  |
 
 ### **Class *EZShopDB* - method *updateUserRole***
 
@@ -274,26 +274,26 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method *name*:**
 
-| Criteria                                | Predicate |
-| --------------------------------------- | --------- |
+| Criteria                    | Predicate |
+|-----------------------------|-----------|
 | The given ID is in database | Yes       |
-|                                         | No        |
-| The user role updates | Yes       |
-|                                         | No        |
+|                             | No        |
+| The user role updates       | Yes       |
+|                             | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 
-| The given ID is in database | The user role updates | Valid / Invalid | Description of the test case | JUnit test case                    |
-| --------------------------------------- | ------ | --------------- | -------------------------------- | ---------------------------------- |
-| Yes                                    | Yes | Valid           | T1(Last ID in database users) -> true. T2(User role is equal to updated role) -> true  | getLastIdTestCase() |
-| No                                     | *| Invalid         | T3(Non-existing ID in database users) -> false        | ''                                 |
+| The given ID is in database | The user role updates | Valid / Invalid | Description of the test case                                                          | JUnit test case     |
+|-----------------------------|-----------------------|-----------------|---------------------------------------------------------------------------------------|---------------------|
+| Yes                         | Yes                   | Valid           | T1(Last ID in database users) -> true. T2(User role is equal to updated role) -> true | getLastIdTestCase() |
+| No                          | *                     | Invalid         | T3(Non-existing ID in database users) -> false                                        | ''                  |
 
 
 
@@ -310,7 +310,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method *name*:**
 
 | Criteria                                      | Predicate                                   |
-| --------------------------------------------- | ------------------------------------------- |
+|-----------------------------------------------|---------------------------------------------|
 | String contains a number                      | Yes                                         |
 |                                               | No                                          |
 | Length of the string                          | 8, 12, 13, 14, 17, 18                       |
@@ -321,31 +321,31 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 
-| String contains a number | Length of the string | Last number is the check of the previous ones | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|
-|No|*|*|Invalid|T1("df") -> false <br />T2("") -> false|validateProductCodeTestCase()|
-|*|[0,7]|*|Invalid|T3("1234567") -> false|''|
-|*|[9, 11]|*|Invalid|T4("1234567890") -> false|''|
-|*|[15, 16]|*|Invalid|T5("333333333333333") -> false|''|
-|*|[19, maxDouble]|*|Invalid|T5("44444444444444444444") -> false|''|
-|Yes|8|No|Invalid|T6("12345678") -> false|''|
-|Yes|8|Yes|Valid|T7("12345670") -> true|''|
-|Yes|12|No|Invalid|T8("123456756328") -> true|''|
-|Yes|12|Yes|Valid|T9("123456756324") -> false|''|
-|Yes|13|No|Invalid|T10("8717163994254") -> false|''|
-|Yes|13|Yes|Valid|T11("8717163994250") -> true|''|
-|Yes|14|No|Invalid|T12("12344674332822") -> false|''|
-|Yes|14|Yes|Valid|T13("12344674332827") -> true|''|
-|Yes|17|No|Invalid|T14("12344674332827777") -> false|''|
-|Yes|17|Yes|Valid|T15("12344674332827772") -> true|''|
-|Yes|18|No|Invalid|T16("123446743328277775") -> false|''|
-|Yes|18|Yes|Valid|T17("123446743328277771") -> true|''|
+| String contains a number | Length of the string | Last number is the check of the previous ones | Valid / Invalid | Description of the test case            | JUnit test case               |
+|--------------------------|----------------------|-----------------------------------------------|-----------------|-----------------------------------------|-------------------------------|
+| No                       | *                    | *                                             | Invalid         | T1("df") -> false <br />T2("") -> false | validateProductCodeTestCase() |
+| *                        | [0,7]                | *                                             | Invalid         | T3("1234567") -> false                  | ''                            |
+| *                        | [9, 11]              | *                                             | Invalid         | T4("1234567890") -> false               | ''                            |
+| *                        | [15, 16]             | *                                             | Invalid         | T5("333333333333333") -> false          | ''                            |
+| *                        | [19, maxDouble]      | *                                             | Invalid         | T5("44444444444444444444") -> false     | ''                            |
+| Yes                      | 8                    | No                                            | Invalid         | T6("12345678") -> false                 | ''                            |
+| Yes                      | 8                    | Yes                                           | Valid           | T7("12345670") -> true                  | ''                            |
+| Yes                      | 12                   | No                                            | Invalid         | T8("123456756328") -> true              | ''                            |
+| Yes                      | 12                   | Yes                                           | Valid           | T9("123456756324") -> false             | ''                            |
+| Yes                      | 13                   | No                                            | Invalid         | T10("8717163994254") -> false           | ''                            |
+| Yes                      | 13                   | Yes                                           | Valid           | T11("8717163994250") -> true            | ''                            |
+| Yes                      | 14                   | No                                            | Invalid         | T12("12344674332822") -> false          | ''                            |
+| Yes                      | 14                   | Yes                                           | Valid           | T13("12344674332827") -> true           | ''                            |
+| Yes                      | 17                   | No                                            | Invalid         | T14("12344674332827777") -> false       | ''                            |
+| Yes                      | 17                   | Yes                                           | Valid           | T15("12344674332827772") -> true        | ''                            |
+| Yes                      | 18                   | No                                            | Invalid         | T16("123446743328277775") -> false      | ''                            |
+| Yes                      | 18                   | Yes                                           | Valid           | T17("123446743328277771") -> true       | ''                            |
 
  ### **Class *EZShopDB* - method *checkExistingProductType***
 
@@ -356,21 +356,21 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method *name*:**
 
 | Criteria                                | Predicate |
-| --------------------------------------- | --------- |
+|-----------------------------------------|-----------|
 | The string is contained in the database | Yes       |
 |                                         | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 
 | The string is contained in the database | Valid / Invalid | Description of the test case | JUnit test case                    |
-| --------------------------------------- | --------------- | ---------------------------- | ---------------------------------- |
+|-----------------------------------------|-----------------|------------------------------|------------------------------------|
 | Yes                                     | Valid           | T1("8859392701093") -> true  | checkExistingProductTypeTestCase() |
 | No                                      | Invalid         | T2("blabla") -> false        | ''                                 |
 
@@ -383,7 +383,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method *name*:**
 
 | Criteria                           | Predicate |
-| ---------------------------------- | --------- |
+|------------------------------------|-----------|
 | Validity of the object ProductType | Yes       |
 |                                    | No        |
 
@@ -392,7 +392,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -401,7 +401,7 @@ The credit cards for the application testing were pre-set in the database file f
 
 
 | Validity of the object ProductType | Valid / Invalid | Description of the test case | JUnit test case                   |
-| ---------------------------------- | --------------- | ---------------------------- | --------------------------------- |
+|------------------------------------|-----------------|------------------------------|-----------------------------------|
 | Yes                                | Valid           | T1(valid PT) -> true         | addAndDeleteProductTypeTestCase() |
 | No                                 | Invalid         | T2(NULL) -> false            | ''                                |
 
@@ -418,7 +418,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                                 | Predicate |
-| ---------------------------------------- | --------- |
+|------------------------------------------|-----------|
 | Validity of the id parameter             | Yes       |
 |                                          | No        |
 | Validity of the newDescription parameter | Yes       |
@@ -433,13 +433,13 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
 | Validity of the id parameter | Validity of the newDescription parameter | Validity of the newCode parameter | Validity of the newPrice parameter | Validity of the newNote parameter | Valid / Invalid | Description of the test case           | JUnit test case             |
-| ---------------------------- | ---------------------------------------- | --------------------------------- | ---------------------------------- | --------------------------------- | --------------- | -------------------------------------- | --------------------------- |
+|------------------------------|------------------------------------------|-----------------------------------|------------------------------------|-----------------------------------|-----------------|----------------------------------------|-----------------------------|
 | No                           | *                                        | *                                 | *                                  | *                                 | Invalid         | T1("d","ok","333","2","good") -> false | updateProductTypeTestCase() |
 | *                            | No                                       | *                                 | *                                  | *                                 | Invalid         | T2(100,3,"333","2","good") -> error    | ''                          |
 | *                            | *                                        | No                                | *                                  | *                                 | Invalid         | T3(100,"ok",3,"2","good") -> error     | ''                          |
@@ -456,14 +456,14 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method *name*:**
 
 | Criteria                        | Predicate |
-| ------------------------------- | --------- |
+|---------------------------------|-----------|
 | The given ID is in the database | Yes       |
 |                                 | No        |
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -472,7 +472,7 @@ The credit cards for the application testing were pre-set in the database file f
 
 
 | The given ID is in the database | Valid / Invalid | Description of the test case           | JUnit test case                   |
-| ------------------------------- | --------------- | -------------------------------------- | --------------------------------- |
+|---------------------------------|-----------------|----------------------------------------|-----------------------------------|
 | Yes                             | Valid           | T1(an ID in the database) -> true      | addAndDeleteProductTypeTestCase() |
 | No                              | Invalid         | T2(an ID not in the database) -> false | ''                                |
 
@@ -485,7 +485,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                               | Predicate |
-| -------------------------------------- | --------- |
+|----------------------------------------|-----------|
 | There are ProductTypes in the database | Yes       |
 |                                        | No        |
 
@@ -494,7 +494,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -502,7 +502,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | There are ProductTypes in the database | Valid / Invalid | Description of the test case | JUnit test case              |
-| -------------------------------------- | --------------- | ---------------------------- | ---------------------------- |
+|----------------------------------------|-----------------|------------------------------|------------------------------|
 | Yes                                    | Valid           | T1() -> List(ProductTypes)   | getAllProductTypesTestCase() |
 | No                                     | Invalid         | T2() -> Emptylist            | ''                           |
 
@@ -515,7 +515,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                       | Predicate |
-| ------------------------------ | --------- |
+|--------------------------------|-----------|
 | Validity of the barCode string | Yes       |
 |                                | No        |
 
@@ -524,7 +524,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -532,7 +532,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Validity of the barCode string | Valid / Invalid | Description of the test case           | JUnit test case                   |
-| ------------------------------ | --------------- | -------------------------------------- | --------------------------------- |
+|--------------------------------|-----------------|----------------------------------------|-----------------------------------|
 | Yes                            | Valid           | T1(a barCode in the DB) -> ProductType | getProductTypeByBarCodeTestCase() |
 | No                             | Invalid         | T2(a barCode not in the DB) -> NULL    | ''                                |
 
@@ -545,7 +545,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                           | Predicate |
-| ---------------------------------- | --------- |
+|------------------------------------|-----------|
 | Validity of the description string | Yes       |
 |                                    | No        |
 
@@ -554,7 +554,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -562,7 +562,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Validity of the description string | Valid / Invalid | Description of the test case                   | JUnit test case                       |
-| ---------------------------------- | --------------- | ---------------------------------------------- | ------------------------------------- |
+|------------------------------------|-----------------|------------------------------------------------|---------------------------------------|
 | Yes                                | Valid           | T1(a description in the DB) -> ProductTypeList | getProductTypeByDescriptionTestCase() |
 | No                                 | Invalid         | T2(a description not in the DB) -> EmptyList   | ''                                    |
 
@@ -575,7 +575,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                     | Predicate |
-| ---------------------------- | --------- |
+|------------------------------|-----------|
 | Validity of the id parameter | Yes       |
 |                              | No        |
 
@@ -584,7 +584,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -592,7 +592,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Validity of the description string | Valid / Invalid | Description of the test case    | JUnit test case                      |
-| ---------------------------------- | --------------- | ------------------------------- | ------------------------------------ |
+|------------------------------------|-----------------|---------------------------------|--------------------------------------|
 | Yes                                | Valid           | T1(an ID in the DB) -> quantity | getQuantityByProductTypeIdTestCase() |
 | No                                 | Invalid         | T2(an ID not in the DB) -> null | ''                                   |
 
@@ -606,7 +606,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                              | Predicate |
-| ------------------------------------- | --------- |
+|---------------------------------------|-----------|
 | Validity of the id parameter          | Yes       |
 |                                       | No        |
 | Validity of the newQuantity parameter | Yes       |
@@ -617,7 +617,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -625,7 +625,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Validity of the description string | Validity of the newQuantity parameter | NoValid / Invalid | Description of the test case       | JUnit test case                         |
-| ---------------------------------- | ------------------------------------- | ----------------- | ---------------------------------- | --------------------------------------- |
+|------------------------------------|---------------------------------------|-------------------|------------------------------------|-----------------------------------------|
 | No                                 | *                                     | Invalid           | T1(an ID not in the DB,4) -> false | updateQuantityByProductTypeIdTestCase() |
 | *                                  | No                                    | Invalid           | T2(an ID in the DB, "ss") -> error | ''                                      |
 | Yes                                | Yes                                   | Valid             | T3(an ID in the DB, 4) -> true     | ''                                      |
@@ -639,7 +639,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                      | Predicate |
-| ----------------------------- | --------- |
+|-------------------------------|-----------|
 | Parameter pos found in the DB | Yes       |
 |                               | No        |
 
@@ -648,7 +648,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -656,7 +656,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Parameter pos found in the DB | NoValid / Invalid | Description of the test case        | JUnit test case          |
-| ----------------------------- | ----------------- | ----------------------------------- | ------------------------ |
+|-------------------------------|-------------------|-------------------------------------|--------------------------|
 | No                            | Invalid           | T1(position not in the db) -> false | isLocationUsedTestCase() |
 | Yes                           | Valid             | T2(position in the DB) -> true      | ''                       |
 
@@ -670,7 +670,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                            | Predicate |
-| ----------------------------------- | --------- |
+|-------------------------------------|-----------|
 | Validity of the productId parameter | Yes       |
 |                                     | No        |
 | Validity of the newPos parameter    | Yes       |
@@ -681,7 +681,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -689,7 +689,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Validity of the productId parameter | Validity of the newPos parameter | NoValid / Invalid | Description of the test case             | JUnit test case                     |
-| ----------------------------------- | -------------------------------- | ----------------- | ---------------------------------------- | ----------------------------------- |
+|-------------------------------------|----------------------------------|-------------------|------------------------------------------|-------------------------------------|
 | No                                  | *                                | Invalid           | T1(an ID not in the DB,"4-4-4") -> false | updateProductTypeLocationTestCase() |
 | *                                   | No                               | Invalid           | T2(an ID in the DB, 4) -> false          | ''                                  |
 | Yes                                 | Yes                              | Valid             | T3(an ID in the DB, "4-4-4") -> true     | ''                                  |
@@ -703,7 +703,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                     | Predicate |
-| ---------------------------- | --------- |
+|------------------------------|-----------|
 | Validity of the Order object | Yes       |
 |                              | No        |
 
@@ -712,7 +712,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -720,7 +720,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Validity of the Order object | Valid / Invalid | Description of the test case | JUnit test case                      |
-| ---------------------------- | --------------- | ---------------------------- | ------------------------------------ |
+|------------------------------|-----------------|------------------------------|--------------------------------------|
 | Yes                          | Valid           | T1(valid Order) -> true      | addAndIssueOrderThenDeleteTestCase() |
 | No                           | Invalid         | T2(NULL) -> false            | ''                                   |
 
@@ -734,7 +734,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                            | Predicate |
-| ----------------------------------- | --------- |
+|-------------------------------------|-----------|
 | Validity of the orderId parameter   | Yes       |
 |                                     | No        |
 | Validity of the balanceId parameter | Yes       |
@@ -745,7 +745,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -753,7 +753,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Validity of the orderId parameter | Validity of the balanceId parameter | NoValid / Invalid | Description of the test case       | JUnit test case               |
-| --------------------------------- | ----------------------------------- | ----------------- | ---------------------------------- | ----------------------------- |
+|-----------------------------------|-------------------------------------|-------------------|------------------------------------|-------------------------------|
 | No                                | *                                   | Invalid           | T1(an ID not in the DB,4) -> false | setBalanceIdInOrderTestCase() |
 | *                                 | No                                  | Invalid           | T2(an ID in the DB, NULL) -> false | ''                            |
 | Yes                               | Yes                                 | Valid             | T3(an ID in the DB, 4) -> true     | ''                            |
@@ -767,7 +767,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                          | Predicate |
-| --------------------------------- | --------- |
+|-----------------------------------|-----------|
 | Validity of the orderId parameter | Yes       |
 |                                   | No        |
 
@@ -776,7 +776,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -784,7 +784,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Validity of the orderId parameter | Valid / Invalid | Description of the test case      | JUnit test case        |
-| --------------------------------- | --------------- | --------------------------------- | ---------------------- |
+|-----------------------------------|-----------------|-----------------------------------|------------------------|
 | Yes                               | Valid           | T1(an ID in the database) -> true | payOrderByIdTestCase() |
 | No                                | Invalid         | T2(NULL) -> false                 | ''                     |
 
@@ -797,7 +797,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                          | Predicate |
-| --------------------------------- | --------- |
+|-----------------------------------|-----------|
 | Validity of the orderId parameter | Yes       |
 |                                   | No        |
 
@@ -806,7 +806,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -814,7 +814,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Validity of the orderId parameter | Valid / Invalid | Description of the test case      | JUnit test case                  |
-| --------------------------------- | --------------- | --------------------------------- | -------------------------------- |
+|-----------------------------------|-----------------|-----------------------------------|----------------------------------|
 | Yes                               | Valid           | T1(an ID in the database) -> true | recordOrderArrivalByIdTestCase() |
 | No                                | Invalid         | T2(NULL) -> false                 | ''                               |
 
@@ -827,7 +827,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
-| -------------------------------- | --------- |
+|----------------------------------|-----------|
 | There are Orders in the database | Yes       |
 |                                  | No        |
 
@@ -836,7 +836,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -844,7 +844,7 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+|----------------------------------|-----------------|------------------------------|------------------------|
 | Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
 | No                               | Invalid         | T2() -> Emptylist            | ''                     |
 
@@ -921,6 +921,40 @@ The credit cards for the application testing were pre-set in the database file f
 |------------------------------|---------------|-----------------------------------------------------------|--------------------------------|
 | Yes                          | Valid         | T1(Existing ID in database)<br />-> true                  | addAndDeleteCustomerTestCase() |
 | No                           | Invalid       | T2(Non-existing ID in database) <br /> -> false           | ''                             |
+
+### **Class *EZShopDB* - method *deleteCustomerCard***
+
+**Criteria for method *name*:**
+	
+
+- Validity of the id parameter
+
+
+**Predicates for method *name*:**
+
+| Criterion                    | Predicate |
+|------------------------------|-----------|
+| Validity of the id parameter | Yes       |
+|                              | No        |
+
+
+
+**Boundaries**:
+
+| Criterion | Boundary values |
+|-----------|-----------------|
+|           |                 |
+
+
+
+ **Combination of predicates**
+
+
+
+| Validity of the id parameter | Valid/Invalid | Description of the test case: example of input and output | JUnit test case              |
+|------------------------------|---------------|-----------------------------------------------------------|------------------------------|
+| Yes                          | Valid         | T1(Existing ID in database)<br />-> true                  | deleteCustomerCardTestCase() |
+| No                           | Invalid       | T2(Non-existing ID in database) <br /> -> false           | ''                           |
 
 
 ### **Class *EZShopDB* - method *updateCustomer***
@@ -1452,27 +1486,27 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                            | Predicate |
+|-------------------------------------|-----------|
 | Validity of the Sale Transaction ID | Yes       |
-|                                  | No        |
+|                                     | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Validity of the Sale Transaction ID | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> SaleTransactionClass item          | getClosedSaleTransactionTestCase() |
-| No                               | Invalid         | T2() -> null           | ''                     |
+| Validity of the Sale Transaction ID | Valid / Invalid | Description of the test case      | JUnit test case                    |
+|-------------------------------------|-----------------|-----------------------------------|------------------------------------|
+| Yes                                 | Valid           | T1() -> SaleTransactionClass item | getClosedSaleTransactionTestCase() |
+| No                                  | Invalid         | T2() -> null                      | ''                                 |
 
 ### **Class *EZShopDB* - method *getProductEntriesByTransactionId***
 
@@ -1482,27 +1516,27 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                            | Predicate |
+|-------------------------------------|-----------|
 | Validity of the Sale Transaction ID | Yes       |
-|                                  | No        |
+|                                     | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Validity of the Sale Transaction ID | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(TicketEntry)          | getProductEntriesByTransactionId() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| Validity of the Sale Transaction ID | Valid / Invalid | Description of the test case | JUnit test case                    |
+|-------------------------------------|-----------------|------------------------------|------------------------------------|
+| Yes                                 | Valid           | T1() -> List(TicketEntry)    | getProductEntriesByTransactionId() |
+| No                                  | Invalid         | T2() -> Emptylist            | ''                                 |
 
 ### **Class *EZShopDB* - method *startReturnTransaction***
 
@@ -1512,27 +1546,27 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                      | Predicate |
+|-------------------------------|-----------|
 | Return Transaction item valid | Yes       |
-|                                  | No        |
+|                               | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Return Transaction item valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> Return ID          | returnTransactionTestCase() |
-| No                               | Invalid         | T2() -> -1            | ''                     |
+| Return Transaction item valid | Valid / Invalid | Description of the test case | JUnit test case             |
+|-------------------------------|-----------------|------------------------------|-----------------------------|
+| Yes                           | Valid           | T1() -> Return ID            | returnTransactionTestCase() |
+| No                            | Invalid         | T2() -> -1                   | ''                          |
 
 ### **Class *EZShopDB* - method *deleteReturnTransaction***
 
@@ -1542,27 +1576,27 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                    | Predicate |
+|-----------------------------|-----------|
 | Return Transaction ID valid | Yes       |
-|                                  | No        |
+|                             | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Return Transaction ID valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> true          | returnTransactionTestCase() |
-| No                               | Invalid         | T2() -> false            | ''                     |
+| Return Transaction ID valid | Valid / Invalid | Description of the test case | JUnit test case             |
+|-----------------------------|-----------------|------------------------------|-----------------------------|
+| Yes                         | Valid           | T1() -> true                 | returnTransactionTestCase() |
+| No                          | Invalid         | T2() -> false                | ''                          |
 
 ### **Class *EZShopDB* - method *getReturnTransactionById***
 
@@ -1572,27 +1606,27 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                    | Predicate |
+|-----------------------------|-----------|
 | Return Transaction ID valid | Yes       |
-|                                  | No        |
+|                             | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Return Transaction ID valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> ReturnTransactionClass item          | returnTransactionTestCase() |
-| No                               | Invalid         | T2() -> null           | ''                     |
+| Return Transaction ID valid | Valid / Invalid | Description of the test case        | JUnit test case             |
+|-----------------------------|-----------------|-------------------------------------|-----------------------------|
+| Yes                         | Valid           | T1() -> ReturnTransactionClass item | returnTransactionTestCase() |
+| No                          | Invalid         | T2() -> null                        | ''                          |
 
 ### **Class *EZShopDB* - method *getPricePerUnit***
 
@@ -1602,17 +1636,17 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria              | Predicate |
+|-----------------------|-----------|
 | Product Code validity | Yes       |
-|                                  | No        |
+|                       | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -1620,9 +1654,9 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Product Code validity | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> Unit price          | getPriceUnitTestCase() |
-| No                               | Invalid         | T2() -> 0            | ''                     |
+|-----------------------|-----------------|------------------------------|------------------------|
+| Yes                   | Valid           | T1() -> Unit price           | getPriceUnitTestCase() |
+| No                    | Invalid         | T2() -> 0                    | ''                     |
 
 ### **Class *EZShopDB* - method *returnProduct***
 
@@ -1635,12 +1669,12 @@ The credit cards for the application testing were pre-set in the database file f
 **Predicates for method \*name\*:**
 
 | Criteria                         | Predicate |
-| -------------------------------- | --------- |
+|----------------------------------|-----------|
 | There are Orders in the database | Yes       |
 |                                  | No        |
-| Valid product Code | Yes       |
+| Valid product Code               | Yes       |
 |                                  | No        |
-| Valid amount of return product | Yes       |
+| Valid amount of return product   | Yes       |
 |                                  | No        |
 
 
@@ -1648,17 +1682,17 @@ The credit cards for the application testing were pre-set in the database file f
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Are all the parameters valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> true          | returnProductTestCase() |
-| No                               | Invalid         | T2() -> false           | ''                     |
+| Are all the parameters valid | Valid / Invalid | Description of the test case | JUnit test case         |
+|------------------------------|-----------------|------------------------------|-------------------------|
+| Yes                          | Valid           | T1() -> true                 | returnProductTestCase() |
+| No                           | Invalid         | T2() -> false                | ''                      |
 
 ### **Class *EZShopDB* - method *getAmountonEntry***
 
@@ -1669,19 +1703,19 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                | Predicate |
+|-------------------------|-----------|
 | Transaction Id is valid | Yes       |
-|                                  | No        |
-| Product code is valid | Yes       |
-|                                  | No        |
+|                         | No        |
+| Product code is valid   | Yes       |
+|                         | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
@@ -1689,9 +1723,9 @@ The credit cards for the application testing were pre-set in the database file f
 **Combination of predicates**:
 
 | Product code and transaction Id valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> amount          | getAllOrdersTestCase() |
-| No                               | Invalid         | T2() -> -1            | ''                     |
+|---------------------------------------|-----------------|------------------------------|------------------------|
+| Yes                                   | Valid           | T1() -> amount               | getAllOrdersTestCase() |
+| No                                    | Invalid         | T2() -> -1                   | ''                     |
 
 ### **Class *EZShopDB* - method *getTotalOnEntry***
 
@@ -1702,29 +1736,29 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                | Predicate |
+|-------------------------|-----------|
 | Transaction Id is valid | Yes       |
-|                                  | No        |
-| Product code is valid | Yes       |
-|                                  | No        |
+|                         | No        |
+| Product code is valid   | Yes       |
+|                         | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Product code and transaction Id valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> total          | getTotalOnEntryTestCase() |
-| No                               | Invalid         | T2() -> 0.0            | ''                     |
+| Product code and transaction Id valid | Valid / Invalid | Description of the test case | JUnit test case           |
+|---------------------------------------|-----------------|------------------------------|---------------------------|
+| Yes                                   | Valid           | T1() -> total                | getTotalOnEntryTestCase() |
+| No                                    | Invalid         | T2() -> 0.0                  | ''                        |
 
 ### **Class *EZShopDB* - method *checkProductInSaleTransaction***
 
@@ -1734,29 +1768,29 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                | Predicate |
+|-------------------------|-----------|
 | Transaction Id is valid | Yes       |
-|                                  | No        |
-| Product code is valid | Yes       |
-|                                  | No        |
+|                         | No        |
+| Product code is valid   | Yes       |
+|                         | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Product code and transaction Id valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> true          | returnTransactionTestCase() |
-| No                               | Invalid         | T2() -> false          | ''                     |
+| Product code and transaction Id valid | Valid / Invalid | Description of the test case | JUnit test case             |
+|---------------------------------------|-----------------|------------------------------|-----------------------------|
+| Yes                                   | Valid           | T1() -> true                 | returnTransactionTestCase() |
+| No                                    | Invalid         | T2() -> false                | ''                          |
 
 ### **Class *EZShopDB* - method *updateReturnTransaction***
 
@@ -1767,31 +1801,31 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
-| Return Id is valid | Yes       |
-|                                  | No        |
-| Amount is valid | Yes       |
-|                                  | No        |
+| Criteria                  | Predicate |
+|---------------------------|-----------|
+| Return Id is valid        | Yes       |
+|                           | No        |
+| Amount is valid           | Yes       |
+|                           | No        |
 | New return value is valid | Yes       |
-|                                  | No        |
+|                           | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Return ID, Amount and new Value are valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> true          | returnTransactionTestCase() |
-| No                               | Invalid         | T2() -> false          | ''                     |
+| Return ID, Amount and new Value are valid | Valid / Invalid | Description of the test case | JUnit test case             |
+|-------------------------------------------|-----------------|------------------------------|-----------------------------|
+| Yes                                       | Valid           | T1() -> true                 | returnTransactionTestCase() |
+| No                                        | Invalid         | T2() -> false                | ''                          |
 
 
 ### **Class *EZShopDB* - method *updateSaleTransactionAfterCommit***
@@ -1803,29 +1837,29 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
-| Transaction ID is valid | Yes       |
-|                                  | No        |
+| Criteria                  | Predicate |
+|---------------------------|-----------|
+| Transaction ID is valid   | Yes       |
+|                           | No        |
 | New return value is valid | Yes       |
-|                                  | No        |
+|                           | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> true         | updateSaleTransactionAfterCommitTestCase() |
-| No                               | Invalid         | T2() -> false            | ''                     |
+| There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case                            |
+|----------------------------------|-----------------|------------------------------|--------------------------------------------|
+| Yes                              | Valid           | T1() -> true                 | updateSaleTransactionAfterCommitTestCase() |
+| No                               | Invalid         | T2() -> false                | ''                                         |
 
 ### **Class *EZShopDB* - method *updateEntryAfterCommit***
 
@@ -1838,33 +1872,33 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                | Predicate |
+|-------------------------|-----------|
 | Transaction ID is valid | Yes       |
-|                                  | No        |
-| Product Code is valid | Yes       |
-|                                  | No        |
-| New amount is valid | Yes       |
-|                                  | No        |
+|                         | No        |
+| Product Code is valid   | Yes       |
+|                         | No        |
+| New amount is valid     | Yes       |
+|                         | No        |
 | New total sold is valid | Yes       |
-|                                  | No        |
+|                         | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| All the parameters are valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> true         | updateEntryAfterCommitTestCase() |
-| No                               | Invalid         | T2() -> false            | ''                     |
+| All the parameters are valid | Valid / Invalid | Description of the test case | JUnit test case                  |
+|------------------------------|-----------------|------------------------------|----------------------------------|
+| Yes                          | Valid           | T1() -> true                 | updateEntryAfterCommitTestCase() |
+| No                           | Invalid         | T2() -> false                | ''                               |
 
 ### **Class *EZShopDB* - method *getAllProductReturnsById***
 
@@ -1874,27 +1908,27 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria           | Predicate |
+|--------------------|-----------|
 | Return ID is valid | Yes       |
-|                                  | No        |
+|                    | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Return ID is valid. | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(ReturnProducts)          | getAllProductReturnsTestCase() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| Return ID is valid. | Valid / Invalid | Description of the test case | JUnit test case                |
+|---------------------|-----------------|------------------------------|--------------------------------|
+| Yes                 | Valid           | T1() -> List(ReturnProducts) | getAllProductReturnsTestCase() |
+| No                  | Invalid         | T2() -> Emptylist            | ''                             |
 
 
 ### **Class *EZShopDB* - method *deleteProductReturnsByReturnId***
@@ -1905,27 +1939,27 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria           | Predicate |
+|--------------------|-----------|
 | Return ID is valid | Yes       |
-|                                  | No        |
+|                    | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Return ID is valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> true       | deleteProductReturnsTestCase() |
-| No                               | Invalid         | T2() -> false            | ''                     |
+| Return ID is valid | Valid / Invalid | Description of the test case | JUnit test case                |
+|--------------------|-----------------|------------------------------|--------------------------------|
+| Yes                | Valid           | T1() -> true                 | deleteProductReturnsTestCase() |
+| No                 | Invalid         | T2() -> false                | ''                             |
 
 ### **Class *EZShopDB* - method *updatePaymentSaleTransaction***
 
@@ -1937,31 +1971,31 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
-| Transaction ID is valid | Yes       |
-|                                  | No        |
-| Payment method is valid | Yes       |
-|                                  | No        |
+| Criteria                          | Predicate |
+|-----------------------------------|-----------|
+| Transaction ID is valid           | Yes       |
+|                                   | No        |
+| Payment method is valid           | Yes       |
+|                                   | No        |
 | State of the transaction is valid | Yes       |
-|                                  | No        |
+|                                   | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Transaction, payment method and state are valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> true         | updatePaymentSaleTransactionTestCase() |
-| No                               | Invalid         | T2() -> false            | ''                     |
+| Transaction, payment method and state are valid | Valid / Invalid | Description of the test case | JUnit test case                        |
+|-------------------------------------------------|-----------------|------------------------------|----------------------------------------|
+| Yes                                             | Valid           | T1() -> true                 | updatePaymentSaleTransactionTestCase() |
+| No                                              | Invalid         | T2() -> false                | ''                                     |
 
 ### **Class *EZShopDB* - method *recordBalanceOperation***
 
@@ -1971,25 +2005,25 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                        | Predicate |
+|---------------------------------|-----------|
 | Balance operation item is valid | Yes       |
-|                                  | No        |
+|                                 | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 **Combination of predicates**:
 
-| Balance operation item is valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> true         | recordBalanceOperationTestCase() |
-| No                               | Invalid         | T2() -> false            | ''                     |
+| Balance operation item is valid | Valid / Invalid | Description of the test case | JUnit test case                  |
+|---------------------------------|-----------------|------------------------------|----------------------------------|
+| Yes                             | Valid           | T1() -> true                 | recordBalanceOperationTestCase() |
+| No                              | Invalid         | T2() -> false                | ''                               |
 
 ### **Class *EZShopDB* - method *getActualBalance***
 
@@ -1999,31 +2033,31 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                                     | Predicate |
+|----------------------------------------------|-----------|
 | There are Balance Operations in the database | Yes       |
-|                                  | No        |
+|                                              | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| There are Balance Operations in the database | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> total          | getActualBalanceTestCase() |
-| No                               | Invalid         | T2() -> 0           | ''                     |
+| There are Balance Operations in the database | Valid / Invalid | Description of the test case | JUnit test case            |
+|----------------------------------------------|-----------------|------------------------------|----------------------------|
+| Yes                                          | Valid           | T1() -> total                | getActualBalanceTestCase() |
+| No                                           | Invalid         | T2() -> 0                    | ''                         |
 **Combination of predicates**:
 
 | There are Orders in the database | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
+|----------------------------------|-----------------|------------------------------|------------------------|
 | Yes                              | Valid           | T1() -> List(Order)          | getAllOrdersTestCase() |
 | No                               | Invalid         | T2() -> Emptylist            | ''                     |
 
@@ -2036,29 +2070,29 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                  | Predicate |
+|---------------------------|-----------|
 | There start date is valid | Yes       |
-|                                  | No        |
-| There end date is valid | Yes       |
-|                                  | No        |
+|                           | No        |
+| There end date is valid   | Yes       |
+|                           | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| The dates are valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> List(BalanceOperation)          | getBalanceOperationsTestCase() |
-| No                               | Invalid         | T2() -> Emptylist            | ''                     |
+| The dates are valid | Valid / Invalid | Description of the test case   | JUnit test case                |
+|---------------------|-----------------|--------------------------------|--------------------------------|
+| Yes                 | Valid           | T1() -> List(BalanceOperation) | getBalanceOperationsTestCase() |
+| No                  | Invalid         | T2() -> Emptylist              | ''                             |
 
 ### **Class *EZShopDB* - method *getCreditCardByCardNumber***
 
@@ -2068,27 +2102,27 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria             | Predicate |
+|----------------------|-----------|
 | Card Number is valid | Yes       |
-|                                  | No        |
+|                      | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Credit Card number is valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> Card item         | getCreditCardTestCase() |
-| No                               | Invalid         | T2() -> null            | ''                     |
+| Credit Card number is valid | Valid / Invalid | Description of the test case | JUnit test case         |
+|-----------------------------|-----------------|------------------------------|-------------------------|
+| Yes                         | Valid           | T1() -> Card item            | getCreditCardTestCase() |
+| No                          | Invalid         | T2() -> null                 | ''                      |
 
 ### **Class *EZShopDB* - method *updateBalanceInCreditCard***
 
@@ -2098,27 +2132,27 @@ The credit cards for the application testing were pre-set in the database file f
 
 **Predicates for method \*name\*:**
 
-| Criteria                         | Predicate |
-| -------------------------------- | --------- |
+| Criteria                    | Predicate |
+|-----------------------------|-----------|
 | Credit Card number is valid | Yes       |
-|                                  | No        |
+|                             | No        |
 
 
 
 **Boundaries**:
 
 | Criteria | Boundary values |
-| -------- | --------------- |
+|----------|-----------------|
 |          |                 |
 
 
 
 **Combination of predicates**:
 
-| Credit Card number is valid | Valid / Invalid | Description of the test case | JUnit test case        |
-| -------------------------------- | --------------- | ---------------------------- | ---------------------- |
-| Yes                              | Valid           | T1() -> true          | updateBalanceTestCase() |
-| No                               | Invalid         | T2() -> false            | ''                     |
+| Credit Card number is valid | Valid / Invalid | Description of the test case | JUnit test case         |
+|-----------------------------|-----------------|------------------------------|-------------------------|
+| Yes                         | Valid           | T1() -> true                 | updateBalanceTestCase() |
+| No                          | Invalid         | T2() -> false                | ''                      |
 
 # White Box Unit Tests
 
@@ -2129,18 +2163,18 @@ The credit cards for the application testing were pre-set in the database file f
     <For traceability write the class and method name that contains the test case>
 
 
-| Unit name | JUnit test case |
-|--|--|
-|ProductType|getterAndSetterProductTypeTestCase()|
-|Order|getterAndSetterOrderTestCase()|
-|User|getterAndSetterUserTestCase()|
-|Customer|getterAndSetterCustomerTestCase()|
-|BalanceOperation|getterAndSetterBalanceOperationTestCase()|
-|ReturnTransaction|getterAndSetterReturnTransactionTestCase()|
-|ProductReturn|getterAndSetterProductReturnTestCase()|
-|TicketEntry|getterAndSetterTicketEntryTestCase()|
-|SaleTransaction|getterAndSetterSaleTransactionTestCase()|
-|CreditCard|getterAndSetterCreditCardTestCase()|
+| Unit name         | JUnit test case                            |
+|-------------------|--------------------------------------------|
+| ProductType       | getterAndSetterProductTypeTestCase()       |
+| Order             | getterAndSetterOrderTestCase()             |
+| User              | getterAndSetterUserTestCase()              |
+| Customer          | getterAndSetterCustomerTestCase()          |
+| BalanceOperation  | getterAndSetterBalanceOperationTestCase()  |
+| ReturnTransaction | getterAndSetterReturnTransactionTestCase() |
+| ProductReturn     | getterAndSetterProductReturnTestCase()     |
+| TicketEntry       | getterAndSetterTicketEntryTestCase()       |
+| SaleTransaction   | getterAndSetterSaleTransactionTestCase()   |
+| CreditCard        | getterAndSetterCreditCardTestCase()        |
 
 ### Code coverage report
 ![](Coverage_images/coverage.png)
@@ -2148,11 +2182,11 @@ The credit cards for the application testing were pre-set in the database file f
 
 
 ### Loop coverage analysis
-|Unit name | Loop rows | Number of iterations | JUnit test case |
-|---|---|---|---|
-|getAllProductTypes|12|0|loopCoverageTestCase()|
-|getAllProductTypes|12|1|loopCoverageTestCase()|
-|getAllProductTypes|12|2|loopCoverageTestCase()|
+| Unit name          | Loop rows | Number of iterations | JUnit test case        |
+|--------------------|-----------|----------------------|------------------------|
+| getAllProductTypes | 12        | 0                    | loopCoverageTestCase() |
+| getAllProductTypes | 12        | 1                    | loopCoverageTestCase() |
+| getAllProductTypes | 12        | 2                    | loopCoverageTestCase() |
 
 
 

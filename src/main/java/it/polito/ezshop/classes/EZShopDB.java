@@ -881,16 +881,24 @@ public class EZShopDB {
 	}
 
 	public boolean updateCustomer(Integer id, String newCustomerName, String newCustomerCard) {
-		if (newCustomerCard == null) {
-			String sql = "UPDATE customers SET customerName=? WHERE id=?";
-			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-				pstmt.setString(1, newCustomerName);
-				pstmt.setInt(2, id);
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
+		// Check if card exists
+		String sql1 = "SELECT COUNT(*) AS c FROM cards WHERE id=?";
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
+			pstmt.setString(1, newCustomerCard);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.getInt("c") == 0 && newCustomerCard.length() != 0)
 				return false;
-			}
-		} else if (newCustomerCard == "") {
+
+		} catch (SQLException e) {
+			return false;
+		}		
+		
+		if (newCustomerCard == null) 			
+				return false;
+			
+		if (newCustomerCard.length() == 0) {
 			String sql = "UPDATE customers SET customerName=?, customerCard='' WHERE id=?";
 			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 				pstmt.setString(1, newCustomerName);
@@ -1582,6 +1590,20 @@ public class EZShopDB {
 		} catch (SQLException e) {
 		}
 		return success;
+	}
+
+	public boolean deleteCustomerCard(String customerCard) {
+		String sql = "DELETE FROM cards WHERE id=?";
+		boolean success = false;
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, customerCard);
+			pstmt.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+		}
+
+		return success;		
 	}
 
 }

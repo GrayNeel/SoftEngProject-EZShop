@@ -595,10 +595,20 @@ public class EZShop implements EZShopInterface {
 		if (newCustomerName == null || newCustomerName == "") {
 			throw new InvalidCustomerNameException();
 		}
-
-		if (newCustomerCard.length() != 10) {
+		
+		if(newCustomerCard == null) /** in the interface definition of modifyCustomer there are 2 different kind of def*/
+			return false;			/**One says to return false, the other to throw exception. I've chosen the first one*/
+		
+		if (newCustomerCard.length() != 10 && newCustomerCard.length() != 0) {
 			throw new InvalidCustomerCardException();
 		}
+		
+		if(db.getCustomerById(id) != null){
+			if(newCustomerCard.length() == 0)						
+				db.deleteCustomerCard(db.getCustomerById(id).getCustomerCard());				
+		}
+		else
+			return false;
 
 		boolean flag = db.updateCustomer(id, newCustomerName, newCustomerCard);
 
@@ -615,9 +625,17 @@ public class EZShop implements EZShopInterface {
 
 		if (id == null || id <= 0) {
 			throw new InvalidCustomerIdException();
+		}		
+		
+		if(db.getCustomerById(id) != null){
+			if(db.getCustomerById(id).getCustomerCard().length() != 0)						
+				db.deleteCustomerCard(db.getCustomerById(id).getCustomerCard());				
 		}
-
-		boolean flag = db.deleteCustomer(id);
+		else		
+			return false;	
+				
+		boolean flag = db.deleteCustomer(id);		
+		
 		return flag;
 	}
 
