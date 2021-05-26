@@ -92,7 +92,7 @@ public class UnitTestEZShop {
 		User user = new UserClass(10, "andrea.admin", "1234567", "testrole");
 
 		boolean flag = db.addUser(user);
-		System.out.print(flag);
+		
 		List<User> userlist = db.getAllUsers();
 		assertNotNull(userlist);
 

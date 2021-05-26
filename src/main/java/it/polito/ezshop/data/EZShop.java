@@ -783,7 +783,7 @@ public class EZShop implements EZShopInterface {
 			return false;
 		}
 
-		System.out.println("GOT IT");
+		
 		List<TicketEntry> entries = tickets.get(transactionId);
 		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
 		if (transaction == null || entries == null) {
@@ -808,11 +808,6 @@ public class EZShop implements EZShopInterface {
 			transaction.setEntries(entries);
 
 			flag = true;
-		}
-
-		System.out.println("AddSale: " + entries);
-		for (TicketEntry entry : entries) { // se c'è già aggiungi
-			System.out.println("- " + entry.getProductDescription());
 		}
 
 		tickets.put(transactionId, entries);
@@ -986,16 +981,14 @@ public class EZShop implements EZShopInterface {
 				prodTotal = entry.getAmount() * entry.getPricePerUnit();
 				total = total + prodTotal * (1 - entry.getDiscountRate());
 			}
-			total = total * (1 - transaction.getDiscountRate());
-			System.out.println("tot: " + total);
+			total = total * (1 - transaction.getDiscountRate());			
 		} else {
 			SaleTransaction transactionClosed = db.getClosedSaleTransactionById(transactionId);
 			entries = tickets.get(transactionId);
 			// entries = transactionClosed.getEntries();
 
 			Double prodTotal = 0.0;
-			for (TicketEntry entry : entries) {
-				System.out.println("E " + entry);
+			for (TicketEntry entry : entries) {				
 				prodTotal = entry.getAmount() * entry.getPricePerUnit();
 				total = total + prodTotal * (1 - entry.getDiscountRate());
 			}
@@ -1096,8 +1089,7 @@ public class EZShop implements EZShopInterface {
 
 		int lastid = db.getLastId("returnTransactions");
 		ReturnTransactionClass returnTransaction = new ReturnTransactionClass(lastid + 1, saleNumber, 0, 0, "ACTIVE");
-		Integer result = db.startReturnTransaction(returnTransaction);
-		System.out.println(result);
+		Integer result = db.startReturnTransaction(returnTransaction);		
 		return result;
 	}
 
@@ -1118,8 +1110,7 @@ public class EZShop implements EZShopInterface {
 			throw new InvalidQuantityException();
 		boolean productValid = ProductTypeClass.validateProductCode(productCode);
 		if (productCode == null || productCode == "" || !productValid)
-			throw new InvalidProductCodeException();
-		System.out.println("Return ID: " + returnId);
+			throw new InvalidProductCodeException();		
 		ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
 		if (returnTransaction == null)
 			return false;
@@ -1260,7 +1251,7 @@ public class EZShop implements EZShopInterface {
 			return change;
 		}
 		double salePrice = saleTransaction.getPrice();
-		System.out.println("saleprice: " + salePrice);
+		
 		if (salePrice > cash) {
 			return change;
 		}
@@ -1405,7 +1396,7 @@ public class EZShop implements EZShopInterface {
 		LocalDate date = LocalDate.now();
 		BalanceOperation balanceOperation = new BalanceOperationClass(newId + 1, date, toBeAdded, type);
 		boolean recordedBalanceOperation = db.recordBalanceOperation(balanceOperation);
-		System.out.println(recordedBalanceOperation);
+		
 		return recordedBalanceOperation;
 	}
 
