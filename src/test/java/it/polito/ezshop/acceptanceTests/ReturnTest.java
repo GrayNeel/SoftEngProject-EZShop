@@ -77,11 +77,11 @@ public class ReturnTest {
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnProduct(-1,"232320",5));
     	
     	Integer transactionId = ezShop.startSaleTransaction();
-    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	Integer productId = ezShop.createProductType("Milk", "737052355054", 1.45, "A very good milk");
     	ezShop.updatePosition(productId, "1-1-1");
     	assertTrue(ezShop.updateQuantity(productId, 100));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
     	ezShop.endSaleTransaction(transactionId);
     	
     	Integer returnId = ezShop.startReturnTransaction(transactionId);
@@ -89,9 +89,9 @@ public class ReturnTest {
     	assertThrows(InvalidProductCodeException.class, () -> ezShop.returnProduct(returnId,"",5));
     	String productCode = null;
     	assertThrows(InvalidProductCodeException.class, () -> ezShop.returnProduct(156,"12",5));
-    	assertFalse(ezShop.returnProduct(1922, "12345670", 12));
-    	assertFalse(ezShop.returnProduct(returnId, "12345670", 200));
-    	assertTrue(ezShop.returnProduct(returnId, "12345670", 12));
+    	assertFalse(ezShop.returnProduct(1922, "737052355054", 12));
+    	assertFalse(ezShop.returnProduct(returnId, "737052355054", 200));
+    	assertTrue(ezShop.returnProduct(returnId, "737052355054", 12));
     	ezShop.deleteSaleTransaction(transactionId);
     }
     
@@ -110,15 +110,15 @@ public class ReturnTest {
     	Integer returnId = ezShop.startReturnTransaction(transactionId);
     	assertFalse(ezShop.endReturnTransaction(returnId,false));
     	
-    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	Integer productId = ezShop.createProductType("Milk", "737052355054", 1.45, "A very good milk");
     	ezShop.updatePosition(productId, "1-1-1");
     	assertTrue(ezShop.updateQuantity(productId, 100));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
     	ezShop.endSaleTransaction(transactionId);
     	
     	returnId = ezShop.startReturnTransaction(transactionId);
-    	assertTrue(ezShop.returnProduct(returnId, "12345670", 23));
+    	assertTrue(ezShop.returnProduct(returnId, "737052355054", 23));
     	assertTrue(ezShop.endReturnTransaction(returnId,true));
     	ezShop.deleteSaleTransaction(transactionId);
     }
@@ -136,17 +136,17 @@ public class ReturnTest {
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.deleteReturnTransaction(null));
 
     	Integer transactionId = ezShop.startSaleTransaction();
-    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	Integer productId = ezShop.createProductType("Milk", "737052355054", 1.45, "A very good milk");
     	ezShop.updatePosition(productId, "1-1-1");
     	assertTrue(ezShop.updateQuantity(productId, 100));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
     	ezShop.endSaleTransaction(transactionId);
     	
     	Integer returnId = ezShop.startReturnTransaction(transactionId);
     	assertFalse(ezShop.deleteReturnTransaction(2040));
     	returnId = ezShop.startReturnTransaction(transactionId);
-    	assertTrue(ezShop.returnProduct(returnId, "12345670", 12));
+    	assertTrue(ezShop.returnProduct(returnId, "737052355054", 12));
     	assertTrue(ezShop.endReturnTransaction(returnId,true));
     	assertTrue(ezShop.deleteReturnTransaction(returnId));
     	ezShop.deleteSaleTransaction(transactionId);
@@ -172,11 +172,11 @@ public class ReturnTest {
     	assertThrows(InvalidPaymentException.class, () -> ezShop.receiveCashPayment(4,0));
     	
     	Integer transactionId = ezShop.startSaleTransaction();
-    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	Integer productId = ezShop.createProductType("Milk", "737052355054", 1.45, "A very good milk");
     	ezShop.updatePosition(productId, "1-1-1");
     	assertTrue(ezShop.updateQuantity(productId, 100));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
     	ezShop.endSaleTransaction(transactionId);
     	
     	assertEquals(-1,ezShop.receiveCashPayment(19,3.0),0.01);
@@ -204,11 +204,11 @@ public class ReturnTest {
     	assertThrows(InvalidCreditCardException.class, () -> ezShop.receiveCreditCardPayment(4,"21"));
     	
     	Integer transactionId = ezShop.startSaleTransaction();
-    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	Integer productId = ezShop.createProductType("Milk", "737052355054", 1.45, "A very good milk");
     	ezShop.updatePosition(productId, "1-1-1");
     	assertTrue(ezShop.updateQuantity(productId, 100));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
     	ezShop.endSaleTransaction(transactionId);
     	
     	assertFalse(ezShop.receiveCreditCardPayment(transactionId,"4532083296331932"));
@@ -237,14 +237,14 @@ public class ReturnTest {
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnCashPayment(null));
     	
     	Integer transactionId = ezShop.startSaleTransaction();
-    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	Integer productId = ezShop.createProductType("Milk", "737052355054", 1.45, "A very good milk");
     	ezShop.updatePosition(productId, "1-1-1");
     	assertTrue(ezShop.updateQuantity(productId, 100));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
     	ezShop.endSaleTransaction(transactionId);
     	Integer returnId = ezShop.startReturnTransaction(transactionId);
-    	assertTrue(ezShop.returnProduct(returnId, "12345670", 23));
+    	assertTrue(ezShop.returnProduct(returnId, "737052355054", 23));
     	assertTrue(ezShop.endReturnTransaction(returnId,true));
     	
     	assertEquals(-1,ezShop.returnCashPayment(190),0.01);
@@ -273,14 +273,14 @@ public class ReturnTest {
     	assertThrows(InvalidCreditCardException.class, () -> ezShop.returnCreditCardPayment(11,"11209"));
     	
     	Integer transactionId = ezShop.startSaleTransaction();
-    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	Integer productId = ezShop.createProductType("Milk", "737052355054", 1.45, "A very good milk");
     	ezShop.updatePosition(productId, "1-1-1");
     	assertTrue(ezShop.updateQuantity(productId, 100));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
     	ezShop.endSaleTransaction(transactionId);
     	Integer returnId = ezShop.startReturnTransaction(transactionId);
-    	assertTrue(ezShop.returnProduct(returnId, "12345670", 25));
+    	assertTrue(ezShop.returnProduct(returnId, "737052355054", 25));
     	assertTrue(ezShop.endReturnTransaction(returnId,true));
     	
     	assertEquals(-1,ezShop.returnCreditCardPayment(190,"6011264249365616"),0.01);

@@ -42,24 +42,24 @@ public class OrdersTest {
 		db.resetDB("productTypes");
 		db.resetDB("orders");
 		ezShop.login("admin","strong");
-		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 	    ezShop.logout();
 	    
-	    assertThrows(UnauthorizedException.class, () -> ezShop.issueOrder("12345670", 50, 2.50));
+	    assertThrows(UnauthorizedException.class, () -> ezShop.issueOrder("737052355054", 50, 2.50));
 	    
 	    ezShop.login("admin","strong");
 
-	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.issueOrder("12345670", 50, -2.50));
-	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.issueOrder("12345670", 50, 0.00));
+	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.issueOrder("737052355054", 50, -2.50));
+	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.issueOrder("737052355054", 50, 0.00));
 	    
-	    assertThrows(InvalidQuantityException.class, () -> ezShop.issueOrder("12345670", -50, 2.50));
-	    assertThrows(InvalidQuantityException.class, () -> ezShop.issueOrder("12345670", 0, 2.50));
+	    assertThrows(InvalidQuantityException.class, () -> ezShop.issueOrder("737052355054", -50, 2.50));
+	    assertThrows(InvalidQuantityException.class, () -> ezShop.issueOrder("737052355054", 0, 2.50));
 	    
-	    assertThrows(InvalidProductCodeException.class, () -> ezShop.issueOrder("12345679", 50, 2.50));
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.issueOrder("737052355059", 50, 2.50));
 	    assertThrows(InvalidProductCodeException.class, () -> ezShop.issueOrder("", 50, 2.50));
 	    assertThrows(InvalidProductCodeException.class, () -> ezShop.issueOrder(null, 50, 2.50));
 	    
-	    assert(ezShop.issueOrder("12345670", 50, 2.50) == 1);
+	    assert(ezShop.issueOrder("737052355054", 50, 2.50) == 1);
 	    assert(ezShop.issueOrder("860004804109", 50, 2.50) == -1);
 	 
 	    ezShop.logout();
@@ -71,39 +71,39 @@ public class OrdersTest {
 		db.resetDB("orders");
 		db.resetDB("balanceOperations");
 		ezShop.login("admin","strong");
-		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 	    ezShop.logout();
 	    
-	    assertThrows(UnauthorizedException.class, () -> ezShop.payOrderFor("12345670", 50, 2.50));
+	    assertThrows(UnauthorizedException.class, () -> ezShop.payOrderFor("737052355054", 50, 2.50));
 	    
 	    ezShop.login("admin","strong");
 
-	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.payOrderFor("12345670", 50, -2.50));
-	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.payOrderFor("12345670", 50, 0.00));
+	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.payOrderFor("737052355054", 50, -2.50));
+	    assertThrows(InvalidPricePerUnitException.class, () -> ezShop.payOrderFor("737052355054", 50, 0.00));
 	   
-	    assertThrows(InvalidQuantityException.class, () -> ezShop.payOrderFor("12345670", -50, 2.50));
-	    assertThrows(InvalidQuantityException.class, () -> ezShop.payOrderFor("12345670", 0, 2.50));
+	    assertThrows(InvalidQuantityException.class, () -> ezShop.payOrderFor("737052355054", -50, 2.50));
+	    assertThrows(InvalidQuantityException.class, () -> ezShop.payOrderFor("737052355054", 0, 2.50));
 	    
-	    assertThrows(InvalidProductCodeException.class, () -> ezShop.payOrderFor("12345679", 50, 2.50));
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.payOrderFor("737052355059", 50, 2.50));
 	    assertThrows(InvalidProductCodeException.class, () -> ezShop.payOrderFor("", 50, 2.50));
 	    assertThrows(InvalidProductCodeException.class, () -> ezShop.payOrderFor(null, 50, 2.50));
 	 
 	    assert(ezShop.payOrderFor("860004804109", 50, 2.50) == -1);
 	    
 	    //Balance is 0
-	    assert(ezShop.payOrderFor("12345670", 50, 2.50) == -1);
+	    assert(ezShop.payOrderFor("737052355054", 50, 2.50) == -1);
 	    
     	BalanceOperation balOp = new BalanceOperationClass(1,LocalDate.now(),50,"CREDIT"); 
     	db.recordBalanceOperation(balOp);
     	
     	//Balance is 50
-    	assert(ezShop.payOrderFor("12345670", 50, 2.50) == -1);
+    	assert(ezShop.payOrderFor("737052355054", 50, 2.50) == -1);
     	
     	BalanceOperation balOp2 = new BalanceOperationClass(2,LocalDate.now(),150,"CREDIT"); 
     	db.recordBalanceOperation(balOp2);
     	
     	//balance is 200
-    	assert(ezShop.payOrderFor("12345670", 50, 2.50) == 1);
+    	assert(ezShop.payOrderFor("737052355054", 50, 2.50) == 1);
 	    
     	db.resetDB("balanceOperations");
 	    ezShop.logout();
@@ -115,12 +115,12 @@ public class OrdersTest {
 		db.resetDB("orders");
 		db.resetDB("balanceOperations");
 		ezShop.login("admin","strong");
-		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
-		Integer orderId = ezShop.issueOrder("12345670", 50, 2.50);
+		ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
+		Integer orderId = ezShop.issueOrder("737052355054", 50, 2.50);
 		
 		BalanceOperation balOp = new BalanceOperationClass(1,LocalDate.now(),55,"CREDIT"); 
     	db.recordBalanceOperation(balOp);
-		Integer order2 = ezShop.payOrderFor("12345670", 22, 2.50);
+		Integer order2 = ezShop.payOrderFor("737052355054", 22, 2.50);
 	    ezShop.logout();
 	    
 	    assertThrows(UnauthorizedException.class, () -> ezShop.payOrder(orderId));
@@ -173,13 +173,13 @@ public class OrdersTest {
 		db.resetDB("orders");
 		db.resetDB("balanceOperations");
 		ezShop.login("admin","strong");
-		Integer productId = ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		Integer productId = ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 
 		BalanceOperation balOp = new BalanceOperationClass(1,LocalDate.now(),55,"CREDIT"); 
     	db.recordBalanceOperation(balOp);
     	
-		Integer orderId = ezShop.payOrderFor("12345670", 22, 2.50);
-		Integer orderIssue = ezShop.issueOrder("12345670", 13, 2.30);
+		Integer orderId = ezShop.payOrderFor("737052355054", 22, 2.50);
+		Integer orderIssue = ezShop.issueOrder("737052355054", 13, 2.30);
 	    ezShop.logout();
 	    
 	    assertThrows(UnauthorizedException.class, () -> ezShop.recordOrderArrival(orderId));
@@ -220,16 +220,16 @@ public class OrdersTest {
 		db.resetDB("orders");
 		db.resetDB("balanceOperations");
 		ezShop.login("admin","strong");
-		Integer productId = ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		Integer productId = ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 		ezShop.updatePosition(productId, "1-1-1");
 		
 		BalanceOperation balOp = new BalanceOperationClass(1,LocalDate.now(),55,"CREDIT"); 
     	db.recordBalanceOperation(balOp);
     	//ORDERED
-		Integer orderId = ezShop.payOrderFor("12345670", 22, 2.50);
+		Integer orderId = ezShop.payOrderFor("737052355054", 22, 2.50);
 		
 		//ISSUED
-		ezShop.issueOrder("12345670", 13, 2.30);
+		ezShop.issueOrder("737052355054", 13, 2.30);
 	
 		
 	    ezShop.logout();

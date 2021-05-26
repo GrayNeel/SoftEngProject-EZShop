@@ -21,25 +21,25 @@ public class ProductsTest {
 	public void createProductTypeTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
 		db.resetDB("productTypes");
 		
-		assertThrows(UnauthorizedException.class, () -> ezShop.createProductType("description", "12345670",5.23, "product note"));
+		assertThrows(UnauthorizedException.class, () -> ezShop.createProductType("description", "737052355054",5.23, "product note"));
 
 		//Given as tested
 		ezShop.login("admin","strong");
 		
-		assertThrows(InvalidProductDescriptionException.class, () -> ezShop.createProductType("", "12345670",5.23, "product note"));
-		assertThrows(InvalidProductDescriptionException.class, () -> ezShop.createProductType(null, "12345670",5.23, "product note"));
+		assertThrows(InvalidProductDescriptionException.class, () -> ezShop.createProductType("", "737052355054",5.23, "product note"));
+		assertThrows(InvalidProductDescriptionException.class, () -> ezShop.createProductType(null, "737052355054",5.23, "product note"));
 		
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.createProductType("description", null,5.23, "product note"));
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.createProductType("description", "",5.23, "product note"));
-		assertThrows(InvalidProductCodeException.class, () -> ezShop.createProductType("description", "12345679",5.23, "product note"));
+		assertThrows(InvalidProductCodeException.class, () -> ezShop.createProductType("description", "737052355059",5.23, "product note"));
 		
-		assertThrows(InvalidPricePerUnitException.class, () -> ezShop.createProductType("description", "12345670",-1.50, "product note"));
-		assertThrows(InvalidPricePerUnitException.class, () -> ezShop.createProductType("description", "12345670",0.00, "product note"));
+		assertThrows(InvalidPricePerUnitException.class, () -> ezShop.createProductType("description", "737052355054",-1.50, "product note"));
+		assertThrows(InvalidPricePerUnitException.class, () -> ezShop.createProductType("description", "737052355054",0.00, "product note"));
 		
-		Integer productId = ezShop.createProductType("descriptionTest", "12345670",2.50, "product note");
+		Integer productId = ezShop.createProductType("descriptionTest", "737052355054",2.50, "product note");
 		assert( productId > 0);
 		
-		assert(ezShop.createProductType("sameBarCodeTest", "12345670",2.70, "product note") == -1);
+		assert(ezShop.createProductType("sameBarCodeTest", "737052355054",2.70, "product note") == -1);
 		
 		ezShop.logout();
 		
@@ -52,7 +52,7 @@ public class ProductsTest {
 		assertThrows(UnauthorizedException.class, () -> ezShop.updateProduct(11,"New description", "860004804109",8.88, "newNote"));
 		ezShop.login("admin","strong");
 		
-		Integer productId = ezShop.createProductType("descriptionTest", "12345670",2.50, "product note");
+		Integer productId = ezShop.createProductType("descriptionTest", "737052355054",2.50, "product note");
 		
 		assertThrows(InvalidProductIdException.class, () -> ezShop.updateProduct(-11,"New description", "860004804109",8.88, "newNote"));
 		assertThrows(InvalidProductIdException.class, () -> ezShop.updateProduct(0,"New description", "860004804109",8.88, "newNote"));
@@ -63,18 +63,18 @@ public class ProductsTest {
 		
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.updateProduct(productId,"New description", "",8.88, "newNote"));
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.updateProduct(productId,"New description", null,8.88, "newNote"));
-		assertThrows(InvalidProductCodeException.class, () -> ezShop.updateProduct(productId,"New description", "12345679",8.88, "newNote"));
+		assertThrows(InvalidProductCodeException.class, () -> ezShop.updateProduct(productId,"New description", "737052355059",8.88, "newNote"));
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.updateProduct(productId,"New description", "NaN",8.88, "newNote"));
 		
 		assertThrows(InvalidPricePerUnitException.class, () -> ezShop.updateProduct(11,"New description", "860004804109",-8.88, "newNote"));
 		assertThrows(InvalidPricePerUnitException.class, () -> ezShop.updateProduct(11,"New description", "860004804109",0.00, "newNote"));
 		
 		assertTrue(ezShop.updateProduct(productId,"New description", "860004804109",8.88, "newNote"));
-		assertFalse(ezShop.updateProduct(9999, "new desc", "12345670", 8.88, "new"));
+		assertFalse(ezShop.updateProduct(9999, "new desc", "737052355054", 8.88, "new"));
 		
-		ezShop.createProductType("descriptionTest", "12345670",2.50, "product note");
+		ezShop.createProductType("descriptionTest", "737052355054",2.50, "product note");
 		
-		assertFalse(ezShop.updateProduct(productId,"New description", "12345670",8.88, "newNote"));
+		assertFalse(ezShop.updateProduct(productId,"New description", "737052355054",8.88, "newNote"));
 	
 		ezShop.logout();
 	}
@@ -84,7 +84,7 @@ public class ProductsTest {
 	    db.resetDB("productTypes");
 	    
 	    ezShop.login("admin","strong");
-	    Integer productId = ezShop.createProductType("descriptionTest", "12345670",2.50, "product note");
+	    Integer productId = ezShop.createProductType("descriptionTest", "737052355054",2.50, "product note");
 	    ezShop.logout();
 
 		assertThrows(UnauthorizedException.class, () -> ezShop.deleteProductType(productId));
@@ -104,7 +104,7 @@ public class ProductsTest {
 	public void getAllProductTypesTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
 		db.resetDB("productTypes");
 		ezShop.login("admin","strong");
-		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 		ezShop.createProductType("descriptionTest2", "860004804109",7.20, "product note");
 	    ezShop.logout();
 	    
@@ -118,19 +118,19 @@ public class ProductsTest {
 	public void getProductTypeByBarCodeTestCase() throws InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidUsernameException, InvalidPasswordException {
 		db.resetDB("productTypes");
 		ezShop.login("admin","strong");
-		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 	    ezShop.logout();
 	    
-	    assertThrows(UnauthorizedException.class, () -> ezShop.getProductTypeByBarCode("12345670"));
+	    assertThrows(UnauthorizedException.class, () -> ezShop.getProductTypeByBarCode("737052355054"));
 	    ezShop.login("admin","strong");
 	    
 	    assertThrows(InvalidProductCodeException.class, () -> ezShop.getProductTypeByBarCode(""));
 	    assertThrows(InvalidProductCodeException.class, () -> ezShop.getProductTypeByBarCode(null));
-	    assertThrows(InvalidProductCodeException.class, () -> ezShop.getProductTypeByBarCode("12345679"));
+	    assertThrows(InvalidProductCodeException.class, () -> ezShop.getProductTypeByBarCode("737052355059"));
 	    
 	    assertNull(ezShop.getProductTypeByBarCode("860004804109"));
 	    
-	    assertNotNull(ezShop.getProductTypeByBarCode("12345670"));
+	    assertNotNull(ezShop.getProductTypeByBarCode("737052355054"));
 	    
 	    ezShop.logout();
 	}
@@ -139,7 +139,7 @@ public class ProductsTest {
 	public void getProductTypesByDescriptionTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException {
 		db.resetDB("productTypes");
 		ezShop.login("admin","strong");
-		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 		ezShop.createProductType("this ion desc", "860004804109",2.50, "product note");
 		ezShop.createProductType("this not desc", "8859392701093",2.50, "product note");
 	    ezShop.logout();
@@ -160,7 +160,7 @@ public class ProductsTest {
 	public void updatePositionTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidProductIdException, InvalidLocationException {
 		db.resetDB("productTypes");
 		ezShop.login("admin","strong");
-		Integer productId = ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		Integer productId = ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 		Integer productId2 = ezShop.createProductType("this ion desc", "860004804109",2.50, "product note");
 	    ezShop.logout();
 	    
@@ -185,7 +185,7 @@ public class ProductsTest {
 	public void updateQuantityTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidProductIdException, InvalidLocationException {
 		db.resetDB("productTypes");
 		ezShop.login("admin","strong");
-		Integer productId = ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		Integer productId = ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 	    ezShop.logout();
 	    
 	    assertThrows(UnauthorizedException.class, () -> ezShop.updateQuantity(productId, 5));

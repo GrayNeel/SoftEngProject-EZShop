@@ -47,28 +47,28 @@ public class SaleTransactionsTest {
 		
 		Integer saleTransactionId = ezShop.startSaleTransaction();
 		
-		Integer productId = ezShop.createProductType("descriptionTest", "12345670",2.50, "product note");
+		Integer productId = ezShop.createProductType("descriptionTest", "737052355054",2.50, "product note");
 		
-		assertThrows(InvalidTransactionIdException.class, () -> ezShop.addProductToSale(-10, "12345670", 100));
-		//assertThrows(InvalidTransactionIdException.class, () -> ezShop.addProductToSale(null, "12345670", 100));		
+		assertThrows(InvalidTransactionIdException.class, () -> ezShop.addProductToSale(-10, "737052355054", 100));
+		//assertThrows(InvalidTransactionIdException.class, () -> ezShop.addProductToSale(null, "737052355054", 100));		
 		
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.addProductToSale(saleTransactionId, "", 100));
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.addProductToSale(saleTransactionId, null, 100));
-		assertThrows(InvalidProductCodeException.class, () -> ezShop.addProductToSale(saleTransactionId, "123", 100)); //12345679
+		assertThrows(InvalidProductCodeException.class, () -> ezShop.addProductToSale(saleTransactionId, "123", 100)); //737052355059
 		
-		assertThrows(InvalidQuantityException.class, () -> ezShop.addProductToSale(saleTransactionId, "12345670", -10));
+		assertThrows(InvalidQuantityException.class, () -> ezShop.addProductToSale(saleTransactionId, "737052355054", -10));
 		
 						
-		//assertFalse (ezShop.addProductToSale(saleTransactionId, "12345679", 100)); //if (product == null) return false;
+		//assertFalse (ezShop.addProductToSale(saleTransactionId, "737052355059", 100)); //if (product == null) return false;
 		
-	    assertFalse (ezShop.addProductToSale(saleTransactionId, "12345670", 100));
+	    assertFalse (ezShop.addProductToSale(saleTransactionId, "737052355054", 100));
 	    
 	    //aumento la quantità del prodotto
 	    ezShop.updatePosition(productId,"1-1-1");
 	    ezShop.updateQuantity(productId, 400);
 	    
-	    assertTrue(ezShop.addProductToSale(saleTransactionId, "12345670", 100)); //not yet in ticket entries		    
-	    assertTrue(ezShop.addProductToSale(saleTransactionId, "12345670", 200)); //already in ticket entry
+	    assertTrue(ezShop.addProductToSale(saleTransactionId, "737052355054", 100)); //not yet in ticket entries		    
+	    assertTrue(ezShop.addProductToSale(saleTransactionId, "737052355054", 200)); //already in ticket entry
 		ezShop.logout();
 	}
 	
@@ -84,30 +84,30 @@ public class SaleTransactionsTest {
 		ezShop.login("admin","strong");
 		
 		Integer saleTransactionId = ezShop.startSaleTransaction();
-		Integer productId = ezShop.createProductType("descriptionTest", "12345670",2.50, "product note");
+		Integer productId = ezShop.createProductType("descriptionTest", "737052355054",2.50, "product note");
 		
-		assertThrows(InvalidTransactionIdException.class, () -> ezShop.deleteProductFromSale(-10, "12345670", 100));
-		//assertThrows(InvalidTransactionIdException.class, () -> ezShop.deleteProductFromSale(null, "12345670", 100));		
+		assertThrows(InvalidTransactionIdException.class, () -> ezShop.deleteProductFromSale(-10, "737052355054", 100));
+		//assertThrows(InvalidTransactionIdException.class, () -> ezShop.deleteProductFromSale(null, "737052355054", 100));		
 		
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.deleteProductFromSale(saleTransactionId, "", 100));
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.deleteProductFromSale(saleTransactionId, null, 100));
-		assertThrows(InvalidProductCodeException.class, () -> ezShop.deleteProductFromSale(saleTransactionId, "123", 100)); //12345679
+		assertThrows(InvalidProductCodeException.class, () -> ezShop.deleteProductFromSale(saleTransactionId, "123", 100)); //737052355059
 		
-		assertThrows(InvalidQuantityException.class, () -> ezShop.deleteProductFromSale(saleTransactionId, "12345670", -10));
+		assertThrows(InvalidQuantityException.class, () -> ezShop.deleteProductFromSale(saleTransactionId, "737052355054", -10));
 				
 		db.updateTransactionState(saleTransactionId, "PAYED");		
-		assertFalse(ezShop.deleteProductFromSale(saleTransactionId, "12345670", 10));
+		assertFalse(ezShop.deleteProductFromSale(saleTransactionId, "737052355054", 10));
 		db.updateTransactionState(saleTransactionId, "SARTED");
 		 //aumento la quantità del prodotto
 	    ezShop.updatePosition(productId,"1-1-1");
 	    ezShop.updateQuantity(productId, 400);
 	    
-	    ezShop.addProductToSale(saleTransactionId, "12345670", 100); //not yet in ticket entries	
-	    assertFalse(ezShop.deleteProductFromSale(saleTransactionId, "12345670", 900));
-		assertTrue(ezShop.deleteProductFromSale(saleTransactionId, "12345670", 100));	
+	    ezShop.addProductToSale(saleTransactionId, "737052355054", 100); //not yet in ticket entries	
+	    assertFalse(ezShop.deleteProductFromSale(saleTransactionId, "737052355054", 900));
+		assertTrue(ezShop.deleteProductFromSale(saleTransactionId, "737052355054", 100));	
 		
 		
-		assertFalse (ezShop.getProductTypeByBarCode("12345670").getQuantity() < 100);
+		assertFalse (ezShop.getProductTypeByBarCode("737052355054").getQuantity() < 100);
 		ezShop.logout();
 	}
 	
@@ -123,27 +123,27 @@ public class SaleTransactionsTest {
 		ezShop.login("admin","strong");
 		
 		Integer saleTransactionId = ezShop.startSaleTransaction();
-		Integer productId =  ezShop.createProductType("descriptionTest", "12345670",2.50, "product note");
+		Integer productId =  ezShop.createProductType("descriptionTest", "737052355054",2.50, "product note");
 		
-		assertThrows(InvalidTransactionIdException.class, () -> ezShop.applyDiscountRateToProduct(-10, "12345670", 0.4));
-		//assertThrows(InvalidTransactionIdException.class, () -> ezShop.applyDiscountRateToProduct(null, "12345670", 0.4));		
+		assertThrows(InvalidTransactionIdException.class, () -> ezShop.applyDiscountRateToProduct(-10, "737052355054", 0.4));
+		//assertThrows(InvalidTransactionIdException.class, () -> ezShop.applyDiscountRateToProduct(null, "737052355054", 0.4));		
 		
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.applyDiscountRateToProduct(saleTransactionId, "", 0.4));
 		assertThrows(InvalidProductCodeException.class, () -> ezShop.applyDiscountRateToProduct(saleTransactionId, null, 0.4));
-		assertThrows(InvalidProductCodeException.class, () -> ezShop.applyDiscountRateToProduct(saleTransactionId, "123", 0.4)); //12345679
+		assertThrows(InvalidProductCodeException.class, () -> ezShop.applyDiscountRateToProduct(saleTransactionId, "123", 0.4)); //737052355059
 		
-		assertThrows(InvalidDiscountRateException.class, () -> ezShop.applyDiscountRateToProduct(saleTransactionId, "12345670", -0.4));
-		assertThrows(InvalidDiscountRateException.class, () -> ezShop.applyDiscountRateToProduct(saleTransactionId, "12345670", 1.4));
+		assertThrows(InvalidDiscountRateException.class, () -> ezShop.applyDiscountRateToProduct(saleTransactionId, "737052355054", -0.4));
+		assertThrows(InvalidDiscountRateException.class, () -> ezShop.applyDiscountRateToProduct(saleTransactionId, "737052355054", 1.4));
 		
-		ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 		
 		//aumento la quantità del prodotto
 	    ezShop.updatePosition(productId,"1-1-1");
 	    ezShop.updateQuantity(productId, 400);
 		
-		ezShop.addProductToSale(saleTransactionId, "12345670", 20);				
+		ezShop.addProductToSale(saleTransactionId, "737052355054", 20);				
 	
-	    assertTrue(ezShop.applyDiscountRateToProduct(saleTransactionId, "12345670", 0.2));
+	    assertTrue(ezShop.applyDiscountRateToProduct(saleTransactionId, "737052355054", 0.2));
 		ezShop.logout();		
 	}
 	
@@ -196,7 +196,7 @@ public class SaleTransactionsTest {
 		assert(ezShop.computePointsForSale(999) == -1);
 		
 		Integer saleTransactionId = ezShop.startSaleTransaction();	
-		Integer prod1 = ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		Integer prod1 = ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 		Integer prod2 = ezShop.createProductType("descriptionTest2", "12344674332827",1.50, "productnote");
 		
 		 ezShop.updatePosition(prod1,"1-1-1");
@@ -208,15 +208,15 @@ public class SaleTransactionsTest {
 		db.updateTransactionState(saleTransactionId, "OPEN");	
 		assert(ezShop.computePointsForSale(saleTransactionId) == -1); // no entries
 		
-		ezShop.addProductToSale(saleTransactionId, "12345670", 100); //not yet in ticket entries
+		ezShop.addProductToSale(saleTransactionId, "737052355054", 100); //not yet in ticket entries
 		ezShop.addProductToSale(saleTransactionId, "12344674332827", 200); //not yet in ticket entries
-		ezShop.addProductToSale(saleTransactionId, "12345670", 10); //already in ticket entries
+		ezShop.addProductToSale(saleTransactionId, "737052355054", 10); //already in ticket entries
 		
 		assert(ezShop.computePointsForSale(saleTransactionId) == 575.0);
 		
-		ezShop.addProductToSale(saleTransactionId, "12345670", 100); //not yet in ticket entries
+		ezShop.addProductToSale(saleTransactionId, "737052355054", 100); //not yet in ticket entries
 		ezShop.addProductToSale(saleTransactionId, "12344674332827", 200); //not yet in ticket entries
-		ezShop.addProductToSale(saleTransactionId, "12345670", 10); //already in ticket entries
+		ezShop.addProductToSale(saleTransactionId, "737052355054", 10); //already in ticket entries
 		db.updateTransactionState(saleTransactionId, "PAYED");	
 		ezShop.endSaleTransaction(saleTransactionId);	
 		
@@ -245,7 +245,7 @@ public class SaleTransactionsTest {
 		//assertThrows(InvalidTransactionIdException.class, () -> ezShop.endSaleTransaction(null));	
 		
 		Integer saleTransactionId = ezShop.startSaleTransaction();
-		Integer prod1 = ezShop.createProductType("descriptionTest1", "12345670",2.50, "product note");
+		Integer prod1 = ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 		Integer prod2 = ezShop.createProductType("descriptionTest2", "12344674332827",1.50, "productnote");
 		
 		 ezShop.updatePosition(prod1,"1-1-1");
@@ -255,7 +255,7 @@ public class SaleTransactionsTest {
 		 ezShop.updateQuantity(prod2, 400);
 		
 		
-		ezShop.addProductToSale(saleTransactionId, "12345670", 100); //not yet in ticket entries
+		ezShop.addProductToSale(saleTransactionId, "737052355054", 100); //not yet in ticket entries
 		ezShop.addProductToSale(saleTransactionId, "12344674332827", 200); //not yet in ticket entries
 		
 		db.updateTransactionState(saleTransactionId, "PAYED");		
@@ -295,11 +295,11 @@ public class SaleTransactionsTest {
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnProduct(-1,"232320",5));
     	
     	Integer transactionId = ezShop.startSaleTransaction();
-    	Integer productId = ezShop.createProductType("Milk", "12345670", 1.45, "A very good milk");
+    	Integer productId = ezShop.createProductType("Milk", "737052355054", 1.45, "A very good milk");
     	ezShop.updatePosition(productId, "1-1-1");
     	assertTrue(ezShop.updateQuantity(productId, 100));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
-    	assertTrue(ezShop.addProductToSale(transactionId,"12345670",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
+    	assertTrue(ezShop.addProductToSale(transactionId,"737052355054",20));
     	assertTrue(ezShop.endSaleTransaction(transactionId));
     	db.updateTransactionState(transactionId, "PAYED");
     	assertNotNull(ezShop.getSaleTransaction(transactionId));
