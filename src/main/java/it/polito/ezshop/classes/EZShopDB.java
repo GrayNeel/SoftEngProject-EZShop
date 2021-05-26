@@ -34,13 +34,13 @@ public class EZShopDB {
 			// This method will create a listener that will monitor updates in the db in
 			// order to
 			// automatically update the data structures
-			/*connection.addUpdateListener(new SQLiteUpdateListener() {
-				@Override
-				public void onUpdate(Type type, String db, String table, long rowId) {
-					System.out.println("OnUpdate: " + type + " " + db + " " + table + " " + rowId);
-					// Update data here
-				}
-			}); */
+			/*
+			 * connection.addUpdateListener(new SQLiteUpdateListener() {
+			 * 
+			 * @Override public void onUpdate(Type type, String db, String table, long
+			 * rowId) { System.out.println("OnUpdate: " + type + " " + db + " " + table +
+			 * " " + rowId); // Update data here } });
+			 */
 		} catch (SQLException e) {
 		}
 	}
@@ -48,13 +48,10 @@ public class EZShopDB {
 	public EZShopDB() {
 		createConnection();
 	}
-	
-	public boolean resetDB(String table) {		
-		if(table.equals("creditCards")) {
-			return true;
-		}
+
+	public boolean resetDB(String table) {
 		String sql = "DELETE FROM " + table;
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {			
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			return false;
@@ -62,7 +59,7 @@ public class EZShopDB {
 
 		return true;
 	}
-	
+
 	/**
 	 * This method gives back the number of registered user, which corresponds to
 	 * the last added ID of a user
@@ -72,9 +69,9 @@ public class EZShopDB {
 	public Integer getLastId(String table) {
 		String sql = "SELECT MAX(id) AS tot FROM " + table;
 		Integer id = -1;
-		
+
 		try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-			//If table is empty, gives id = 0
+			// If table is empty, gives id = 0
 			id = rs.getInt("tot");
 		} catch (SQLException e) {
 		}
@@ -90,7 +87,7 @@ public class EZShopDB {
 	public boolean addUser(User user) {
 		String sql = "INSERT INTO users(id,username,password,role) VALUES(?,?,?,?)";
 		boolean success = false;
-		if(user == null)
+		if (user == null)
 			return success;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, user.getId());
@@ -142,10 +139,10 @@ public class EZShopDB {
 		} catch (SQLException e) {
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
-		
+
 		String sql2 = "DELETE FROM users WHERE id=?";
 		boolean success = false;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
@@ -209,12 +206,12 @@ public class EZShopDB {
 		} catch (SQLException e) {
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
-		
+
 		String sql = "UPDATE users SET role=? WHERE id=?";
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, role);
 			pstmt.setInt(2, id);
@@ -280,21 +277,23 @@ public class EZShopDB {
 	// return true;
 	// }
 
-//	public User getLoggedUser() {
-//		String sql = "SELECT id,username,password,role FROM loggedusers";
-//		User user = null;
-//
-//		try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-//
-//			user = new UserClass(rs.getInt("id"), rs.getString("username"), rs.getString("password"),
-//					rs.getString("role"));
-//
-//		} catch (SQLException e) {
-//			return null;
-//		}
-//
-//		return user;
-//	}
+	// public User getLoggedUser() {
+	// String sql = "SELECT id,username,password,role FROM loggedusers";
+	// User user = null;
+	//
+	// try (Statement stmt = connection.createStatement(); ResultSet rs =
+	// stmt.executeQuery(sql)) {
+	//
+	// user = new UserClass(rs.getInt("id"), rs.getString("username"),
+	// rs.getString("password"),
+	// rs.getString("role"));
+	//
+	// } catch (SQLException e) {
+	// return null;
+	// }
+	//
+	// return user;
+	// }
 
 	/**
 	 * This method adds a new productType to the database "productTypes"
@@ -303,10 +302,10 @@ public class EZShopDB {
 	 */
 	public boolean addProductType(ProductType productType) {
 		String sql = "INSERT INTO productTypes(id, quantity, location, note, productDescription, barCode, pricePerUnit) VALUES(?,?,?,?,?,?,?)";
-		
-		if(productType == null)
+
+		if (productType == null)
 			return false;
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, productType.getId());
 			pstmt.setInt(2, productType.getQuantity());
@@ -353,18 +352,18 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
-		
+
 		String sql2 = "UPDATE productTypes SET productDescription=?, barCode=?, pricePerUnit=?, note=? WHERE id=?";
 
-		if(id < 0)
+		if (id < 0)
 			return false;
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setString(1, newDescription);
 			pstmt.setString(2, newCode);
@@ -418,13 +417,13 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
-		
+
 		String sql2 = "DELETE FROM productTypes WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setInt(1, id);
@@ -458,10 +457,10 @@ public class EZShopDB {
 		List<ProductType> productTypeList = new ArrayList<>();
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			String toSend = "%"+description+"%";
+			String toSend = "%" + description + "%";
 			pstmt.setString(1, toSend);
 			ResultSet rs = pstmt.executeQuery();
-			
+
 			while (rs.next()) {
 				Integer id = rs.getInt("id");
 				Integer quantity = rs.getInt("quantity");
@@ -484,46 +483,46 @@ public class EZShopDB {
 	public Integer getQuantityByProductTypeId(Integer id) {
 		String sql = "SELECT quantity FROM productTypes WHERE id=?";
 		Integer qty = null;
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			qty = rs.getInt("quantity");
 		} catch (SQLException e) {
 		}
-		
+
 		return qty;
 	}
-	
+
 	public String getPositionByProductTypeId(Integer id) {
 		String sql = "SELECT location FROM productTypes WHERE id=?";
 		String pos = "";
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			pos = rs.getString("location");
 		} catch (SQLException e) {
 		}
-		
+
 		return pos;
 	}
-	
+
 	public Integer getQuantityByProductTypeBarCode(String barCode) {
 		String sql = "SELECT quantity FROM productTypes WHERE barCode=?";
 		Integer qty = null;
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, barCode);
 			ResultSet rs = pstmt.executeQuery();
 			qty = rs.getInt("quantity");
 		} catch (SQLException e) {
-			//System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 		}
-		
+
 		return qty;
 	}
-	
+
 	public boolean updateQuantityByProductTypeId(Integer id, int newQuantity) {
 		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE id=?";
 		boolean exists = false;
@@ -538,12 +537,12 @@ public class EZShopDB {
 		} catch (SQLException e) {
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
-		
+
 		String sql2 = "UPDATE productTypes SET quantity=? WHERE id=?";
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setInt(1, newQuantity);
 			pstmt.setInt(2, id);
@@ -556,9 +555,9 @@ public class EZShopDB {
 	}
 
 	public boolean updateQuantityByBarCode(String productCode, int newQuantity) {
-		if(productCode == null)
+		if (productCode == null)
 			return false;
-		
+
 		String sql = "UPDATE productTypes SET quantity=? WHERE barCode=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -566,7 +565,7 @@ public class EZShopDB {
 			pstmt.setString(2, productCode);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 			return false;
 		}
 
@@ -582,15 +581,15 @@ public class EZShopDB {
 			ResultSet rs = pstmt.executeQuery();
 			res = rs.getInt("tot");
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 		}
-		
-		if(res==0)
+
+		if (res == 0)
 			return false;
-		else 
+		else
 			return true;
 	}
-	
+
 	public boolean updateProductTypeLocation(Integer productId, String newPos) {
 		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE id=?";
 		boolean exists = false;
@@ -603,13 +602,13 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
-		
+
 		String sqlUpd = "UPDATE productTypes SET location=? WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sqlUpd)) {
@@ -617,7 +616,7 @@ public class EZShopDB {
 			pstmt.setInt(2, productId);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 			return false;
 		}
 		return true;
@@ -632,9 +631,9 @@ public class EZShopDB {
 	public boolean addAndIssueOrder(Order order) {
 		String sql = "INSERT INTO orders(id,balanceId,productCode,pricePerUnit,quantity,status) VALUES(?,?,?,?,?,?)";
 
-		if(order == null)
+		if (order == null)
 			return false;
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, order.getOrderId());
 			pstmt.setInt(2, order.getBalanceId());
@@ -645,12 +644,12 @@ public class EZShopDB {
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean deleteOrder(Integer id) {
 		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
 		boolean exists = false;
@@ -663,30 +662,30 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
-		
+
 		String sql2 = "DELETE FROM orders WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage()); // non serve checkare se esiste. Se non esiste non viene cancellato
-												// nulla
+			// System.err.println(e.getMessage()); // non serve checkare se esiste. Se non
+			// esiste non viene cancellato
+			// nulla
 			return false;
 		}
 		return true;
 	}
 
-
 	public Order getOrderById(Integer orderId) {
 		String sql = "SELECT * FROM orders WHERE id=?";
 		Order order;
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, orderId);
 			ResultSet rs = pstmt.executeQuery();
@@ -697,16 +696,16 @@ public class EZShopDB {
 			Double pricePerUnit = rs.getDouble("pricePerUnit");
 			Integer quantity = rs.getInt("quantity");
 			String status = rs.getString("status");
-			
+
 			order = new OrderClass(id, balanceId, productCode, pricePerUnit, quantity, status);
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 			order = null;
 		}
 
 		return order;
 	}
-	
+
 	public List<Order> getAllOrders() {
 		String sql = "SELECT * FROM orders";
 		List<Order> orderList = new ArrayList<>();
@@ -726,16 +725,16 @@ public class EZShopDB {
 				orderList.add(order);
 			}
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 		}
 
 		return orderList;
 	}
 
 	public boolean payOrderById(Integer orderId) {
-		if(orderId == null)
+		if (orderId == null)
 			return false;
-		
+
 		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
 		boolean exists = false;
 
@@ -747,13 +746,13 @@ public class EZShopDB {
 				exists = true;
 
 		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
-		
+
 		// UPDATE status into ORDERED
 		String sql2 = "UPDATE orders SET status=? WHERE id=?";
 
@@ -766,7 +765,7 @@ public class EZShopDB {
 		}
 		return true;
 	}
-	
+
 	public boolean setBalanceIdInOrder(Integer orderId, Integer balanceId) {
 		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
 		boolean exists = false;
@@ -781,18 +780,16 @@ public class EZShopDB {
 		} catch (SQLException e) {
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
-		
+
 		// UPDATE status into ORDERED
 		String sql2 = "UPDATE orders SET balanceId=? WHERE id=?";
 
-		if(balanceId == null)
+		if (balanceId == null)
 			return false;
-		
-		
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql2)) {
 			pstmt.setInt(1, balanceId);
 			pstmt.setInt(2, orderId);
@@ -804,9 +801,9 @@ public class EZShopDB {
 	}
 
 	public boolean recordOrderArrivalById(Integer orderId) {
-		if(orderId == null) 
+		if (orderId == null)
 			return false;
-		
+
 		String sql = "SELECT COUNT(*) AS tot FROM orders WHERE id=?";
 		boolean exists = false;
 
@@ -820,8 +817,8 @@ public class EZShopDB {
 		} catch (SQLException e) {
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
 		// UPDATE status into COMPLETED
 		String sql2 = "UPDATE orders SET status=? WHERE id=?";
@@ -833,11 +830,11 @@ public class EZShopDB {
 		} catch (SQLException e) {
 			return false;
 		}
-		return true;	
+		return true;
 	}
 
 	public boolean defineCustomer(CustomerClass customer) {
-		if(customer == null)
+		if (customer == null)
 			return false;
 		String sql = "INSERT INTO customers(id,customerName,customerCard,points) VALUES(?,?,?,?)";
 
@@ -868,10 +865,10 @@ public class EZShopDB {
 		} catch (SQLException e) {
 			return false;
 		}
-		
-		if(!exists)
+
+		if (!exists)
 			return false;
-		
+
 		String sql = "DELETE FROM customers WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, id);
@@ -967,9 +964,9 @@ public class EZShopDB {
 		return customerlist;
 	}
 
-	public boolean attachCardToCustomer(String customerCard, Integer customerId) {		
-		//Check if user is related
-		String sql0 = "SELECT COUNT(*) AS n FROM customers WHERE id=?";		
+	public boolean attachCardToCustomer(String customerCard, Integer customerId) {
+		// Check if user is related
+		String sql0 = "SELECT COUNT(*) AS n FROM customers WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql0)) {
 			pstmt.setInt(1, customerId);
@@ -980,10 +977,10 @@ public class EZShopDB {
 
 		} catch (SQLException e) {
 			return false;
-		}	
-		
-		//Check if card exists
-		String sql1 = "SELECT COUNT(*) AS c FROM cards WHERE id=?";		
+		}
+
+		// Check if card exists
+		String sql1 = "SELECT COUNT(*) AS c FROM cards WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
 			pstmt.setString(1, customerCard);
@@ -995,17 +992,16 @@ public class EZShopDB {
 		} catch (SQLException e) {
 			return false;
 		}
-		
-		
+
 		String sql = "UPDATE customers SET customerCard=? WHERE id=?; UPDATE cards SET assigned=1 WHERE id=? and assigned=0";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, customerCard);
 			pstmt.setInt(2, customerId);
-			pstmt.executeUpdate();			
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -1022,25 +1018,25 @@ public class EZShopDB {
 		}
 		return points;
 	}
-	
+
 	public boolean updateCardPoints(String customerCard, Integer points) {
-		//Check if card exists
-		String sql1 = "SELECT COUNT(*) AS c FROM cards WHERE id=?";		
+		// Check if card exists
+		String sql1 = "SELECT COUNT(*) AS c FROM cards WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
 			pstmt.setString(1, customerCard);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.getInt("c") == 0)
 				return false;
-			} catch (SQLException e) {
-				return false;
+		} catch (SQLException e) {
+			return false;
 		}
-		
+
 		String sql = "UPDATE cards SET points=? WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, points);
 			pstmt.setString(2, customerCard);
-			pstmt.executeUpdate();			
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			return false;
 		}
@@ -1051,7 +1047,7 @@ public class EZShopDB {
 		Date curdate = new Date();
 		String[] datesplit = curdate.toString().split(" ");
 		String sql = "INSERT INTO saleTransactions(id, price, discountRate, date, time, paymentType, state) VALUES(?,?,?,?,?,'CASH','STARTED')";
-		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, saleTransaction.getTicketNumber());
 			pstmt.setDouble(2, saleTransaction.getPrice());
@@ -1063,15 +1059,14 @@ public class EZShopDB {
 			return -1;
 		}
 
-
 		return saleTransaction.getTicketNumber();
 	}
-	
+
 	public SaleTransactionClass getSaleTransactionById(Integer transactionId) {
-    	String sql = "SELECT * FROM saleTransactions WHERE id=?";
+		String sql = "SELECT * FROM saleTransactions WHERE id=?";
 		SaleTransactionClass transaction = null;
 		List<TicketEntry> entries = new ArrayList<>();
-		//entries = get
+		// entries = get
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, transactionId);
 			ResultSet rs = pstmt.executeQuery();
@@ -1086,9 +1081,9 @@ public class EZShopDB {
 	}
 
 	public boolean applyDiscountRateToProduct(Integer transactionId, String productCode, Double discountRate) {
-		boolean flag=false;
-		
-		if(discountRate < 0 || discountRate > 1)
+		boolean flag = false;
+
+		if (discountRate < 0 || discountRate > 1)
 			return false;
 
 		String sql = "UPDATE productEntries SET discountRate=? WHERE transactionId=? and productCode=?";
@@ -1105,9 +1100,9 @@ public class EZShopDB {
 	}
 
 	public boolean applyDiscountRate(Integer transactionId, Double discountRate) {
-		boolean flag=false;
-		if(discountRate < 0 || discountRate > 1)
-			return false;				
+		boolean flag = false;
+		if (discountRate < 0 || discountRate > 1)
+			return false;
 
 		String sql = "UPDATE saleTransactions SET discountRate=? WHERE id=?";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1120,17 +1115,18 @@ public class EZShopDB {
 
 		return flag;
 	}
-	
-	public boolean createTicketEntry(TicketEntry ticketEntry, Integer transactionId) {	
-		if(ticketEntry == null || ticketEntry.getDiscountRate() < 0 || ticketEntry.getDiscountRate() > 1)
+
+	public boolean createTicketEntry(TicketEntry ticketEntry, Integer transactionId) {
+		if (ticketEntry == null || ticketEntry.getDiscountRate() < 0 || ticketEntry.getDiscountRate() > 1)
 			return false;
 		Integer id = getLastId("productEntries");
 		String sql = "INSERT INTO productEntries(id, productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,?,?,?,?,?)";
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setInt(1, id+1);
+			pstmt.setInt(1, id + 1);
 			pstmt.setString(2, ticketEntry.getBarCode());
 			pstmt.setInt(3, ticketEntry.getAmount());
-			pstmt.setDouble(4, ticketEntry.getAmount()*ticketEntry.getPricePerUnit()*(1-ticketEntry.getDiscountRate()));
+			pstmt.setDouble(4,
+					ticketEntry.getAmount() * ticketEntry.getPricePerUnit() * (1 - ticketEntry.getDiscountRate()));
 			pstmt.setInt(5, transactionId);
 			pstmt.setDouble(6, ticketEntry.getPricePerUnit());
 			pstmt.setDouble(7, ticketEntry.getDiscountRate());
@@ -1140,27 +1136,26 @@ public class EZShopDB {
 			return false;
 		}
 
-
 		return true;
 	}
-	
+
 	public boolean updateTransactionState(Integer transactionId, String state) {
-		if(state == null)
+		if (state == null)
 			return false;
-		//Check if transaction exists
-		String sql1 = "SELECT COUNT(*) AS st FROM saleTransactions WHERE id=?";		
+		// Check if transaction exists
+		String sql1 = "SELECT COUNT(*) AS st FROM saleTransactions WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
 			pstmt.setInt(1, transactionId);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.getInt("st") == 0)
 				return false;
-			} catch (SQLException e) {
-				return false;
+		} catch (SQLException e) {
+			return false;
 		}
-				
+
 		String sql = "UPDATE saleTransactions SET state=? WHERE id=?";
-    		
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, state);
 			pstmt.setInt(2, transactionId);
@@ -1168,213 +1163,212 @@ public class EZShopDB {
 			return true;
 		} catch (SQLException e) {
 			return false;
-    	}
-    }
+		}
+	}
 
-    ///////////////// Pablo write methods after this point
+	///////////////// Pablo write methods after this point
 
-    public boolean deleteSaleTransaction(Integer transactionId) {
-    	//Check if card exists
- 		String sql1 = "SELECT COUNT(*) AS sn FROM saleTransactions WHERE id=?";		
-    	try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
-    		pstmt.setInt(1, transactionId);
-    		ResultSet rs = pstmt.executeQuery();
-    		if (rs.getInt("sn") == 0)
-    			return false;
-    		} catch (SQLException e) {
-    			return false;
-    	}
-    			
-        String sql = "DELETE FROM saleTransactions WHERE state != 'PAYED' AND id=?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, transactionId);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            return false;
-        }
-        
-        sql = "DELETE FROM productEntries WHERE transactionId=?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, transactionId);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            return false;
-        }
+	public boolean deleteSaleTransaction(Integer transactionId) {
+		// Check if card exists
+		String sql1 = "SELECT COUNT(*) AS sn FROM saleTransactions WHERE id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
+			pstmt.setInt(1, transactionId);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.getInt("sn") == 0)
+				return false;
+		} catch (SQLException e) {
+			return false;
+		}
 
-        return true;
-    }
-    
+		String sql = "DELETE FROM saleTransactions WHERE state != 'PAYED' AND id=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, transactionId);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			return false;
+		}
 
-    public SaleTransaction getClosedSaleTransactionById(Integer transactionId) {
-        String sql = "SELECT id,discountRate,date,time,price,paymentType,state FROM saleTransactions "
-                + "WHERE state = 'PAYED' AND id=?";
-        List<TicketEntry> products = getProductEntriesByTransactionId(transactionId);
-        SaleTransaction saletransaction = null;
-        ResultSet rs = null;
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, transactionId);
-            rs = pstmt.executeQuery();
+		sql = "DELETE FROM productEntries WHERE transactionId=?";
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, transactionId);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			return false;
+		}
 
-            saletransaction = new SaleTransactionClass(rs.getInt("id"), rs.getString("date"),
-                    rs.getString("time"), rs.getDouble("price"), rs.getString("paymentType"),
-                    rs.getDouble("discountRate"), products , rs.getString("state"));
-        } catch (SQLException e) {
-        }
+		return true;
+	}
 
-        return saletransaction;
-    }
-    
-    public List<TicketEntry> getProductEntriesByTransactionId(Integer transactionId) {
-    	String sql = "SELECT productEntries.id AS id,productEntries.productCode as productCode,productTypes.productDescription AS productDescription,productEntries.amount AS amount,productTypes.pricePerUnit AS pricePerUnit"
-                + " FROM productTypes JOIN productEntries ON productTypes.barCode=productEntries.productCode WHERE productEntries.transactionId = ?";
-        List<TicketEntry> productslist = new ArrayList<>();
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, transactionId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Integer id = rs.getInt("id");
-                String productCode = rs.getString("productCode");
-                String productDescription = rs.getString("productDescription");
-                Integer amount = rs.getInt("amount");
-                double pricePerUnit = rs.getDouble("pricePerUnit");
+	public SaleTransaction getClosedSaleTransactionById(Integer transactionId) {
+		String sql = "SELECT id,discountRate,date,time,price,paymentType,state FROM saleTransactions "
+				+ "WHERE state = 'PAYED' AND id=?";
+		List<TicketEntry> products = getProductEntriesByTransactionId(transactionId);
+		SaleTransaction saletransaction = null;
+		ResultSet rs = null;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, transactionId);
+			rs = pstmt.executeQuery();
 
-                TicketEntry productEntry = new TicketEntryClass(id, productCode, productDescription, amount, pricePerUnit, transactionId, 0.0);
-                productslist.add(productEntry);
-            }
-        } catch (SQLException e) {
-        }
-        
-        return productslist;
-    
-    }
+			saletransaction = new SaleTransactionClass(rs.getInt("id"), rs.getString("date"), rs.getString("time"),
+					rs.getDouble("price"), rs.getString("paymentType"), rs.getDouble("discountRate"), products,
+					rs.getString("state"));
+		} catch (SQLException e) {
+		}
 
+		return saletransaction;
+	}
 
-    public Integer startReturnTransaction(ReturnTransactionClass returnTransaction) {
-        String sql = "INSERT INTO returnTransactions(id, transactionId, quantity, returnValue, state) VALUES(?,?,?,?,?)";
-        SaleTransaction transaction = getSaleTransactionById(returnTransaction.getTransactionId());
-        Integer idReturn = -1;
-        if (transaction != null) {
-            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setInt(1, returnTransaction.getId());
-                pstmt.setInt(2, returnTransaction.getTransactionId());
-                pstmt.setInt(3, returnTransaction.getQuantity());
-                pstmt.setDouble(4, returnTransaction.getReturnValue());
-                pstmt.setString(5, returnTransaction.getState());
+	public List<TicketEntry> getProductEntriesByTransactionId(Integer transactionId) {
+		String sql = "SELECT productEntries.id AS id,productEntries.productCode as productCode,productTypes.productDescription AS productDescription,productEntries.amount AS amount,productTypes.pricePerUnit AS pricePerUnit"
+				+ " FROM productTypes JOIN productEntries ON productTypes.barCode=productEntries.productCode WHERE productEntries.transactionId = ?";
+		List<TicketEntry> productslist = new ArrayList<>();
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, transactionId);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Integer id = rs.getInt("id");
+				String productCode = rs.getString("productCode");
+				String productDescription = rs.getString("productDescription");
+				Integer amount = rs.getInt("amount");
+				double pricePerUnit = rs.getDouble("pricePerUnit");
 
-                pstmt.executeUpdate();
-            } catch (SQLException e) {
-            }
-            idReturn = returnTransaction.getId();
-            return idReturn;
-        }
+				TicketEntry productEntry = new TicketEntryClass(id, productCode, productDescription, amount,
+						pricePerUnit, transactionId, 0.0);
+				productslist.add(productEntry);
+			}
+		} catch (SQLException e) {
+		}
 
-        return idReturn;
-    }
+		return productslist;
 
-    public boolean deleteReturnTransaction(Integer returnId) {
-        String sql = "DELETE FROM returnTransactions WHERE state = 'CLOSED' AND id=?";
-        boolean success = false;
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, returnId);
-            pstmt.executeUpdate();
-            success = true;
-        } catch (SQLException e) {
-        }
+	}
 
-        return success;
-    }
+	public Integer startReturnTransaction(ReturnTransactionClass returnTransaction) {
+		String sql = "INSERT INTO returnTransactions(id, transactionId, quantity, returnValue, state) VALUES(?,?,?,?,?)";
+		SaleTransaction transaction = getSaleTransactionById(returnTransaction.getTransactionId());
+		Integer idReturn = -1;
+		if (transaction != null) {
+			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+				pstmt.setInt(1, returnTransaction.getId());
+				pstmt.setInt(2, returnTransaction.getTransactionId());
+				pstmt.setInt(3, returnTransaction.getQuantity());
+				pstmt.setDouble(4, returnTransaction.getReturnValue());
+				pstmt.setString(5, returnTransaction.getState());
 
-    public ReturnTransactionClass getReturnTransactionById(Integer returnId) {
-        String sql = "SELECT * FROM returnTransactions WHERE id=?";
-        ReturnTransactionClass returntransaction = null;
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+			}
+			idReturn = returnTransaction.getId();
+			return idReturn;
+		}
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, returnId);
-            ResultSet rs = pstmt.executeQuery();
+		return idReturn;
+	}
 
-            returntransaction = new ReturnTransactionClass(rs.getInt("id"), rs.getInt("transactionId"),
-                    rs.getInt("quantity"), rs.getDouble("returnValue"), rs.getString("state"));
+	public boolean deleteReturnTransaction(Integer returnId) {
+		String sql = "DELETE FROM returnTransactions WHERE state = 'CLOSED' AND id=?";
+		boolean success = false;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, returnId);
+			pstmt.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+		}
 
-        } catch (SQLException e) {
-        }
+		return success;
+	}
 
-        return returntransaction;
-    }
+	public ReturnTransactionClass getReturnTransactionById(Integer returnId) {
+		String sql = "SELECT * FROM returnTransactions WHERE id=?";
+		ReturnTransactionClass returntransaction = null;
 
-    public double getPricePerUnit(String productCode) {
-        String sql = "SELECT pricePerUnit FROM productTypes WHERE barCode=?";
-        double result = 0;
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, productCode);
-            ResultSet rs = pstmt.executeQuery();
-            result= rs.getDouble("pricePerUnit");
-        } catch (SQLException e) {
-        }
-        return result;
-    }
-    
-    public boolean returnProduct(int id, int returnId, String productCode, int amount, double returnValue) {
-        String sql = "INSERT INTO productReturns(id,returnId,productCode,quantity,returnValue) VALUES(?,?,?,?,?)";
-        boolean success = false;
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            pstmt.setInt(2, returnId);
-            pstmt.setString(3, productCode);
-            pstmt.setInt(4, amount);
-            pstmt.setDouble(5, returnValue);
-            pstmt.executeUpdate();
-            success = true;
-        } catch (SQLException e) {
-        }
-        // UPDATE state of returnTransaction
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, returnId);
+			ResultSet rs = pstmt.executeQuery();
 
-        return success;
-    }
-    
-    public Integer getAmountonEntry(Integer transactionId, String productCode) {
-    	String sql = "SELECT amount FROM productEntries WHERE transactionId=? AND productCode=?";
-        Integer result = -1;
-    	try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, transactionId);
-            pstmt.setString(2, productCode);
-            ResultSet rs = pstmt.executeQuery();
-            result = rs.getInt("amount");
+			returntransaction = new ReturnTransactionClass(rs.getInt("id"), rs.getInt("transactionId"),
+					rs.getInt("quantity"), rs.getDouble("returnValue"), rs.getString("state"));
 
-        } catch (SQLException e) {
-        }
-    	return result;
-    }
-    
-    public double getTotalOnEntry(Integer transactionId, String productCode) {
-    	String sql = "SELECT total FROM productEntries WHERE transactionId=? AND productCode=?";
-        double result = 0.0;
-    	try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, transactionId);
-            pstmt.setString(2, productCode);
-            ResultSet rs = pstmt.executeQuery();
-            result = rs.getDouble("total");
-        } catch (SQLException e) {
-        }
-    	return result;
-    }
-    
-    public boolean checkProductInSaleTransaction(Integer transactionId, String productCode) {
-    	String sql = "SELECT COUNT(*) as tot FROM productEntries WHERE transactionId=? AND productCode=?";
-    	boolean exists = false;
-    	try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, transactionId);
-            pstmt.setString(2, productCode);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.getInt("tot")>0)
-            	exists = true;
+		} catch (SQLException e) {
+		}
 
-        } catch (SQLException e) {
-        }
-    	return exists;
-    }
-    
-    public boolean updateReturnTransaction(Integer returnId, Integer newAmount, Double newReturnValue) {
-    	String sql = "UPDATE returnTransactions SET quantity=? , returnValue=? , state=? WHERE id=?";
+		return returntransaction;
+	}
+
+	public double getPricePerUnit(String productCode) {
+		String sql = "SELECT pricePerUnit FROM productTypes WHERE barCode=?";
+		double result = 0;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, productCode);
+			ResultSet rs = pstmt.executeQuery();
+			result = rs.getDouble("pricePerUnit");
+		} catch (SQLException e) {
+		}
+		return result;
+	}
+
+	public boolean returnProduct(int id, int returnId, String productCode, int amount, double returnValue) {
+		String sql = "INSERT INTO productReturns(id,returnId,productCode,quantity,returnValue) VALUES(?,?,?,?,?)";
+		boolean success = false;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			pstmt.setInt(2, returnId);
+			pstmt.setString(3, productCode);
+			pstmt.setInt(4, amount);
+			pstmt.setDouble(5, returnValue);
+			pstmt.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+		}
+		// UPDATE state of returnTransaction
+
+		return success;
+	}
+
+	public Integer getAmountonEntry(Integer transactionId, String productCode) {
+		String sql = "SELECT amount FROM productEntries WHERE transactionId=? AND productCode=?";
+		Integer result = -1;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, transactionId);
+			pstmt.setString(2, productCode);
+			ResultSet rs = pstmt.executeQuery();
+			result = rs.getInt("amount");
+
+		} catch (SQLException e) {
+		}
+		return result;
+	}
+
+	public double getTotalOnEntry(Integer transactionId, String productCode) {
+		String sql = "SELECT total FROM productEntries WHERE transactionId=? AND productCode=?";
+		double result = 0.0;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, transactionId);
+			pstmt.setString(2, productCode);
+			ResultSet rs = pstmt.executeQuery();
+			result = rs.getDouble("total");
+		} catch (SQLException e) {
+		}
+		return result;
+	}
+
+	public boolean checkProductInSaleTransaction(Integer transactionId, String productCode) {
+		String sql = "SELECT COUNT(*) as tot FROM productEntries WHERE transactionId=? AND productCode=?";
+		boolean exists = false;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, transactionId);
+			pstmt.setString(2, productCode);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.getInt("tot") > 0)
+				exists = true;
+
+		} catch (SQLException e) {
+		}
+		return exists;
+	}
+
+	public boolean updateReturnTransaction(Integer returnId, Integer newAmount, Double newReturnValue) {
+		String sql = "UPDATE returnTransactions SET quantity=? , returnValue=? , state=? WHERE id=?";
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, newAmount);
@@ -1385,29 +1379,30 @@ public class EZShopDB {
 		} catch (SQLException e) {
 			return false;
 		}
-		
+
 		return true;
-    }
-    
-    public boolean updateSaleTransactionAfterCommit(Integer transactionId, Double newReturnValue) {
-    	String sql = "UPDATE saleTransactions SET price=? WHERE id=?";
-    	boolean success = false;
-    		
+	}
+
+	public boolean updateSaleTransactionAfterCommit(Integer transactionId, Double newReturnValue) {
+		String sql = "UPDATE saleTransactions SET price=? WHERE id=?";
+		boolean success = false;
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setDouble(1, newReturnValue);
 			pstmt.setInt(2, transactionId);
 			pstmt.executeUpdate();
 			success = true;
 		} catch (SQLException e) {
-    	}
-		
+		}
+
 		return success;
-    }
-    
-    public boolean updateEntryAfterCommit(Integer transactionId, String productCode, int newAmountSold, double newTotalSold){
-    	String sql = "UPDATE productEntries SET amount=?, total=? WHERE transactionId=? AND productCode=?";
+	}
+
+	public boolean updateEntryAfterCommit(Integer transactionId, String productCode, int newAmountSold,
+			double newTotalSold) {
+		String sql = "UPDATE productEntries SET amount=?, total=? WHERE transactionId=? AND productCode=?";
 		boolean flag = false;
-    	
+
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, newAmountSold);
 			pstmt.setDouble(2, newTotalSold);
@@ -1416,11 +1411,11 @@ public class EZShopDB {
 			pstmt.executeUpdate();
 			flag = true;
 		} catch (SQLException e) {
-    	}
+		}
 		return flag;
-    }
-    
-    public List<ProductReturnClass> getAllProductReturnsById(Integer returnId) {
+	}
+
+	public List<ProductReturnClass> getAllProductReturnsById(Integer returnId) {
 		String sql = "SELECT * FROM productReturns WHERE returnId=?";
 		List<ProductReturnClass> returnlist = new ArrayList<>();
 
@@ -1433,7 +1428,8 @@ public class EZShopDB {
 				Integer quantity = rs.getInt("quantity");
 				double returnValue = rs.getDouble("returnValue");
 
-				ProductReturnClass returnEntry = new ProductReturnClass(id, returnId, productCode, quantity, returnValue);
+				ProductReturnClass returnEntry = new ProductReturnClass(id, returnId, productCode, quantity,
+						returnValue);
 				returnlist.add(returnEntry);
 			}
 		} catch (SQLException e) {
@@ -1441,39 +1437,39 @@ public class EZShopDB {
 
 		return returnlist;
 	}
-    
-    public boolean deleteProductReturnsByReturnId(Integer returnId) {
-    	String sql = "DELETE FROM productReturns WHERE returnId=?";
-        boolean success = false;
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, returnId);
-            pstmt.executeUpdate();
-            success = true;
-        } catch (SQLException e) {
-        }
 
-        return success;
-    }
-    
-    public boolean updatePaymentSaleTransaction(Integer transactionId, String paymentMethod, String state) {
-    	String sql = "UPDATE saleTransactions SET state=?, paymentType=? WHERE id=?";
-        boolean success = false;
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, state);
-            pstmt.setString(2, paymentMethod);
-            pstmt.setInt(3, transactionId);
-            pstmt.executeUpdate();
-            success = true;
-        } catch (SQLException e) {
-        }
+	public boolean deleteProductReturnsByReturnId(Integer returnId) {
+		String sql = "DELETE FROM productReturns WHERE returnId=?";
+		boolean success = false;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, returnId);
+			pstmt.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+		}
 
-        return success;
-    }
-    
-    public boolean recordBalanceOperation(BalanceOperation balanceOperation) {
-    	String sql = "INSERT INTO balanceOperations(id,date,money,type) VALUES(?,?,?,?)";
-    	String date = balanceOperation.getDate().toString();
-    	boolean success = false;
+		return success;
+	}
+
+	public boolean updatePaymentSaleTransaction(Integer transactionId, String paymentMethod, String state) {
+		String sql = "UPDATE saleTransactions SET state=?, paymentType=? WHERE id=?";
+		boolean success = false;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, state);
+			pstmt.setString(2, paymentMethod);
+			pstmt.setInt(3, transactionId);
+			pstmt.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+		}
+
+		return success;
+	}
+
+	public boolean recordBalanceOperation(BalanceOperation balanceOperation) {
+		String sql = "INSERT INTO balanceOperations(id,date,money,type) VALUES(?,?,?,?)";
+		String date = balanceOperation.getDate().toString();
+		boolean success = false;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, balanceOperation.getBalanceId());
 			pstmt.setString(2, date);
@@ -1485,23 +1481,23 @@ public class EZShopDB {
 		} catch (SQLException e) {
 		}
 
-        return success;
-    }
-    
-    public double getActualBalance() {
-    	String sql = "SELECT SUM(money) as total FROM balanceOperations";
-    	double total = 0;
-    	try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-				total = rs.getDouble("total");
+		return success;
+	}
+
+	public double getActualBalance() {
+		String sql = "SELECT SUM(money) as total FROM balanceOperations";
+		double total = 0;
+		try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+			total = rs.getDouble("total");
 		} catch (SQLException e) {
 		}
-    	return total;
-    }
-    
-    public List<BalanceOperation> getBalanceOperations(String from, String to) {
-    	String sql = "SELECT id,date,money,type FROM balanceOperations WHERE date >=? AND date <=?";
-    	List<BalanceOperation> operations =  new ArrayList<>();
-    	try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+		return total;
+	}
+
+	public List<BalanceOperation> getBalanceOperations(String from, String to) {
+		String sql = "SELECT id,date,money,type FROM balanceOperations WHERE date >=? AND date <=?";
+		List<BalanceOperation> operations = new ArrayList<>();
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setString(1, from);
 			pstmt.setString(2, to);
 			ResultSet rs = pstmt.executeQuery();
@@ -1510,17 +1506,52 @@ public class EZShopDB {
 				String dateString = rs.getString("date");
 				double money = rs.getDouble("money");
 				String type = rs.getString("type");
-				
+
 				LocalDate date = LocalDate.parse(dateString);
 				BalanceOperation operation = new BalanceOperationClass(balanceId, date, money, type);
 				operations.add(operation);
 			}
 		} catch (SQLException e) {
 		}
-    	return operations;
-    }
-    
-    public CreditCardClass getCreditCardByCardNumber(String cardNumber) {
+		return operations;
+	}
+
+	public boolean recordCreditCard(Integer id, CreditCardClass creditCard) {
+		String sql = "INSERT INTO creditCards(id,creditCardNumber,balance) VALUES(?,?,?)";
+		boolean success = false;
+		if (creditCard == null) {
+			return success;
+		}
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			pstmt.setString(2, creditCard.getCardNumber());
+			pstmt.setDouble(3, creditCard.getBalance());
+
+			pstmt.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+		}
+
+		return success;
+	}
+
+	public boolean deleteCreditCard(Integer id) {
+		String sql = "DELETE FROM creditCards WHERE id=?";
+		boolean success = false;
+		if (id <0) {
+			return success;
+		}
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			pstmt.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+		}
+
+		return success;
+	}
+
+	public CreditCardClass getCreditCardByCardNumber(String cardNumber) {
 		String sql = "SELECT * FROM creditCards WHERE creditCardNumber=?";
 		CreditCardClass creditCard = null;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1531,18 +1562,18 @@ public class EZShopDB {
 		}
 		return creditCard;
 	}
-    
-    public boolean updateBalanceInCreditCard(String cardNumber, double newBalance) {
-    	String sql = "UPDATE creditCards SET balance=? WHERE creditCardNumber=?";
-        boolean success = false;
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setDouble(1, newBalance);
-            pstmt.setString(2, cardNumber);
-            pstmt.executeUpdate();
-            success = true;
-        } catch (SQLException e) {
-        }
-        return success;
+
+	public boolean updateBalanceInCreditCard(String cardNumber, double newBalance) {
+		String sql = "UPDATE creditCards SET balance=? WHERE creditCardNumber=?";
+		boolean success = false;
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setDouble(1, newBalance);
+			pstmt.setString(2, cardNumber);
+			pstmt.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+		}
+		return success;
 	}
 
 }
