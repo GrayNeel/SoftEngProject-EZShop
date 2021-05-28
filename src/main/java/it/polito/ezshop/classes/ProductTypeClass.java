@@ -102,8 +102,8 @@ public class ProductTypeClass implements ProductType {
     		return false;    		
     	}
     	
-    	//Only GTIN-8, GTIN-12, GTIN-13, GTIN-14, GSIN and SSCC are allowed 
-    	if(barCodeLength != 8 && barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14 && barCodeLength != 17 && barCodeLength != 18) {
+    	//GTIN-12, GTIN-13, GTIN-14 are allowed 
+    	if(barCodeLength != 12 && barCodeLength != 13 && barCodeLength != 14) {
     		return false;
     	}
     	
