@@ -371,6 +371,17 @@ public class UnitTestEZShop {
 		assertTrue(db.updateProductType(1741, "ok", "333", 4.18, "good"));
 		db.deleteProductType(1741);
 	}
+	
+	@Test
+	public void getBarCodeByProductTypeIdTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+
+		db.addProductType(pt);
+		assertTrue(db.getBarCodeByProductTypeId(1741).equals("22345212"));
+		// assertFalse(db.updateProductType(1741, 3, "333", 4.18, "good"));
+		assertNull(db.getBarCodeByProductTypeId(0));
+		db.deleteProductType(1741);
+	}
 
 	@Test
 	public void getAllProductTypesTestCase() {

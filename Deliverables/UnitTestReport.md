@@ -596,6 +596,36 @@ The credit cards for the application testing were pre-set in the database file f
 | Yes                                | Valid           | T1(an ID in the DB) -> quantity | getQuantityByProductTypeIdTestCase() |
 | No                                 | Invalid         | T2(an ID not in the DB) -> null | ''                                   |
 
+### **Class *EZShopDB* - method *getBarCodeByProductTypeId***
+
+**Criteria for method \*name\*:** 
+
+- Validity of the id parameter
+
+**Predicates for method \*name\*:**
+
+| Criteria                     | Predicate |
+| ---------------------------- | --------- |
+| Validity of the id parameter | Yes       |
+|                              | No        |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+| Validity of the description string | Valid / Invalid | Description of the test case    | JUnit test case                     |
+| ---------------------------------- | --------------- | ------------------------------- | ----------------------------------- |
+| Yes                                | Valid           | T1(an ID in the DB) -> barcode  | getBarCodeByProductTypeIdTestCase() |
+| No                                 | Invalid         | T2(an ID not in the DB) -> null | ''                                  |
+
 ### **Class *EZShopDB* - method *updateQuantityByProductTypeId***
 
 **Criteria for method \*name\*:** 

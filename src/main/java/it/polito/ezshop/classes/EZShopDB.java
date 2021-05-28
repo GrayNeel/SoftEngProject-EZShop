@@ -522,6 +522,21 @@ public class EZShopDB {
 
 		return qty;
 	}
+	
+	public String getBarCodeByProductTypeId(Integer id) {
+		String sql = "SELECT barCode FROM productTypes WHERE id=?";
+		String brc = null;
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			brc = rs.getString("barCode");
+		} catch (SQLException e) {
+			// System.err.println(e.getMessage());
+		}
+
+		return brc;
+	}
 
 	public boolean updateQuantityByProductTypeId(Integer id, int newQuantity) {
 		String sql = "SELECT COUNT(*) AS tot FROM productTypes WHERE id=?";

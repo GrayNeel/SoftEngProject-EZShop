@@ -235,7 +235,7 @@ public class EZShop implements EZShopInterface {
 			throw new InvalidProductCodeException();
 		}
 
-		if (db.checkExistingProductType(newCode))
+		if (db.checkExistingProductType(newCode) && !db.getBarCodeByProductTypeId(id).equals(newCode))
 			return false;
 
 		if (newPrice <= 0) {
@@ -284,18 +284,17 @@ public class EZShop implements EZShopInterface {
 	public ProductType getProductTypeByBarCode(String barCode)
 			throws InvalidProductCodeException, UnauthorizedException {
 
+		User user = this.loggedUser;
+		
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")))
+			throw new UnauthorizedException();
+		
 		if (barCode == null || barCode.length() == 0 || !ProductTypeClass.validateProductCode(barCode)) {
 			throw new InvalidProductCodeException();
 		}
 
 		if (!db.checkExistingProductType(barCode)) {
 			return null;
-		}
-
-		User user = this.loggedUser;
-
-		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
-			throw new UnauthorizedException();
 		}
 
 		return db.getProductTypeByBarCode(barCode);
@@ -360,7 +359,7 @@ public class EZShop implements EZShopInterface {
 		if (newPos == null || newPos.length() == 0) {
 			newPos = "";
 		} else {
-			Pattern p = Pattern.compile("\\d+-\\d+-\\d+");
+			Pattern p = Pattern.compile("\\d+-.+-\\d+");
 			Matcher m = p.matcher(newPos);
 			if (!m.matches()) {
 				throw new InvalidLocationException("Invalid Location format");
@@ -388,9 +387,6 @@ public class EZShop implements EZShopInterface {
 			throw new InvalidProductCodeException("Invalid Product code");
 		}
 
-		if (db.getProductTypeByBarCode(productCode) == null)
-			return -1;
-
 		if (quantity <= 0)
 			throw new InvalidQuantityException("Quantity can not be less than 0");
 
@@ -403,6 +399,9 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
+		if (db.getProductTypeByBarCode(productCode) == null)
+			return -1;
+		
 		// Get the last used ID
 		Integer lastid = db.getLastId("orders");
 
@@ -424,9 +423,6 @@ public class EZShop implements EZShopInterface {
 			throw new InvalidProductCodeException("Invalid Product code");
 		}
 
-		if (db.getProductTypeByBarCode(productCode) == null)
-			return -1;
-
 		if (quantity <= 0)
 			throw new InvalidQuantityException("Quantity can not be less than 0");
 
@@ -439,6 +435,9 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
+		if (db.getProductTypeByBarCode(productCode) == null)
+			return -1;
+		
 		// Get the last used ID
 		Integer lastid = db.getLastId("orders");
 
@@ -648,7 +647,7 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
-		if (id == null) {
+		if (id == null || id <= 0) {
 			throw new InvalidCustomerIdException();
 		}
 
