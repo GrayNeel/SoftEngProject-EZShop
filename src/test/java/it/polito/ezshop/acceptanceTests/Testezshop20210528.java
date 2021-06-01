@@ -4191,7 +4191,7 @@ public class Testezshop20210528 {
             Assert.assertNotNull(getErrorMsg("testgetSaleTransaction","Return value should not have been null"), saleTransaction);
             Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),discountRate, saleTransaction.getDiscountRate(),0.0);
             double priceWithoutSaleDiscount = (quantity*pricePerUnit - quantity*pricePerUnit*discountRate) + quantity*pricePerUnit2;//17.50
-            double priceWithSaleDiscount = priceWithoutSaleDiscount - (priceWithoutSaleDiscount*discountRate);
+            double priceWithSaleDiscount = priceWithoutSaleDiscount - (priceWithoutSaleDiscount*discountRate);            
             Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),priceWithSaleDiscount, saleTransaction.getPrice(),0.0);
             Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),2, saleTransaction.getEntries().size());
             boolean found1 = false;
@@ -4200,7 +4200,7 @@ public class Testezshop20210528 {
             for(TicketEntry entry : saleTransaction.getEntries()){
                 if(entry.getBarCode().equals(barCode) && !found1){
                     Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),quantity,entry.getAmount());
-                    Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),barCode,entry.getBarCode());
+                    Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),barCode,entry.getBarCode());                  
                     Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),discountRate,entry.getDiscountRate(),0.0);
                     Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),pricePerUnit,entry.getPricePerUnit(),0.0);
                     Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"), productDescr1,entry.getProductDescription());
@@ -4220,6 +4220,7 @@ public class Testezshop20210528 {
             Assert.assertTrue(getErrorMsg("testgetSaleTransaction","Ticket has not the expected entries"),found1 && found2);
             int ticketNumber1 = saleTransaction.getTicketNumber();
 
+            System.out.println("----------------\n\n");
             transactionId = ezshop.startSaleTransaction();
             ezshop.addProductToSale(transactionId,barCode,quantity);
             ezshop.addProductToSale(transactionId,barCode2,quantity);
@@ -4227,6 +4228,7 @@ public class Testezshop20210528 {
             saleTransaction = ezshop.getSaleTransaction(transactionId);
             Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),0.0, saleTransaction.getDiscountRate(),0.0);
             priceWithoutSaleDiscount = quantity*pricePerUnit + quantity*pricePerUnit2;
+            System.out.println(priceWithoutSaleDiscount + "    " + saleTransaction.getPrice());
             Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),priceWithoutSaleDiscount, saleTransaction.getPrice(),0.0);
             Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),2, saleTransaction.getEntries().size());
             found1 = false;

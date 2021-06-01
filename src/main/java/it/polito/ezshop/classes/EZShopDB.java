@@ -1037,6 +1037,17 @@ public class EZShopDB {
 	}
 
 	public Integer getCardPoints(String customerCard) {
+		String sql1 = "SELECT COUNT(*) AS c FROM cards WHERE id=?";
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql1)) {
+			pstmt.setString(1, customerCard);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.getInt("c") == 0)
+				return null;
+		} catch (SQLException e) {
+			return null;
+		}
+		
 		String sql = "SELECT points from cards WHERE id=?";
 		Integer points = null;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1148,7 +1159,7 @@ public class EZShopDB {
 	}
 
 	public boolean createTicketEntry(TicketEntry ticketEntry, Integer transactionId) {
-		if (ticketEntry == null || ticketEntry.getDiscountRate() < 0 || ticketEntry.getDiscountRate() > 1)
+		if (ticketEntry == null || ticketEntry.getDiscountRate() < 0 || ticketEntry.getDiscountRate() >= 1)
 			return false;
 		Integer id = getLastId("productEntries");
 		String sql = "INSERT INTO productEntries(id, productCode, amount, total, transactionId, unitPrice, discountRate) VALUES(?,?,?,?,?,?,?)";
@@ -1230,10 +1241,9 @@ public class EZShopDB {
 		return true;
 	}
 
-	public SaleTransaction getClosedSaleTransactionById(Integer transactionId) {
-		String sql = "SELECT id,discountRate,date,time,price,paymentType,state FROM saleTransactions "
-				+ "WHERE state = 'PAYED' AND id=?";
-		List<TicketEntry> products = getProductEntriesByTransactionId(transactionId);
+	public SaleTransaction getClosedSaleTransactionById(Integer transactionId, List<TicketEntry> p) {
+		String sql = "SELECT id,discountRate,date,time,price,paymentType,state FROM saleTransactions WHERE state = 'PAYED' OR state = 'CLOSED' AND id=?";
+		
 		SaleTransaction saletransaction = null;
 		ResultSet rs = null;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1241,9 +1251,10 @@ public class EZShopDB {
 			rs = pstmt.executeQuery();
 
 			saletransaction = new SaleTransactionClass(rs.getInt("id"), rs.getString("date"), rs.getString("time"),
-					rs.getDouble("price"), rs.getString("paymentType"), rs.getDouble("discountRate"), products,
+					rs.getDouble("price"), rs.getString("paymentType"), rs.getDouble("discountRate"), p,
 					rs.getString("state"));
 		} catch (SQLException e) {
+			return null;
 		}
 
 		return saletransaction;
@@ -1415,7 +1426,7 @@ public class EZShopDB {
 	}
 
 	public boolean updateSaleTransactionAfterCommit(Integer transactionId, Double newReturnValue) {
-		String sql = "UPDATE saleTransactions SET price=? WHERE id=?";
+		String sql = "UPDATE saleTransactions SET price=?, state='CLOSED' WHERE id=?";
 		boolean success = false;
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -1445,6 +1456,7 @@ public class EZShopDB {
 		}
 		return flag;
 	}
+
 
 	public List<ProductReturnClass> getAllProductReturnsById(Integer returnId) {
 		String sql = "SELECT * FROM productReturns WHERE returnId=?";

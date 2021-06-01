@@ -590,6 +590,8 @@ public class EZShop implements EZShopInterface {
 		if (id == null || id <= 0) {
 			throw new InvalidCustomerIdException();
 		}
+		
+		boolean atleastOneAlpha = newCustomerCard.matches(".*[a-zA-Z]+.*");
 
 		if (newCustomerName == null || newCustomerName == "") {
 			throw new InvalidCustomerNameException();
@@ -598,7 +600,7 @@ public class EZShop implements EZShopInterface {
 		if(newCustomerCard == null) /** in the interface definition of modifyCustomer there are 2 different kind of def*/
 			return false;			/**One says to return false, the other to throw exception. I've chosen the first one*/
 		
-		if (newCustomerCard.length() != 10 && newCustomerCard.length() != 0) {
+		if (atleastOneAlpha || newCustomerCard.length() != 10 && newCustomerCard.length() != 0) {
 			throw new InvalidCustomerCardException();
 		}
 		
@@ -721,12 +723,19 @@ public class EZShop implements EZShopInterface {
 		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
-
-		if (customerCard == "" || customerCard == null || customerCard.length() != 10) {
+		
+		if(customerCard == null)
+			throw new InvalidCustomerCardException();
+		
+		boolean atleastOneAlpha = customerCard.matches(".*[a-zA-Z]+.*");
+		
+		if (atleastOneAlpha || customerCard == "" || customerCard.length() != 10) {
 			throw new InvalidCustomerCardException();
 		}
 
 		Integer currentPoints = db.getCardPoints(customerCard);
+		if(currentPoints == null)
+			return false;
 		if (pointsToBeAdded * (-1) > currentPoints || currentPoints == -1) {
 			return false;
 		}
@@ -764,7 +773,7 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
-		if (transactionId < 0 || transactionId == null) {
+		if (transactionId == null || transactionId <= 0) {
 			throw new InvalidTransactionIdException();
 		}
 
@@ -777,6 +786,9 @@ public class EZShop implements EZShopInterface {
 		}
 
 		ProductType product = getProductTypeByBarCode(productCode);
+		
+		if(product==null)
+			return false;
 
 		if (product.getQuantity() < amount) {
 			return false;
@@ -824,7 +836,7 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
-		if (transactionId < 0 || transactionId == null) {
+		if ( transactionId == null || transactionId <= 0) {
 			throw new InvalidTransactionIdException();
 		}
 
@@ -885,7 +897,7 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
-		if (transactionId < 0 || transactionId == null) {
+		if (transactionId == null || transactionId <= 0 ) {
 			throw new InvalidTransactionIdException();
 		}
 
@@ -893,7 +905,7 @@ public class EZShop implements EZShopInterface {
 			throw new InvalidProductCodeException();
 		}
 
-		if (discountRate <= 0 || discountRate > 1) {
+		if (discountRate <= 0 || discountRate >= 1) {
 			throw new InvalidDiscountRateException();
 		}
 
@@ -907,16 +919,23 @@ public class EZShop implements EZShopInterface {
 		if (entries == null) {
 			return false;
 		}
-
+		System.out.println("ApplyDiscountRate");
+		
 		for (TicketEntry entry : entries) {
-			if (entry.getBarCode() == productCode) {
+			if (entry.getBarCode().equals(productCode)) {
 				entry.setDiscountRate(discountRate);
+				System.out.println(entry.getBarCode() + " "+ entry.getDiscountRate());				
 			}
 		}
-
+		
+		//dbasdasd
+		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
+		transaction.setEntries(entries);
+		System.err.println(transaction.getEntries().get(0).getDiscountRate());
 		// if it is already set, why you put it again?
+		
 		tickets.put(transactionId, entries);
-
+		
 		return true;
 	}
 
@@ -929,11 +948,11 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
-		if (transactionId < 0 || transactionId == null) {
+		if (transactionId == null || transactionId <= 0) {
 			throw new InvalidTransactionIdException();
 		}
 
-		if (discountRate <= 0 || discountRate > 1) {
+		if (discountRate <= 0 || discountRate >= 1) {
 			throw new InvalidDiscountRateException();
 		}
 
@@ -959,7 +978,7 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
-		if (transactionId < 0 || transactionId == null) {
+		if (transactionId == null ||transactionId <= 0) {
 			throw new InvalidTransactionIdException();
 		}
 
@@ -982,8 +1001,9 @@ public class EZShop implements EZShopInterface {
 			}
 			total = total * (1 - transaction.getDiscountRate());			
 		} else {
-			SaleTransaction transactionClosed = db.getClosedSaleTransactionById(transactionId);
 			entries = tickets.get(transactionId);
+			SaleTransaction transactionClosed = db.getClosedSaleTransactionById(transactionId, entries);
+			
 			// entries = transactionClosed.getEntries();
 
 			Double prodTotal = 0.0;
@@ -1007,32 +1027,37 @@ public class EZShop implements EZShopInterface {
 			throw new UnauthorizedException();
 		}
 
-		if (transactionId < 0 || transactionId == null) {
+		if (transactionId == null || transactionId <= 0) {
 			throw new InvalidTransactionIdException();
 		}
 
 		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
 		List<TicketEntry> entries = tickets.get(transactionId);
+		
 		if (transaction == null || entries == null) {
 			return false;
 		}
 
 		if (transaction.getState().equals("CLOSED") || transaction.getState().equals("PAYED")) {
 			return false;
-		}
+		}		
 
-		boolean flag = false;
+		boolean flag = true;
 		double total = 0.0;
-		for (TicketEntry entry : entries) {
-			total += entry.getPricePerUnit() * entry.getAmount() * (1 - entry.getDiscountRate());
-			flag = db.createTicketEntry(entry, transactionId);
-			if (flag == false) {
-				return false;
+		
+		if(entries.size() > 0)
+		{
+			for (TicketEntry entry : entries) {				
+				total += entry.getPricePerUnit() * entry.getAmount() * (1 - entry.getDiscountRate());		
+				flag = db.createTicketEntry(entry, transactionId);
+				if (flag == false) {
+					return false;
+				}			
 			}
-
 		}
-
-		db.updateSaleTransactionAfterCommit(transactionId, total);
+		
+		
+		db.updateSaleTransactionAfterCommit(transactionId, total*(1 - transaction.getDiscountRate()));
 
 		return flag;
 	}
@@ -1070,8 +1095,9 @@ public class EZShop implements EZShopInterface {
 		if (transactionId == null || transactionId <= 0) {
 			throw new InvalidTransactionIdException();
 		}
-		List<TicketEntry> products = db.getProductEntriesByTransactionId(transactionId);
-		return db.getClosedSaleTransactionById(transactionId);
+		List<TicketEntry> entries = tickets.get(transactionId);		
+		
+		return db.getClosedSaleTransactionById(transactionId, entries);
 	}
 
 	@Override

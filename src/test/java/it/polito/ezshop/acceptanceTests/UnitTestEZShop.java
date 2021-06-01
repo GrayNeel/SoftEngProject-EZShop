@@ -1003,12 +1003,11 @@ public class UnitTestEZShop {
 
 		db.resetDB("productEntries");
 		TicketEntry te = new TicketEntryClass(132, "22345212", "test description", 10, 1.50, 170, 0.0);
-
+		productList.add(te);
 		assertEquals(170, db.startSaleTransaction(saleTransaction) + 0);
 		assertTrue(db.createTicketEntry(te, 170));
-		assertTrue(db.updateTransactionState(170, "PAYED"));
-		assertNull(db.getClosedSaleTransactionById(171));
-		assertNotNull(db.getClosedSaleTransactionById(170));
+		assertTrue(db.updateTransactionState(170, "PAYED"));		
+		assertNotNull(db.getClosedSaleTransactionById(170, productList));
 
 	}
 
