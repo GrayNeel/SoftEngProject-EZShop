@@ -919,19 +919,16 @@ public class EZShop implements EZShopInterface {
 		if (entries == null) {
 			return false;
 		}
-		System.out.println("ApplyDiscountRate");
 		
 		for (TicketEntry entry : entries) {
 			if (entry.getBarCode().equals(productCode)) {
-				entry.setDiscountRate(discountRate);
-				System.out.println(entry.getBarCode() + " "+ entry.getDiscountRate());				
+				entry.setDiscountRate(discountRate);			
 			}
 		}
 		
 		//dbasdasd
 		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
 		transaction.setEntries(entries);
-		System.err.println(transaction.getEntries().get(0).getDiscountRate());
 		// if it is already set, why you put it again?
 		
 		tickets.put(transactionId, entries);
@@ -1281,8 +1278,6 @@ public class EZShop implements EZShopInterface {
 		}
 		boolean updatedSaleTransaction = db.updatePaymentSaleTransaction(transactionId, "CASH", "PAYED");
 		boolean updatedBalanceOperation = recordBalanceUpdate(salePrice);
-//		System.out.println("CASH: " + cash);
-//		System.out.println("SALE PRICE: " + salePrice);
 		// Only return cash if no problems in db and recorded
 		if (updatedSaleTransaction && updatedBalanceOperation) {
 			change = cash - salePrice;

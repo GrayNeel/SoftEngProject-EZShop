@@ -1242,19 +1242,15 @@ public class EZShopDB {
 	}
 
 	public SaleTransaction getClosedSaleTransactionById(Integer transactionId, List<TicketEntry> p) {
-		System.out.println("ID : " + transactionId);
-		String sql = "SELECT id,discountRate,date,time,price,paymentType,state FROM saleTransactions WHERE state = 'PAYED' OR state = 'CLOSED' AND id=?";
-		
+		String sql = "SELECT id,discountRate,date,time,price,paymentType,state FROM saleTransactions WHERE (state = 'PAYED' OR state = 'CLOSED') AND id=?";
 		SaleTransaction saletransaction = null;
 		ResultSet rs = null;
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			pstmt.setInt(1, transactionId);
 			rs = pstmt.executeQuery();
-
 			saletransaction = new SaleTransactionClass(rs.getInt("id"), rs.getString("date"), rs.getString("time"),
 					rs.getDouble("price"), rs.getString("paymentType"), rs.getDouble("discountRate"), p,
 					rs.getString("state"));
-			System.out.println("PRICE : " + rs.getDouble("price"));
 		} catch (SQLException e) {
 			return null;
 		}
