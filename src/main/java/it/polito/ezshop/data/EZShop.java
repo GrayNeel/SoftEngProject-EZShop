@@ -1133,8 +1133,8 @@ public class EZShop implements EZShopInterface {
 
 		if (amount <= 0)
 			throw new InvalidQuantityException();
-		boolean productValid = ProductTypeClass.validateProductCode(productCode);
-		if (productCode == null || productCode == "" || !productValid)
+//		boolean productValid = ProductTypeClass.validateProductCode(productCode);
+		if (productCode == null || productCode == "" || !ProductTypeClass.validateProductCode(productCode))
 			throw new InvalidProductCodeException();		
 		ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
 		if (returnTransaction == null)
@@ -1258,7 +1258,6 @@ public class EZShop implements EZShopInterface {
 	public double receiveCashPayment(Integer transactionId, double cash)
 			throws InvalidTransactionIdException, InvalidPaymentException, UnauthorizedException {
 		User user = this.loggedUser;
-
 		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
 			throw new UnauthorizedException();
 		}
@@ -1282,7 +1281,8 @@ public class EZShop implements EZShopInterface {
 		}
 		boolean updatedSaleTransaction = db.updatePaymentSaleTransaction(transactionId, "CASH", "PAYED");
 		boolean updatedBalanceOperation = recordBalanceUpdate(salePrice);
-
+//		System.out.println("CASH: " + cash);
+//		System.out.println("SALE PRICE: " + salePrice);
 		// Only return cash if no problems in db and recorded
 		if (updatedSaleTransaction && updatedBalanceOperation) {
 			change = cash - salePrice;
@@ -1303,8 +1303,8 @@ public class EZShop implements EZShopInterface {
 		if (ticketNumber == null || ticketNumber <= 0) {
 			throw new InvalidTransactionIdException();
 		}
-		boolean validCard = CreditCardClass.checkValidCard(creditCard);
-		if (creditCard == "" || creditCard == null | !validCard) {
+//		boolean validCard = CreditCardClass.checkValidCard(creditCard);
+		if (creditCard == null || creditCard == "" || !CreditCardClass.checkValidCard(creditCard)) {
 			throw new InvalidCreditCardException();
 		}
 
@@ -1366,10 +1366,10 @@ public class EZShop implements EZShopInterface {
 		if (returnId == null || returnId <= 0) {
 			throw new InvalidTransactionIdException();
 		}
+		
+//		boolean validCard = CreditCardClass.checkValidCard(creditCard);
 
-		boolean validCard = CreditCardClass.checkValidCard(creditCard);
-
-		if (creditCard == "" || creditCard == null | !validCard) {
+		if (creditCard == null || creditCard == "" || !CreditCardClass.checkValidCard(creditCard)) {
 			throw new InvalidCreditCardException();
 		}
 

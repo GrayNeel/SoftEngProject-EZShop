@@ -82,10 +82,10 @@ public class Testezshop20210528 {
         ezshop = new EZShop();
     }
 
-    @AfterClass
-    public static void clearEzShop(){
-        ezshop.reset();
-    }
+//    @AfterClass
+//    public static void clearEzShop(){
+//        ezshop.reset();
+//    }
 
     private String getErrorMsg(String testName, String msg) {
         return "Error in test " + testName + ": " + msg;
@@ -4692,6 +4692,7 @@ public class Testezshop20210528 {
             ezshop.updatePosition(prodId1,location1);
             ezshop.updateQuantity(prodId1,10*quantity);
             int transactionId = ezshop.startSaleTransaction();
+            System.out.println(transactionId);
             ezshop.addProductToSale(transactionId,barCode,2*quantity);
             ezshop.endSaleTransaction(transactionId);
             SaleTransaction saleTransaction = ezshop.getSaleTransaction(transactionId);
@@ -4701,7 +4702,9 @@ public class Testezshop20210528 {
             ezshop.addProductToSale(transactionId,barCode,quantity);
             ezshop.endSaleTransaction(transactionId);
             saleTransaction = ezshop.getSaleTransaction(transactionId);
-
+            
+            System.out.println(saleTransaction.getPrice());
+            
             Assert.assertEquals(getErrorMsg("testReceiveCashPayment","There should be some change"),cash,ezshop.receiveCashPayment(saleTransaction.getTicketNumber(),cash*2),0.0);
         } catch (InvalidTransactionIdException e) {
             e.printStackTrace();
