@@ -4219,8 +4219,7 @@ public class Testezshop20210528 {
             Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),priceWithoutSaleDiscount,priceTmp,0.0);
             Assert.assertTrue(getErrorMsg("testgetSaleTransaction","Ticket has not the expected entries"),found1 && found2);
             int ticketNumber1 = saleTransaction.getTicketNumber();
-
-            System.out.println("----------------\n\n");
+           
             transactionId = ezshop.startSaleTransaction();
             ezshop.addProductToSale(transactionId,barCode,quantity);
             ezshop.addProductToSale(transactionId,barCode2,quantity);
@@ -4228,7 +4227,7 @@ public class Testezshop20210528 {
             saleTransaction = ezshop.getSaleTransaction(transactionId);
             Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),0.0, saleTransaction.getDiscountRate(),0.0);
             priceWithoutSaleDiscount = quantity*pricePerUnit + quantity*pricePerUnit2;
-            System.out.println(priceWithoutSaleDiscount + "    " + saleTransaction.getPrice());
+            
             Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),priceWithoutSaleDiscount, saleTransaction.getPrice(),0.0);
             Assert.assertEquals(getErrorMsg("testgetSaleTransaction","Return value is different than expected"),2, saleTransaction.getEntries().size());
             found1 = false;
@@ -4704,7 +4703,7 @@ public class Testezshop20210528 {
             
             Assert.assertEquals(getErrorMsg("testReceiveCashPayment","There should be some change"),cash,ezshop.receiveCashPayment(saleTransaction.getTicketNumber(),cash*2),0.0);
         } catch (InvalidTransactionIdException e) {
-            e.printStackTrace();
+  zntStackTrace();
             Assert.fail(getErrorMsg("testReceiveCashPayment", "Transaction id should not be considered invalid"));
         } catch (InvalidProductIdException e) {
             e.printStackTrace();
