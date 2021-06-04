@@ -57,12 +57,14 @@ public class ReturnTest {
     }
     
     @Test
-    public void returnProductTestCase() throws UnauthorizedException,InvalidTransactionIdException,InvalidQuantityException,InvalidProductCodeException, InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidProductIdException, InvalidLocationException{
+    public void returnProductTestCase() throws UnauthorizedException,InvalidTransactionIdException,InvalidQuantityException,InvalidProductCodeException, InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidProductIdException, InvalidLocationException, InvalidRoleException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
+        Integer cashierId = ezShop.createUser("Cashier", "1234567", "Cashier");
+        Integer shopManagerId = ezShop.createUser("shopManager", "1234567", "ShopManager");
     	assertThrows(UnauthorizedException.class, () -> ezShop.returnProduct(1,"232320",5));
     	ezShop.login("shopManager", "1234567");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnProduct(null,"232320",5));
@@ -96,12 +98,14 @@ public class ReturnTest {
     }
     
     @Test
-    public void endReturnTransactionTestCase() throws UnauthorizedException,InvalidTransactionIdException, InvalidUsernameException, InvalidPasswordException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidProductIdException, InvalidLocationException{
+    public void endReturnTransactionTestCase() throws UnauthorizedException,InvalidTransactionIdException, InvalidUsernameException, InvalidPasswordException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidProductIdException, InvalidLocationException, InvalidRoleException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
         db.resetDB("productReturns");
         db.resetDB("productTypes");	
         db.resetDB("productEntries");
+        Integer cashierId = ezShop.createUser("Cashier", "1234567", "Cashier");
+        Integer shopManagerId = ezShop.createUser("shopManager", "1234567", "ShopManager");
     	assertThrows(UnauthorizedException.class, () -> ezShop.endReturnTransaction(1,true));
     	ezShop.login("admin", "strong");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.endReturnTransaction(-1,true));
@@ -124,12 +128,14 @@ public class ReturnTest {
     }
     
     @Test
-    public void deleteReturnTransactionTestCase() throws UnauthorizedException,InvalidTransactionIdException, InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, InvalidProductIdException, InvalidLocationException, InvalidQuantityException{
+    public void deleteReturnTransactionTestCase() throws UnauthorizedException,InvalidTransactionIdException, InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, InvalidProductIdException, InvalidLocationException, InvalidQuantityException, InvalidRoleException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
+        Integer cashierId = ezShop.createUser("Cashier", "1234567", "Cashier");
+        Integer shopManagerId = ezShop.createUser("shopManager", "1234567", "ShopManager");
     	assertThrows(UnauthorizedException.class, () -> ezShop.deleteReturnTransaction(1));
     	ezShop.login("admin", "strong");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.deleteReturnTransaction(-1));
@@ -153,13 +159,15 @@ public class ReturnTest {
     }
     
     @Test
-    public void receiveCashPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException{
+    public void receiveCashPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidRoleException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
     	
+        Integer cashierId = ezShop.createUser("Cashier", "1234567", "Cashier");
+        Integer shopManagerId = ezShop.createUser("shopManager", "1234567", "ShopManager");
     	assertThrows(UnauthorizedException.class, () -> ezShop.receiveCashPayment(2,5.5));
     	ezShop.login("shopManager", "1234567");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.receiveCashPayment(null,5.5));
@@ -185,13 +193,15 @@ public class ReturnTest {
     }
     
     @Test
-    public void receiveCreditCardPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
+    public void receiveCreditCardPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException, InvalidRoleException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
     	
+        Integer cashierId = ezShop.createUser("Cashier", "1234567", "Cashier");
+        Integer shopManagerId = ezShop.createUser("shopManager", "1234567", "ShopManager");
     	assertThrows(UnauthorizedException.class, () -> ezShop.receiveCreditCardPayment(2,"128301928"));
     	ezShop.login("shopManager", "1234567");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.receiveCreditCardPayment(-1,"128301928"));
@@ -219,13 +229,15 @@ public class ReturnTest {
     }
     
     @Test
-    public void returnCashPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
+    public void returnCashPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException, InvalidRoleException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
     	
+        Integer cashierId = ezShop.createUser("Cashier", "1234567", "Cashier");
+        Integer shopManagerId = ezShop.createUser("shopManager", "1234567", "ShopManager");
     	assertThrows(UnauthorizedException.class, () -> ezShop.returnCashPayment(2));
     	ezShop.login("shopManager", "1234567");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnCashPayment(0));
@@ -252,13 +264,15 @@ public class ReturnTest {
     }
     
     @Test
-    public void returnCreditCardPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
+    public void returnCreditCardPaymentTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException, InvalidRoleException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
     	
+        Integer cashierId = ezShop.createUser("Cashier", "1234567", "Cashier");
+        Integer shopManagerId = ezShop.createUser("shopManager", "1234567", "ShopManager");
     	assertThrows(UnauthorizedException.class, () -> ezShop.returnCreditCardPayment(2,"5303098087309156"));
     	ezShop.login("shopManager", "1234567");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.returnCreditCardPayment(0,"5303098087309156"));
@@ -290,12 +304,13 @@ public class ReturnTest {
     }
     
     @Test
-    public void getCreditAndDebitsTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
+    public void getCreditAndDebitsTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException, InvalidRoleException{
     	db.resetDB("saleTransactions");
         db.resetDB("returnTransactions");
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
+        Integer shopManagerId = ezShop.createUser("shopManager", "1234567", "ShopManager");
         LocalDate startDate = LocalDate.parse("2016-08-16");
         LocalDate startDate2 = LocalDate.parse("2022-08-16");
         LocalDate finalDate = LocalDate.parse("2022-10-12");
@@ -311,7 +326,7 @@ public class ReturnTest {
     @Test
     public void computeBalanceTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
     	assertThrows(UnauthorizedException.class, () -> ezShop.computeBalance());
-    	ezShop.login("shopManager", "1234567");
+    	ezShop.login("admin", "strong");
     	
     	assert(ezShop.computeBalance()!=0);
     	
@@ -320,7 +335,7 @@ public class ReturnTest {
     @Test
     public void recordBalanceTestCase() throws UnauthorizedException, InvalidUsernameException, InvalidPasswordException, InvalidProductIdException, InvalidLocationException, InvalidTransactionIdException, InvalidProductCodeException, InvalidQuantityException, InvalidProductDescriptionException, InvalidPricePerUnitException, InvalidPaymentException, InvalidCreditCardException{
     	assertThrows(UnauthorizedException.class, () -> ezShop.recordBalanceUpdate(10.0));
-    	ezShop.login("shopManager", "1234567");
+    	ezShop.login("admin", "strong");
     	
     	assertFalse(ezShop.recordBalanceUpdate(-1000000000));
     	assertTrue(ezShop.recordBalanceUpdate(10.25));
