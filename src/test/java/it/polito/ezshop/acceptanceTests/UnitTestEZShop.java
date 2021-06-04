@@ -371,6 +371,17 @@ public class UnitTestEZShop {
 		assertTrue(db.updateProductType(1741, "ok", "333", 4.18, "good"));
 		db.deleteProductType(1741);
 	}
+	
+	@Test
+	public void getBarCodeByProductTypeIdTestCase() {
+		ProductType pt = new ProductTypeClass(1741, 2, "location", "test", "this is a test", "22345212", 3.22);
+
+		db.addProductType(pt);
+		assertTrue(db.getBarCodeByProductTypeId(1741).equals("22345212"));
+		// assertFalse(db.updateProductType(1741, 3, "333", 4.18, "good"));
+		assertNull(db.getBarCodeByProductTypeId(0));
+		db.deleteProductType(1741);
+	}
 
 	@Test
 	public void getAllProductTypesTestCase() {
@@ -992,12 +1003,11 @@ public class UnitTestEZShop {
 
 		db.resetDB("productEntries");
 		TicketEntry te = new TicketEntryClass(132, "22345212", "test description", 10, 1.50, 170, 0.0);
-
+		productList.add(te);
 		assertEquals(170, db.startSaleTransaction(saleTransaction) + 0);
 		assertTrue(db.createTicketEntry(te, 170));
-		assertTrue(db.updateTransactionState(170, "PAYED"));
-		assertNull(db.getClosedSaleTransactionById(171));
-		assertNotNull(db.getClosedSaleTransactionById(170));
+		assertTrue(db.updateTransactionState(170, "PAYED"));		
+		assertNotNull(db.getClosedSaleTransactionById(170, productList));
 
 	}
 
