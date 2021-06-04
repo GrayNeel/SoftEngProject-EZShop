@@ -199,6 +199,15 @@ public class ReturnTest {
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
+        db.resetDB("creditCards");
+        CreditCardClass cred1 = new CreditCardClass("4485123437008543", 160.0);
+        CreditCardClass cred2 = new CreditCardClass("4485143337109543", 123.5);
+        CreditCardClass cred3 = new CreditCardClass("4485370086510891", 170.0);
+        CreditCardClass cred4 = new CreditCardClass("5303098087309156", 4999934.75);
+        db.recordCreditCard(1, cred1);
+        db.recordCreditCard(2, cred2);
+        db.recordCreditCard(3, cred3);
+        db.recordCreditCard(4, cred4);
     	
         Integer cashierId = ezShop.createUser("Cashier", "1234567", "Cashier");
         Integer shopManagerId = ezShop.createUser("shopManager", "1234567", "ShopManager");
@@ -270,6 +279,15 @@ public class ReturnTest {
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
+        db.resetDB("creditCards");
+        CreditCardClass cred1 = new CreditCardClass("4485123437008543", 160.0);
+        CreditCardClass cred2 = new CreditCardClass("4485143337109543", 123.5);
+        CreditCardClass cred3 = new CreditCardClass("4485370086510891", 170.0);
+        CreditCardClass cred4 = new CreditCardClass("5303098087309156", 4999934.75);
+        db.recordCreditCard(1, cred1);
+        db.recordCreditCard(2, cred2);
+        db.recordCreditCard(3, cred3);
+        db.recordCreditCard(4, cred4);
     	
         Integer cashierId = ezShop.createUser("Cashier", "1234567", "Cashier");
         Integer shopManagerId = ezShop.createUser("shopManager", "1234567", "ShopManager");
