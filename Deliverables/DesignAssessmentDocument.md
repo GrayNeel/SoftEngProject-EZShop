@@ -11,13 +11,14 @@ on April 30, discuss whether the design could be improved>
 <Applying Structure 101 to your project, version to be delivered on june 4, produce the Levelized structure map,
 with all elements explosed, all dependencies, NO tangles; and report it here as a picture>
 ```
+![](DesignAssessment_images/LevelizedStructureMap.png)
 
 # Structural over complexity chart
 ```
 <Applying Structure 101 to your project, version to be delivered on june 4, produce the structural over complexity chart; and report it here as a picture>
 ```
 
-
+![](DesignAssessment_images/StructuralOverComplexityChart.png)
 
 # Size metrics
 
@@ -26,14 +27,13 @@ with all elements explosed, all dependencies, NO tangles; and report it here as 
 ```
 
 
-
 | Metric                                    | Measure |
 | ----------------------------------------- | ------- |
-| Packages                                  |         |
-| Classes (outer)                           |         |
-| Classes (all)                             |         |
-| NI (number of bytecode instructions)      |         |
-| LOC (non comment non blank lines of code) |         |
+| Packages                                  |    6    |
+| Classes (outer)                           |   40    |
+| Classes (all)                             |   40    |
+| NI (number of bytecode instructions)      |   11 K  |
+| LOC (non comment non blank lines of code) |  ~ 5 K  |
 
 
 
@@ -47,7 +47,6 @@ with all elements explosed, all dependencies, NO tangles; and report it here as 
 | ---- | ------- | ---- | ---- | ---- |
 |      |         |      |      |      |
 |      |         |      |      |      |
-
 
 
 # Package level tangles
