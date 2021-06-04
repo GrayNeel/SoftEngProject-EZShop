@@ -3,6 +3,7 @@ package it.polito.ezshop.acceptanceTests;
 import it.polito.ezshop.classes.*;
 import it.polito.ezshop.data.BalanceOperation;
 import it.polito.ezshop.data.EZShopInterface;
+import it.polito.ezshop.data.User;
 import it.polito.ezshop.exceptions.*;
 
 import static org.junit.Assert.assertFalse;
@@ -18,7 +19,7 @@ import org.junit.Test;
 public class OrdersTest {
 	EZShopInterface ezShop = new it.polito.ezshop.data.EZShop();
 	EZShopDB db = new EZShopDB();
-	
+
 	@Test
 	public void issueOrderTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidQuantityException {
 	    /**

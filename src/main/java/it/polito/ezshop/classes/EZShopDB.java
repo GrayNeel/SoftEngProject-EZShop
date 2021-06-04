@@ -47,6 +47,10 @@ public class EZShopDB {
 
 	public EZShopDB() {
 		createConnection();
+	    User user = new UserClass(3, "admin", "strong", "Administrator");
+
+		// Add user to the DB
+	    addUser(user);
 	}
 
 	public boolean resetDB(String table) {
