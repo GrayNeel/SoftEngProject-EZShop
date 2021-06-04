@@ -55,7 +55,8 @@ with all elements explosed, all dependencies, NO tangles; and report it here as 
 (double click on the tangle from the Views->Complexity page)>
 ```
 
-![](DesignAssessment_images/PackageLevelTangles.png)
+![](DesignAssessment_images/PackageLevelTangles2.png) ![](DesignAssessment_images/PackageLevelTangles.png)
+
 
 # Summary analysis
 ```
