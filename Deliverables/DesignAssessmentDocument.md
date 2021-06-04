@@ -63,3 +63,11 @@ with all elements explosed, all dependencies, NO tangles; and report it here as 
 <Discuss here main differences of the current structure of your project vs the design delivered on April 30>
 <Discuss if the current structure shows weaknesses that should be fixed>
 ```
+The main differences between the current structure and the design delivered on the last weeks are based on changes in implementations of classes, methods and the relationship between the interface and the rest of the program. Firstly, there is a difference in the quantity of classes added to the current version that were not considered in the design document, such as `Users`, `Product Entries`, `Credit Cards` and `Ticket Entries`. Nevertheless, there are classes that were considered in the delivered design but are not implemented in the current version, such as `Position` and `Account Book`. Secondly, there are some changes about the implementation of the called `Shop` class described in the design document and the actual version of the project. For example, the current version of this class is implemented as a database with all the methods that are used to keep the data consistent through the whole application, this means that all the Map attributes that are in the previous version of the Design Document are now implemented as relational DB and the `Shop` class became `EZShopDB`. 
+Finally, the weaknesses that should be fixed in the application are related to the dependencies between the `classes` package and the `data` package, which result in a cyclic dependency.
+Some examples of dependencies that create the cycle are:
+```
+EzShopDB -> ProductType
+ProductTypeClass -> ProductType
+CustomerClass -> Customer
+```
