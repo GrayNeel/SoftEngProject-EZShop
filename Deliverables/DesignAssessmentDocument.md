@@ -43,10 +43,9 @@ with all elements explosed, all dependencies, NO tangles; and report it here as 
 <Report here information about code tangles and fat packages>
 ```
 
-| Item | Tangled | Fat  | Size | XS   |
-| ---- | ------- | ---- | ---- | ---- |
-|      |         |      |      |      |
-|      |         |      |      |      |
+| Item                    | Tangled | Fat  | Size  | XS   |
+| ----------------------- | ------- | ---- | ----- | ---- |
+| ezshop.it.polito.ezshop | 9,81%   | 4    | 11061 | 1085 |
 
 
 # Package level tangles
@@ -55,6 +54,8 @@ with all elements explosed, all dependencies, NO tangles; and report it here as 
 <Report screen captures of the package-level tangles by opening the items in the "composition perspective" 
 (double click on the tangle from the Views->Complexity page)>
 ```
+
+![](DesignAssessment_images/PackageLevelTangles.png)
 
 # Summary analysis
 ```
