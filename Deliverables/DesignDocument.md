@@ -126,6 +126,12 @@ class ProductType{
     +updateDiscountRate(string,double)
 }
 
+class Product {
+    +RFID
+}
+
+ProductType - "*" Product
+
 note "Persistent data" as N2
 N2 -down- ProductType
 Shop -- "*" ProductType
