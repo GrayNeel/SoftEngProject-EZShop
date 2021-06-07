@@ -1450,11 +1450,68 @@ public class EZShop implements EZShopInterface {
 	}
 
 	
-
+	/**
+     * This method records each product received, with its RFID. RFIDs are recorded starting from RFIDfrom, in increments of 1
+     * ex recordOrderArrivalRFID(10, "000000001000")  where order 10 ordered 10 quantities of an item, this method records
+     * products with RFID 1000, 1001, 1002, 1003 etc until 1009
+     * The product type affected must have a location registered. The order should be either in the PAYED state (in this
+     * case the state will change to the COMPLETED one and the quantity of product type will be updated)
+     */
     @Override
     public boolean recordOrderArrivalRFID(Integer orderId, String RFIDfrom) throws InvalidOrderIdException, UnauthorizedException, 
 InvalidLocationException, InvalidRFIDException {
-        return false;
+    	if (orderId == null || orderId <= 0)
+			throw new InvalidOrderIdException("Order ID can not be less than 0");
+
+		User user = this.loggedUser;
+
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager"))) {
+			throw new UnauthorizedException();
+		}
+
+		if (RFIDfrom.length() != 10 || Double.parseDouble(RFIDfrom) < 0)
+			throw new InvalidRFIDException();
+		
+		Order order = db.getOrderById(orderId);
+
+		if (order == null || (!order.getStatus().equals("PAYED") && !order.getStatus().equals("COMPLETED")))
+			return false;
+
+		if (order.getStatus().equals("COMPLETED"))
+			return true;
+
+		ProductType prod = db.getProductTypeByBarCode(order.getProductCode());
+
+		if (prod == null) // Non existing product Type anymore, maybe deleted. Cannot update status
+		{
+			return false;
+		}
+
+		if (prod.getLocation().length() == 0)
+			throw new InvalidLocationException("Product type of the ordered product has not an assigned location");
+
+		/* Update quantity in database */
+		if (!db.updateQuantityByProductTypeId(prod.getId(), prod.getQuantity() + order.getQuantity()))
+			return false;
+		
+		/* Record each RFID in the database */
+		 String version = "v1";
+		    String newVersion = "v" + (Integer.parseInt(version.substring(1,version.length()))+1);
+		    System.out.println(newVersion);
+		    
+		for(int i = 0; i<order.getQuantity() ; i++) {
+			if(!db.recordProductRFID(prod.getId(),RFIDfrom))
+				return false;
+			double RFIDparse = Double.parseDouble(RFIDfrom)+1;
+			RFIDfrom = Double.toString(RFIDparse);
+			
+			int RFIDlength = RFIDfrom.length();
+			while(RFIDlength<10) {
+				RFIDfrom = "0" + RFIDfrom;
+			}
+		}
+		
+		return db.recordOrderArrivalById(orderId);
     }
     
 

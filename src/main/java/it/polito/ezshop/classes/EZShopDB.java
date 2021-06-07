@@ -1635,4 +1635,25 @@ public class EZShopDB {
 		return success;		
 	}
 
+	
+	/**
+	 * The following methods are here to handle RFID new change
+	 */
+	public boolean recordProductRFID(Integer prodId, String RFID) {
+		String sql = "INSERT INTO products(RFID, id) VALUES(?,?)";
+
+		if(prodId < 0)
+			return false;
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, RFID);
+			pstmt.setInt(2, prodId);
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			return false;
+		}
+
+		return true;
+	}
 }
