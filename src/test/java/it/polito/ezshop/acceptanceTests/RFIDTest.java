@@ -3,6 +3,8 @@ package it.polito.ezshop.acceptanceTests;
 import it.polito.ezshop.classes.*;
 import it.polito.ezshop.data.BalanceOperation;
 import it.polito.ezshop.data.EZShopInterface;
+import it.polito.ezshop.data.Order;
+import it.polito.ezshop.data.ProductType;
 import it.polito.ezshop.data.User;
 import it.polito.ezshop.exceptions.*;
 
@@ -20,6 +22,65 @@ public class RFIDTest {
 	EZShopInterface ezShop = new it.polito.ezshop.data.EZShop();
 	EZShopDB db = new EZShopDB();
 
+	@Test
+	public void recordProductRFIDTestCase() {
+		
+		try {
+			db.resetDB("products");
+			db.resetDB("orders");
+			
+			assertFalse(db.recordProductRFID(new ProductClass(-5,"0000045632")));
+			assertFalse(db.recordProductRFID(new ProductClass(-5,"-000045632")));
+			assertFalse(db.recordProductRFID(new ProductClass(-5,"00000456323244")));
+			assertTrue(db.recordProductRFID(new ProductClass(1741,"0000045632")));
+			
+			db.resetDB("products");
+			db.resetDB("orders");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void getProductsRFIDbyIdTestCase() {
+		try {
+			db.resetDB("products");
+			db.resetDB("orders");
+			
+			assertTrue(db.recordProductRFID(new ProductClass(1741,"0000045632")));
+			assertTrue(db.recordProductRFID(new ProductClass(1741,"0000045633")));
+			assert(db.getProductsRFIDbyId(23432).size() == 0);
+			assert(db.getProductsRFIDbyId(1741).size() == 2);
+			
+			db.resetDB("products");
+			db.resetDB("orders");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void getAllProductsRFIDTestCase() {
+		try {
+			db.resetDB("products");
+			db.resetDB("orders");
+			
+			assertTrue(db.recordProductRFID(new ProductClass(1741,"0000045632")));
+			assertTrue(db.recordProductRFID(new ProductClass(1741,"0000045633")));
+			assertTrue(db.recordProductRFID(new ProductClass(1744,"0000055633")));
+			assertTrue(db.recordProductRFID(new ProductClass(1747,"0000065633")));
+			assert(db.getAllProductsRFID().size() == 4);
+			
+			db.resetDB("products");
+			db.resetDB("orders");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Test
 	public void recordOrderArrivalRFIDTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidQuantityException, InvalidProductIdException, InvalidLocationException, InvalidOrderIdException, InvalidRFIDException {
 	    //public boolean recordOrderArrival(Integer orderId) throws InvalidOrderIdException, UnauthorizedException, InvalidLocationException;
@@ -60,9 +121,17 @@ public class RFIDTest {
 	    assertThrows(InvalidRFIDException.class, () -> ezShop.recordOrderArrivalRFID(orderId, "022234589"));  // len = 9
 	    assertThrows(InvalidRFIDException.class, () -> ezShop.recordOrderArrivalRFID(orderId, "02223458922")); // len = 11
 	    assertThrows(InvalidRFIDException.class, () -> ezShop.recordOrderArrivalRFID(orderId, "-222345892")); // negative
+
 	    assertTrue(ezShop.recordOrderArrivalRFID(orderId, RFID));
 	    
+	    assert(db.getProductsRFIDbyId(productId).size() == 22);
+	    
 	    db.resetDB("balanceOperations");
+		db.resetDB("productTypes");
+		db.resetDB("orders");
+		db.resetDB("balanceOperations");
+		db.resetDB("products");
+		
 	    ezShop.logout();
 	   
 	}

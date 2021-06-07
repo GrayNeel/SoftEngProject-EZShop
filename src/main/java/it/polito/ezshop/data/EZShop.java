@@ -1494,20 +1494,19 @@ InvalidLocationException, InvalidRFIDException {
 		if (!db.updateQuantityByProductTypeId(prod.getId(), prod.getQuantity() + order.getQuantity()))
 			return false;
 		
-		/* Record each RFID in the database */
-		 String version = "v1";
-		    String newVersion = "v" + (Integer.parseInt(version.substring(1,version.length()))+1);
-		    System.out.println(newVersion);
-		    
+		/* Record each RFID in the database */   
 		for(int i = 0; i<order.getQuantity() ; i++) {
-			if(!db.recordProductRFID(prod.getId(),RFIDfrom))
+			ProductClass toAdd = new ProductClass(prod.getId(), RFIDfrom);
+			if(!db.recordProductRFID(toAdd))
 				return false;
+			
 			double RFIDparse = Double.parseDouble(RFIDfrom)+1;
-			RFIDfrom = Double.toString(RFIDparse);
+			RFIDfrom = String.format("%.0f", RFIDparse);
 			
 			int RFIDlength = RFIDfrom.length();
 			while(RFIDlength<10) {
 				RFIDfrom = "0" + RFIDfrom;
+				RFIDlength++;
 			}
 		}
 		

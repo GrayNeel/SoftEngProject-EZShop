@@ -1639,15 +1639,15 @@ public class EZShopDB {
 	/**
 	 * The following methods are here to handle RFID new change
 	 */
-	public boolean recordProductRFID(Integer prodId, String RFID) {
+	public boolean recordProductRFID(ProductClass prod) {
 		String sql = "INSERT INTO products(RFID, id) VALUES(?,?)";
 
-		if(prodId < 0)
+		if(prod.getId() < 0 || prod.getRFID().length() != 10 || Double.parseDouble(prod.getRFID()) < 0)
 			return false;
 		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			pstmt.setString(1, RFID);
-			pstmt.setInt(2, prodId);
+			pstmt.setString(1, prod.getRFID());
+			pstmt.setInt(2, prod.getId());
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -1655,5 +1655,48 @@ public class EZShopDB {
 		}
 
 		return true;
+	}
+	
+	public List<ProductClass> getAllProductsRFID() {
+		String sql = "SELECT RFID, id FROM products";
+		List<ProductClass> prodlist = new ArrayList<>();
+
+		try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+			while (rs.next()) {
+				Integer id = rs.getInt("id");
+				String RFID = rs.getString("RFID");
+
+				ProductClass prod = new ProductClass(id, RFID);
+				prodlist.add(prod);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return prodlist;
+	}
+	
+	public List<ProductClass> getProductsRFIDbyId(Integer id) {
+		String sql = "SELECT RFID, id FROM products WHERE id=?";
+		List<ProductClass> prodlist = new ArrayList<>();
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				Integer pid = rs.getInt("id");
+				String RFID = rs.getString("RFID");
+
+				ProductClass prod = new ProductClass(pid, RFID);
+				prodlist.add(prod);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return prodlist;
 	}
 }
