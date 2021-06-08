@@ -1554,8 +1554,7 @@ InvalidLocationException, InvalidRFIDException {
 		
 		if(prod==null)
 			return false;
-
-				
+	
 		List<TicketEntry> entries = tickets.get(transactionId);
 		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
 		if (transaction == null || entries == null) {

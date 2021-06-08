@@ -1701,7 +1701,7 @@ public class EZShopDB {
 	}
 
 	public ProductType getProductByRFID(String RFID) {
-		String sql = "SELECT productTypes.barCode AS barCode FROM productTypes JOIN productEntries ON productTypes.id=products.id WHERE products.RFID = ?";
+		String sql = "SELECT productTypes.barCode AS barCode FROM productTypes JOIN products ON productTypes.id=products.id WHERE products.RFID = ?";
 		
 		String prodBarCode = "";
 		
