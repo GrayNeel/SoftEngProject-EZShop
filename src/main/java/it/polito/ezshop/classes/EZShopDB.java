@@ -1699,4 +1699,21 @@ public class EZShopDB {
 		
 		return prodlist;
 	}
+
+	public ProductType getProductByRFID(String RFID) {
+		String sql = "SELECT productTypes.barCode AS barCode FROM productTypes JOIN productEntries ON productTypes.id=products.id WHERE products.RFID = ?";
+		
+		String prodBarCode = "";
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {			
+			pstmt.setString(1, RFID);
+			ResultSet rs = pstmt.executeQuery();
+			prodBarCode = rs.getString("barCode");
+		} catch (SQLException e) {
+			return null;
+		}
+			
+
+		return getProductTypeByBarCode(prodBarCode);
+	}
 }

@@ -9,6 +9,7 @@ import it.polito.ezshop.exceptions.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -21,7 +22,7 @@ public class EZShop implements EZShopInterface {
 	// SaleTransactionClass transaction = null;
 	Map<Integer, List<TicketEntry>> tickets = new HashMap<>();
 	List<ProductReturnClass> returns = new ArrayList<>();
-
+	
 	@Override
 	public void reset() {
 		// reset all the application (delete entries in DB and reset local variables)
@@ -1516,14 +1517,157 @@ InvalidLocationException, InvalidRFIDException {
 
     @Override
     public boolean addProductToSaleRFID(Integer transactionId, String RFID) throws InvalidTransactionIdException, InvalidRFIDException, InvalidQuantityException, UnauthorizedException{
-        return false;
+    	/**
+         * This method adds a product to a sale transaction receiving  its RFID, decreasing the temporary amount of product available on the
+         * shelves for other customers.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param transactionId the id of the Sale transaction
+         * @param RFID the RFID of the product to be added
+         * @return  true if the operation is successful
+         *          false   if the RFID does not exist,
+         *                  if the transaction id does not identify a started and open transaction.
+         *
+         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
+         * @throws InvalidRFIDException if the RFID code is empty, null or invalid
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	
+    	User user = this.loggedUser;
+
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+			throw new UnauthorizedException();
+		}
+
+		if (transactionId == null || transactionId <= 0) {
+			throw new InvalidTransactionIdException();
+		}
+
+		if (RFID == null || RFID == "") {
+			throw new InvalidRFIDException();
+		}
+		
+		if (RFID.length() != 10 || Double.parseDouble(RFID) < 0)
+			throw new InvalidRFIDException();
+
+		ProductType prod = db.getProductByRFID(RFID);	
+		
+		if(prod==null)
+			return false;
+
+				
+		List<TicketEntry> entries = tickets.get(transactionId);
+		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
+		if (transaction == null || entries == null) {
+			return false;
+		}
+
+		// Why are you scanning the TicketEntry if the product has to be added?
+		boolean flag = false;
+		for (TicketEntry entry : entries) { // se c'è già aggiungi
+			if (entry.getBarCode().equals(prod.getBarCode())) {
+				flag = true;
+				entry.setAmount(entry.getAmount() + 1);
+				db.updateQuantityByBarCode(prod.getBarCode(), prod.getQuantity() - 1);
+			}
+		}
+		if (flag == false) { // altrimenti crea nuova ticketEntry
+			db.updateQuantityByBarCode(prod.getBarCode(), prod.getQuantity() - 1);
+			TicketEntryClass entry = new TicketEntryClass(0, prod.getBarCode(), prod.getProductDescription(), 1,
+					prod.getPricePerUnit(), transactionId, 0.0);
+
+			entries.add(entry);
+			transaction.setEntries(entries);
+
+			flag = true;
+		}
+
+		tickets.put(transactionId, entries);
+
+		return flag;
+		
+    	
+    	
     }
     
     
 
     @Override
     public boolean deleteProductFromSaleRFID(Integer transactionId, String RFID) throws InvalidTransactionIdException, InvalidRFIDException, InvalidQuantityException, UnauthorizedException{
-        return false;
+    	 /**
+         * This method deletes a product from a sale transaction , receiving its RFID, increasing the temporary amount of product available on the
+         * shelves for other customers.
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param transactionId the id of the Sale transaction
+         * @param RFID the RFID of the product to be deleted
+         *
+         * @return  true if the operation is successful
+         *          false   if the product code does not exist,
+         *                  if the transaction id does not identify a started and open transaction.
+         *
+         * @throws InvalidTransactionIdException if the transaction id less than or equal to 0 or if it is null
+         * @throws InvalidRFIDException if the RFID is empty, null or invalid
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	
+    	User user = this.loggedUser;
+
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager") && !user.getRole().equals("Cashier"))) {
+			throw new UnauthorizedException();
+		}
+
+		if (transactionId == null || transactionId <= 0) {
+			throw new InvalidTransactionIdException();
+		}
+
+		if (RFID == null || RFID == "") {
+			throw new InvalidRFIDException();
+		}
+		
+		if (RFID.length() != 10 || Double.parseDouble(RFID) < 0)
+			throw new InvalidRFIDException();
+
+		ProductType prod = db.getProductByRFID(RFID);		
+		
+		if (prod == null)  
+			return false; 
+		 
+
+		List<TicketEntry> entries = tickets.get(transactionId);
+		SaleTransactionClass transaction = db.getSaleTransactionById(transactionId);
+		if (transaction == null || entries == null) {
+			return false;
+		}
+
+		if (transaction.getState().equals("PAYED") || transaction.getState().equals("CLOSED")) {
+			return false;
+		}
+		Integer curramount = 0;
+		TicketEntry entryToDelete = null;
+		boolean flag = false;
+		for (TicketEntry entry : entries) {
+			if (entry.getBarCode().equals(prod.getBarCode())) {
+				curramount = entry.getAmount();
+				if (1 > curramount) {
+					return false;
+				}
+				entry.setAmount(curramount - 1);
+				entryToDelete = entry;
+				flag = db.updateQuantityByBarCode(prod.getBarCode(), prod.getQuantity() + 1);
+			}
+		}
+
+		
+		if (curramount - 1 == 0 && flag == true) {
+			entries.remove(entryToDelete);
+			//sarebbe da togliere anche dal db?
+		}
+		tickets.put(transactionId, entries);
+
+		return flag;			
+		
+		
     }
 
     
@@ -1531,7 +1675,63 @@ InvalidLocationException, InvalidRFIDException {
     @Override
     public boolean returnProductRFID(Integer returnId, String RFID) throws InvalidTransactionIdException, InvalidRFIDException, UnauthorizedException 
     {
-        return false;
+    	/**
+         * This method adds a product to the return transaction, starting from its RFID
+         * This method DOES NOT update the product quantity
+         * It can be invoked only after a user with role "Administrator", "ShopManager" or "Cashier" is logged in.
+         *
+         * @param returnId the id of the return transaction
+         * @param RFID the RFID of the product to be returned
+         *
+         * @return  true if the operation is successful
+         *          false   if the the product to be returned does not exists,
+         *                  if it was not in the transaction,
+         *                  if the transaction does not exist
+         *
+         * @throws InvalidTransactionIdException if the return id is less ther or equal to 0 or if it is null
+         * @throws InvalidRFIDException if the RFID is empty, null or invalid
+         * @throws UnauthorizedException if there is no logged user or if it has not the rights to perform the operation
+         */
+    	
+    	User user = this.loggedUser;
+
+		if (user == null || (!user.getRole().equals("Administrator") && !user.getRole().equals("ShopManager")
+				&& !user.getRole().equals("Cashier"))) {
+			throw new UnauthorizedException();
+		}
+
+		if (returnId == null || returnId <= 0)
+			throw new InvalidTransactionIdException();
+
+		if (RFID == null || RFID == "") {
+			throw new InvalidRFIDException();
+		}
+		
+		if (RFID.length() != 10 || Double.parseDouble(RFID) < 0)
+			throw new InvalidRFIDException();
+
+		
+		ReturnTransactionClass returnTransaction = db.getReturnTransactionById(returnId);
+		if (returnTransaction == null)
+			return false;
+		
+		ProductType prod = db.getProductByRFID(RFID);	
+		
+		boolean existProduct = db.checkExistingProductType(prod.getBarCode());
+		boolean existProductInSale = db.checkProductInSaleTransaction(returnTransaction.getTransactionId(),
+				prod.getBarCode());
+
+		int entryAmount = db.getAmountonEntry(returnTransaction.getTransactionId(), prod.getBarCode());
+		// The amount of units of product to be returned should not exceed the amount
+		// originally sold.
+		// if it was not in the transaction
+		if (entryAmount < 1 || !existProductInSale || !existProduct)
+			return false;
+		double returnValue = db.getPricePerUnit(prod.getBarCode());
+		ProductReturnClass tempReturn = new ProductReturnClass(0, returnId, prod.getBarCode(), 1, returnValue);
+		returns.add(tempReturn);
+
+		return true;       
     }
 
 
