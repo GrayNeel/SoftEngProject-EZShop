@@ -29,10 +29,10 @@ public class RFIDTest {
 			db.resetDB("products");
 			db.resetDB("orders");
 			
-			assertFalse(db.recordProductRFID(new ProductClass(-5,"0000045632")));
-			assertFalse(db.recordProductRFID(new ProductClass(-5,"-000045632")));
-			assertFalse(db.recordProductRFID(new ProductClass(-5,"00000456323244")));
-			assertTrue(db.recordProductRFID(new ProductClass(1741,"0000045632")));
+			assertFalse(db.recordProductRFID(new ProductClass(-5,"000004563222")));
+			assertFalse(db.recordProductRFID(new ProductClass(-5,"-00004563222")));
+			assertFalse(db.recordProductRFID(new ProductClass(-5,"0000045632324433")));
+			assertTrue(db.recordProductRFID(new ProductClass(1741,"000004563222")));
 			
 			db.resetDB("products");
 			db.resetDB("orders");
@@ -48,8 +48,8 @@ public class RFIDTest {
 			db.resetDB("products");
 			db.resetDB("orders");
 			
-			assertTrue(db.recordProductRFID(new ProductClass(1741,"0000045632")));
-			assertTrue(db.recordProductRFID(new ProductClass(1741,"0000045633")));
+			assertTrue(db.recordProductRFID(new ProductClass(1741,"000004563222")));
+			assertTrue(db.recordProductRFID(new ProductClass(1741,"000004563333")));
 			assert(db.getProductsRFIDbyId(23432).size() == 0);
 			assert(db.getProductsRFIDbyId(1741).size() == 2);
 			
@@ -67,10 +67,10 @@ public class RFIDTest {
 			db.resetDB("products");
 			db.resetDB("orders");
 			
-			assertTrue(db.recordProductRFID(new ProductClass(1741,"0000045632")));
-			assertTrue(db.recordProductRFID(new ProductClass(1741,"0000045633")));
-			assertTrue(db.recordProductRFID(new ProductClass(1744,"0000055633")));
-			assertTrue(db.recordProductRFID(new ProductClass(1747,"0000065633")));
+			assertTrue(db.recordProductRFID(new ProductClass(1741,"000004563222")));
+			assertTrue(db.recordProductRFID(new ProductClass(1741,"000004563333")));
+			assertTrue(db.recordProductRFID(new ProductClass(1744,"000005563333")));
+			assertTrue(db.recordProductRFID(new ProductClass(1747,"000006563333")));
 			assert(db.getAllProductsRFID().size() == 4);
 			
 			db.resetDB("products");
@@ -99,7 +99,7 @@ public class RFIDTest {
 		Integer orderIssue = ezShop.issueOrder("737052355054", 13, 2.30);
 	    ezShop.logout();
 	    
-	    String RFID = "0000002345";
+	    String RFID = "000000234555";
 	    
 	    assertThrows(UnauthorizedException.class, () -> ezShop.recordOrderArrivalRFID(orderId, RFID));
 	    
@@ -118,9 +118,9 @@ public class RFIDTest {
 	    assertFalse(ezShop.recordOrderArrivalRFID(orderIssue, RFID));
 	    
 	    /* RFID Checks */
-	    assertThrows(InvalidRFIDException.class, () -> ezShop.recordOrderArrivalRFID(orderId, "022234589"));  // len = 9
-	    assertThrows(InvalidRFIDException.class, () -> ezShop.recordOrderArrivalRFID(orderId, "02223458922")); // len = 11
-	    assertThrows(InvalidRFIDException.class, () -> ezShop.recordOrderArrivalRFID(orderId, "-222345892")); // negative
+	    assertThrows(InvalidRFIDException.class, () -> ezShop.recordOrderArrivalRFID(orderId, "02223458922"));  // len = 11
+	    assertThrows(InvalidRFIDException.class, () -> ezShop.recordOrderArrivalRFID(orderId, "0222345892222")); // len = 13
+	    assertThrows(InvalidRFIDException.class, () -> ezShop.recordOrderArrivalRFID(orderId, "-22234589233")); // negative
 
 	    assertTrue(ezShop.recordOrderArrivalRFID(orderId, RFID));
 	    
@@ -149,7 +149,7 @@ public class RFIDTest {
 		
 		Integer productId = ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 		ezShop.updatePosition(productId, "1-1-1");
-	    String RFID = "0000002345";
+	    String RFID = "000000234555";
 	    Integer transactionId = ezShop.startSaleTransaction();
 	    Integer closedTransaction = ezShop.startSaleTransaction();
 	    assertTrue(ezShop.endSaleTransaction(closedTransaction));
@@ -174,7 +174,7 @@ public class RFIDTest {
 	    assertThrows(InvalidTransactionIdException.class, () -> ezShop.addProductToSaleRFID(-1, RFID));
 	    assertThrows(InvalidTransactionIdException.class, () -> ezShop.addProductToSaleRFID(0, RFID));
 	    
-	    assertFalse(ezShop.addProductToSaleRFID(transactionId, "0000002346"));
+	    assertFalse(ezShop.addProductToSaleRFID(transactionId, "000000234666"));
 	    assertFalse(ezShop.addProductToSaleRFID(15, RFID));
 	    assertTrue(ezShop.addProductToSaleRFID(transactionId, RFID));
 	    assertTrue(ezShop.addProductToSaleRFID(transactionId, RFID));	    
@@ -204,7 +204,7 @@ public class RFIDTest {
 		
 		Integer productId = ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
 		ezShop.updatePosition(productId, "1-1-1");
-	    String RFID = "0000002345";
+	    String RFID = "000000234555";
 	    Integer transactionId = ezShop.startSaleTransaction();
 	    Integer closedTransaction = ezShop.startSaleTransaction();   
 	    
@@ -226,7 +226,7 @@ public class RFIDTest {
 	    assertThrows(InvalidRFIDException.class, () -> ezShop.deleteProductFromSaleRFID(transactionId, "022234589"));
 	    assertThrows(InvalidRFIDException.class, () -> ezShop.deleteProductFromSaleRFID(transactionId, "-022234589"));
 	    
-	    assertFalse(ezShop.deleteProductFromSaleRFID(transactionId, "0000002346"));
+	    assertFalse(ezShop.deleteProductFromSaleRFID(transactionId, "000000234666"));
 	    assertFalse(ezShop.deleteProductFromSaleRFID(15, RFID));
 	    assertTrue(ezShop.deleteProductFromSaleRFID(transactionId, RFID));
 	    assertFalse(ezShop.deleteProductFromSaleRFID(transactionId, RFID));
@@ -259,8 +259,8 @@ public class RFIDTest {
 		Integer productId2 = ezShop.createProductType("descriptionTest2", "978020137962",2.50, "super product");
 		ezShop.updatePosition(productId, "1-1-1");
 		ezShop.updatePosition(productId2, "1-1-2");
-	    String RFID = "0000002345";
-	    String RFID2 = "0000002349";
+	    String RFID = "000000234555";
+	    String RFID2 = "000000234999";
 	    Integer transactionId = ezShop.startSaleTransaction();
 	    Integer closedTransaction = ezShop.startSaleTransaction();   
 	    

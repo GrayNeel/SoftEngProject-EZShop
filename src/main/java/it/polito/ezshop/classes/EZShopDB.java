@@ -1642,7 +1642,7 @@ public class EZShopDB {
 	public boolean recordProductRFID(ProductClass prod) {
 		String sql = "INSERT INTO products(RFID, id) VALUES(?,?)";
 
-		if(prod.getId() < 0 || prod.getRFID().length() != 10 || Double.parseDouble(prod.getRFID()) < 0)
+		if(prod.getId() < 0 || prod.getRFID().length() != 12 || Double.parseDouble(prod.getRFID()) < 0)
 			return false;
 		
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {

@@ -1470,7 +1470,7 @@ InvalidLocationException, InvalidRFIDException {
 			throw new UnauthorizedException();
 		}
 
-		if (RFIDfrom.length() != 10 || Double.parseDouble(RFIDfrom) < 0)
+		if (RFIDfrom.length() != 12 || Double.parseDouble(RFIDfrom) < 0)
 			throw new InvalidRFIDException();
 		
 		Order order = db.getOrderById(orderId);
@@ -1505,7 +1505,7 @@ InvalidLocationException, InvalidRFIDException {
 			RFIDfrom = String.format("%.0f", RFIDparse);
 			
 			int RFIDlength = RFIDfrom.length();
-			while(RFIDlength<10) {
+			while(RFIDlength<12) {
 				RFIDfrom = "0" + RFIDfrom;
 				RFIDlength++;
 			}
@@ -1547,7 +1547,7 @@ InvalidLocationException, InvalidRFIDException {
 			throw new InvalidRFIDException();
 		}
 		
-		if (RFID.length() != 10 || Double.parseDouble(RFID) < 0)
+		if (RFID.length() != 12 || Double.parseDouble(RFID) < 0)
 			throw new InvalidRFIDException();
 
 		ProductType prod = db.getProductByRFID(RFID);	
@@ -1624,7 +1624,7 @@ InvalidLocationException, InvalidRFIDException {
 			throw new InvalidRFIDException();
 		}
 		
-		if (RFID.length() != 10 || Double.parseDouble(RFID) < 0)
+		if (RFID.length() != 12 || Double.parseDouble(RFID) < 0)
 			throw new InvalidRFIDException();
 
 		ProductType prod = db.getProductByRFID(RFID);		
@@ -1705,7 +1705,7 @@ InvalidLocationException, InvalidRFIDException {
 			throw new InvalidRFIDException();
 		}
 		
-		if (RFID.length() != 10 || Double.parseDouble(RFID) < 0)
+		if (RFID.length() != 12 || Double.parseDouble(RFID) < 0)
 			throw new InvalidRFIDException();
 
 		
