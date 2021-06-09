@@ -2,9 +2,15 @@
 
 Authors: Group 38
 
-Date: 12/05/2021
+Date: 12/06/2021
 
 Version: 02
+
+
+| Version | Changes | 
+| ----------------- |:-----------|
+| 01 | Added Black Box Unit Tests and White Box Unit Tests.  |
+| 02 | Updated Black Box Unit Tests and White Box Unit Tests due to new methods in EzShopDB, according to request of change associated with the new class Product. |
 
 # Notes
 
@@ -2184,6 +2190,95 @@ The credit cards for the application testing were pre-set in the database file f
 | Yes                         | Valid           | T1() -> true                 | updateBalanceTestCase() |
 | No                          | Invalid         | T2() -> false                | ''                      |
 
+### **Class *EZShopDB* - method *recordProductRFID***
+
+**Criteria for method \*name\*:** 
+
+- Product object is valid and its ID non negative.
+- Product RFID has lenght of 12.
+- Product RFID is non negative.
+
+**Predicates for method *name*:**
+
+| Criteria                        | Predicate |
+|---------------------------------|-----------|
+| Product object is valid and its ID non negative.        | Yes       |
+|                                 | No        |
+| Product RFID has lenght of 12. | Yes       |
+|                                 | No        |
+| Product RFID is non negative. | Yes       |
+|                                 | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+|----------|-----------------|
+|          |                 |
+
+**Combination of predicates**:
+
+
+| Product object is valid and its ID non negative | Product RFID has lenght of 12 | Product RFID is non negative | Valid / Invalid | Description of the test case  | JUnit test case            |
+|-------------------------|---------------------------------|-----------------|-------------|-------------------------------|----------------------------|
+| Yes                     | Yes                             | Yes | Valid           | T1(validProductObject) -> true         | recordProductRFIDTestCase() |
+| No                      | Yes                               | Yes | Invalid         | T2(invalidProductObject) -> false         | ''                         |
+| No                     | Yes                             | No | Invalid           | T3(productWithNegativeRFID) -> false  | recordProductRFIDTestCase() |
+| No                     | No                              | Yes | Invalid         | T4(productWithRFIDlongerThan12) -> false | ''                         |
+
+### **Class *EZShopDB* - method *getProductsRFIDbyId***
+
+**Criteria for method *name*:**
+
+ - The given Product ID is in database
+
+**Predicates for method *name*:**
+
+| Criteria                    | Predicate |
+|-----------------------------|-----------|
+| The given Product ID is in database | Yes       |
+|                             | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+|----------|-----------------|
+|          |                 |
+
+**Combination of predicates**:
+
+
+| The given Product ID is in database | Valid / Invalid | Description of the test case             | JUnit test case       |
+|-----------------------------|-----------------|------------------------------------------|-----------------------|
+| Yes                         | Valid           | T1(Existing ID in database) -> true      | getProductsRFIDbyIdTestCase() |
+| No                          | Invalid         | T2(Non-existing ID in database) -> false | ''                    |
+
+ ### **Class *EZShopDB* - method *getAllProductsRFID***
+
+**Criteria for method *name*:**
+
+ - There are Products with RFID in the database
+
+**Predicates for method *name*:**
+
+| Criteria                        | Predicate |
+|---------------------------------|-----------|
+| There are Products with RFID in the database | Yes       |
+|                                 | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+|----------|-----------------|
+|          |                 |
+
+**Combination of predicates**:
+
+
+| There are Products with RFID in the database | Valid / Invalid | Description of the test case | JUnit test case       |
+|---------------------------------|-----------------|------------------------------|-----------------------|
+| Yes                             | Valid           | T1() -> true                 | getAllProductsRFID() |
+| No                              | Invalid         | T2() -> false                | ''                    |
+
 # White Box Unit Tests
 
 ### Test cases definition
@@ -2205,6 +2300,7 @@ The credit cards for the application testing were pre-set in the database file f
 | TicketEntry       | getterAndSetterTicketEntryTestCase()       |
 | SaleTransaction   | getterAndSetterSaleTransactionTestCase()   |
 | CreditCard        | getterAndSetterCreditCardTestCase()        |
+| Product        | getterAndSetterProductTestCase()        |
 
 ### Code coverage report
 ![](Coverage_images/coverage.png)

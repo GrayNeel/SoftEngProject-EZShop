@@ -2,9 +2,15 @@
 
 Authors: Group 38
 
-Date: 26/05/2021
+Date: 09/06/2021
 
-Version: 01
+Version: 02
+
+| Version | Changes | 
+| ----------------- |:-----------|
+| 01 | Added dependency graph, integration approach, tests and coverage.  |
+| 02 | Updated dependency graph, integration approach, tests and coverage due to new RFID associated with new class Product. |
+
 
 # Contents
 
@@ -37,6 +43,7 @@ digraph dependencyGraph {
  API -> ProductReturnClass;
  API -> BalanceOperationClass;
  API -> TicketEntryClass;
+ API -> ProductClass ;
 
  EZShopDB -> ReturnTransactionClass;
  EZShopDB -> SaleTransactionClass;
@@ -48,6 +55,7 @@ digraph dependencyGraph {
  EZShopDB -> ProductReturnClass;
  EZShopDB -> BalanceOperationClass;
  EZShopDB -> TicketEntryClass;
+ EZShopDB -> ProductClass;
 
  ReturnTransactionClass -> ReturnTransaction;
  SaleTransactionClass -> SaleTransaction;
@@ -58,6 +66,7 @@ digraph dependencyGraph {
  CustomerClass -> Customer;
  BalanceOperationClass -> BalanceOperation;
  TicketEntryClass -> TicketEntry;
+ ProductClass -> Product;
  
 }
 @enduml
@@ -88,6 +97,7 @@ The integration approach used is **Bottom Up**.
 | ProductReturnClass     | getterAndSetterProductReturnTestCase()     |
 | BalanceOperationClass  | getterAndSetterBalanceOperationTestCase()  |
 | TicketEntryClass       | getterAndSetterticketEntryTestCase()       |
+| ProductClass           | getterAndSetterProductTestCase()       |
 
 
 ## Step 2 - DB Test (+ Leaf classes)
@@ -106,6 +116,7 @@ The integration approach used is **Bottom Up**.
 | EZShop, ReturnTransaction | All the methods in ReturnTest.java           |
 | EZShop, SaleTransaction   | All the methods in SaleTransactionsTest.java |
 | EZShop, Reset Method      | ResetTest.java                               |
+| EZShop, Product           | All the methods in RFIDTest.java                                 |
 
 
 
@@ -122,28 +133,28 @@ The integration approach used is **Bottom Up**.
 | 2.3         | FR1.5, FR1.4, FR1.3                                            | updateUserRightsTestCase()                                                                                                                                                     |
 | 3.1         | FR4.3                                                          | issueOrderTestCase()                                                                                                                                                           |
 | 3.2         | FR4.4                                                          | payOrderForTestCase()                                                                                                                                                          |
-| 3.3         | FR4.6, FR4.1                                                   | recordOrderArrivalTestCase()                                                                                                                                                   |
+| 3.3         | FR4.6, FR4.1                                                   | recordOrderArrivalTestCase(), recordOrderArrivalRFIDTestCase()                                                                                                                                                   |
 | 4.1         | FR5.1                                                          | defineCustomerTestCase()                                                                                                                                                       |
 | 4.2         | FR5.5, FR5.6                                                   | attachCardToCustomerTestCase()                                                                                                                                                 |
 | 4.3         | FR5.1                                                          | modifyCustomerTestCase()                                                                                                                                                       |
 | 4.4         | FR5.1                                                          | deleteCustomerCardTestCase add                                                                                                                                                 |
 | 5.1         | FR1.4, FR1.5                                                   | loginTestCase()                                                                                                                                                                |
 | 5.2         | FR1.5                                                          | logoutTestCase()                                                                                                                                                               |
-| 6.1         | FR4.1, FR6.1, FR6.2, FR6.7,   FR6.8, FR6.10, FR7, FR8.2        | startSaleTransactionTestCase, addProductToSaleTestCase, receiveCreditCardPaymentTestCase, endSaleTransactionTestCase, receiveCashPaymentTestCase()                             |
-| 6.2         | FR4.1, FR6.1, FR6.2, FR6.5, FR6.7, FR6.8, FR6.10, FR7, FR8.2   | startSaleTransactionTestCase, addProductToSaleTestCase, applyDiscountRateToProductTestCase, receiveCashPaymentTestCase, endSaleTransactionTestCase()                           |
-| 6.3         | FR4.1, FR6.1, FR6.2, FR6.4, FR6.7, FR6.8, FR6.10, FR7, FR8.2   | startSaleTransactionTestCase, addProductToSaleTestCase, applyDiscountRateToSaleTestCase, receiveCreditCardPaymentTestCase, endSaleTransactionTestCase()                        |
-| 6.4         | FR4.1, FR6.1, FR6.2, FR6.7, FR6.8, FR6.10, FR7.2, FR5.7, FR8.2 | startSaleTransactionTestCase, addProductToSaleTestCase, computePointsForSaleTestCase, modifyPointsOnCardTestCase, receiveCreditCardPaymentTestCase, endSaleTransactionTestCase |
-| 6.5         | FR4.1, FR6.1, FR6.2, FR6.7, FR6.8, FR6.10, FR6.11, FR7         | startSaleTransactionTestCase, addProductToSaleTestCase,  endSaleTransactionTestCase, deleteSaleTransactionTestCase()                                                           |
-| 6.6         | FR4.1, FR6.1, FR6.7,  FR6.10,  FR7.1, FR8.2                    | startSaleTransactionTestCase, addProductToSaleTestCase,  endSaleTransactionTestCase, receiveCashPaymentTestCase()                                                              |
+| 6.1         | FR4.1, FR6.1, FR6.2, FR6.7,   FR6.8, FR6.10, FR7, FR8.2        | startSaleTransactionTestCase(), ~~addProductToSaleTestCase()~~, addProductToSaleRFIDTestCase(), receiveCreditCardPaymentTestCase(), endSaleTransactionTestCase(), receiveCashPaymentTestCase()                             |
+| 6.2         | FR4.1, FR6.1, FR6.2, FR6.5, FR6.7, FR6.8, FR6.10, FR7, FR8.2   | startSaleTransactionTestCase(), ~~addProductToSaleTestCase()~~, addProductToSaleRFIDTestCase(), applyDiscountRateToProductTestCase(), receiveCashPaymentTestCase(), endSaleTransactionTestCase()                           |
+| 6.3         | FR4.1, FR6.1, FR6.2, FR6.4, FR6.7, FR6.8, FR6.10, FR7, FR8.2   | startSaleTransactionTestCase(), ~~addProductToSaleTestCase()~~, addProductToSaleRFIDTestCase(), applyDiscountRateToSaleTestCase(), receiveCreditCardPaymentTestCase(), endSaleTransactionTestCase()                        |
+| 6.4         | FR4.1, FR6.1, FR6.2, FR6.7, FR6.8, FR6.10, FR7.2, FR5.7, FR8.2 | startSaleTransactionTestCase(), ~~addProductToSaleTestCase()~~, addProductToSaleRFIDTestCase(), computePointsForSaleTestCase(), modifyPointsOnCardTestCase(), receiveCreditCardPaymentTestCase(), endSaleTransactionTestCase() |
+| 6.5         | FR4.1, FR6.1, FR6.2, FR6.7, FR6.8, FR6.10, FR6.11, FR7         | startSaleTransactionTestCase(), ~~addProductToSaleTestCase()~~, addProductToSaleRFIDTestCase(),  endSaleTransactionTestCase(), deleteSaleTransactionTestCase(), deleteProductFromSaleRFIDTestCase()                                                           |
+| 6.6         | FR4.1, FR6.1, FR6.7,  FR6.10,  FR7.1, FR8.2                    | startSaleTransactionTestCase(), ~~addProductToSaleTestCase()~~, addProductToSaleRFIDTestCase(),  endSaleTransactionTestCase(), receiveCashPaymentTestCase()                                                              |
 | 7.1         | FR7.2, FR8.2                                                   | receiveCreditCardPaymentTestCase()                                                                                                                                             |
 | 7.2         | FR7.2                                                          | receiveCreditCardPaymentTestCase()                                                                                                                                             |
 | 7.3         | FR7.2                                                          | receiveCreditCardPaymentTestCase()                                                                                                                                             |
 | 7.4         | FR7.1, FR8.2                                                   | receiveCashPaymentTestCase()                                                                                                                                                   |
-| 8.1         | FR6.12, FR6.7, FR6.13, FR6.14, FR6, FR4.1, FR7.4, FR8.1        | startReturnTransactionTestCase, returnProductTestCase, endReturnTransactionTestCase, returnCreditCardPaymentTestCase()                                                         |
-| 8.2         | FR6.12, FR6.7, FR6.13, FR6.14, FR6, FR4.1, FR7.3, FR8.1        | startReturnTransactionTestCase, returnProductTestCase, endReturnTransactionTestCase, returnCashPaymentTestCase()                                                               |
+| 8.1         | FR6.12, FR6.7, FR6.13, FR6.14, FR6, FR4.1, FR7.4, FR8.1        | startReturnTransactionTestCase(), returnProductTestCase(), returnProductRFIDTestCase(), endReturnTransactionTestCase(), returnCreditCardPaymentTestCase()                                                         |
+| 8.2         | FR6.12, FR6.7, FR6.13, FR6.14, FR6, FR4.1, FR7.3, FR8.1        | startReturnTransactionTestCase(), returnProductTestCase(), returnProductRFIDTestCase(), endReturnTransactionTestCase(), returnCashPaymentTestCase()                                                               |
 | 9.1         | FR8.3                                                          | getCreditAndDebitsTestCase()                                                                                                                                                   |
-| 10.1        | FR7.4, FR8.1                                                   | returnCreditCardPaymentTestCase, recordBalanceTestCase()                                                                                                                       |
-| 10.2        | FR7.3, FR8.1                                                   | returnCaPaymentTestCase, recordBalanceTestCase()                                                                                                                               |
+| 10.1        | FR7.4, FR8.1                                                   | returnCreditCardPaymentTestCase(), recordBalanceTestCase()                                                                                                                       |
+| 10.2        | FR7.3, FR8.1                                                   | returnCashPaymentTestCase(), recordBalanceTestCase()                                                                                                                               |
 
 
 
