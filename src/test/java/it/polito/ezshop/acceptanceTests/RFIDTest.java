@@ -8,6 +8,7 @@ import it.polito.ezshop.data.ProductType;
 import it.polito.ezshop.data.User;
 import it.polito.ezshop.exceptions.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -302,6 +303,27 @@ public class RFIDTest {
 		
 	    ezShop.logout();
 	   
+	}
+	
+	@Test
+	public void gettersAndSettersRFIDTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidProductIdException, InvalidLocationException {
+		db.resetDB("products");
+		ezShop.login("admin","strong");
+		Integer productId = ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
+		ezShop.updatePosition(productId, "1-1-1");
+		Integer productId2 = ezShop.createProductType("descriptionTest2", "978020137962",2.50, "product second");
+		ezShop.updatePosition(productId, "1-1-2");
+		String RFID = "000000234555";
+		String RFID2 = "000000234557";
+		ProductClass product = new ProductClass(productId, RFID);
+
+		product.setRFID(RFID2);
+		assertEquals(RFID2,product.getRFID());
+		
+		product.setId(productId2);
+		assertEquals(productId2,product.getId());
+		
+		
 	}
 	
 	
