@@ -306,6 +306,30 @@ public class RFIDTest {
 	}
 	
 	@Test
+	public void getProductByRFIDTestCase() {
+		try {
+			db.resetDB("products");
+			db.resetDB("productTypes");
+			ezShop.login("admin","strong");
+			String RFID = "000004563222";
+			
+			Integer productId = ezShop.createProductType("descriptionTest1", "737052355054",2.50, "product note");
+			db.recordProductRFID(new ProductClass(productId, RFID));
+			
+			
+			assertNull(db.getProductByRFID("000000987666"));			
+			assertNotNull(db.getProductByRFID(RFID));
+			assertEquals(db.getProductByRFID(RFID).getId(), productId);
+						
+			db.resetDB("products");
+			db.resetDB("productTypes");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
 	public void gettersAndSettersRFIDTestCase() throws InvalidUsernameException, InvalidPasswordException, InvalidProductDescriptionException, InvalidProductCodeException, InvalidPricePerUnitException, UnauthorizedException, InvalidProductIdException, InvalidLocationException {
 		db.resetDB("products");
 		ezShop.login("admin","strong");
