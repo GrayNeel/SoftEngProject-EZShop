@@ -2279,6 +2279,34 @@ The credit cards for the application testing were pre-set in the database file f
 | Yes                             | Valid           | T1() -> true                 | getAllProductsRFID() |
 | No                              | Invalid         | T2() -> false                | ''                    |
 
+### **Class *EZShopDB* - method *getProductByRFID***
+
+**Criteria for method *name*:**
+
+ - The given Product RFID is in database
+
+**Predicates for method *name*:**
+
+| Criteria                    | Predicate |
+|-----------------------------|-----------|
+| The given Product RFID is in database | Yes       |
+|                             | No        |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+|----------|-----------------|
+|          |                 |
+
+**Combination of predicates**:
+
+
+| The given Product RFID is in database | Valid / Invalid | Description of the test case             | JUnit test case       |
+|-----------------------------|-----------------|------------------------------------------|-----------------------|
+| Yes                         | Valid           | T1(Existing RFID in database) -> true      | getProductByRFIDTestCase() |
+| No                          | Invalid         | T2(Non-existing RFID in database) -> false | ''                    |
+
+
 # White Box Unit Tests
 
 ### Test cases definition
@@ -2300,7 +2328,7 @@ The credit cards for the application testing were pre-set in the database file f
 | TicketEntry       | getterAndSetterTicketEntryTestCase()       |
 | SaleTransaction   | getterAndSetterSaleTransactionTestCase()   |
 | CreditCard        | getterAndSetterCreditCardTestCase()        |
-| Product        | getterAndSetterProductTestCase()        |
+| Product        | gettersAndSettersRFIDTestCase()        |
 
 ### Code coverage report
 ![](Coverage_images/coverage.png)

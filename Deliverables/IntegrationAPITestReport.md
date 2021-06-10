@@ -97,7 +97,7 @@ The integration approach used is **Bottom Up**.
 | ProductReturnClass     | getterAndSetterProductReturnTestCase()     |
 | BalanceOperationClass  | getterAndSetterBalanceOperationTestCase()  |
 | TicketEntryClass       | getterAndSetterticketEntryTestCase()       |
-| ProductClass           | getterAndSetterProductTestCase()       |
+| ProductClass           | gettersAndSettersRFIDTestCase()       |
 
 
 ## Step 2 - DB Test (+ Leaf classes)
