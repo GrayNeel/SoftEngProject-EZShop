@@ -3,15 +3,16 @@
 
 Authors: Group 38
 
-Date: 24/04/2021
+Date: 08/06/2021
 
-Version: 03
+Version: 04
 
 | Version | Changes | 
 | ----------------- |:-----------|
 | 01 | Added High Level Design and Low Level Design  |
 | 02 | Added Verification Traceability Matrix and Verification sequence diagrams |
 | 03 | Modified Low Level Design due to Requirements update |
+| 04 | Added product class |
 
 # Contents
 
