@@ -234,16 +234,15 @@ AccountBook -- "*" BalanceOperation
 
 # Verification traceability matrix
 
-|     | Shop | SaleTransaction | ProductType | Position | LoyaltyCard | Customer | Order | ReturnTransaction | BalanceOperation |
-| --- | :----: | :---------------: | :-----------: | :--------: | :-----------: | :--------: | :-----: | :-----------------: | :--------------------: |
-| FR1 |X| | | | | | | | |
-| FR2 |X| |X| | | | | | |
-| FR3 |X| |X|X| | |X| |X|
-| FR4 |X| | | |X|X| | | |
-| FR5 |X|X|X| | | | |X|X|
-| FR6 |X|X| | | | | | | |
-| FR7 |X| | | | | | | |X|
-
+|     | Shop | SaleTransaction | ProductType | Position | LoyaltyCard | Customer | Order | ReturnTransaction | BalanceOperation | Product |
+| --- | :----: | :---------------: | :-----------: | :--------: | :-----------: | :--------: | :-----: | :-----------------: | :--------------------: | :---:|
+| FR1 |X| | | | | | | | | |
+| FR2 |X| |X| | | | | | |X|
+| FR3 |X| |X|X| | |X| |X|X|
+| FR4 |X| | | |X|X| | | | |
+| FR5 |X|X|X| | | | |X|X|X|
+| FR6 |X|X| | | | | | | | |
+| FR7 |X| | | | | | | |X| |
 
 
 
