@@ -3,15 +3,16 @@
 
 Authors: Group 38
 
-Date: 24/04/2021
+Date: 08/06/2021
 
-Version: 03
+Version: 04
 
 | Version | Changes | 
 | ----------------- |:-----------|
 | 01 | Added High Level Design and Low Level Design  |
 | 02 | Added Verification Traceability Matrix and Verification sequence diagrams |
 | 03 | Modified Low Level Design due to Requirements update |
+| 04 | Added product class |
 
 # Contents
 
@@ -126,6 +127,12 @@ class ProductType{
     +updateDiscountRate(string,double)
 }
 
+class Product {
+    +RFID
+}
+
+ProductType - "*" Product
+
 note "Persistent data" as N2
 N2 -down- ProductType
 Shop -- "*" ProductType
@@ -228,16 +235,15 @@ AccountBook -- "*" BalanceOperation
 
 # Verification traceability matrix
 
-|     | Shop | SaleTransaction | ProductType | Position | LoyaltyCard | Customer | Order | ReturnTransaction | BalanceOperation |
-| --- | :----: | :---------------: | :-----------: | :--------: | :-----------: | :--------: | :-----: | :-----------------: | :--------------------: |
-| FR1 |X| | | | | | | | |
-| FR2 |X| |X| | | | | | |
-| FR3 |X| |X|X| | |X| |X|
-| FR4 |X| | | |X|X| | | |
-| FR5 |X|X|X| | | | |X|X|
-| FR6 |X|X| | | | | | | |
-| FR7 |X| | | | | | | |X|
-
+|     | Shop | SaleTransaction | ProductType | Position | LoyaltyCard | Customer | Order | ReturnTransaction | BalanceOperation | Product |
+| --- | :----: | :---------------: | :-----------: | :--------: | :-----------: | :--------: | :-----: | :-----------------: | :--------------------: | :---:|
+| FR1 |X| | | | | | | | | |
+| FR2 |X| |X| | | | | | |X|
+| FR3 |X| |X|X| | |X| |X|X|
+| FR4 |X| | | |X|X| | | | |
+| FR5 |X|X|X| | | | |X|X|X|
+| FR6 |X|X| | | | | | | | |
+| FR7 |X| | | | | | | |X| |
 
 
 

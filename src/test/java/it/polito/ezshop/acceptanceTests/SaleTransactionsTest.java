@@ -4,6 +4,7 @@ import it.polito.ezshop.classes.*;
 import it.polito.ezshop.data.BalanceOperation;
 import it.polito.ezshop.data.EZShopInterface;
 import it.polito.ezshop.data.TicketEntry;
+import it.polito.ezshop.data.User;
 import it.polito.ezshop.exceptions.*;
 
 import static org.junit.Assert.assertFalse;
@@ -278,6 +279,14 @@ public class SaleTransactionsTest {
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
+        
+        try {
+        	Integer userId = ezShop.createUser("shopManager", "1234567", "ShopManager");
+        	Integer userId2 = ezShop.createUser("Cashier", "1234567", "Cashier");
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        
     	assertThrows(UnauthorizedException.class, () -> ezShop.getSaleTransaction(1));
     	assertThrows(UnauthorizedException.class, () -> ezShop.deleteSaleTransaction(1));
     	ezShop.login("shopManager", "1234567");
@@ -314,7 +323,15 @@ public class SaleTransactionsTest {
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
-    	assertThrows(UnauthorizedException.class, () -> ezShop.getSaleTransaction(1));    	
+    	
+        try {
+        	Integer userId = ezShop.createUser("shopManager", "1234567", "ShopManager");
+        	Integer userId2 = ezShop.createUser("Cashier", "1234567", "Cashier");
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        
+        assertThrows(UnauthorizedException.class, () -> ezShop.getSaleTransaction(1));    	
     	ezShop.login("shopManager", "1234567");
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.getSaleTransaction(null));    	
     	ezShop.logout();
@@ -347,7 +364,12 @@ public class SaleTransactionsTest {
         db.resetDB("productReturns");
         db.resetDB("productTypes");
         db.resetDB("productEntries");
-    	
+        try {
+        	Integer userId = ezShop.createUser("shopManager", "1234567", "ShopManager");
+        	Integer userId2 = ezShop.createUser("Cashier", "1234567", "Cashier");
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
     	assertThrows(UnauthorizedException.class, () -> ezShop.deleteSaleTransaction(1));
     	ezShop.login("shopManager", "1234567");    	
     	assertThrows(InvalidTransactionIdException.class, () -> ezShop.deleteSaleTransaction(null));

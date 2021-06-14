@@ -1635,4 +1635,85 @@ public class EZShopDB {
 		return success;		
 	}
 
+	
+	/**
+	 * The following methods are here to handle RFID new change
+	 */
+	public boolean recordProductRFID(ProductClass prod) {
+		String sql = "INSERT INTO products(RFID, id) VALUES(?,?)";
+
+		if(prod.getId() < 0 || prod.getRFID().length() != 12 || Double.parseDouble(prod.getRFID()) < 0)
+			return false;
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setString(1, prod.getRFID());
+			pstmt.setInt(2, prod.getId());
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			return false;
+		}
+
+		return true;
+	}
+	
+	public List<ProductClass> getAllProductsRFID() {
+		String sql = "SELECT RFID, id FROM products";
+		List<ProductClass> prodlist = new ArrayList<>();
+
+		try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+			while (rs.next()) {
+				Integer id = rs.getInt("id");
+				String RFID = rs.getString("RFID");
+
+				ProductClass prod = new ProductClass(id, RFID);
+				prodlist.add(prod);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return prodlist;
+	}
+	
+	public List<ProductClass> getProductsRFIDbyId(Integer id) {
+		String sql = "SELECT RFID, id FROM products WHERE id=?";
+		List<ProductClass> prodlist = new ArrayList<>();
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			pstmt.setInt(1, id);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				Integer pid = rs.getInt("id");
+				String RFID = rs.getString("RFID");
+
+				ProductClass prod = new ProductClass(pid, RFID);
+				prodlist.add(prod);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return prodlist;
+	}
+
+	public ProductType getProductByRFID(String RFID) {
+		String sql = "SELECT productTypes.barCode AS barCode FROM productTypes JOIN products ON productTypes.id=products.id WHERE products.RFID = ?";
+		
+		String prodBarCode = "";
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {			
+			pstmt.setString(1, RFID);
+			ResultSet rs = pstmt.executeQuery();
+			prodBarCode = rs.getString("barCode");
+		} catch (SQLException e) {
+			return null;
+		}
+			
+
+		return getProductTypeByBarCode(prodBarCode);
+	}
 }
